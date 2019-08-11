@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnalizadorCQL", "AnalizadorCQL\AnalizadorCQL.csproj", "{B72C3802-B24A-406F-888B-CCD9426E6E8D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B72C3802-B24A-406F-888B-CCD9426E6E8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B72C3802-B24A-406F-888B-CCD9426E6E8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B72C3802-B24A-406F-888B-CCD9426E6E8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B72C3802-B24A-406F-888B-CCD9426E6E8D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {559C3979-A676-464E-B9A4-41FA9F12C865}
+	EndGlobalSection
+EndGlobal
