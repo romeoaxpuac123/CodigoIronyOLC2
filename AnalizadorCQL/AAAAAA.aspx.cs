@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using AnalizadorCQL.Analizadores;
 using Irony.Parsing;
 
+
 namespace AnalizadorCQL
 {
     public partial class AAAAAA : System.Web.UI.Page
@@ -31,9 +32,13 @@ namespace AnalizadorCQL
             if (resultado == true)
             {
                 TextBox1.Text = "Cadena Valida";
-                Recorrido.Recorrido1(resul2);
+                //Recorrido.Recorrido1(resul2);
+                Recorrido Re = new Recorrido();
+                //Re.RecorrerArbol(resultado);
+                Re.Recorrido1(resul2);
+                Console.WriteLine("**********************");
+                Re.Analizar(Re.Raiz);
                 System.Diagnostics.Debug.WriteLine("FIIIIIIIIIIIIIIIIIN");
-
             }
             else
             {

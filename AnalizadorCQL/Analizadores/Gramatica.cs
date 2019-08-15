@@ -15,7 +15,7 @@ namespace AnalizadorCQL.Analizadores
             #region ExpresionesRegulares
             RegexBasedTerminal numero = new RegexBasedTerminal("numero", "[0-9]+");
             RegexBasedTerminal numdecimal = new RegexBasedTerminal("numdecimal", "[0-9]+\\.[0-9]+");
-            RegexBasedTerminal cadena = new RegexBasedTerminal("cadena", "[\"]([^\"\n]|(\\\"))*[\"]");
+            StringLiteral cadena = new StringLiteral("cadena", "\"");
             IdentifierTerminal id = new IdentifierTerminal("id");
             /*LO nuevo*/
             CommentTerminal comentarioLinea = new CommentTerminal("comentarioLinea", "//", "\n", "\r\n"); //si viene una nueva linea se termina de reconocer el comentario.
@@ -33,7 +33,6 @@ namespace AnalizadorCQL.Analizadores
             var PYC = ToTerm(";");
             var ParA = ToTerm("(");
             var ParC = ToTerm(")");
-            var laimpre = ToTerm("imprimir");
             this.RegisterOperators(1, Associativity.Left, "+", "-");
             this.RegisterOperators(2, Associativity.Left, "*", "/");
             this.RegisterOperators(3, Associativity.Left, "^");
@@ -64,6 +63,7 @@ namespace AnalizadorCQL.Analizadores
             var PRIMARIKEY = ToTerm("PRIMARY");
             var PRIMARIKEY2 = ToTerm("KEY");
             var truncate = ToTerm("truncate");
+            var laimpre = ToTerm("LOG");
             #endregion
 
 
@@ -82,6 +82,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal ASIGNACION = new NonTerminal("ASIGNACION");
             NonTerminal ALTER_TYPE = new NonTerminal("ALTER_TYPE");
             NonTerminal DELETE_TYPE = new NonTerminal("DELETE_TYPE");
+            NonTerminal IMP = new NonTerminal("IMP");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR= new NonTerminal("CREATE_TABLA_PAR");
@@ -93,7 +94,10 @@ namespace AnalizadorCQL.Analizadores
                                 | SENTENCIA;
 
             SENTENCIA.Rule = DEFINCION_GENERAL_CQL
-                             |DDL;
+                             |DDL
+                             | IMP;
+
+            IMP.Rule = laimpre + ParA + E + ParC + PYC;
 
             DDL.Rule = create + bd + id + PYC
                        |drope + bd + id + PYC

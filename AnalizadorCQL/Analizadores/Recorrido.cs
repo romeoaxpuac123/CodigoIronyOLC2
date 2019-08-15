@@ -5,12 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Irony.Parsing;
+using AnalizadorCQL.Analizadores_Codigo;
+using AnalizadorCQL.Analizadores_CodigoAST;
 namespace AnalizadorCQL.Analizadores
 {
     public class Recorrido
     {
-
-        public static void Recorrido1(ParseTreeNode root)
+        public NodoAbstracto Raiz;
+        public NodoAbstracto Recorrido1(ParseTreeNode root)
         {
             Gramatica g = new Gramatica();
             switch (root.ChildNodes.Count)
@@ -18,7 +20,82 @@ namespace AnalizadorCQL.Analizadores
                 case 1:
                     Recorrido1(root.ChildNodes.ElementAt(0));
                     System.Diagnostics.Debug.WriteLine("CAso1 -> " + root.ToString());
-                    break;
+                    if (root.ToString() == "S")
+                    {
+                        //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
+                        NodoAbstracto nuevo1 = new Nodo("INICIO");
+                        nuevo1.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                        Raiz = nuevo1;
+
+                    }
+                    else if (root.ToString() == "SENTENCIA")
+                    {
+                        //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
+                        
+
+                        return (Recorrido1(root.ChildNodes.ElementAt(0)));
+
+
+                    }
+                    else if (root.ToString() == "SENTENCIAS")
+                    {
+                        //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
+
+                        NodoAbstracto nuevo = new Nodo("SENTENCIAS");
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+
+                        return nuevo;
+
+
+                    }
+                    else if (root.ToString() == "E")
+                    {
+                        //Console.WriteLine("sssssss" + root.ChildNodes.ElementAt(0).FindToken() + "sssssss");
+                        if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(numero)"))
+                        {
+                            //    Console.WriteLine("PASO POR UN NUMERO");
+                            NodoAbstracto RESULT1 = null;
+                            NodoAbstracto nuevox = new Nodo("Entero");
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                            nuevox.Hijos.Add(nuevovalor);
+                            nuevox.TipoDato = "entero";
+                            RESULT1 = nuevox;
+                            //Raiz = nuevox;
+                            return RESULT1;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(numdecimal)"))
+                        {
+                            //    Console.WriteLine("PASO POR UN NUMERO");
+                            NodoAbstracto RESULT1 = null;
+                            NodoAbstracto nuevox = new Nodo("Decimal");
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                            nuevox.Hijos.Add(nuevovalor);
+                            nuevox.TipoDato = "decimal";
+                            RESULT1 = nuevox;
+                            //Raiz = nuevox;
+                            return RESULT1;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(cadena)"))
+                        {
+                            NodoAbstracto RESULT1 = null;
+                            String valor = root.ChildNodes.ElementAt(0).ToString().Replace("\"", "");
+                            valor = valor.Replace(" (cadena)", "");
+                            NodoAbstracto nuevo = new Nodo("Cadena");
+                            NodoAbstracto nuevovalor = new Nodo(valor);
+                            nuevo.Hijos.Add(nuevovalor);
+                            nuevo.TipoDato = "cadena";
+                            RESULT1 = nuevo;
+                            return RESULT1;
+                        }
+                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(id)"))
+                        {
+                            //      Console.WriteLine("PASO POR UN ID ");
+
+                        }
+                    }
+                        break;
                 case 2:
                     Recorrido1(root.ChildNodes.ElementAt(0));
                     Recorrido1(root.ChildNodes.ElementAt(1));
@@ -30,6 +107,17 @@ namespace AnalizadorCQL.Analizadores
                         System.Diagnostics.Debug.WriteLine("CODIGO PARA CREAR UN OJBETO Estudiante @est;");
 
 
+                    }
+                    if (root.ToString() == "SENTENCIAS")
+                    {
+                        NodoAbstracto nuevo = Recorrido1(root.ChildNodes.ElementAt(0));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+                        //Recorrido1(root.ChildNodes.ElementAt(0)).Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+                        //*eSTO FUNCIONO PARA LA PARTE DE IMPRIMIR VARIAS COSAS :d
+                        //NodoAbstracto nuevo = new Nodo("SENTENCIAS");
+                        //nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                        //nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+                        return nuevo;
                     }
 
                     break;
@@ -49,6 +137,96 @@ namespace AnalizadorCQL.Analizadores
 
 
                         }
+                    }
+                    else if (root.ToString() == "E")
+                    {
+                        NodoAbstracto RESULT = null;
+                        if ((root.ChildNodes.ElementAt(1).ToString().Contains("+ (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("+");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            //Raiz = nuevo;
+
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("- (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("-");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            //Raiz = nuevo;
+
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("* (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("*");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            //Raiz = nuevo;
+
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("/ (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("/");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            //Raiz = nuevo;
+                        }
+
+                        if (Recorrido1(root.ChildNodes.ElementAt(0)).TipoDato == "decimal"
+                            && Recorrido1(root.ChildNodes.ElementAt(2)).TipoDato == "decimal")
+                        {
+                            RESULT.TipoDato = "decimal";
+                        }
+
+                        else if (Recorrido1(root.ChildNodes.ElementAt(0)).TipoDato == "entero"
+                            && Recorrido1(root.ChildNodes.ElementAt(2)).TipoDato == "entero")
+                        {
+                            RESULT.TipoDato = "entero";
+                        }
+                        else if (Recorrido1(root.ChildNodes.ElementAt(0)).TipoDato == "entero"
+                           && Recorrido1(root.ChildNodes.ElementAt(2)).TipoDato == "decimal")
+                        {
+                            RESULT.TipoDato = "decimal";
+                        }
+                        else if (Recorrido1(root.ChildNodes.ElementAt(0)).TipoDato == "decimal"
+                           && Recorrido1(root.ChildNodes.ElementAt(2)).TipoDato == "entero")
+                        {
+                            RESULT.TipoDato = "decimal";
+                        }
+                        else if (Recorrido1(root.ChildNodes.ElementAt(0)).TipoDato == "cadena"
+                          && Recorrido1(root.ChildNodes.ElementAt(2)).TipoDato == "cadena")
+                        {
+                            RESULT.TipoDato = "cadena";
+                        }
+                        else if (Recorrido1(root.ChildNodes.ElementAt(0)).TipoDato == "entero"
+                          && Recorrido1(root.ChildNodes.ElementAt(2)).TipoDato == "cadena")
+                        {
+                            RESULT.TipoDato = "cadena";
+                        }
+                        else if (Recorrido1(root.ChildNodes.ElementAt(0)).TipoDato == "cadena"
+                         && Recorrido1(root.ChildNodes.ElementAt(2)).TipoDato == "entero")
+                        {
+                            RESULT.TipoDato = "cadena";
+                        }
+
+                        return RESULT;
                     }
                         
                    
@@ -142,6 +320,12 @@ namespace AnalizadorCQL.Analizadores
                     )
                     {
                         System.Diagnostics.Debug.WriteLine("Codigo para Asignacion de una variable tipo @var1 = Exprsion");
+                    }
+                    else if (root.ChildNodes.ElementAt(0).ToString().Contains("LOG"))
+                    {
+                        NodoAbstracto nuevo2 = new LOG("IMPRIMIR");
+                        nuevo2.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                        return nuevo2;
                     }
                     break;
                 case 6:
@@ -252,7 +436,33 @@ namespace AnalizadorCQL.Analizadores
                 default:
                 break;
                  
-            }           
+            }
+
+            return null;
+        }
+
+        public void Ejecutar(NodoAbstracto raiz)
+        {
+            System.Diagnostics.Debug.WriteLine("ejecutar");
+            Entorno entorno = new Entorno();
+            foreach (NodoAbstracto sentencia in raiz.Hijos[0].Hijos)
+            {// para ejecutar solo sentencias 
+                //Console.WriteLine("pureba for " + sentencia.Nombre + raiz.TipoDato);
+                sentencia.Ejecutar(entorno);
+            }
+        }
+
+
+        public void Analizar(NodoAbstracto raiz)
+        {
+            try
+            {
+                Ejecutar(raiz);
+            }
+            catch (Exception e)
+            {
+
+            }
         }
 
     }
