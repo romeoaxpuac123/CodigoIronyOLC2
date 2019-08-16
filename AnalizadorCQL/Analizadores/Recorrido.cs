@@ -134,6 +134,19 @@ namespace AnalizadorCQL.Analizadores
                             return RESULT1;
 
                         }
+                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(hora)"))
+                        {
+                            //    Console.WriteLine("PASO POR UN NUMERO");
+                            NodoAbstracto RESULT1 = null;
+                            NodoAbstracto nuevox = new Nodo("hora");
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                            nuevox.Hijos.Add(nuevovalor);
+                            nuevox.TipoDato = "hora";
+                            RESULT1 = nuevox;
+                            //Raiz = nuevox;
+                            return RESULT1;
+
+                        }
                         else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(id)"))
                         {
                             //      Console.WriteLine("PASO POR UN ID ");
@@ -195,6 +208,38 @@ namespace AnalizadorCQL.Analizadores
 
                             RESULT = nuevo;
                             RESULT.TipoDato = "decimal";
+                            return RESULT;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("(Keyword)")
+                        && root.ChildNodes.ElementAt(0).ToString().Contains("! (Key symbol"))
+                        {
+                            //    CODIGO PARA MENOS1;
+                            NodoAbstracto RESULT = null;
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("!");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(1).ToString().Contains("E")
+                       && root.ChildNodes.ElementAt(0).ToString().Contains("! (Key symbol"))
+                        {
+                            //    CODIGO PARA MENOS1;
+                            NodoAbstracto RESULT = null;
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("!");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
                             return RESULT;
 
                         }
@@ -302,6 +347,7 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.Hijos.Add(nuevooperador);
                             nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
                             RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
                             return RESULT;
                             //Raiz = nuevo;
                         }
@@ -314,6 +360,7 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.Hijos.Add(nuevooperador);
                             nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
                             RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
                             return RESULT;
                             //Raiz = nuevo;
                         }
@@ -326,6 +373,7 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.Hijos.Add(nuevooperador);
                             nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
                             RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
                             return RESULT;
                             //Raiz = nuevo;
                         }
@@ -338,10 +386,82 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.Hijos.Add(nuevooperador);
                             nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
                             RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
                             return RESULT;
                             //Raiz = nuevo;
                         }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("== (Key symbol")))
+                        {
 
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("==");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("!= (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("!=");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("|| (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("||");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("&& (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("&&");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("^ (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("^");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("E")))
+                        {
+
+                           
+                            return Recorrido1(root.ChildNodes.ElementAt(1)) ;
+                            //Raiz = nuevo;
+                        }
 
                         if (Recorrido1(root.ChildNodes.ElementAt(0)).TipoDato == "decimal"
                             && Recorrido1(root.ChildNodes.ElementAt(2)).TipoDato == "decimal")
@@ -403,6 +523,16 @@ namespace AnalizadorCQL.Analizadores
                         && Recorrido1(root.ChildNodes.ElementAt(2)).TipoDato == "Fechas")
                         {
                             RESULT.TipoDato = "Fechas";
+                        }
+                        else if (Recorrido1(root.ChildNodes.ElementAt(0)).TipoDato == "hora"
+                        && Recorrido1(root.ChildNodes.ElementAt(2)).TipoDato == "hora")
+                        {
+                            RESULT.TipoDato = "hora";
+                        }
+                        else if (Recorrido1(root.ChildNodes.ElementAt(0)).TipoDato == "Booleano"
+                        && Recorrido1(root.ChildNodes.ElementAt(2)).TipoDato == "Booleano")
+                        {
+                            RESULT.TipoDato = "Booleano";
                         }
 
                         return RESULT;

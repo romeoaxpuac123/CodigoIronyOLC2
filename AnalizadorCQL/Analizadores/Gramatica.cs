@@ -22,6 +22,7 @@ namespace AnalizadorCQL.Analizadores
             CommentTerminal comentarioBloque = new CommentTerminal("comentarioBloque", "/*", "*/");
             RegexBasedTerminal id2 = new RegexBasedTerminal("id2", "[@](_|[0-9]|[a-z])*");
             RegexBasedTerminal fechas = new RegexBasedTerminal("fechas", "'[0-9][0-9][0-9][0-9]-[0-1]*[0-9]-[0-3]*[0-9]'");
+            RegexBasedTerminal hora = new RegexBasedTerminal("hora", "'[0-2]*[0-9]:[0-5]*[0-9]:[0-5]*[0-9]'");
             #endregion
             NonGrammarTerminals.Add(comentarioLinea);
             NonGrammarTerminals.Add(comentarioBloque);
@@ -71,13 +72,19 @@ namespace AnalizadorCQL.Analizadores
             var menor_que = ToTerm("<=");
             var igual_igual = ToTerm("==");
             var diferente = ToTerm("!=");
+            var OR = ToTerm("||");
+            var AND = ToTerm("&&");
+            var XOR = ToTerm("^");
+            var NOT = ToTerm("!");
 
 
-            this.RegisterOperators(5, Associativity.Left, "+", "-");
-            this.RegisterOperators(4, Associativity.Left, "*", "/","%");
-            this.RegisterOperators(3, Associativity.Left, "**");
-            this.RegisterOperators(2, Associativity.Left, ">","<",">=","<=");
-            this.RegisterOperators(1, Associativity.Left, "!=", "==");
+            this.RegisterOperators(6, Associativity.Left, "+", "-");
+            this.RegisterOperators(7, Associativity.Left, "*", "/","%");
+            this.RegisterOperators(5, Associativity.Left, "**");
+            this.RegisterOperators(4, Associativity.Left, ">","<",">=","<=");
+            this.RegisterOperators(3, Associativity.Left, "!=", "==");
+            this.RegisterOperators(2, Associativity.Left, "&&", "||", "^");
+            this.RegisterOperators(1, Associativity.Left, "!");
             #endregion
 
 
@@ -184,8 +191,12 @@ namespace AnalizadorCQL.Analizadores
                     | E + menor + E  
                     | E + mayor_que + E
                     | E + menor_que + E
-                    | E + igual_igual + igual_igual
+                    | E + igual_igual + E
                     | E + diferente + E
+                    | E + OR + E
+                    | E + AND + E
+                    | E+ XOR + E
+                    | NOT + E
                     | menos + E
                     | numero
                     | numdecimal
@@ -194,7 +205,9 @@ namespace AnalizadorCQL.Analizadores
                     | id2
                     | falso
                     | verdadero
-                    |fechas;
+                    | fechas
+                    | hora
+                    | ParA + E + ParC;
 
            
 

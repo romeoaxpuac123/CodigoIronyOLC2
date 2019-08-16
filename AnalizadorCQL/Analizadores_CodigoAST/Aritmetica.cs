@@ -89,7 +89,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         totaldouble = Math.Pow(valor1, valor2);
                         return totaldouble.ToString();
                     case ">":
-                        totalb = valor1 > valor2 ;
+                        totalb = valor1 > valor2;
                         return totalb.ToString();
                     case "<":
                         totalb = valor1 < valor2;
@@ -99,6 +99,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         return totalb.ToString();
                     case "<=":
                         totalb = valor1 <= valor2;
+                        return totalb.ToString();
+                    case "==":
+                        totalb = valor1 == valor2;
+                        return totalb.ToString();
+                    case "!=":
+                        totalb = valor1 != valor2;
                         return totalb.ToString();
 
                 }
@@ -157,7 +163,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     case ">":
                         totalb = valor1 > valor2;
                         return totalb.ToString();
-                    
+
                     case "<":
                         totalb = valor1 < valor2;
                         return totalb.ToString();
@@ -166,6 +172,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         return totalb.ToString();
                     case "<=":
                         totalb = valor1 <= valor2;
+                        return totalb.ToString();
+                    case "==":
+                        totalb = valor1 == valor2;
+                        return totalb.ToString();
+                    case "!=":
+                        totalb = valor1 != valor2;
                         return totalb.ToString();
 
                 }
@@ -176,7 +188,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             //PARTE DONDE SOLO EL LADO IZQUIERDO ES DECIMAL Y EL DERECHO entero
 
             ///************
-            else if(Tipo1 == "decimal" && Tipo2 == "entero")
+            else if (Tipo1 == "decimal" && Tipo2 == "entero")
             {
                 float valor1 = float.Parse(val1.Replace(" (numdecimal)", "").Replace(" ", "").Replace(".", ","));
                 int valor2 = Int32.Parse(val2.Replace(" (numero)", ""));
@@ -220,7 +232,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     case "**":
                         totaldouble = Math.Pow(valor1, valor2);
                         return totaldouble.ToString();
-                     case ">":
+                    case ">":
                         totalb = valor1 > valor2;
                         return totalb.ToString();
 
@@ -232,6 +244,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         return totalb.ToString();
                     case "<=":
                         totalb = valor1 <= valor2;
+                        return totalb.ToString();
+                    case "==":
+                        totalb = valor1 == valor2;
+                        return totalb.ToString();
+                    case "!=":
+                        totalb = valor1 != valor2;
                         return totalb.ToString();
 
 
@@ -250,7 +268,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 float valor2 = float.Parse(val2.Replace(" (numdecimal)", "").Replace(" ", "").Replace(".", ","));
 
                 //float uno = 3.1f ;
-                
+
                 switch (this.Hijos[1].Nombre)
                 {
                     case "+":
@@ -288,7 +306,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     case "**":
                         totaldouble = Math.Pow(valor1, valor2);
                         return totaldouble.ToString();
-                   
+
                     case ">":
                         totalb = valor1 > valor2;
                         return totalb.ToString();
@@ -302,6 +320,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     case "<=":
                         totalb = valor1 <= valor2;
                         return totalb.ToString();
+                    case "==":
+                        totalb = valor1 == valor2;
+                        return totalb.ToString();
+                    case "!=":
+                        totalb = valor1 != valor2;
+                        return totalb.ToString();
 
                 }
                 return totald.ToString();
@@ -312,8 +336,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             {
                 String valor1 = (val1.Replace(" (cadena)", ""));
                 String valor2 = (val2.Replace(" (cadena)", ""));
-               // System.Diagnostics.Debug.WriteLine("hola1" + valor1);
-               // System.Diagnostics.Debug.WriteLine("hola2" + valor2);
+                // System.Diagnostics.Debug.WriteLine("hola1" + valor1);
+                // System.Diagnostics.Debug.WriteLine("hola2" + valor2);
                 //float uno = 3.1f ;
                 //Console.WriteLine(val1 + "AA"+uno);
                 //Console.WriteLine(val2 + "bb"+uno);
@@ -327,21 +351,21 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
 
                         return "#Error";
-                       
+
                     case "/":
-                       
-                            // salida.Text = "#Error: Se está intentando dividir por 0 \n";
-                            System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
-                       
+
+                        // salida.Text = "#Error: Se está intentando dividir por 0 \n";
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+
                         return "#Error";
-                        
+
                     case "*":
                         System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
                         return "#Error";
                     case "%":
                         System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
                         return "#Error";
-                        
+
                     case "**":
                         System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
                         return "#Error";
@@ -358,6 +382,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     case "<=":
                         System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
                         return "#Error";
+                    case "==":
+                        totalb = valor1 == valor2;
+                        return totalb.ToString();
+                    case "!=":
+                        totalb = valor1 != valor2;
+                        return totalb.ToString();
 
                 }
                 return totalC.ToString();
@@ -528,7 +558,44 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 return totalC.ToString();
             }
 
+            else if (Tipo1 == "Booleano" && Tipo2 == "Booleano")
+            {
+                String valor1 = (val1.Replace(" (cadena)", ""));
+                String valor2 = (val2.Replace(" (cadena)", ""));
 
+                Boolean var3 = Convert.ToBoolean(valor1);
+                Boolean var4 = Convert.ToBoolean(valor2);
+                // System.Diagnostics.Debug.WriteLine("hola1" + valor1);
+                // System.Diagnostics.Debug.WriteLine("hola2" + valor2);
+                //float uno = 3.1f ;
+                //Console.WriteLine(val1 + "AA"+uno);
+                //Console.WriteLine(val2 + "bb"+uno);
+                switch (this.Hijos[1].Nombre)
+                {
+                    case "==":
+                        totalb = valor1 == valor2;
+                        return totalb.ToString();
+                    case "!=":
+                        totalb = valor1 != valor2;
+                        return totalb.ToString();
+                    case "||":
+                        totalb = var3 || var4;
+                        return totalb.ToString();
+                    case "&&":
+                        totalb = var3 && var4;
+                        return totalb.ToString();
+                    case "^":
+                        totalb = var3 ^ var4;
+                        return totalb.ToString();
+                    case "!":
+                        totalb = !(var4);
+                        return totalb.ToString();
+
+                }
+                System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                return "#Error";
+            }
+            
             else if (Tipo1 == "decimal" && Tipo2 == "cadena")
             {
                 String valor2 = (val2.Replace(" (cadena)", ""));
@@ -692,6 +759,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     case "<=":
                         totalb = fecha1 <= fecha2;
                         return totalb.ToString();
+                    case "==":
+                        totalb = valor1 == valor2;
+                        return totalb.ToString();
+                    case "!=":
+                        totalb = valor1 != valor2;
+                        return totalb.ToString();
 
                 }
 
@@ -699,7 +772,45 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 System.Diagnostics.Debug.WriteLine("#Error semanticoxd \n");
                 return "#Error";
             }
-           
+
+            else if (Tipo1 == "hora" && Tipo2 == "hora")
+            {
+                String valor1 = (val1.Replace(" (hora)", "").Replace("'", ""));
+                String valor2 = (val2.Replace(" (hora)", "").Replace("'", ""));
+                DateTime fecha1 = Convert.ToDateTime(valor1).Date;
+                DateTime fecha2 = Convert.ToDateTime(valor2).Date;
+                System.Diagnostics.Debug.WriteLine("fecha1" + fecha1);
+                System.Diagnostics.Debug.WriteLine("fecha2" + fecha2);
+                switch (this.Hijos[1].Nombre)
+                {
+
+                    case ">":
+                        totalb = fecha1 > fecha2;
+                        return totalb.ToString();
+                    case "<":
+                        totalb = fecha1 < fecha2;
+                        return totalb.ToString();
+                    case ">=":
+                        totalb = fecha1 >= fecha2;
+                        return totalb.ToString();
+                    case "<=":
+                        totalb = fecha1 <= fecha2;
+                        return totalb.ToString();
+                    case "==":
+                        totalb = valor1 == valor2;
+                        return totalb.ToString();
+                    case "!=":
+                        totalb = valor1 != valor2;
+                        return totalb.ToString();
+
+                }
+
+
+                System.Diagnostics.Debug.WriteLine("#Error semanticoxd \n");
+                return "#Error";
+            }
+
+
             System.Diagnostics.Debug.WriteLine("#Error semantico \n");
             return "#Error";
         }
