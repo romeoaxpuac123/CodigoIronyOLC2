@@ -49,6 +49,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 case "Cadena":
                     sali = this.Hijos[0].Nombre;
                     break;
+                case "Booleano":
+                    sali = this.Hijos[0].Nombre;
+                    break;
+                case "Fechas":
+                    sali = this.Hijos[0].Nombre;
+                    break;
                 case "id":
                     sali = entorno.ObtenerValor(this.Hijos[0].Nombre);
                     if ("#Error".Equals(sali))

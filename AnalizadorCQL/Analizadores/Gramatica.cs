@@ -21,6 +21,7 @@ namespace AnalizadorCQL.Analizadores
             CommentTerminal comentarioLinea = new CommentTerminal("comentarioLinea", "//", "\n", "\r\n"); //si viene una nueva linea se termina de reconocer el comentario.
             CommentTerminal comentarioBloque = new CommentTerminal("comentarioBloque", "/*", "*/");
             RegexBasedTerminal id2 = new RegexBasedTerminal("id2", "[@](_|[0-9]|[a-z])*");
+            RegexBasedTerminal fechas = new RegexBasedTerminal("fechas", "'[0-9][0-9][0-9][0-9]-[0-1]*[0-9]-[0-3]*[0-9]'");
             #endregion
             NonGrammarTerminals.Add(comentarioLinea);
             NonGrammarTerminals.Add(comentarioBloque);
@@ -33,9 +34,7 @@ namespace AnalizadorCQL.Analizadores
             var PYC = ToTerm(";");
             var ParA = ToTerm("(");
             var ParC = ToTerm(")");
-            this.RegisterOperators(1, Associativity.Left, "+", "-");
-            this.RegisterOperators(2, Associativity.Left, "*", "/");
-            this.RegisterOperators(3, Associativity.Left, "^");
+            
             /*LO nuevo*/
             var create = ToTerm("create");
             var type = ToTerm("type");
@@ -50,8 +49,8 @@ namespace AnalizadorCQL.Analizadores
             var coma = ToTerm(",");
             var igual= ToTerm("=");
             var nuevo = ToTerm("new");
-            var falso = ToTerm("true");
-            var verdadero = ToTerm("false");
+            var falso = ToTerm("false","falso");
+            var verdadero = ToTerm("true","verdadero");
             var punto = ToTerm(".");
             var ALTERAR = ToTerm("alter");
             var borrar1 = ToTerm("delete");
@@ -64,6 +63,21 @@ namespace AnalizadorCQL.Analizadores
             var PRIMARIKEY2 = ToTerm("KEY");
             var truncate = ToTerm("truncate");
             var laimpre = ToTerm("LOG");
+            var potencia = ToTerm("**");
+            var modulo = ToTerm("%");
+            var mayor = ToTerm(">");
+            var menor = ToTerm("<");
+            var mayor_que = ToTerm(">=");
+            var menor_que = ToTerm("<=");
+            var igual_igual = ToTerm("==");
+            var diferente = ToTerm("!=");
+
+
+            this.RegisterOperators(5, Associativity.Left, "+", "-");
+            this.RegisterOperators(4, Associativity.Left, "*", "/","%");
+            this.RegisterOperators(3, Associativity.Left, "**");
+            this.RegisterOperators(2, Associativity.Left, ">","<",">=","<=");
+            this.RegisterOperators(1, Associativity.Left, "!=", "==");
             #endregion
 
 
@@ -160,18 +174,30 @@ namespace AnalizadorCQL.Analizadores
 
             TIPOS_VARIABLES.Rule = Entero | Decimal | Cadena | Boolenano | Date | Time;
            
-            E.Rule = E + mas + E
+            E.Rule =  E + mas + E
                     | E + menos + E
                     | E + por + E
                     | E + div + E
+                    | E + potencia + E
+                    | E + modulo + E
+                    | E + mayor + E
+                    | E + menor + E  
+                    | E + mayor_que + E
+                    | E + menor_que + E
+                    | E + igual_igual + igual_igual
+                    | E + diferente + E
+                    | menos + E
                     | numero
                     | numdecimal
                     | cadena
                     | id
-                    |id2
-                    |falso
-                    |verdadero;
-            
+                    | id2
+                    | falso
+                    | verdadero
+                    |fechas;
+
+           
+
             #endregion
 
             #region Preferencias
