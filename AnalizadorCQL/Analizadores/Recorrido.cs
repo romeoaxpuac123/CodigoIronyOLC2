@@ -31,11 +31,30 @@ namespace AnalizadorCQL.Analizadores
                         //Raiz = nuevox;
                         return RESULT1;
 
+                    }else if (root.ToString().Contains("arithmeticexception"))
+                    {
+                        NodoAbstracto RESULT1 = null;
+                        NodoAbstracto nuevox = new Nodo("arithmeticexception");
+                        NodoAbstracto nuevovalor = new Nodo("arithmeticexception");
+                        nuevox.Hijos.Add(nuevovalor);
+                        RESULT1 = nuevox;
+                        //Raiz = nuevox;
+                        return RESULT1;
+                    }
+                    else if (root.ToString().Contains("indexoutexception"))
+                    {
+                        NodoAbstracto RESULT1 = null;
+                        NodoAbstracto nuevox = new Nodo("indexoutexception");
+                        NodoAbstracto nuevovalor = new Nodo("indexoutexception");
+                        nuevox.Hijos.Add(nuevovalor);
+                        RESULT1 = nuevox;
+                        //Raiz = nuevox;
+                        return RESULT1;
                     }
                     break;
 
                 case 1:
-                    Recorrido1(root.ChildNodes.ElementAt(0));
+                  //  Recorrido1(root.ChildNodes.ElementAt(0));
                     System.Diagnostics.Debug.WriteLine("CAso1 -> " + root.ToString());
                     if (root.ToString() == "S")
                     {
@@ -155,8 +174,8 @@ namespace AnalizadorCQL.Analizadores
                     }
                         break;
                 case 2:
-                    Recorrido1(root.ChildNodes.ElementAt(0));
-                    Recorrido1(root.ChildNodes.ElementAt(1));
+                   // Recorrido1(root.ChildNodes.ElementAt(0));
+                   // Recorrido1(root.ChildNodes.ElementAt(1));
                     System.Diagnostics.Debug.WriteLine("CAso2 -> " + root.ToString());
                     if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("id")
                         && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2") 
@@ -248,9 +267,9 @@ namespace AnalizadorCQL.Analizadores
 
                         break;
                 case 3:                    
-                    Recorrido1(root.ChildNodes.ElementAt(0));
-                    Recorrido1(root.ChildNodes.ElementAt(1));
-                    Recorrido1(root.ChildNodes.ElementAt(2));
+                    //Recorrido1(root.ChildNodes.ElementAt(0));
+                    //Recorrido1(root.ChildNodes.ElementAt(1));
+                    //Recorrido1(root.ChildNodes.ElementAt(2));
                     System.Diagnostics.Debug.WriteLine("CAso3 -> " + root.ToString());
                     if (root.ToString() == "ASIGNACION")
                     {
@@ -534,6 +553,10 @@ namespace AnalizadorCQL.Analizadores
                         {
                             RESULT.TipoDato = "Booleano";
                         }
+                        else
+                        {
+                            RESULT.TipoDato = "cadena";
+                        }
 
                         return RESULT;
                     }
@@ -542,10 +565,10 @@ namespace AnalizadorCQL.Analizadores
                     break;
                 case 4:
                     
-                    Recorrido1(root.ChildNodes.ElementAt(0));
-                    Recorrido1(root.ChildNodes.ElementAt(1));
-                    Recorrido1(root.ChildNodes.ElementAt(2));
-                    Recorrido1(root.ChildNodes.ElementAt(3));
+                   // Recorrido1(root.ChildNodes.ElementAt(0));
+                   // Recorrido1(root.ChildNodes.ElementAt(1));
+                   // Recorrido1(root.ChildNodes.ElementAt(2));
+                   // Recorrido1(root.ChildNodes.ElementAt(3));
                     System.Diagnostics.Debug.WriteLine("CAso4 -> " + root.ToString());
                     if (root.ToString() == "DDL") {
                         if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("TRUNCATE"))
@@ -608,11 +631,11 @@ namespace AnalizadorCQL.Analizadores
                     break;
                 case 5:
                     
-                    Recorrido1(root.ChildNodes.ElementAt(0));
-                    Recorrido1(root.ChildNodes.ElementAt(1));
-                    Recorrido1(root.ChildNodes.ElementAt(2));
-                    Recorrido1(root.ChildNodes.ElementAt(3));
-                    Recorrido1(root.ChildNodes.ElementAt(4));
+                 //   Recorrido1(root.ChildNodes.ElementAt(0));
+                 //   Recorrido1(root.ChildNodes.ElementAt(1));
+                 //   Recorrido1(root.ChildNodes.ElementAt(2));
+                 //   Recorrido1(root.ChildNodes.ElementAt(3));
+                 //   Recorrido1(root.ChildNodes.ElementAt(4));
                     System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
                     if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("id2") && 
                         root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("Key symbol") &&
@@ -644,12 +667,12 @@ namespace AnalizadorCQL.Analizadores
                     break;
                 case 6:
                    
-                    Recorrido1(root.ChildNodes.ElementAt(0));
-                    Recorrido1(root.ChildNodes.ElementAt(1));
-                    Recorrido1(root.ChildNodes.ElementAt(2));
-                    Recorrido1(root.ChildNodes.ElementAt(3));
-                    Recorrido1(root.ChildNodes.ElementAt(4));
-                    Recorrido1(root.ChildNodes.ElementAt(5));
+                 //   Recorrido1(root.ChildNodes.ElementAt(0));
+                 //   Recorrido1(root.ChildNodes.ElementAt(1));
+                 //   Recorrido1(root.ChildNodes.ElementAt(2));
+                 //   Recorrido1(root.ChildNodes.ElementAt(3));
+                 //   Recorrido1(root.ChildNodes.ElementAt(4));
+                 //   Recorrido1(root.ChildNodes.ElementAt(5));
                     System.Diagnostics.Debug.WriteLine("CAso6 -> " + root.ToString());
                     if (root.ChildNodes.ElementAt(3).FindToken().ToString().ToUpper().Contains("DROP") && root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("ALTER"))
                     {
@@ -673,13 +696,13 @@ namespace AnalizadorCQL.Analizadores
                     break;
                 case 7:
                     
-                    Recorrido1(root.ChildNodes.ElementAt(0));
-                    Recorrido1(root.ChildNodes.ElementAt(1));
-                    Recorrido1(root.ChildNodes.ElementAt(2));
-                    Recorrido1(root.ChildNodes.ElementAt(3));
-                    Recorrido1(root.ChildNodes.ElementAt(4));
-                    Recorrido1(root.ChildNodes.ElementAt(5));
-                    Recorrido1(root.ChildNodes.ElementAt(6));
+                  //  Recorrido1(root.ChildNodes.ElementAt(0));
+                  //  Recorrido1(root.ChildNodes.ElementAt(1));
+                  //  Recorrido1(root.ChildNodes.ElementAt(2));
+                  //  Recorrido1(root.ChildNodes.ElementAt(3));
+                  //  Recorrido1(root.ChildNodes.ElementAt(4));
+                  //  Recorrido1(root.ChildNodes.ElementAt(5));
+                  //  Recorrido1(root.ChildNodes.ElementAt(6));
                     System.Diagnostics.Debug.WriteLine("CAso7 -> " + root.ToString());
                     if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("CREATE") && root.ChildNodes.ElementAt(1).FindToken().ToString().ToUpper().Contains("TABLE"))
                     {
@@ -710,14 +733,14 @@ namespace AnalizadorCQL.Analizadores
                     break;
                 case 8:
 
-                    Recorrido1(root.ChildNodes.ElementAt(0));
-                    Recorrido1(root.ChildNodes.ElementAt(1));
-                    Recorrido1(root.ChildNodes.ElementAt(2));
-                    Recorrido1(root.ChildNodes.ElementAt(3));
-                    Recorrido1(root.ChildNodes.ElementAt(4));
-                    Recorrido1(root.ChildNodes.ElementAt(5));
-                    Recorrido1(root.ChildNodes.ElementAt(6));
-                    Recorrido1(root.ChildNodes.ElementAt(7));
+                 //   Recorrido1(root.ChildNodes.ElementAt(0));
+                 //   Recorrido1(root.ChildNodes.ElementAt(1));
+                  //  Recorrido1(root.ChildNodes.ElementAt(2));
+                  //  Recorrido1(root.ChildNodes.ElementAt(3));
+                  //  Recorrido1(root.ChildNodes.ElementAt(4));
+                  //  Recorrido1(root.ChildNodes.ElementAt(5));
+                  //  Recorrido1(root.ChildNodes.ElementAt(6));
+                  //  Recorrido1(root.ChildNodes.ElementAt(7));
                     System.Diagnostics.Debug.WriteLine("CAso8 -> " + root.ToString());
                     if (root.ChildNodes.ElementAt(0).ToString().Contains("TIPOS_VARIABLES")
                         && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("(id2)")
@@ -747,6 +770,41 @@ namespace AnalizadorCQL.Analizadores
                         System.Diagnostics.Debug.WriteLine("CODIGO ALTER TYPE ADD");
                     }
                     break;
+                case 9:
+                    break;
+                case 12:
+                 /*   Recorrido1(root.ChildNodes.ElementAt(0));
+                    Recorrido1(root.ChildNodes.ElementAt(1));
+                    Recorrido1(root.ChildNodes.ElementAt(2));
+                    Recorrido1(root.ChildNodes.ElementAt(3));
+                    Recorrido1(root.ChildNodes.ElementAt(4));
+                    Recorrido1(root.ChildNodes.ElementAt(5));
+                    Recorrido1(root.ChildNodes.ElementAt(6));
+                    Recorrido1(root.ChildNodes.ElementAt(7));
+                    Recorrido1(root.ChildNodes.ElementAt(8));
+                    Recorrido1(root.ChildNodes.ElementAt(9)); */
+                     if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("TRY") &&
+                            root.ChildNodes.ElementAt(4).ToString().ToUpper().Contains("CATCH"))
+                    {
+                        System.Diagnostics.Debug.WriteLine("CODIGO TRY_CATCH");
+                        
+
+                         NodoAbstracto nuevo = new TRY_CATCH("TRY_CATCH");
+                        nuevo.Hijos.Add ( Recorrido1(root.ChildNodes.ElementAt(2)) );
+                        nuevo.Hijos.Add ( Recorrido1(root.ChildNodes.ElementAt(10)) );
+                        nuevo.Hijos.Add ( Recorrido1(root.ChildNodes.ElementAt(6)));
+                        return nuevo;
+
+
+                        // nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8).ChildNodes.ElementAt(0)));
+                        // nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8).ChildNodes.ElementAt(1)));
+                        // return nuevo;
+
+                        //return nuevo;
+
+                    }
+
+                    break;
                 default:
                 break;
                  
@@ -761,7 +819,8 @@ namespace AnalizadorCQL.Analizadores
             Entorno entorno = new Entorno();
             foreach (NodoAbstracto sentencia in raiz.Hijos[0].Hijos)
             {// para ejecutar solo sentencias 
-                //Console.WriteLine("pureba for " + sentencia.Nombre + raiz.TipoDato);
+             //Console.WriteLine("pureba for " + sentencia.Nombre + raiz.TipoDato);
+             //System.Diagnostics.Debug.WriteLine("CA:"+sentencia.Hijos[0].Ejecutar(entorno).ToString());
                 sentencia.Ejecutar(entorno);
             }
         }
@@ -775,7 +834,7 @@ namespace AnalizadorCQL.Analizadores
             }
             catch (Exception e)
             {
-
+               
             }
         }
 

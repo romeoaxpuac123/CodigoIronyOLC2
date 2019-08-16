@@ -35,7 +35,7 @@ namespace AnalizadorCQL.Analizadores
             var PYC = ToTerm(";");
             var ParA = ToTerm("(");
             var ParC = ToTerm(")");
-            
+
             /*LO nuevo*/
             var create = ToTerm("create");
             var type = ToTerm("type");
@@ -48,10 +48,10 @@ namespace AnalizadorCQL.Analizadores
             var Date = ToTerm("date");
             var Time = ToTerm("time");
             var coma = ToTerm(",");
-            var igual= ToTerm("=");
+            var igual = ToTerm("=");
             var nuevo = ToTerm("new");
-            var falso = ToTerm("false","falso");
-            var verdadero = ToTerm("true","verdadero");
+            var falso = ToTerm("false", "falso");
+            var verdadero = ToTerm("true", "verdadero");
             var punto = ToTerm(".");
             var ALTERAR = ToTerm("alter");
             var borrar1 = ToTerm("delete");
@@ -76,12 +76,16 @@ namespace AnalizadorCQL.Analizadores
             var AND = ToTerm("&&");
             var XOR = ToTerm("^");
             var NOT = ToTerm("!");
+            var TRY = ToTerm("try");
+            var CATCH = ToTerm("catch");
+            var ArithmeticException = ToTerm("ArithmeticException");
+            var IndexOutException = ToTerm("IndexOutException");
 
 
             this.RegisterOperators(6, Associativity.Left, "+", "-");
-            this.RegisterOperators(7, Associativity.Left, "*", "/","%");
+            this.RegisterOperators(7, Associativity.Left, "*", "/", "%");
             this.RegisterOperators(5, Associativity.Left, "**");
-            this.RegisterOperators(4, Associativity.Left, ">","<",">=","<=");
+            this.RegisterOperators(4, Associativity.Left, ">", "<", ">=", "<=");
             this.RegisterOperators(3, Associativity.Left, "!=", "==");
             this.RegisterOperators(2, Associativity.Left, "&&", "||", "^");
             this.RegisterOperators(1, Associativity.Left, "!");
@@ -104,20 +108,25 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal ALTER_TYPE = new NonTerminal("ALTER_TYPE");
             NonTerminal DELETE_TYPE = new NonTerminal("DELETE_TYPE");
             NonTerminal IMP = new NonTerminal("IMP");
+            NonTerminal TRY_CATCH = new NonTerminal("TRY_CATCH");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
-            NonTerminal CREATE_TABLA_PAR= new NonTerminal("CREATE_TABLA_PAR");
+            NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
             #endregion
 
             #region Gramatica
             S.Rule = SENTENCIAS;
-            SENTENCIAS.Rule =     SENTENCIAS + SENTENCIA
+            SENTENCIAS.Rule = SENTENCIAS + SENTENCIA
                                 | SENTENCIA;
 
             SENTENCIA.Rule = DEFINCION_GENERAL_CQL
-                             |DDL
-                             | IMP;
+                             | DDL
+                             | IMP
+                             | TRY_CATCH;
 
+            TRY_CATCH.Rule = TRY + llaveAbierta + SENTENCIAS + llaverCerrada + CATCH + ParA + ArithmeticException + id +  ParC + llaveAbierta + SENTENCIAS + llaverCerrada
+                           | TRY + llaveAbierta + SENTENCIAS + llaverCerrada + CATCH + ParA + IndexOutException +   id +  ParC + llaveAbierta + SENTENCIAS + llaverCerrada; ;
+            
             IMP.Rule = laimpre + ParA + E + ParC + PYC;
 
             DDL.Rule = create + bd + id + PYC

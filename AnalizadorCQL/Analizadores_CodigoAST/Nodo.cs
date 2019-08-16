@@ -10,7 +10,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
     {
         public override void Ejecutar()
         {
-            System.Diagnostics.Debug.WriteLine("Ejecutar nodo");
+            System.Diagnostics.Debug.WriteLine("Ejecutar nodo ");
         }
 
         public Nodo(String val)
@@ -35,7 +35,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
         public override string Ejecutar(Entorno entorno)
         {
-            System.Diagnostics.Debug.WriteLine("ejecutar nodo" + this.Nombre);
+            System.Diagnostics.Debug.WriteLine("ejecutar nodoxd" + this.Nombre);
             String sali = "";
             switch (this.Nombre)
             {
@@ -65,6 +65,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         //salida.Text = "#Error: No se ha encontrado la variables -> " + this.Hijos[0].Nombre + "\n";
                         System.Diagnostics.Debug.WriteLine("#Error: No se ha encontrado la variables -> " + this.Hijos[0].Nombre + "\n");
                     }
+                    break;
+                case "arithmeticexception":
+                    sali = this.Hijos[0].Nombre;
+                    break;
+                case "indexoutexception":
+                    sali = this.Hijos[0].Nombre;
                     break;
                 case "x":
 

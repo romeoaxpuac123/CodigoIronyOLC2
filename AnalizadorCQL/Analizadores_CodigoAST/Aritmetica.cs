@@ -464,8 +464,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         System.Diagnostics.Debug.WriteLine("concatenacion");
                         break;
                     case "-":
-                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
-
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings xd");
+                        totalC = "#Error";
                         return "#Error";
 
                     case "/":
@@ -477,6 +477,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                     case "*":
                         System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        totalC = "#Error";
                         return "#Error";
                     case "%":
                         System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");

@@ -25,6 +25,7 @@ namespace AnalizadorCQL
 
         protected void Button1_Click1(object sender, EventArgs e)
         {
+            
             string text = System.IO.File.ReadAllText(@"C:\Users\Bayyron\Desktop\entrada.txt");
 
             Boolean resultado = Analizadores.Sintactico.Analizar(text);
@@ -44,6 +45,7 @@ namespace AnalizadorCQL
             {
                 TextBox1.Text = "Cadena NO Valida";
             }
+            
         }
     }
 }

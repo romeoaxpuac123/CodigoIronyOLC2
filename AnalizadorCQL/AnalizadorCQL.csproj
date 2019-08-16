@@ -188,6 +188,7 @@
     <Compile Include="Analizadores_CodigoAST\LOG.cs" />
     <Compile Include="Analizadores_CodigoAST\Nodo.cs" />
     <Compile Include="Analizadores_CodigoAST\NodoAbstracto.cs" />
+    <Compile Include="Analizadores_CodigoAST\TRY_CATCH.cs" />
     <Compile Include="Analizadores_Codigo\Entorno.cs" />
     <Compile Include="Analizadores_Codigo\Simbolo.cs" />
     <Compile Include="Analizadores_Grafica\ControlDOT.cs" />

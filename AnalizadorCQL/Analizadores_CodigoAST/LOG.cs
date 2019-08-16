@@ -22,11 +22,15 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         {
             System.Diagnostics.Debug.WriteLine("entro a imrpirmi");
             String val = this.Hijos[0].Ejecutar(entorno);
-            if (!val.Equals("#Error"))
+            if (val.Equals("#Error") == false)
             {
 
                 //salida.Text = val + "\n";
                 System.Diagnostics.Debug.WriteLine(val.Replace(" (numero)","").Replace(" (hora)","").Replace(" (numdecimal)","").Replace(" (fechas)","") + "\n");
+            }
+           else{
+               // System.Diagnostics.Debug.WriteLine("Existe un error" + "\n");
+                return "#Error";
             }
             return "imprimir";
         }
