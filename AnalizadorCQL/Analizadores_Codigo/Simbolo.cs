@@ -32,5 +32,10 @@ namespace AnalizadorCQL.Analizadores_Codigo
         {
             return Tipo;
         }
+
+        public void AsignarValor(String Valor)
+        {
+            this.Valor = Valor;
+        }
     }
 }

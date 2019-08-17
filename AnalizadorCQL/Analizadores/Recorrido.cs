@@ -70,7 +70,16 @@ namespace AnalizadorCQL.Analizadores
                         
 
                         return (Recorrido1(root.ChildNodes.ElementAt(0)));
+                        
 
+                    }
+                    else if (root.ToString() == "DEFINCION_GENERAL_CQL")
+                    {
+                        //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
+
+
+                        return (Recorrido1(root.ChildNodes.ElementAt(0)));
+                        
 
                     }
                     else if (root.ToString() == "SENTENCIAS")
@@ -166,9 +175,13 @@ namespace AnalizadorCQL.Analizadores
                             return RESULT1;
 
                         }
-                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(id)"))
+                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(id2)"))
                         {
                             //      Console.WriteLine("PASO POR UN ID ");
+                            NodoAbstracto nuevo = new Nodo("id");
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)",""));
+                            nuevo.Hijos.Add(nuevovalor);
+                            return nuevo;
 
                         }
                     }
@@ -279,6 +292,13 @@ namespace AnalizadorCQL.Analizadores
                        )
                         {
                             System.Diagnostics.Debug.WriteLine("CODIGO PARA DECALRAR UNA VARIABLE INT @VAR1;");
+                            NodoAbstracto nuevo = new Declarar("DECLARAR");
+                            NodoAbstracto nuevotipo = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace( "(Keyword)",""));
+                            NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id2)",""));
+                            nuevo.Hijos.Add(nuevotipo);
+                            nuevo.Hijos.Add(nuevoid);
+                            return nuevo;
+
 
 
                         }
@@ -590,6 +610,24 @@ namespace AnalizadorCQL.Analizadores
 
                         }
                     }
+                    else if (root.ToString() == "ASIGNACION")
+                    {
+                        if (root.ChildNodes.ElementAt(2).ToString().Contains("E")
+                        && root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("id2") &&
+                        root.ChildNodes.ElementAt(1).ToString().Contains("Key symbol")
+                       )
+                        {
+                            System.Diagnostics.Debug.WriteLine("CODIGO PARA DECALRAR UNA VARIABLE @hola = 0;");
+                            NodoAbstracto nuevo = new Asignar("ASIGNAR");
+                            NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)",""));
+                            nuevo.Hijos.Add(nuevoid);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            return  nuevo;
+
+
+
+                        }
+                    }
                     else if (root.ToString() == "DELETE_TYPE")
                     {
                         if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("delete")
@@ -600,17 +638,6 @@ namespace AnalizadorCQL.Analizadores
 
                         }
                         
-                    }else if (root.ToString() == "ASIGNACION")
-                    {
-                        if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("id2")
-                         && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("Key symbol")&&
-                         root.ChildNodes.ElementAt(2).ToString().Contains("E")
-                        )
-                        {
-                            System.Diagnostics.Debug.WriteLine("CODIGO PARA ASIGNAR UNA VARIABLE @VAR=EXPRESION;");
-
-
-                        }
                     }
                     else if (root.ToString() == "USER_TYPE")
                     {
@@ -812,6 +839,8 @@ namespace AnalizadorCQL.Analizadores
 
             return null;
         }
+
+        
 
         public void Ejecutar(NodoAbstracto raiz)
         {

@@ -60,7 +60,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     break;
                 case "id":
                     sali = entorno.ObtenerValor(this.Hijos[0].Nombre);
-                    if ("#Error".Equals(sali))
+                    if ("#Error2".Equals(sali))
                     {
                         //salida.Text = "#Error: No se ha encontrado la variables -> " + this.Hijos[0].Nombre + "\n";
                         System.Diagnostics.Debug.WriteLine("#Error: No se ha encontrado la variables -> " + this.Hijos[0].Nombre + "\n");
@@ -72,6 +72,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 case "indexoutexception":
                     sali = this.Hijos[0].Nombre;
                     break;
+                
+
                 case "x":
 
                     break;
