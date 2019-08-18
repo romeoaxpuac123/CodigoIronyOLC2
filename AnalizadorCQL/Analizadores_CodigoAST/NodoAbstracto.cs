@@ -15,7 +15,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         public int id, linea, columna;
         public String Cadena;
         public String TipoDato;
+        public String NombreVariable;
         public List<NodoAbstracto> Hijos;
+        public List<String> ListaID1  ;
         public NodoAbstracto()
         {
         }
@@ -35,6 +37,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             this.columna = 0;
             //this.Hijos = new ArrayList();
             this.Hijos = new List<NodoAbstracto>();
+            ListaID1 = new List<String>();
         }
 
         public NodoAbstracto(String nom, int lin, int col)
@@ -46,6 +49,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             this.columna = col;
             //this.Hijos = new ArrayList();
             this.Hijos = new List<NodoAbstracto>();
+            ListaID1 = new List<String>();
         }
         public abstract void Ejecutar();
         public abstract String Ejecutar(Entorno entorno);

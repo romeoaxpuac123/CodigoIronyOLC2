@@ -34,6 +34,90 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String Tipo1 = this.Hijos[0].TipoDato;
             String Tipo2 = this.Hijos[2].TipoDato;
 
+            if (Tipo1 == "id2")
+            {
+                
+                System.Diagnostics.Debug.WriteLine("TIPO 1 ID" + this.Hijos[0].NombreVariable);
+                System.Diagnostics.Debug.WriteLine(entorno.ObtenerTipo(this.Hijos[0].NombreVariable).ToUpper());
+                if (entorno.ObtenerTipo(this.Hijos[0].NombreVariable).ToUpper().Contains("INT") == true)
+                {
+                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
+
+                   Tipo1 = "entero";
+                }
+                else if (entorno.ObtenerTipo(this.Hijos[0].NombreVariable).ToUpper().Contains("DOUBLE") == true)
+                {
+                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
+
+                    Tipo1 = "decimal";
+                }
+                else if (entorno.ObtenerTipo(this.Hijos[0].NombreVariable).ToUpper().Contains("STRING") == true)
+                {
+                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
+                    
+                    Tipo1 = "cadena";
+                }
+                else if (entorno.ObtenerTipo(this.Hijos[0].NombreVariable).ToUpper().Contains("BOOLEAN") == true)
+                {
+                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
+                    
+                    Tipo1 = "Booleano";
+                }
+                else if (entorno.ObtenerTipo(this.Hijos[0].NombreVariable).ToUpper().Contains("DATE") == true)
+                {
+                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
+
+                    Tipo1 = "Fechas";
+                }
+                else if (entorno.ObtenerTipo(this.Hijos[0].NombreVariable).ToUpper().Contains("TIME") == true)
+                {
+                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
+
+                    Tipo1 = "hora";
+                }
+
+            }
+            if (Tipo2 == "id2")
+            {
+                System.Diagnostics.Debug.WriteLine("TIPO 2 ID" + this.Hijos[2].NombreVariable);
+                if (entorno.ObtenerTipo(this.Hijos[2].NombreVariable).ToUpper().Contains("INT") == true)
+                {
+                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
+
+                    Tipo2 = "entero";
+                }
+                else if (entorno.ObtenerTipo(this.Hijos[2].NombreVariable).ToUpper().Contains("DOUBLE") == true)
+                {
+                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
+
+                    Tipo2 = "decimal";
+                }
+                else if (entorno.ObtenerTipo(this.Hijos[2].NombreVariable).ToUpper().Contains("STRING") == true)
+                {
+                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
+
+                    Tipo2 = "cadena";
+                }
+                else if (entorno.ObtenerTipo(this.Hijos[2].NombreVariable).ToUpper().Contains("BOOLEAN") == true)
+                {
+                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
+
+                    Tipo2 = "Booleano";
+                }
+                else if (entorno.ObtenerTipo(this.Hijos[2].NombreVariable).ToUpper().Contains("DATE") == true)
+                {
+                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
+
+                    Tipo2 = "Fechas";
+                }
+                else if (entorno.ObtenerTipo(this.Hijos[2].NombreVariable).ToUpper().Contains("TIME") == true)
+                {
+                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
+
+                    Tipo2 = "hora";
+                }
+            }
+
             //Console.WriteLine(val1 + "AA");
             //Console.WriteLine(val2 + "bb");
             //Console.WriteLine(this.Hijos[1].Nombre + "CC");

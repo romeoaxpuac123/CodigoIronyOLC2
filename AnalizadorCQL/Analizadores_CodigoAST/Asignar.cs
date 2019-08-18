@@ -18,6 +18,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         }
         public override string Ejecutar(Entorno entorno)
         {
+            System.Diagnostics.Debug.WriteLine("Se está Ejecutnado asignar");
             String sali = entorno.ObtenerValor(this.Hijos[0].Nombre);
             System.Diagnostics.Debug.WriteLine("VAR" + this.Hijos[0].Nombre);
             System.Diagnostics.Debug.WriteLine("tipo de la expresion" + this.Hijos[1].TipoDato);
@@ -62,7 +63,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                     )
                 {
-                    //ASIGANACION DE UNA VARIABLE DE TIPO DOUBLE
+                    //ASIGANACION DE UNA VARIABLE DE TIPO voolena
                     //System.Diagnostics.Debug.WriteLine("la variable es boleano");
                     entorno.AsignarValor(this.Hijos[0].Nombre, Variable1);
                     

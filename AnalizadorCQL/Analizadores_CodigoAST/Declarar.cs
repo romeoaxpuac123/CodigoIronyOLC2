@@ -19,6 +19,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         }
         public override string Ejecutar(Entorno entorno)
         {
+            System.Diagnostics.Debug.WriteLine("Se está Ejecutnado declaraR");
             String sali = entorno.ObtenerValor(this.Hijos[1].Nombre);
             if ("#Error2".Equals(sali))
             {
@@ -41,6 +42,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     entorno.Agregar(this.Hijos[1].Nombre, Hijos[0].Nombre.ToUpper(), "null");
                 }
 
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("la variable YA EXISTE");
+                return "#Error4";
             }
             sali = entorno.ObtenerValor(this.Hijos[1].Nombre);
             return sali;

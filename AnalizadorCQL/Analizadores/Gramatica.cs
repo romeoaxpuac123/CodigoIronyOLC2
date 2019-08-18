@@ -109,9 +109,11 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal DELETE_TYPE = new NonTerminal("DELETE_TYPE");
             NonTerminal IMP = new NonTerminal("IMP");
             NonTerminal TRY_CATCH = new NonTerminal("TRY_CATCH");
+            NonTerminal LISTA_IDS2 = new NonTerminal("LISTA_IDS2");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
+           
             #endregion
 
             #region Gramatica
@@ -162,17 +164,21 @@ namespace AnalizadorCQL.Analizadores
             DELETE_TYPE.Rule = borrar1 + type + id + PYC;
             ALTER_TYPE.Rule = ALTERAR + type + id + add1 + ParA +  LISTA_IDS+ ParC + PYC
                             | ALTERAR + type + id + borrar1 + ParA + LISTA_IDS + ParC + PYC;
-            ASIGNACION.Rule = id2 + igual + E+ PYC
-                              |TIPOS_VARIABLES + id2 + igual + E + PYC
-                              | TIPOS_VARIABLES+ id2 + PYC
+
+            ASIGNACION.Rule = id2 + igual + E + PYC
+                              | TIPOS_VARIABLES + id2 + igual + E + PYC
+                              | TIPOS_VARIABLES + id2 + PYC
+                              | TIPOS_VARIABLES + LISTA_IDS2 + PYC
+                              | TIPOS_VARIABLES + LISTA_IDS2 + igual + E + PYC
                               | id2 + igual + id2 + punto+ id + PYC
                               | TIPOS_VARIABLES + id2 + igual + id2 + punto + id + PYC
                               | id2 + punto + id + igual + E                              
                               | id2 + igual + ParA + TIPOS_VARIABLES + ParC+ E + PYC
                               | TIPOS_VARIABLES + id2 + igual + ParA + TIPOS_VARIABLES + ParC + E + PYC
-                              | id2 + punto + id + igual + ParA + TIPOS_VARIABLES + ParC + E; 
+                              | id2 + punto + id + igual + ParA + TIPOS_VARIABLES + ParC + E;
 
-
+            LISTA_IDS2.Rule = LISTA_IDS2 + coma + id2
+                             | id2;
             CREATE_TYPE.Rule = create + type + id + ParA  + LISTA_IDS + ParC+ PYC ;
 
             USER_TYPE.Rule = id +id2
@@ -201,7 +207,7 @@ namespace AnalizadorCQL.Analizadores
                     | E + mayor_que + E
                     | E + menor_que + E
                     | E + igual_igual + E
-                    | E + diferente + E
+                    | E + diferente + E                    
                     | E + OR + E
                     | E + AND + E
                     | E+ XOR + E

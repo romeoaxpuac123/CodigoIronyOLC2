@@ -188,6 +188,9 @@
     <Compile Include="Analizadores_CodigoAST\Asignar.cs" />
     <Compile Include="Analizadores_CodigoAST\DeclararAsignacion.cs" />
     <Compile Include="Analizadores_CodigoAST\Declarar.cs" />
+    <Compile Include="Analizadores_CodigoAST\DeclararAsignacionLista.cs" />
+    <Compile Include="Analizadores_CodigoAST\DeclararLista.cs" />
+    <Compile Include="Analizadores_CodigoAST\Incremento.cs" />
     <Compile Include="Analizadores_CodigoAST\LOG.cs" />
     <Compile Include="Analizadores_CodigoAST\Nodo.cs" />
     <Compile Include="Analizadores_CodigoAST\NodoAbstracto.cs" />

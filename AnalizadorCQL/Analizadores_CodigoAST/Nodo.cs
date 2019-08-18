@@ -58,7 +58,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 case "hora":
                     sali = this.Hijos[0].Nombre;
                     break;
-                case "id":
+                case "id2":
                     sali = entorno.ObtenerValor(this.Hijos[0].Nombre);
                     if ("#Error2".Equals(sali))
                     {
