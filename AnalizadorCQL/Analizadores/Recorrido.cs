@@ -32,7 +32,34 @@ namespace AnalizadorCQL.Analizadores
                         //Raiz = nuevox;
                         return RESULT1;
 
-                    }else if (root.ToString().Contains("arithmeticexception"))
+                    }
+                    else if (root.ToString().Contains("+ (Key symbol)"))
+                    {
+                        //    Console.WriteLine("PASO POR UN NUMERO");
+                        NodoAbstracto RESULT1 = null;
+                        NodoAbstracto nuevox = new Nodo("Entero");
+                        NodoAbstracto nuevovalor = new Nodo("+0");
+                        nuevox.Hijos.Add(nuevovalor);
+                        nuevox.TipoDato = "entero";
+                        RESULT1 = nuevox;
+                        //Raiz = nuevox;
+                        return RESULT1;
+
+                    }
+                    else if (root.ToString().Contains("++ (Key symbol)"))
+                    {
+                        //    Console.WriteLine("PASO POR UN NUMERO");
+                        NodoAbstracto RESULT1 = null;
+                        NodoAbstracto nuevox = new Nodo("Entero");
+                        NodoAbstracto nuevovalor = new Nodo("+0");
+                        nuevox.Hijos.Add(nuevovalor);
+                        nuevox.TipoDato = "entero";
+                        RESULT1 = nuevox;
+                        //Raiz = nuevox;
+                        return RESULT1;
+
+                    }
+                    else if (root.ToString().Contains("arithmeticexception"))
                     {
                         NodoAbstracto RESULT1 = null;
                         NodoAbstracto nuevox = new Nodo("arithmeticexception");
@@ -74,6 +101,7 @@ namespace AnalizadorCQL.Analizadores
                         
 
                     }
+                   
                     else if (root.ToString() == "DEFINCION_GENERAL_CQL")
                     {
                         //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
@@ -105,9 +133,10 @@ namespace AnalizadorCQL.Analizadores
                     }
                     else if (root.ToString() == "E")
                     {
-                        //Console.WriteLine("sssssss" + root.ChildNodes.ElementAt(0).FindToken() + "sssssss");
+                        //System.Diagnostics.Debug.WriteLine("sssssss" + root.ChildNodes.ElementAt(0).ToString() + "sssssss");
                         if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(numero)"))
                         {
+                            System.Diagnostics.Debug.WriteLine("!!! -> " + root.ChildNodes.ElementAt(0).ToString());
                             //    Console.WriteLine("PASO POR UN NUMERO");
                             NodoAbstracto RESULT1 = null;
                             NodoAbstracto nuevox = new Nodo("Entero");
@@ -210,6 +239,15 @@ namespace AnalizadorCQL.Analizadores
 
 
                     }
+                    else if (root.ToString() == "SENTENCIA")
+                    {
+                        //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
+
+
+                        return (Recorrido1(root.ChildNodes.ElementAt(0)));
+
+
+                    }
                     else if(root.ToString() == "SENTENCIAS")
                     {
                         NodoAbstracto nuevo = Recorrido1(root.ChildNodes.ElementAt(0));
@@ -223,6 +261,7 @@ namespace AnalizadorCQL.Analizadores
                     }
                     else if (root.ToString() == "E")
                     {
+
                         if (root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("(numero)")
                             && root.ChildNodes.ElementAt(0).ToString().Contains("- (Key symbol") )
                         {
@@ -238,6 +277,22 @@ namespace AnalizadorCQL.Analizadores
                             RESULT.TipoDato = "entero";
                             return RESULT;
 
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("++ (Key symbol")))
+                            {
+                            System.Diagnostics.Debug.WriteLine("CODIGO PARA ++ CREAR UN OJBETO Estudiante @est;");
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                                NodoAbstracto nuevooperador = new Nodo("+");
+                                nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                                nuevo.Hijos.Add(nuevooperador);
+                                nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+                                nuevo.AutoIncrmentable = 1;
+                                nuevo.TipoDato = "decimal";
+
+                                return nuevo;
+
+                            
                         }
                         else if (root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("(numdecimal)")
                            && root.ChildNodes.ElementAt(0).ToString().Contains("- (Key symbol"))
@@ -296,7 +351,18 @@ namespace AnalizadorCQL.Analizadores
                     //Recorrido1(root.ChildNodes.ElementAt(1));
                     //Recorrido1(root.ChildNodes.ElementAt(2));
                     System.Diagnostics.Debug.WriteLine("CAso3 -> " + root.ToString());
-                    if (root.ToString() == "ASIGNACION")
+                    if(root.ToString().Contains("INC_DEC")== true)
+                    {
+                        System.Diagnostics.Debug.WriteLine("INC_DEC");
+                        NodoAbstracto nuevo = new Incremento("INCREMENTO");
+                        Nodo nuevoid = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                        Nodo nuevoid2 = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Key symbol)", ""));
+                        nuevo.Hijos.Add(nuevoid);
+                        nuevo.Hijos.Add(nuevoid2);
+                        return nuevo;
+
+                    }
+                    else if (root.ToString() == "ASIGNACION")
                     {
                         if (root.ChildNodes.ElementAt(0).ToString().Contains("TIPOS_VARIABLES")
                         && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2") &&
@@ -343,15 +409,41 @@ namespace AnalizadorCQL.Analizadores
                         NodoAbstracto RESULT = null;
                         if ((root.ChildNodes.ElementAt(2).ToString().Contains("+ (Key symbol")))
                         {
-                            //codigo del incrmento
-                            NodoAbstracto nuevo = new Incremento("EXP");
-                            //nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
-                            NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
-                            nuevo.Hijos.Add(nuevoid);
-                            RESULT = nuevo;
-                            return RESULT;
+                           /* System.Diagnostics.Debug.WriteLine("entrooooooooooooooooo");
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("+");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            nuevo.AutoIncrmentable = 1;
+                            */
+                            System.Diagnostics.Debug.WriteLine("INC_DEC");
+                            NodoAbstracto nuevo2 = new Incremento("INCREMENTO");
+                            Nodo nuevo2id = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                            Nodo nuevo2id2 = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Key symbol)", ""));
+                            nuevo2.Hijos.Add(nuevo2id);
+                            nuevo2.Hijos.Add(nuevo2id2);
+                            nuevo2.AutoIncrmentable = 1;
+                            nuevo2.TipoDato = "decimal";
+
+                            RESULT = nuevo2;
+
                         }
-                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("+ (Key symbol")))
+                        else if ((root.ChildNodes.ElementAt(2).ToString().Contains("- (Key symbol")))
+                        {
+                            System.Diagnostics.Debug.WriteLine("entrooooooooooooooooo-");
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("-");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            nuevo.AutoIncrmentable = 1;
+
+
+                            RESULT = nuevo;
+
+                        }
+                        else  if ((root.ChildNodes.ElementAt(1).ToString().Contains("+ (Key symbol")))
                         {
 
                             NodoAbstracto nuevo = new Aritmetica("EXP");
@@ -966,7 +1058,7 @@ namespace AnalizadorCQL.Analizadores
                     primes.Add(Var1);
                     //System.Diagnostics.Debug.WriteLine("se agrego" + root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
 
-                break;
+                    break;
                 case 3:
                     String Var2 = root.ChildNodes.ElementAt(2).ToString().Replace(" (id2)", "");
                     System.Diagnostics.Debug.WriteLine("tres hijos" + Var2);

@@ -26,7 +26,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             {
 
                 //salida.Text = val + "\n";
-                System.Diagnostics.Debug.WriteLine(val.Replace(" (numero)","").Replace(" (hora)","").Replace(" (numdecimal)","").Replace(" (fechas)","") + "\n");
+                System.Diagnostics.Debug.WriteLine("SALIDA>>" +val.Replace(" (numero)","").Replace(" (hora)","").Replace(" (numdecimal)","").Replace(" (fechas)","") + "\n");
             }
            else{
                // System.Diagnostics.Debug.WriteLine("Existe un error" + "\n");

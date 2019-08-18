@@ -28,6 +28,14 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String Variable1 = this.Hijos[2].Ejecutar(entorno).Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "").Replace(".", ",");
             Boolean DecimalEntero = true;
             Boolean ElBool = true;
+
+            String TipoDato1 = "";
+            String var = this.Hijos[1].Nombre;
+            int a = 0;
+            System.Diagnostics.Debug.WriteLine(a++ + 29);
+            System.Diagnostics.Debug.WriteLine(a++);
+           
+
             if (this.Hijos[2].TipoDato == "entero" || this.Hijos[2].TipoDato == "decimal")
             {
                 DecimalEntero = false;
@@ -41,7 +49,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 if (this.Hijos[0].Nombre.ToUpper().Contains("INT") == true
                     && (this.Hijos[2].Nombre == "Entero" || this.Hijos[2].Nombre == "Decimal" || this.Hijos[2].Nombre == "EXP")
                     && DecimalEntero == false
-                    ) 
+                    )
                 {
                     //System.Diagnostics.Debug.WriteLine("la variable es entera");
                     entorno.Agregar(id, tipo, Variable1);
@@ -64,7 +72,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 else if (this.Hijos[0].Nombre.ToUpper().Contains("STRING") == true
                     && (this.Hijos[2].Nombre.ToString().Contains("Cadena") || this.Hijos[2].Nombre == "EXP"))
                 {
-                  //  System.Diagnostics.Debug.WriteLine("la variable es STRING");
+                    //  System.Diagnostics.Debug.WriteLine("la variable es STRING");
                     entorno.Agregar(id, tipo, Variable1);
                 }
                 else if (this.Hijos[0].Nombre.ToUpper().Contains("DATE") == true
@@ -80,9 +88,17 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 {
                     //System.Diagnostics.Debug.WriteLine("la variable es TIME");
                     entorno.Agregar(id, tipo, Variable1);
+                } else if (this.Hijos[0].Nombre.ToUpper().Contains("INT") || this.Hijos[0].Nombre.ToUpper().Contains("DOUBLE")
+                         && this.Hijos[2].Nombre.Contains("INCREMENTO")
+                    )
+                {
+                    System.Diagnostics.Debug.WriteLine("INCREMENTOOOOOOOOOOO" + this.Hijos[2].Hijos[0].Nombre);
+                    entorno.Agregar(id, tipo, (float.Parse(entorno.ObtenerValor(this.Hijos[2].Hijos[0].Nombre))-1).ToString());
+
                 }
                 else
                 {
+
                     System.Diagnostics.Debug.WriteLine("#Error3 asiganacion incorrecta");
                     return "#Error3";
                 }

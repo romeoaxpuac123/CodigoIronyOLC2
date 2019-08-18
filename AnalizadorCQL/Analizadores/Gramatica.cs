@@ -78,6 +78,7 @@ namespace AnalizadorCQL.Analizadores
             var NOT = ToTerm("!");
             var TRY = ToTerm("try");
             var CATCH = ToTerm("catch");
+            var elincre = ToTerm("++");
             var ArithmeticException = ToTerm("ArithmeticException");
             var IndexOutException = ToTerm("IndexOutException");
 
@@ -110,6 +111,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal IMP = new NonTerminal("IMP");
             NonTerminal TRY_CATCH = new NonTerminal("TRY_CATCH");
             NonTerminal LISTA_IDS2 = new NonTerminal("LISTA_IDS2");
+            NonTerminal INC_DEC = new NonTerminal("INC_DEC");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
@@ -124,7 +126,11 @@ namespace AnalizadorCQL.Analizadores
             SENTENCIA.Rule = DEFINCION_GENERAL_CQL
                              | DDL
                              | IMP
-                             | TRY_CATCH;
+                             | TRY_CATCH
+                             | INC_DEC + PYC;
+
+            INC_DEC.Rule = id2 + mas + mas
+                         | id2 + menos + menos;
 
             TRY_CATCH.Rule = TRY + llaveAbierta + SENTENCIAS + llaverCerrada + CATCH + ParA + ArithmeticException + id +  ParC + llaveAbierta + SENTENCIAS + llaverCerrada
                            | TRY + llaveAbierta + SENTENCIAS + llaverCerrada + CATCH + ParA + IndexOutException +   id +  ParC + llaveAbierta + SENTENCIAS + llaverCerrada; ;
@@ -211,6 +217,7 @@ namespace AnalizadorCQL.Analizadores
                     | E + OR + E
                     | E + AND + E
                     | E+ XOR + E
+                    | E + mas + mas
                     | NOT + E
                     | menos + E
                     | numero

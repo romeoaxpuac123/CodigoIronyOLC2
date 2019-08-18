@@ -34,6 +34,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String Tipo1 = this.Hijos[0].TipoDato;
             String Tipo2 = this.Hijos[2].TipoDato;
 
+          
+
             if (Tipo1 == "id2")
             {
                 
@@ -122,6 +124,32 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             //Console.WriteLine(val2 + "bb");
             //Console.WriteLine(this.Hijos[1].Nombre + "CC");
 
+            // System.Diagnostics.Debug.WriteLine("va a entrar");
+            /*
+             if (this.Hijos[0].AutoIncrmentable == 1 )
+             {
+
+                 System.Diagnostics.Debug.WriteLine("**********************");
+                 float a = float.Parse(entorno.ObtenerValor(this.Hijos[0].Hijos[0].NombreVariable.ToString()));
+                 a = a + 1;
+                 System.Diagnostics.Debug.WriteLine("si entro: " + this.Hijos[0].Hijos[0].NombreVariable.ToString() + "-" + a.ToString());
+                 entorno.AsignarValor(this.Hijos[0].Hijos[0].NombreVariable.ToString(), a.ToString());
+                 //this.Hijos[0].AutoIncrmentable = 0;
+                 val1 = (float.Parse(val1) - 1).ToString();
+             }
+             /*
+             if (this.Hijos[1].AutoIncrmentable == 1)
+             {
+
+                 System.Diagnostics.Debug.WriteLine("**********************");
+                 float a = float.Parse(entorno.ObtenerValor(this.Hijos[1].Hijos[0].NombreVariable.ToString()));
+                 a = a + 1;
+                 System.Diagnostics.Debug.WriteLine("si entro: " + this.Hijos[1].Hijos[0].NombreVariable.ToString() + "-" + a.ToString());
+                 entorno.AsignarValor(this.Hijos[1].Hijos[0].NombreVariable.ToString(), a.ToString());
+                 this.Hijos[1].AutoIncrmentable = 0;
+                 val1 = (float.Parse(val1) - 1).ToString();
+             }
+             */
             if (val1.Equals("#Error") || val2.Equals("#Error"))
             {
                 return "#Error";
@@ -140,7 +168,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     case "+":
                         total = valor1 + valor2;
                         Console.WriteLine("Paso por una suma" + total);
-                        break;
+                         break;
                     case "-":
                         total = valor1 - valor2;
                         Console.WriteLine("Paso por una resta" + total);
@@ -192,6 +220,19 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         return totalb.ToString();
 
                 }
+                if (this.Hijos[0].AutoIncrmentable == 1)
+                {
+                    /*System.Diagnostics.Debug.WriteLine("**********************");
+                    float a = float.Parse(entorno.ObtenerValor(this.Hijos[0].Hijos[0].NombreVariable.ToString()));
+                    a = a + 1;
+                    System.Diagnostics.Debug.WriteLine("si entro: " + this.Hijos[0].Hijos[0].NombreVariable.ToString() + "-" + a.ToString());
+                    entorno.AsignarValor(this.Hijos[0].Hijos[0].NombreVariable.ToString(), a.ToString());
+                    total = total - 1;
+                    this.Hijos[0].AutoIncrmentable = 0;
+                    //val1 = (float.Parse(val1) - 1).ToString(); */
+                    total = total - 1;
+                }
+               
                 return total.ToString();
             }
             //*************************
@@ -894,8 +935,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 System.Diagnostics.Debug.WriteLine("#Error semanticoxd \n");
                 return "#Error";
             }
-
-
+            
             System.Diagnostics.Debug.WriteLine("#Error semantico \n");
             return "#Error";
         }
