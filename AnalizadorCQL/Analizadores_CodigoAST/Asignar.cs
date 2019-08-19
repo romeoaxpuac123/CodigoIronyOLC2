@@ -36,21 +36,170 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 String SINOESVARIABLE = this.Hijos[1].Hijos[2].TipoDato;
                 System.Diagnostics.Debug.WriteLine("Tipo del valor a Caster:" + SINOESVARIABLE);
 
-                String TipoACastear2 = entorno.ObtenerTipo(TipoACastear);
-                String TipoCasteo = this.Hijos[1].Hijos[0].Nombre;
+                String TipoACastear2 = "";
+               if (TipoACastear != null)
+                {
+                    TipoACastear2 =  entorno.ObtenerTipo(TipoACastear);
+               }
+                
+                String TipoCasteo =  this.Hijos[1].Hijos[0].Nombre;
                 System.Diagnostics.Debug.WriteLine("Tipo Casteo:" + TipoCasteo);
 
-                if((TipoCasteo.ToUpper().Contains("DATE") && entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("DATE")==true)
-                 && (SINOESVARIABLE.ToUpper().Contains("CADENA") ==true || TipoACastear2.ToUpper().Contains("STRING") ==true )
-                ){
+
+                if ((TipoCasteo.ToUpper().Contains("DATE") && entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("DATE") == true)
+                 && (SINOESVARIABLE.ToUpper().Contains("CADENA") == true || TipoACastear2.ToUpper().Contains("STRING") == true)
+                )
+                {
                     //Casteo de las fechas
-                    System.Diagnostics.Debug.WriteLine("CASTEO DATE - DATE/STRING");
-                    entorno.AsignarValor(this.Hijos[0].Nombre, ValorACastear);
+                    System.Diagnostics.Debug.WriteLine("CASTEO DATE - STRINGx");
+                    if ((ValorACastear.ToUpper().Contains("A") || ValorACastear.ToUpper().Contains("B") || ValorACastear.ToUpper().Contains("C") || ValorACastear.ToUpper().Contains("D") || ValorACastear.ToUpper().Contains("D") || ValorACastear.ToUpper().Contains("E") || ValorACastear.ToUpper().Contains("F") || ValorACastear.ToUpper().Contains("G")
+                        || ValorACastear.ToUpper().Contains("H") || ValorACastear.ToUpper().Contains("I") || ValorACastear.ToUpper().Contains("J") || ValorACastear.ToUpper().Contains("K") || ValorACastear.ToUpper().Contains("L") || ValorACastear.ToUpper().Contains("M") || ValorACastear.ToUpper().Contains("Ñ") || ValorACastear.ToUpper().Contains("O")
+                        || ValorACastear.ToUpper().Contains("P") || ValorACastear.ToUpper().Contains("Q") || ValorACastear.ToUpper().Contains("R") || ValorACastear.ToUpper().Contains("S") || ValorACastear.ToUpper().Contains("T") || ValorACastear.ToUpper().Contains("U") || ValorACastear.ToUpper().Contains("V") || ValorACastear.ToUpper().Contains("W")
+                        || ValorACastear.ToUpper().Contains("X") || ValorACastear.ToUpper().Contains("Y") || ValorACastear.ToUpper().Contains("Z"))
+
+                        )
+                    {
+
+                        System.Diagnostics.Debug.WriteLine("#ERROR5 TIPO DE CASTEO INCORRECTO");
+                        return "#ERROR5 TIPO DE CASTEO INCORRECTO";
+                    }
+                    else
+                    {
+                        if (ValorACastear.Contains("-") == false)
+                        {
+                            System.Diagnostics.Debug.WriteLine("#ERROR5 TIPO DE CASTEO INCORRECTO");
+                            return "#ERROR5 TIPO DE CASTEO INCORRECTO";
+                        }
+                        else
+                        {
+                            entorno.AsignarValor(this.Hijos[0].Nombre, "'"+ValorACastear + "'");
+                        }
+
+                    }
+
+
+
+                }
+                else if ((TipoCasteo.ToUpper().Contains("STRING") && entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("STRING") == true)
+                && (SINOESVARIABLE.ToUpper().Contains("FECHAS") == true || TipoACastear2.ToUpper().Contains("DATE") == true)
+                )
+                {
+                    //Casteo de las fechas
+                    System.Diagnostics.Debug.WriteLine("CASTEO STRING - DATE");
+                    entorno.AsignarValor(this.Hijos[0].Nombre, ValorACastear.Replace(" (fechas)", ""));
+
+                }
+                else if ((TipoCasteo.ToUpper().Contains("TIME") && entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("TIME") == true)
+                    && (SINOESVARIABLE.ToUpper().Contains("CADENA") == true || TipoACastear2.ToUpper().Contains("STRING") == true)
+                )
+                {
+                    //Casteo de las horas
+                    System.Diagnostics.Debug.WriteLine("CASTEO TIME- STRING" + ValorACastear);
+                    if (ValorACastear.ToUpper().Contains("A") || ValorACastear.ToUpper().Contains("B") || ValorACastear.ToUpper().Contains("C") || ValorACastear.ToUpper().Contains("D")
+                        || ValorACastear.ToUpper().Contains("D") || ValorACastear.ToUpper().Contains("E") || ValorACastear.ToUpper().Contains("F") || ValorACastear.ToUpper().Contains("G")
+                        || ValorACastear.ToUpper().Contains("H") || ValorACastear.ToUpper().Contains("I") || ValorACastear.ToUpper().Contains("J") || ValorACastear.ToUpper().Contains("K")
+                        || ValorACastear.ToUpper().Contains("L") || ValorACastear.ToUpper().Contains("M") || ValorACastear.ToUpper().Contains("Ñ") || ValorACastear.ToUpper().Contains("O")
+                        || ValorACastear.ToUpper().Contains("P") || ValorACastear.ToUpper().Contains("Q") || ValorACastear.ToUpper().Contains("R") || ValorACastear.ToUpper().Contains("S")
+                        || ValorACastear.ToUpper().Contains("T") || ValorACastear.ToUpper().Contains("U") || ValorACastear.ToUpper().Contains("V") || ValorACastear.ToUpper().Contains("W")
+                        || ValorACastear.ToUpper().Contains("X") || ValorACastear.ToUpper().Contains("Y") || ValorACastear.ToUpper().Contains("Z")
+                        )
+                    {
+                        System.Diagnostics.Debug.WriteLine("#ERROR5 TIPO DE CASTEO INCORRECTO");
+                        return "#ERROR5 TIPO DE CASTEO INCORRECTO";
+                    }
+                    else
+                    {
+                        if (ValorACastear.Contains(":") == false)
+                        {
+                            System.Diagnostics.Debug.WriteLine("#ERROR5 TIPO DE CASTEO INCORRECTO");
+                            return "#ERROR5 TIPO DE CASTEO INCORRECTO";
+                        }
+                        else
+                        {
+                            entorno.AsignarValor(this.Hijos[0].Nombre, "'"+ ValorACastear.Replace(" (fechas)"+ "'", ""));
+                        }
+
+                    }
+
+
+                }
+                else if ((TipoCasteo.ToUpper().Contains("STRING") && entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("STRING") == true)
+                  && (SINOESVARIABLE.ToUpper().Contains("HORA") == true || TipoACastear2.ToUpper().Contains("TIME") == true)
+                 )
+                {
+                    //Casteo de las horas
+                    System.Diagnostics.Debug.WriteLine("CASTEO STRING-TIME");
+                    entorno.AsignarValor(this.Hijos[0].Nombre, ValorACastear.Replace(" (hora)", ""));
+
+                }
+                else if ((TipoCasteo.ToUpper().Contains("INT") && entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("INT") == true)
+                  && (SINOESVARIABLE.ToUpper().Contains("CADENA") == true || TipoACastear2.ToUpper().Contains("STRING") == true)
+                 )
+                {
+                    //Casteo de las horas
+                    System.Diagnostics.Debug.WriteLine("CASTEO STRING-INT");
+                    if (ValorACastear.ToUpper().Contains("A") || ValorACastear.ToUpper().Contains("B") || ValorACastear.ToUpper().Contains("C") || ValorACastear.ToUpper().Contains("D")
+                      || ValorACastear.ToUpper().Contains("D") || ValorACastear.ToUpper().Contains("E") || ValorACastear.ToUpper().Contains("F") || ValorACastear.ToUpper().Contains("G")
+                      || ValorACastear.ToUpper().Contains("H") || ValorACastear.ToUpper().Contains("I") || ValorACastear.ToUpper().Contains("J") || ValorACastear.ToUpper().Contains("K")
+                      || ValorACastear.ToUpper().Contains("L") || ValorACastear.ToUpper().Contains("M") || ValorACastear.ToUpper().Contains("Ñ") || ValorACastear.ToUpper().Contains("O")
+                      || ValorACastear.ToUpper().Contains("P") || ValorACastear.ToUpper().Contains("Q") || ValorACastear.ToUpper().Contains("R") || ValorACastear.ToUpper().Contains("S")
+                      || ValorACastear.ToUpper().Contains("T") || ValorACastear.ToUpper().Contains("U") || ValorACastear.ToUpper().Contains("V") || ValorACastear.ToUpper().Contains("W")
+                      || ValorACastear.ToUpper().Contains("X") || ValorACastear.ToUpper().Contains("Y") || ValorACastear.ToUpper().Contains("Z") || ValorACastear.ToUpper().Contains(".")
+                      )
+                    {
+                        System.Diagnostics.Debug.WriteLine("#ERROR5 TIPO DE CASTEO INCORRECTO");
+                        return "#ERROR5 TIPO DE CASTEO INCORRECTO";
+                    }
+                    else
+                    {
+                        entorno.AsignarValor(this.Hijos[0].Nombre, ValorACastear);
+                    }
+                    //entorno.AsignarValor(this.Hijos[0].Nombre, ValorACastear.Replace(" (hora)", ""));
+
+                }
+                else if ((TipoCasteo.ToUpper().Contains("STRING") && entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("STRING") == true)
+                 && (SINOESVARIABLE.ToUpper().Contains("ENTERO") == true || TipoACastear2.ToUpper().Contains("INT") == true)
+                )
+                {
+                    System.Diagnostics.Debug.WriteLine("CASTEO int string");
+                    entorno.AsignarValor(this.Hijos[0].Nombre, ValorACastear.Replace(" (Entero)", ""));
+                }
+                else if ((TipoCasteo.ToUpper().Contains("STRING") && entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("STRING") == true)
+                && (SINOESVARIABLE.ToUpper().Contains("DECIMAL") == true || TipoACastear2.ToUpper().Contains("DOUBLE") == true)
+               )
+                {
+                    System.Diagnostics.Debug.WriteLine("CASTEO DECIMAL string");
+                    entorno.AsignarValor(this.Hijos[0].Nombre, ValorACastear.Replace(".", ","));
+                }
+                else if ((TipoCasteo.ToUpper().Contains("DOUBLE") && entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("DOUBLE") == true)
+                  && (SINOESVARIABLE.ToUpper().Contains("CADENA") == true || TipoACastear2.ToUpper().Contains("STRING") == true)
+                 )
+                {
+                    //Casteo de las horas
+                    System.Diagnostics.Debug.WriteLine("CASTEO STRING-DOUBLE");
+                    if (ValorACastear.ToUpper().Contains("A") || ValorACastear.ToUpper().Contains("B") || ValorACastear.ToUpper().Contains("C") || ValorACastear.ToUpper().Contains("D")
+                      || ValorACastear.ToUpper().Contains("D") || ValorACastear.ToUpper().Contains("E") || ValorACastear.ToUpper().Contains("F") || ValorACastear.ToUpper().Contains("G")
+                      || ValorACastear.ToUpper().Contains("H") || ValorACastear.ToUpper().Contains("I") || ValorACastear.ToUpper().Contains("J") || ValorACastear.ToUpper().Contains("K")
+                      || ValorACastear.ToUpper().Contains("L") || ValorACastear.ToUpper().Contains("M") || ValorACastear.ToUpper().Contains("Ñ") || ValorACastear.ToUpper().Contains("O")
+                      || ValorACastear.ToUpper().Contains("P") || ValorACastear.ToUpper().Contains("Q") || ValorACastear.ToUpper().Contains("R") || ValorACastear.ToUpper().Contains("S")
+                      || ValorACastear.ToUpper().Contains("T") || ValorACastear.ToUpper().Contains("U") || ValorACastear.ToUpper().Contains("V") || ValorACastear.ToUpper().Contains("W")
+                      || ValorACastear.ToUpper().Contains("X") || ValorACastear.ToUpper().Contains("Y") || ValorACastear.ToUpper().Contains("Z") || ValorACastear.ToUpper().Contains(".")
+                      )
+                    {
+                        System.Diagnostics.Debug.WriteLine("#ERROR5 TIPO DE CASTEO INCORRECTO");
+                        return "#ERROR5 TIPO DE CASTEO INCORRECTO";
+                    }
+                    else
+                    {
+                        entorno.AsignarValor(this.Hijos[0].Nombre, ValorACastear);
+                    }
+                    //entorno.AsignarValor(this.Hijos[0].Nombre, ValorACastear.Replace(" (hora)", ""));
 
                 }
                 else
                 {
-                    return "";
+                    System.Diagnostics.Debug.WriteLine("#ERROR5 TIPO DE CASTEO INCORRECTO");
+                    return "#ERROR5 TIPO DE CASTEO INCORRECTO";
                 }
 
 

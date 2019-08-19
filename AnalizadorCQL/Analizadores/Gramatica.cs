@@ -82,9 +82,10 @@ namespace AnalizadorCQL.Analizadores
             var ArithmeticException = ToTerm("ArithmeticException");
             var IndexOutException = ToTerm("IndexOutException");
 
-
-            this.RegisterOperators(6, Associativity.Left, "+", "-");
+            
+            
             this.RegisterOperators(7, Associativity.Left, "*", "/", "%");
+            this.RegisterOperators(6, Associativity.Left, "+", "-");
             this.RegisterOperators(5, Associativity.Left, "**");
             this.RegisterOperators(4, Associativity.Left, ">", "<", ">=", "<=");
             this.RegisterOperators(3, Associativity.Left, "!=", "==");
@@ -190,7 +191,7 @@ namespace AnalizadorCQL.Analizadores
                               | TIPOS_VARIABLES + id2 + igual + id2 + punto + id + PYC
                               | id2 + punto + id + igual + E                              
                              // | id2 + igual + ParA + TIPOS_VARIABLES + ParC+ E + PYC
-                              | TIPOS_VARIABLES + id2 + igual + ParA + TIPOS_VARIABLES + ParC + E + PYC
+                             // | TIPOS_VARIABLES + id2 + igual + ParA + TIPOS_VARIABLES + ParC + E + PYC
                               | id2 + punto + id + igual + ParA + TIPOS_VARIABLES + ParC + E;
 
             LISTA_IDS2.Rule = LISTA_IDS2 + coma + id2

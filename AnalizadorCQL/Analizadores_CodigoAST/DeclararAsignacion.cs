@@ -28,12 +28,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String Variable1 = this.Hijos[2].Ejecutar(entorno).Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "").Replace(".", ",");
             Boolean DecimalEntero = true;
             Boolean ElBool = true;
-
+            ///casteo 
             String TipoDato1 = "";
             String var = this.Hijos[1].Nombre;
-            int a = 0;
-            System.Diagnostics.Debug.WriteLine(a++ + 29);
-            System.Diagnostics.Debug.WriteLine(a++);
            
 
             if (this.Hijos[2].TipoDato == "entero" || this.Hijos[2].TipoDato == "decimal")

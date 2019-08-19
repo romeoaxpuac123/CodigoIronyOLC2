@@ -34,8 +34,190 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String Tipo1 = this.Hijos[0].TipoDato;
             String Tipo2 = this.Hijos[2].TipoDato;
 
-            if(this.Hijos[4] != null){
+            if(this.Hijos[1].Nombre == "("){
                 System.Diagnostics.Debug.WriteLine("ES CASTEOOOOOOOOOOOOOOOO");
+                System.Diagnostics.Debug.WriteLine("vamos con los casteos");
+
+                String TipoACastear = this.Hijos[0].Nombre;
+                System.Diagnostics.Debug.WriteLine("Tipo a Castear:" + TipoACastear);
+
+                String VariableACastear = this.Hijos[2].NombreVariable;
+                System.Diagnostics.Debug.WriteLine("Variable A Castear:" + VariableACastear);
+
+                String TipoVariableACastear = "x";
+                String ValorNuevo = "";// entorno.ObtenerTipo(this.Hijos[2].NombreVariable);
+                if (VariableACastear != null
+                //String TipoVariableACastear = entorno.ObtenerTipo(this.Hijos[2].NombreVariable);
+                )
+                {
+                    TipoVariableACastear = entorno.ObtenerTipo(this.Hijos[2].NombreVariable);
+                    ValorNuevo = entorno.ObtenerValor(this.Hijos[2].NombreVariable);
+                }
+                else
+                {
+                    TipoVariableACastear = this.Hijos[2].TipoDato;
+                    ValorNuevo = this.Hijos[2].Ejecutar(entorno);
+                }
+                ///String TipoVariableACastear = entorno.ObtenerTipo(this.Hijos[2].NombreVariable);
+                System.Diagnostics.Debug.WriteLine("Tipo Variable A Castear:" + TipoVariableACastear);
+                System.Diagnostics.Debug.WriteLine("valor:" + ValorNuevo);
+
+
+                if ((TipoACastear.ToUpper().Contains("STRING") == true) &&
+                    (TipoVariableACastear.ToUpper().Contains("FECHAS") || TipoVariableACastear.ToUpper().Contains("DATE"))
+                )
+                {
+                    System.Diagnostics.Debug.WriteLine("CASTEO STRING - FECHA");
+                    this.TipoDato = "cadena";
+                    return ValorNuevo.Replace(" (fechas)", "");
+
+                }
+                else if ((TipoACastear.ToUpper().Contains("DATE") == true) &&
+                     (TipoVariableACastear.ToUpper().Contains("CADENA") || TipoVariableACastear.ToUpper().Contains("STRING"))
+                 )
+                {
+                    System.Diagnostics.Debug.WriteLine("CASTEO FECHA- STRING");
+                    ValorNuevo = ValorNuevo.Replace(" (fechas)", "");
+                    if (ValorNuevo.ToUpper().Contains("A") || ValorNuevo.ToUpper().Contains("B") || ValorNuevo.ToUpper().Contains("C") || ValorNuevo.ToUpper().Contains("D")
+                       || ValorNuevo.ToUpper().Contains("D") || ValorNuevo.ToUpper().Contains("E") || ValorNuevo.ToUpper().Contains("F") || ValorNuevo.ToUpper().Contains("G")
+                       || ValorNuevo.ToUpper().Contains("H") || ValorNuevo.ToUpper().Contains("I") || ValorNuevo.ToUpper().Contains("J") || ValorNuevo.ToUpper().Contains("K")
+                       || ValorNuevo.ToUpper().Contains("L") || ValorNuevo.ToUpper().Contains("M") || ValorNuevo.ToUpper().Contains("Ñ") || ValorNuevo.ToUpper().Contains("O")
+                       || ValorNuevo.ToUpper().Contains("P") || ValorNuevo.ToUpper().Contains("Q") || ValorNuevo.ToUpper().Contains("R") || ValorNuevo.ToUpper().Contains("S")
+                       || ValorNuevo.ToUpper().Contains("T") || ValorNuevo.ToUpper().Contains("U") || ValorNuevo.ToUpper().Contains("V") || ValorNuevo.ToUpper().Contains("W")
+                       || ValorNuevo.ToUpper().Contains("X") || ValorNuevo.ToUpper().Contains("Y") || ValorNuevo.ToUpper().Contains("Z")
+                       )
+                    {
+                        System.Diagnostics.Debug.WriteLine("#ERROR5 TIPO DE CASTEO INCORRECTO");
+                        return "#ERROR5 TIPO DE CASTEO INCORRECTO";
+                    }
+                    else
+                    {
+                        if (ValorNuevo.Contains("-") == false)
+                        {
+                            System.Diagnostics.Debug.WriteLine("#ERROR5 TIPO DE CASTEO INCORRECTO");
+                            return "#ERROR5 TIPO DE CASTEO INCORRECTO";
+                        }
+                        else
+                        {
+                            this.TipoDato = "Fechas";
+                            return "'" + ValorNuevo.Replace(" (fechas)", "") + "'";
+                        }
+
+                    }
+
+                }
+                else if ((TipoACastear.ToUpper().Contains("STRING") == true) &&
+                        (TipoVariableACastear.ToUpper().Contains("HORA") || TipoVariableACastear.ToUpper().Contains("TIME"))
+                )
+                {
+                    System.Diagnostics.Debug.WriteLine("CASTEO STRING - TIME");
+                    this.TipoDato = "cadena";
+                    return ValorNuevo.Replace(" (hora)", "");
+
+                }
+                else if ((TipoACastear.ToUpper().Contains("TIME") == true) &&
+                    (TipoVariableACastear.ToUpper().Contains("CADENA") || TipoVariableACastear.ToUpper().Contains("STRING"))
+                )
+                {
+                    System.Diagnostics.Debug.WriteLine("CASTEO hora- STRING");
+                    ValorNuevo = ValorNuevo.Replace(" (hora)", "");
+                    if (ValorNuevo.ToUpper().Contains("A") || ValorNuevo.ToUpper().Contains("B") || ValorNuevo.ToUpper().Contains("C") || ValorNuevo.ToUpper().Contains("D")
+                       || ValorNuevo.ToUpper().Contains("D") || ValorNuevo.ToUpper().Contains("E") || ValorNuevo.ToUpper().Contains("F") || ValorNuevo.ToUpper().Contains("G")
+                       || ValorNuevo.ToUpper().Contains("H") || ValorNuevo.ToUpper().Contains("I") || ValorNuevo.ToUpper().Contains("J") || ValorNuevo.ToUpper().Contains("K")
+                       || ValorNuevo.ToUpper().Contains("L") || ValorNuevo.ToUpper().Contains("M") || ValorNuevo.ToUpper().Contains("Ñ") || ValorNuevo.ToUpper().Contains("O")
+                       || ValorNuevo.ToUpper().Contains("P") || ValorNuevo.ToUpper().Contains("Q") || ValorNuevo.ToUpper().Contains("R") || ValorNuevo.ToUpper().Contains("S")
+                       || ValorNuevo.ToUpper().Contains("T") || ValorNuevo.ToUpper().Contains("U") || ValorNuevo.ToUpper().Contains("V") || ValorNuevo.ToUpper().Contains("W")
+                       || ValorNuevo.ToUpper().Contains("X") || ValorNuevo.ToUpper().Contains("Y") || ValorNuevo.ToUpper().Contains("Z")
+                       )
+                    {
+                        System.Diagnostics.Debug.WriteLine("#ERROR5 TIPO DE CASTEO INCORRECTO");
+                        return "#ERROR5 TIPO DE CASTEO INCORRECTO";
+                    }
+                    else
+                    {
+                        this.TipoDato = "hora";
+                        this.Nombre = "hora";
+                        return "'" + ValorNuevo + "'";
+                    }
+
+
+
+                }
+                else if ((TipoACastear.ToUpper().Contains("STRING") == true) &&
+                       (TipoVariableACastear.ToUpper().Contains("ENTERO") || TipoVariableACastear.ToUpper().Contains("INT"))
+               )
+                {
+                    System.Diagnostics.Debug.WriteLine("CASTEO STRING - INT");
+                    this.TipoDato = "cadena";
+                    return ValorNuevo;
+
+                }
+                else if ((TipoACastear.ToUpper().Contains("INT") == true) &&
+                      (TipoVariableACastear.ToUpper().Contains("CADENA") || TipoVariableACastear.ToUpper().Contains("STRING"))
+              )
+                {
+                    System.Diagnostics.Debug.WriteLine("CASTEO STRING - INT");
+                    if (ValorNuevo.ToUpper().Contains("A") || ValorNuevo.ToUpper().Contains("B") || ValorNuevo.ToUpper().Contains("C") || ValorNuevo.ToUpper().Contains("D")
+                      || ValorNuevo.ToUpper().Contains("D") || ValorNuevo.ToUpper().Contains("E") || ValorNuevo.ToUpper().Contains("F") || ValorNuevo.ToUpper().Contains("G")
+                      || ValorNuevo.ToUpper().Contains("H") || ValorNuevo.ToUpper().Contains("I") || ValorNuevo.ToUpper().Contains("J") || ValorNuevo.ToUpper().Contains("K")
+                      || ValorNuevo.ToUpper().Contains("L") || ValorNuevo.ToUpper().Contains("M") || ValorNuevo.ToUpper().Contains("Ñ") || ValorNuevo.ToUpper().Contains("O")
+                      || ValorNuevo.ToUpper().Contains("P") || ValorNuevo.ToUpper().Contains("Q") || ValorNuevo.ToUpper().Contains("R") || ValorNuevo.ToUpper().Contains("S")
+                      || ValorNuevo.ToUpper().Contains("T") || ValorNuevo.ToUpper().Contains("U") || ValorNuevo.ToUpper().Contains("V") || ValorNuevo.ToUpper().Contains("W")
+                      || ValorNuevo.ToUpper().Contains("X") || ValorNuevo.ToUpper().Contains("Y") || ValorNuevo.ToUpper().Contains("Z") || ValorNuevo.ToUpper().Contains(".")
+                      )
+                    {
+                        System.Diagnostics.Debug.WriteLine("#ERROR5 TIPO DE CASTEO INCORRECTO");
+                        return "#ERROR5 TIPO DE CASTEO INCORRECTO";
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("CASTEO STRING - INT");
+                        this.TipoDato = "entero";
+                        return ValorNuevo;
+                    }
+
+
+                }
+                else if ((TipoACastear.ToUpper().Contains("STRING") == true) &&
+                   (TipoVariableACastear.ToUpper().Contains("DECIMAL") || TipoVariableACastear.ToUpper().Contains("DOUBLE"))
+                    )
+                {
+                    System.Diagnostics.Debug.WriteLine("CASTEO STRING - double");
+                    this.TipoDato = "cadena";
+                    return ValorNuevo;
+
+                }
+                else if ((TipoACastear.ToUpper().Contains("DOUBLE") == true) &&
+                     (TipoVariableACastear.ToUpper().Contains("CADENA") || TipoVariableACastear.ToUpper().Contains("STRING"))
+               )
+                {
+
+                    System.Diagnostics.Debug.WriteLine("CASTEO double- STRING");
+                    if (ValorNuevo.ToUpper().Contains("A") || ValorNuevo.ToUpper().Contains("B") || ValorNuevo.ToUpper().Contains("C") || ValorNuevo.ToUpper().Contains("D")
+                      || ValorNuevo.ToUpper().Contains("D") || ValorNuevo.ToUpper().Contains("E") || ValorNuevo.ToUpper().Contains("F") || ValorNuevo.ToUpper().Contains("G")
+                      || ValorNuevo.ToUpper().Contains("H") || ValorNuevo.ToUpper().Contains("I") || ValorNuevo.ToUpper().Contains("J") || ValorNuevo.ToUpper().Contains("K")
+                      || ValorNuevo.ToUpper().Contains("L") || ValorNuevo.ToUpper().Contains("M") || ValorNuevo.ToUpper().Contains("Ñ") || ValorNuevo.ToUpper().Contains("O")
+                      || ValorNuevo.ToUpper().Contains("P") || ValorNuevo.ToUpper().Contains("Q") || ValorNuevo.ToUpper().Contains("R") || ValorNuevo.ToUpper().Contains("S")
+                      || ValorNuevo.ToUpper().Contains("T") || ValorNuevo.ToUpper().Contains("U") || ValorNuevo.ToUpper().Contains("V") || ValorNuevo.ToUpper().Contains("W")
+                      || ValorNuevo.ToUpper().Contains("X") || ValorNuevo.ToUpper().Contains("Y") || ValorNuevo.ToUpper().Contains("Z") 
+                      )
+                    {
+                        System.Diagnostics.Debug.WriteLine("#ERROR5 TIPO DE CASTEO INCORRECTO");
+                        return "#ERROR5 TIPO DE CASTEO INCORRECTO";
+                    }
+                    else
+                    {
+                        this.TipoDato = "decimal";
+                        return ValorNuevo;
+                    }
+
+
+                }
+
+
+
+                    System.Diagnostics.Debug.WriteLine("CASTEO incorrecto");
+                return "#ERROR5";
             }
           
 
@@ -153,7 +335,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                  val1 = (float.Parse(val1) - 1).ToString();
              }
              */
-            if (val1.Equals("#Error") || val2.Equals("#Error"))
+            if (val1.ToUpper().Contains("#ERROR") || val2.ToUpper().Contains("#ERROR"))
             {
                 return "#Error";
             }
