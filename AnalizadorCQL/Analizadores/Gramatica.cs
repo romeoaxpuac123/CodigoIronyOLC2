@@ -112,6 +112,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal TRY_CATCH = new NonTerminal("TRY_CATCH");
             NonTerminal LISTA_IDS2 = new NonTerminal("LISTA_IDS2");
             NonTerminal INC_DEC = new NonTerminal("INC_DEC");
+            NonTerminal ASIGNACION_OPERACION = new NonTerminal("ASIGNACION_OPERACION");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
@@ -127,7 +128,16 @@ namespace AnalizadorCQL.Analizadores
                              | DDL
                              | IMP
                              | TRY_CATCH
-                             | INC_DEC + PYC;
+                             | INC_DEC + PYC
+                             | ASIGNACION_OPERACION;
+
+             ASIGNACION_OPERACION.Rule = id2 + mas + igual + E + PYC
+                                       | id2 + menos + igual + E + PYC
+                                       | id2 + por + igual + E + PYC
+                                       | id2 + div + igual + E + PYC;
+                                                  
+
+
 
             INC_DEC.Rule = id2 + mas + mas
                          | id2 + menos + menos;
@@ -179,7 +189,7 @@ namespace AnalizadorCQL.Analizadores
                               | id2 + igual + id2 + punto+ id + PYC
                               | TIPOS_VARIABLES + id2 + igual + id2 + punto + id + PYC
                               | id2 + punto + id + igual + E                              
-                              | id2 + igual + ParA + TIPOS_VARIABLES + ParC+ E + PYC
+                             // | id2 + igual + ParA + TIPOS_VARIABLES + ParC+ E + PYC
                               | TIPOS_VARIABLES + id2 + igual + ParA + TIPOS_VARIABLES + ParC + E + PYC
                               | id2 + punto + id + igual + ParA + TIPOS_VARIABLES + ParC + E;
 
@@ -218,6 +228,7 @@ namespace AnalizadorCQL.Analizadores
                     | E + AND + E
                     | E+ XOR + E
                     | E + mas + mas
+                    | E + menos + menos
                     | NOT + E
                     | menos + E
                     | numero
@@ -229,7 +240,8 @@ namespace AnalizadorCQL.Analizadores
                     | verdadero
                     | fechas
                     | hora
-                    | ParA + E + ParC;
+                    | ParA + E + ParC
+                    | ParA + TIPOS_VARIABLES + ParC + E;
 
            
 

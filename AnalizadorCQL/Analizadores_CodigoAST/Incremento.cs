@@ -35,10 +35,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     entorno.AsignarValor(this.Hijos[0].Nombre, total.ToString());
                     this.AutoIncrmentable = 0;
                 }
-                else if (this.Hijos[1].Nombre.Contains("-") == true && this.AutoIncrmentable == 0)
+                else if (this.Hijos[1].Nombre.Contains("-") == true && this.AutoMinision == 0)
                 {
                     total = float.Parse(val1) - 1;
                     entorno.AsignarValor(this.Hijos[0].Nombre, total.ToString());
+                    this.AutoMinision = 0;
                     this.AutoIncrmentable = 0;
                 }
             }
@@ -48,6 +49,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 return "#Error3";
             }
             this.AutoIncrmentable = 0;
+            this.AutoMinision = 0;
             this.TipoDato = "decimal";
 
             //System.Diagnostics.Debug.WriteLine("TIPO 1 ID" + val1);

@@ -28,7 +28,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             {
                 total = (float.Parse(entorno.ObtenerValor(this.Hijos[2].Hijos[0].Nombre))).ToString();
             }
-           
+            if (this.Hijos[2].Nombre.Contains("DECREMENTO") == true)
+            {
+                total = (float.Parse(entorno.ObtenerValor(this.Hijos[2].Hijos[0].Nombre))).ToString();
+            }
+
 
             for (int i = 0; i < ListaID1x.Count; i++)
             {
@@ -104,7 +108,15 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         )
                     {
                         //System.Diagnostics.Debug.WriteLine("la variable es entera");
-                        entorno.Agregar(id, tipo, Variable1);
+                        System.Diagnostics.Debug.WriteLine("la variable es entera" + Variable1);
+                        if (Variable1.Contains(","))
+                        {
+                            entorno.Agregar(id, tipo, Variable1.Remove(Variable1.IndexOf(",")));
+                        }
+                        else
+                        {
+                            entorno.Agregar(id, tipo, Variable1);
+                        }
                     }
                     else if (this.Hijos[0].Nombre.ToUpper().Contains("DOUBLE") == true && (this.Hijos[2].Nombre == "Entero" || this.Hijos[2].Nombre == "Decimal" || this.Hijos[2].Nombre == "EXP")
                         && DecimalEntero == false
@@ -151,7 +163,16 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         entorno.Agregar(id, tipo, total) ;
 
                     }
+                    else if ((this.Hijos[0].Nombre.ToUpper().Contains("INT") || this.Hijos[0].Nombre.ToUpper().Contains("DOUBLE"))
+                        && this.Hijos[2].Nombre.Contains("DECREMENTO")
+                   )
+                    {
+                        System.Diagnostics.Debug.WriteLine("DECREMENTOOOOOOOOOOO" + this.Hijos[2].Hijos[0].Nombre);
 
+
+                        entorno.Agregar(id, tipo, total);
+
+                    }
                     else
                     {
                         System.Diagnostics.Debug.WriteLine("#Error3 asiganacion incorrecta");
@@ -168,7 +189,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             {
                 entorno.AsignarValor(this.Hijos[2].Hijos[0].Nombre, (float.Parse(total) + 1).ToString());
             }
-            
+            if (this.Hijos[2].Nombre.Contains("DECREMENTO"))
+            {
+                entorno.AsignarValor(this.Hijos[2].Hijos[0].Nombre, (float.Parse(total) - 1).ToString());
+            }
+
             return retorno;
         }
     }

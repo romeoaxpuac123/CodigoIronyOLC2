@@ -59,6 +59,7 @@ namespace AnalizadorCQL.Analizadores
                         return RESULT1;
 
                     }
+                   
                     else if (root.ToString().Contains("arithmeticexception"))
                     {
                         NodoAbstracto RESULT1 = null;
@@ -125,6 +126,17 @@ namespace AnalizadorCQL.Analizadores
                         //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
 
                         NodoAbstracto nuevo = new Nodo("SENTENCIAS");
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+
+                        return nuevo;
+
+
+                    }
+                    else if (root.ToString() == "TIPOS_VARIABLES")
+                    {
+                        //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
+
+                        NodoAbstracto nuevo = new Nodo("TIPOS_VARIABLES");
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
 
                         return nuevo;
@@ -431,16 +443,17 @@ namespace AnalizadorCQL.Analizadores
                         }
                         else if ((root.ChildNodes.ElementAt(2).ToString().Contains("- (Key symbol")))
                         {
-                            System.Diagnostics.Debug.WriteLine("entrooooooooooooooooo-");
-                            NodoAbstracto nuevo = new Aritmetica("EXP");
-                            NodoAbstracto nuevooperador = new Nodo("-");
-                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
-                            nuevo.Hijos.Add(nuevooperador);
-                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
-                            nuevo.AutoIncrmentable = 1;
+                            //System.Diagnostics.Debug.WriteLine("entrooooooooooooooooo-");
+                            System.Diagnostics.Debug.WriteLine("DECREMENTO");
+                            NodoAbstracto nuevo2 = new Incremento("DECREMENTO");
+                            Nodo nuevo2id = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                            Nodo nuevo2id2 = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Key symbol)", ""));
+                            nuevo2.Hijos.Add(nuevo2id);
+                            nuevo2.Hijos.Add(nuevo2id2);
+                            nuevo2.AutoMinision= 1;
+                            nuevo2.TipoDato = "decimal";
 
-
-                            RESULT = nuevo;
+                            RESULT = nuevo2;
 
                         }
                         else  if ((root.ChildNodes.ElementAt(1).ToString().Contains("+ (Key symbol")))
@@ -797,7 +810,19 @@ namespace AnalizadorCQL.Analizadores
 
                         }
                     }
-
+                    else if (root.ToString() == "E")
+                    {
+                        System.Diagnostics.Debug.WriteLine("EXPRESION DE 4);");
+                        NodoAbstracto nuevo = new Aritmetica("EXP");
+                        NodoAbstracto nuevooperador = new Nodo("(");
+                        NodoAbstracto tipoCasteo = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Keyword)", ""));
+                        //System.Diagnostics.Debug.WriteLine("EXPRESION DE 4);" + root.ChildNodes.ElementAt(1).FindToken().ToString());
+                        nuevo.Hijos.Add(tipoCasteo);
+                        nuevo.Hijos.Add(nuevooperador);
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(3)));
+                        nuevo.TipoDato = "CAST";
+                        return nuevo;
+                    }
 
 
                     break;
@@ -844,10 +869,7 @@ namespace AnalizadorCQL.Analizadores
                             return nuevo;
                         }
                         else
-                        {
-
-                        
-
+                        {   
                             NodoAbstracto nuevo = new DeclararAsignacion("DECLARARASIGNAR");
                             NodoAbstracto nuevotipo = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace("(Keyword)", ""));
                             NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id2)", ""));
@@ -868,6 +890,17 @@ namespace AnalizadorCQL.Analizadores
                         NodoAbstracto nuevo2 = new LOG("IMPRIMIR");
                         nuevo2.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
                         return nuevo2;
+                    }
+                    else if (root.ToString().ToUpper().Contains("ASIGNACION_OPERACION"))
+                    {
+                        System.Diagnostics.Debug.WriteLine("asdjflasjdlfkjsald");
+                        NodoAbstracto nuevo = new ASIGNACION_OPERACION("ASIGOP");
+                        NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                        NodoAbstracto nuevoid2 = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Key symbol)", ""));
+                        nuevo.Hijos.Add(nuevoid);
+                        nuevo.Hijos.Add(nuevoid2);
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(3)));
+                        return nuevo;
                     }
                     break;
                 case 6:

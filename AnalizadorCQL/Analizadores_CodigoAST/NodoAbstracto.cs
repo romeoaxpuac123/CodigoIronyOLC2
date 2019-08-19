@@ -17,6 +17,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         public String TipoDato;
         public String NombreVariable;
         public int AutoIncrmentable = 0;
+        public int AutoMinision;
         public List<NodoAbstracto> Hijos;
         public List<String> ListaID1  ;
         public NodoAbstracto()

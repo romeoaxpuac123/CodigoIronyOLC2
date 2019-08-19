@@ -185,6 +185,7 @@
     <Compile Include="Analizadores\Recorrido.cs" />
     <Compile Include="Analizadores\Sintactico.cs" />
     <Compile Include="Analizadores_CodigoAST\Aritmetica.cs" />
+    <Compile Include="Analizadores_CodigoAST\ASIGNACION_OPERACION.cs" />
     <Compile Include="Analizadores_CodigoAST\Asignar.cs" />
     <Compile Include="Analizadores_CodigoAST\DeclararAsignacion.cs" />
     <Compile Include="Analizadores_CodigoAST\Declarar.cs" />

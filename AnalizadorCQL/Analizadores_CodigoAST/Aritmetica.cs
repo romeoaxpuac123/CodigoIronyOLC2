@@ -34,6 +34,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String Tipo1 = this.Hijos[0].TipoDato;
             String Tipo2 = this.Hijos[2].TipoDato;
 
+            if(this.Hijos[4] != null){
+                System.Diagnostics.Debug.WriteLine("ES CASTEOOOOOOOOOOOOOOOO");
+            }
           
 
             if (Tipo1 == "id2")

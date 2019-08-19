@@ -22,14 +22,49 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String sali = entorno.ObtenerValor(this.Hijos[0].Nombre);
             System.Diagnostics.Debug.WriteLine("VAR" + this.Hijos[0].Nombre);
             System.Diagnostics.Debug.WriteLine("tipo de la expresion" + this.Hijos[1].TipoDato);
+
+            if (this.Hijos[1].TipoDato == "CAST")
+            {
+                System.Diagnostics.Debug.WriteLine("vamos con los casteos");
+
+                String ValorACastear = this.Hijos[1].Hijos[2].Ejecutar(entorno);
+                System.Diagnostics.Debug.WriteLine("Valor a Castear:" + ValorACastear);
+
+                String TipoACastear = this.Hijos[1].Hijos[2].NombreVariable;
+                System.Diagnostics.Debug.WriteLine("Tipo del valor a Caster:" + TipoACastear);
+
+                String SINOESVARIABLE = this.Hijos[1].Hijos[2].TipoDato;
+                System.Diagnostics.Debug.WriteLine("Tipo del valor a Caster:" + SINOESVARIABLE);
+
+                String TipoACastear2 = entorno.ObtenerTipo(TipoACastear);
+                String TipoCasteo = this.Hijos[1].Hijos[0].Nombre;
+                System.Diagnostics.Debug.WriteLine("Tipo Casteo:" + TipoCasteo);
+
+                if((TipoCasteo.ToUpper().Contains("DATE") && entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("DATE")==true)
+                 && (SINOESVARIABLE.ToUpper().Contains("CADENA") ==true || TipoACastear2.ToUpper().Contains("STRING") ==true )
+                ){
+                    //Casteo de las fechas
+                    System.Diagnostics.Debug.WriteLine("CASTEO DATE - DATE/STRING");
+                    entorno.AsignarValor(this.Hijos[0].Nombre, ValorACastear);
+
+                }
+                else
+                {
+                    return "";
+                }
+
+
+
+                System.Diagnostics.Debug.WriteLine("fin los casteos");
+                return "";
+
+            }
             System.Diagnostics.Debug.WriteLine("tipo de la expresion" + this.Hijos[1].Hijos[0].Nombre);
             System.Diagnostics.Debug.WriteLine("valor" + this.Hijos[1].Ejecutar(entorno).Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", ""));
             String Variable1 = this.Hijos[1].Ejecutar(entorno).Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "").Replace(".",",");
             String TipoDato1 = "";
             String var = this.Hijos[0].Nombre;
-            int a = 0;
-            System.Diagnostics.Debug.WriteLine(a++ + 29);
-            System.Diagnostics.Debug.WriteLine(a++);
+
             if (this.Hijos[1].Hijos[0].Nombre.Contains("@"))
             {
                 Variable1 = entorno.ObtenerValor(this.Hijos[1].Hijos[0].Nombre);
@@ -43,9 +78,18 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 ( TipoDato1.ToUpper().Contains("INT") || TipoDato1.ToUpper().Contains("DOUBLE"))
                 )
             {
-                System.Diagnostics.Debug.WriteLine("asignacion decremento");
-                entorno.AsignarValor(var, (Int64.Parse(Variable1)-1).ToString());
-                return sali;
+                if(this.Hijos[1].Nombre == "INCREMENTO")
+                {
+                    System.Diagnostics.Debug.WriteLine("asignacion decremento");
+                    entorno.AsignarValor(var, (Int64.Parse(Variable1) - 1).ToString());
+                }
+                if (this.Hijos[1].Nombre == "DECREMENTO")
+                {
+                    System.Diagnostics.Debug.WriteLine("asignacion decremento");
+                    entorno.AsignarValor(var, (Int64.Parse(Variable1) + 1).ToString());
+                }
+               
+               // return sali;
             }
 
             Boolean DecimalEntero = true;
@@ -70,7 +114,16 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     ) 
                 {
                     //ASIGANACION DE UNA VARIABLE DE TIPO ENTERO
-                    entorno.AsignarValor(this.Hijos[0].Nombre, Variable1);
+                    System.Diagnostics.Debug.WriteLine("la variable es entera" + Variable1);
+                    if (Variable1.Contains(","))
+                    {
+                        entorno.AsignarValor(this.Hijos[0].Nombre, Variable1.Remove(Variable1.IndexOf(",")));
+                    }
+                    else
+                    {
+                        entorno.AsignarValor(this.Hijos[0].Nombre, Variable1);
+                    }
+                  
                 }
                 else if (entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("DOUBLE")
                     && (this.Hijos[1].Nombre.ToString() == "Entero" || this.Hijos[1].Nombre.ToString() == "Decimal" || this.Hijos[1].Nombre == "EXP")

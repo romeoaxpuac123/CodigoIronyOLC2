@@ -51,8 +51,16 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     && DecimalEntero == false
                     )
                 {
-                    //System.Diagnostics.Debug.WriteLine("la variable es entera");
-                    entorno.Agregar(id, tipo, Variable1);
+                    System.Diagnostics.Debug.WriteLine("la variable es entera" + Variable1);
+                    if (Variable1.Contains(","))
+                    {
+                        entorno.Agregar(id, tipo, Variable1.Remove(Variable1.IndexOf(",")));
+                    }
+                    else
+                    {
+                        entorno.Agregar(id, tipo, Variable1);
+                    }
+                    
                 }
                 else if (this.Hijos[0].Nombre.ToUpper().Contains("DOUBLE") == true && (this.Hijos[2].Nombre == "Entero" || this.Hijos[2].Nombre == "Decimal" || this.Hijos[2].Nombre == "EXP")
                     && DecimalEntero == false
@@ -88,12 +96,55 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 {
                     //System.Diagnostics.Debug.WriteLine("la variable es TIME");
                     entorno.Agregar(id, tipo, Variable1);
-                } else if (this.Hijos[0].Nombre.ToUpper().Contains("INT") || this.Hijos[0].Nombre.ToUpper().Contains("DOUBLE")
+                } else if ((this.Hijos[0].Nombre.ToUpper().Contains("INT") || this.Hijos[0].Nombre.ToUpper().Contains("DOUBLE"))
                          && this.Hijos[2].Nombre.Contains("INCREMENTO")
                     )
                 {
                     System.Diagnostics.Debug.WriteLine("INCREMENTOOOOOOOOOOO" + this.Hijos[2].Hijos[0].Nombre);
                     entorno.Agregar(id, tipo, (float.Parse(entorno.ObtenerValor(this.Hijos[2].Hijos[0].Nombre))-1).ToString());
+
+                }
+                else if ((this.Hijos[0].Nombre.ToUpper().Contains("INT") || this.Hijos[0].Nombre.ToUpper().Contains("DOUBLE"))
+                        && this.Hijos[2].Nombre.Contains("DECREMENTO")
+                   )
+                {
+                    System.Diagnostics.Debug.WriteLine("DECREMENTOOOOOOOOOOO" + this.Hijos[2].Hijos[0].Nombre);
+                    entorno.Agregar(id, tipo, (float.Parse(entorno.ObtenerValor(this.Hijos[2].Hijos[0].Nombre)) + 1).ToString());
+
+                }
+                else if ( this.Hijos[2].Nombre.Contains("id2")
+                   )
+                {
+                    System.Diagnostics.Debug.WriteLine("ast" + this.Hijos[2].Hijos[0].Nombre);
+                    //entorno.Agregar(id, tipo, (float.Parse(entorno.ObtenerValor(this.Hijos[2].Hijos[0].Nombre)) + 1).ToString());
+                    String TipoVariable = entorno.ObtenerTipo(this.Hijos[2].Hijos[0].Nombre);
+                    String NombreVariable = this.Hijos[2].Hijos[0].Nombre.ToString();
+                    String ValorVaribale = entorno.ObtenerValor(this.Hijos[2].Hijos[0].Nombre.ToString());
+                    System.Diagnostics.Debug.WriteLine(TipoVariable);
+                    System.Diagnostics.Debug.WriteLine(NombreVariable);
+                    //System.Diagnostics.Debug.WriteLine(ValorVaribale.Remove(ValorVaribale.IndexOf(",")));
+                    if (this.Hijos[0].Nombre.ToUpper().Contains("INT")==true && TipoVariable.ToUpper().Contains("INT") == true)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ValorVaribale);
+                        entorno.Agregar(id, tipo, ValorVaribale);
+                    }
+                    else if(this.Hijos[0].Nombre.ToUpper().Contains("INT") == true && TipoVariable.ToUpper().Contains("DOUBLE") == true)
+                    {
+                        
+                        String ax = "";
+                        ax= ValorVaribale.Remove(ValorVaribale.IndexOf(","));
+                        System.Diagnostics.Debug.WriteLine("lax" + ax);
+                        entorno.Agregar(id, tipo, ax);
+                    }
+                    else if (this.Hijos[0].Nombre.ToUpper().Contains("DOUBLE") == true && (TipoVariable.ToUpper().Contains("DOUBLE") == true || TipoVariable.ToUpper().Contains("INT") == true))
+                    {
+
+                        
+                        entorno.Agregar(id, tipo, Variable1);
+                    }
+
+
+
 
                 }
                 else
