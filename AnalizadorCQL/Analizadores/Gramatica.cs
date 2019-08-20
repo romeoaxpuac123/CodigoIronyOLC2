@@ -79,11 +79,17 @@ namespace AnalizadorCQL.Analizadores
             var TRY = ToTerm("try");
             var CATCH = ToTerm("catch");
             var elincre = ToTerm("++");
+            var CorcheteA = ToTerm("[");
+            var CorcheteC = ToTerm("]");
             var ArithmeticException = ToTerm("ArithmeticException");
             var IndexOutException = ToTerm("IndexOutException");
+            var WHILE = ToTerm("WHILE");
+            var ELDO = ToTerm("DO");
+            var FOR = ToTerm("FOR");
 
-            
-            
+
+
+            this.RegisterOperators(8, Associativity.Left, "]");
             this.RegisterOperators(7, Associativity.Left, "*", "/", "%");
             this.RegisterOperators(6, Associativity.Left, "+", "-");
             this.RegisterOperators(5, Associativity.Left, "**");
@@ -114,6 +120,9 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal LISTA_IDS2 = new NonTerminal("LISTA_IDS2");
             NonTerminal INC_DEC = new NonTerminal("INC_DEC");
             NonTerminal ASIGNACION_OPERACION = new NonTerminal("ASIGNACION_OPERACION");
+            NonTerminal ELWHILE = new NonTerminal("ELWHILE");
+            NonTerminal DO_WHILE = new NonTerminal("DO_WHILE");
+            NonTerminal EL_FOR = new NonTerminal("EL_FOR");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
@@ -130,7 +139,14 @@ namespace AnalizadorCQL.Analizadores
                              | IMP
                              | TRY_CATCH
                              | INC_DEC + PYC
-                             | ASIGNACION_OPERACION;
+                             | ASIGNACION_OPERACION
+                             | ELWHILE
+                             | DO_WHILE
+                             | EL_FOR;
+
+            EL_FOR.Rule = FOR + ParA + ASIGNACION + E+ PYC + INC_DEC+ ParC + llaveAbierta + SENTENCIAS +  llaverCerrada;
+            ELWHILE.Rule = WHILE + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada;
+            DO_WHILE.Rule = ELDO + llaveAbierta + SENTENCIAS + llaverCerrada + WHILE + ParA + E + ParC + PYC;
 
              ASIGNACION_OPERACION.Rule = id2 + mas + igual + E + PYC
                                        | id2 + menos + igual + E + PYC
@@ -242,7 +258,8 @@ namespace AnalizadorCQL.Analizadores
                     | fechas
                     | hora
                     | ParA + E + ParC
-                    | ParA + TIPOS_VARIABLES + ParC + E;
+                    | E + CorcheteC + E
+                    | CorcheteA + TIPOS_VARIABLES ;
 
            
 

@@ -264,6 +264,7 @@ namespace AnalizadorCQL.Analizadores
                     {
                         NodoAbstracto nuevo = Recorrido1(root.ChildNodes.ElementAt(0));
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
                         //Recorrido1(root.ChildNodes.ElementAt(0)).Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
                         //*eSTO FUNCIONO PARA LA PARTE DE IMPRIMIR VARIAS COSAS :d
                         //NodoAbstracto nuevo = new Nodo("SENTENCIAS");
@@ -644,6 +645,20 @@ namespace AnalizadorCQL.Analizadores
                             return RESULT;
                             //Raiz = nuevo;
                         }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("] (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("]");
+                            NodoAbstracto tipoCasteo = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Keyword)", ""));
+                            //System.Diagnostics.Debug.WriteLine("EXPRESION DE 4);" + root.ChildNodes.ElementAt(1).FindToken().ToString());
+                            nuevo.Hijos.Add(tipoCasteo);
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            nuevo.TipoDato = "CAST";
+                            return nuevo;
+                            //Raiz = nuevo;
+                        }
                         else if ((root.ChildNodes.ElementAt(1).ToString().Contains("E")))
                         {
 
@@ -814,7 +829,7 @@ namespace AnalizadorCQL.Analizadores
                     {
                         System.Diagnostics.Debug.WriteLine("EXPRESION DE 4);");
                         NodoAbstracto nuevo = new Aritmetica("EXP");
-                        NodoAbstracto nuevooperador = new Nodo("(");
+                        NodoAbstracto nuevooperador = new Nodo(")");
                         NodoAbstracto tipoCasteo = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Keyword)", ""));
                         //System.Diagnostics.Debug.WriteLine("EXPRESION DE 4);" + root.ChildNodes.ElementAt(1).FindToken().ToString());
                         nuevo.Hijos.Add(tipoCasteo);
@@ -942,7 +957,16 @@ namespace AnalizadorCQL.Analizadores
                   //  Recorrido1(root.ChildNodes.ElementAt(5));
                   //  Recorrido1(root.ChildNodes.ElementAt(6));
                     System.Diagnostics.Debug.WriteLine("CAso7 -> " + root.ToString());
-                    if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("CREATE") && root.ChildNodes.ElementAt(1).FindToken().ToString().ToUpper().Contains("TABLE"))
+                    if (root.ToString().Contains("ELWHILE"))
+                    {
+                        NodoAbstracto nuevo = new While("WHILE");
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
+                        return nuevo;
+                    }
+
+
+                    else if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("CREATE") && root.ChildNodes.ElementAt(1).FindToken().ToString().ToUpper().Contains("TABLE"))
                     {
                         System.Diagnostics.Debug.WriteLine("CODIGO PARA CREAR UNA TABLA");
                     }else if (root.ChildNodes.ElementAt(0).ToString().Contains("TIPOS_VARIABLES") &&
@@ -1009,6 +1033,26 @@ namespace AnalizadorCQL.Analizadores
                     }
                     break;
                 case 9:
+                    System.Diagnostics.Debug.WriteLine("CAso9 -> " + root.ToString());
+                    if (root.ToString().Contains("DO_WHILE"))
+                    {
+                        NodoAbstracto nuevo = new DOWHILE("DOWHILE");
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));                        
+                        return nuevo;
+                    }
+                    break;
+                case 10:
+                    if (root.ToString().Contains("EL_FOR"))
+                    {
+                        NodoAbstracto nuevo = new ELFOR("FOR");
+                      
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(3)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
+                        return nuevo;
+                    }
                     break;
                 case 12:
                  /*   Recorrido1(root.ChildNodes.ElementAt(0));

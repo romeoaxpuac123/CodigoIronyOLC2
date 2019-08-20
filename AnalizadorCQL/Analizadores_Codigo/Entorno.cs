@@ -33,6 +33,21 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
         }
 
+        public void EliminarVariable(String id)
+        {
+            if (Elementos.ContainsKey(id))
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (id == datos.Key.ToString())
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+                        Elementos.Remove(id);
+                    }
+                }
+            }
+        }
+
         public void AsignarValor(String id, String valor)
         {
             if (Elementos.ContainsKey(id))
