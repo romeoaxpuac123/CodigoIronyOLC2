@@ -964,6 +964,13 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
                         return nuevo;
                     }
+                    else if (root.ToString().Contains("EL_IF"))
+                    {
+                        NodoAbstracto nuevo = new ELIF("IF");
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
+                        return nuevo;
+                    }
 
 
                     else if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("CREATE") && root.ChildNodes.ElementAt(1).FindToken().ToString().ToUpper().Contains("TABLE"))
@@ -1004,7 +1011,23 @@ namespace AnalizadorCQL.Analizadores
                   //  Recorrido1(root.ChildNodes.ElementAt(6));
                   //  Recorrido1(root.ChildNodes.ElementAt(7));
                     System.Diagnostics.Debug.WriteLine("CAso8 -> " + root.ToString());
-                    if (root.ChildNodes.ElementAt(0).ToString().Contains("TIPOS_VARIABLES")
+
+                    if (root.ToString().Contains("EL_IF"))
+                    {
+                        NodoAbstracto nuevo = new ELSEIF("IF");
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(7)));
+                        return nuevo;
+                    }
+                    else if (root.ToString().Contains("SINO"))
+                    {
+                        NodoAbstracto nuevo = new Nodo("SINO");
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(3)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
+                        return nuevo;
+                    }
+                    else if (root.ChildNodes.ElementAt(0).ToString().Contains("TIPOS_VARIABLES")
                         && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("(id2)")
                         && root.ChildNodes.ElementAt(2).FindToken().ToString().Contains("=")
                         && root.ChildNodes.ElementAt(3).FindToken().ToString().Contains("(")
@@ -1014,7 +1037,9 @@ namespace AnalizadorCQL.Analizadores
                     )
                     {
                         System.Diagnostics.Debug.WriteLine("CODIGO CASTEO OBLIGATORIO");
-                    }else if (root.ChildNodes.ElementAt(0).ToString().Contains("alter") &&
+                    } 
+
+                    else if (root.ChildNodes.ElementAt(0).ToString().Contains("alter") &&
                             root.ChildNodes.ElementAt(1).ToString().Contains("type")&&
                             root.ChildNodes.ElementAt(2).ToString().Contains("(id)") &&
                             root.ChildNodes.ElementAt(3).ToString().Contains("delete")
@@ -1039,6 +1064,14 @@ namespace AnalizadorCQL.Analizadores
                         NodoAbstracto nuevo = new DOWHILE("DOWHILE");
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));                        
+                        return nuevo;
+                    }
+                    else if (root.ToString().Contains("SINO"))
+                    {
+                        NodoAbstracto nuevo = new Nodo("SINO");
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(3)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
                         return nuevo;
                     }
                     break;

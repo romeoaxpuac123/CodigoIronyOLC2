@@ -86,6 +86,8 @@ namespace AnalizadorCQL.Analizadores
             var WHILE = ToTerm("WHILE");
             var ELDO = ToTerm("DO");
             var FOR = ToTerm("FOR");
+            var ELIF = ToTerm("IF");
+            var ELELSE = ToTerm("ELSE");
 
 
 
@@ -123,6 +125,8 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal ELWHILE = new NonTerminal("ELWHILE");
             NonTerminal DO_WHILE = new NonTerminal("DO_WHILE");
             NonTerminal EL_FOR = new NonTerminal("EL_FOR");
+            NonTerminal EL_IF = new NonTerminal("EL_IF");
+            NonTerminal SINO = new NonTerminal("SINO");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
@@ -142,7 +146,16 @@ namespace AnalizadorCQL.Analizadores
                              | ASIGNACION_OPERACION
                              | ELWHILE
                              | DO_WHILE
-                             | EL_FOR;
+                             | EL_FOR
+                             | EL_IF;
+
+            EL_IF.Rule = ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
+                | ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada + SINO;
+
+
+            SINO.Rule =  ELELSE + ELIF + ParA + E+  ParC + llaveAbierta + SENTENCIAS + llaverCerrada + SINO 
+                             | ELELSE + ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada;
+
 
             EL_FOR.Rule = FOR + ParA + ASIGNACION + E+ PYC + INC_DEC+ ParC + llaveAbierta + SENTENCIAS +  llaverCerrada;
             ELWHILE.Rule = WHILE + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada;

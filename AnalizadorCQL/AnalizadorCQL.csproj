@@ -193,6 +193,8 @@
     <Compile Include="Analizadores_CodigoAST\DeclararLista.cs" />
     <Compile Include="Analizadores_CodigoAST\DOWHILE.cs" />
     <Compile Include="Analizadores_CodigoAST\ELFOR.cs" />
+    <Compile Include="Analizadores_CodigoAST\ELIF.cs" />
+    <Compile Include="Analizadores_CodigoAST\ELSEIF.cs" />
     <Compile Include="Analizadores_CodigoAST\Incremento.cs" />
     <Compile Include="Analizadores_CodigoAST\LOG.cs" />
     <Compile Include="Analizadores_CodigoAST\Nodo.cs" />
