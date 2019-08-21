@@ -27,6 +27,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             
             String ValorExpresion = this.Hijos[0].Ejecutar(entorno);
             String valor1 = "";
+            String ValorElse = "FALSE";
             if (ValorExpresion.ToUpper().Contains("TRUE"))
             {
                 System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
@@ -50,7 +51,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 // primer ELSE IF 
                 String Expresion1 = this.Hijos[2].Hijos[0].Nombre;
                 System.Diagnostics.Debug.WriteLine("EL ESE 1" + Expresion1);
-                String ValorElse = "FALSE";
+                
                 int hijo1 = 1;
                 String Expresion2 = "";
                 String Expresion3 = "";
@@ -545,7 +546,25 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
 
             }
+            if(ValorElse == "FALSE")
+            {
+                System.Diagnostics.Debug.WriteLine("el esles" + this.Hijos[2].Nombre);
+                if (this.Hijos[2].Nombre.ToUpper().ToString().Contains("SINO"))
+                {
+                    foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos)
+                    {
+                        //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
+                        valor1 = sentencia.Ejecutar(entorno);
+                        if (valor1.Contains("#Error") == true)
+                        {
+                            System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
+                            break;
+                            //return "#Error";
+                        }
 
+                    }
+                }
+            }
             return "ELSE IF";
         }
     }

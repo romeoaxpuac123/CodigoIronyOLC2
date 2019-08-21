@@ -92,13 +92,13 @@ namespace AnalizadorCQL.Analizadores
 
 
             this.RegisterOperators(8, Associativity.Left, "]");
-            this.RegisterOperators(7, Associativity.Left, "*", "/", "%");
-            this.RegisterOperators(6, Associativity.Left, "+", "-");
-            this.RegisterOperators(5, Associativity.Left, "**");
+            this.RegisterOperators(1, Associativity.Left, "+", "-");
+            this.RegisterOperators(2, Associativity.Left, "*", "/", "%");            
+            this.RegisterOperators(3, Associativity.Left, "**");
             this.RegisterOperators(4, Associativity.Left, ">", "<", ">=", "<=");
-            this.RegisterOperators(3, Associativity.Left, "!=", "==");
-            this.RegisterOperators(2, Associativity.Left, "&&", "||", "^");
-            this.RegisterOperators(1, Associativity.Left, "!");
+            this.RegisterOperators(5, Associativity.Left, "!=", "==");
+            this.RegisterOperators(6, Associativity.Left, "&&", "||", "^");
+            this.RegisterOperators(7, Associativity.Left, "!");
             #endregion
 
 
@@ -150,11 +150,13 @@ namespace AnalizadorCQL.Analizadores
                              | EL_IF;
 
             EL_IF.Rule = ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
-                | ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada + SINO;
+                         | ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada + SINO
+                         | ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada + ELELSE + llaveAbierta + SENTENCIAS + llaverCerrada;
 
 
             SINO.Rule =  ELELSE + ELIF + ParA + E+  ParC + llaveAbierta + SENTENCIAS + llaverCerrada + SINO 
-                             | ELELSE + ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada;
+                             | ELELSE + ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
+                             | ELELSE + ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada + ELELSE + llaveAbierta + SENTENCIAS + llaverCerrada;
 
 
             EL_FOR.Rule = FOR + ParA + ASIGNACION + E+ PYC + INC_DEC+ ParC + llaveAbierta + SENTENCIAS +  llaverCerrada;

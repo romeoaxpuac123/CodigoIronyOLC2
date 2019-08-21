@@ -1,12 +1,9 @@
-﻿using System;
+﻿using AnalizadorCQL.Analizadores_Codigo;
+using AnalizadorCQL.Analizadores_CodigoAST;
+using Irony.Parsing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Irony.Parsing;
-using AnalizadorCQL.Analizadores_Codigo;
-using AnalizadorCQL.Analizadores_CodigoAST;
 namespace AnalizadorCQL.Analizadores
 {
     public class Recorrido
@@ -1087,6 +1084,16 @@ namespace AnalizadorCQL.Analizadores
                         return nuevo;
                     }
                     break;
+                case 11:
+                    if (root.ToString().Contains("EL_IF"))
+                    {
+                        NodoAbstracto nuevo = new ELSEIF("ELSEIF");
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(9)));
+                        return nuevo;
+                    }
+                    break;
                 case 12:
                  /*   Recorrido1(root.ChildNodes.ElementAt(0));
                     Recorrido1(root.ChildNodes.ElementAt(1));
@@ -1117,6 +1124,14 @@ namespace AnalizadorCQL.Analizadores
 
                         //return nuevo;
 
+                    }
+                    else if (root.ToString().Contains("SINO"))
+                    {
+                        NodoAbstracto nuevo = new ELSEIF("SINO");
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(3)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(10)));
+                        return nuevo;
                     }
 
                     break;
