@@ -187,6 +187,7 @@
     <Compile Include="Analizadores_CodigoAST\Aritmetica.cs" />
     <Compile Include="Analizadores_CodigoAST\ASIGNACION_OPERACION.cs" />
     <Compile Include="Analizadores_CodigoAST\Asignar.cs" />
+    <Compile Include="Analizadores_CodigoAST\BREAK.cs" />
     <Compile Include="Analizadores_CodigoAST\DeclararAsignacion.cs" />
     <Compile Include="Analizadores_CodigoAST\Declarar.cs" />
     <Compile Include="Analizadores_CodigoAST\DeclararAsignacionLista.cs" />

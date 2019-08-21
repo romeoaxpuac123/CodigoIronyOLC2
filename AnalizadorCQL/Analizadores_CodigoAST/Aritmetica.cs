@@ -1120,7 +1120,128 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 System.Diagnostics.Debug.WriteLine("#Error semanticoxd \n");
                 return "#Error";
             }
-            
+
+            else if (Tipo1 == "cadena" && (Tipo2 == "Fechas" || Tipo2 == "hora"))
+            {
+                String valor1 = (val1.Replace(" (cadena)", ""));
+                String valor2 = (val2.Replace(" (Fechas)", "").Replace(" (hora)",""));
+                // System.Diagnostics.Debug.WriteLine("hola1" + valor1);
+                // System.Diagnostics.Debug.WriteLine("hola2" + valor2);
+                //float uno = 3.1f ;
+                //Console.WriteLine(val1 + "AA"+uno);
+                //Console.WriteLine(val2 + "bb"+uno);
+                switch (this.Hijos[1].Nombre)
+                {
+                    case "+":
+                        totalC = valor1 + valor2;
+                        System.Diagnostics.Debug.WriteLine("concatenacion");
+                        break;
+                    case "-":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+
+                        return "#Error";
+
+                    case "/":
+
+                        // salida.Text = "#Error: Se está intentando dividir por 0 \n";
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+
+                        return "#Error";
+
+                    case "*":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+                    case "%":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+
+                    case "**":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+                    case ">":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+
+                    case "<":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+                    case ">=":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+                    case "<=":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+                    case "==":
+                        totalb = valor1 == valor2;
+                        return totalb.ToString();
+                    case "!=":
+                        totalb = valor1 != valor2;
+                        return totalb.ToString();
+
+                }
+                return totalC.ToString();
+            }
+
+            else if (Tipo2 == "cadena" && (Tipo1 == "Fechas" || Tipo1 == "hora"))
+            {
+                String valor2 = (val1.Replace(" (cadena)", ""));
+                String valor1 = (val2.Replace(" (Fechas)", "").Replace(" (hora)", ""));
+                // System.Diagnostics.Debug.WriteLine("hola1" + valor1);
+                // System.Diagnostics.Debug.WriteLine("hola2" + valor2);
+                //float uno = 3.1f ;
+                //Console.WriteLine(val1 + "AA"+uno);
+                //Console.WriteLine(val2 + "bb"+uno);
+                switch (this.Hijos[1].Nombre)
+                {
+                    case "+":
+                        totalC = valor2 + valor1;
+                        System.Diagnostics.Debug.WriteLine("concatenacion");
+                        break;
+                    case "-":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+
+                        return "#Error";
+
+                    case "/":
+
+                        // salida.Text = "#Error: Se está intentando dividir por 0 \n";
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+
+                        return "#Error";
+
+                    case "*":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+                    case "%":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+
+                    case "**":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+                    case ">":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+
+                    case "<":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+                    case ">=":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+                    case "<=":
+                        System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");
+                        return "#Error";
+                    case "==":
+                        totalb = valor1 == valor2;
+                        return totalb.ToString();
+                    case "!=":
+                        totalb = valor1 != valor2;
+                        return totalb.ToString();
+
+                }
+                return totalC.ToString();
+            }
             System.Diagnostics.Debug.WriteLine("#Error semantico \n");
             return "#Error";
         }

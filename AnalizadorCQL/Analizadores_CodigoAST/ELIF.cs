@@ -38,6 +38,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         break;
                         //return "#Error";
                     }
+                    if (valor1.Contains("BREAK") == true)
+                    {
+                        return "BREAK";
+                        //return "#Error";
+                    }
 
                 }
                 //ValorExpresion = this.Hijos[0].Ejecutar(entorno);

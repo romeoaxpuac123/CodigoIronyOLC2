@@ -36,8 +36,15 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     if (valor1.Contains("#Error") == true)
                     {
                         System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL WHILE");
-                        break;
+                        //break;
+                        return "#Error";
+                    }
+                    if (valor1.Contains("BREAK") == true)
+                    {
+                        return "FOR";
                         //return "#Error";
+                        //elbreak = true;
+                        //break;
                     }
 
                 }

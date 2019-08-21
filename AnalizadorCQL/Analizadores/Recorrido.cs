@@ -353,9 +353,14 @@ namespace AnalizadorCQL.Analizadores
 
                         }
                     }
-
+                    else if (root.ToString() == "ELBREAK")
+                    {
+                        NodoAbstracto nuevo = new BREAK("BREAK");
+                        return nuevo;
+                    }
 
                         break;
+                    
                 case 3:                    
                     //Recorrido1(root.ChildNodes.ElementAt(0));
                     //Recorrido1(root.ChildNodes.ElementAt(1));
@@ -1149,11 +1154,23 @@ namespace AnalizadorCQL.Analizadores
         {
             System.Diagnostics.Debug.WriteLine("ejecutar");
             Entorno entorno = new Entorno();
+            Boolean elbreak = false;
             foreach (NodoAbstracto sentencia in raiz.Hijos[0].Hijos)
             {// para ejecutar solo sentencias 
              //Console.WriteLine("pureba for " + sentencia.Nombre + raiz.TipoDato);
              //System.Diagnostics.Debug.WriteLine("CA:"+sentencia.Hijos[0].Ejecutar(entorno).ToString());
-                sentencia.Ejecutar(entorno);
+                String valor1 = sentencia.Ejecutar(entorno);
+                if (valor1.Contains("#Error") == true || valor1.Contains("BREAK") == true)
+                {
+                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL WHILE");
+                    elbreak = true;
+                    break;
+                    //return "#Error";
+                }
+                if (elbreak)
+                    break;
+
+
             }
         }
 

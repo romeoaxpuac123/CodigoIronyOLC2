@@ -88,6 +88,7 @@ namespace AnalizadorCQL.Analizadores
             var FOR = ToTerm("FOR");
             var ELIF = ToTerm("IF");
             var ELELSE = ToTerm("ELSE");
+            var ELBREAK = ToTerm("break");
 
 
 
@@ -127,6 +128,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal EL_FOR = new NonTerminal("EL_FOR");
             NonTerminal EL_IF = new NonTerminal("EL_IF");
             NonTerminal SINO = new NonTerminal("SINO");
+            NonTerminal EL_BREAK = new NonTerminal("ELBREAK");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
@@ -147,7 +149,10 @@ namespace AnalizadorCQL.Analizadores
                              | ELWHILE
                              | DO_WHILE
                              | EL_FOR
-                             | EL_IF;
+                             | EL_IF
+                             | EL_BREAK;
+
+            EL_BREAK.Rule = ELBREAK + PYC;
 
             EL_IF.Rule = ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
                          | ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada + SINO

@@ -38,7 +38,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     if (valor1.Contains("#Error") == true)
                     {
                         System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                        break;
+                        //break;
+                        return "#Error";
+                    }
+                    if (valor1.Contains("BREAK") == true)
+                    {
+                        return "BREAK";
                         //return "#Error";
                     }
 
@@ -80,7 +85,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                   // break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -103,7 +113,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -126,7 +141,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -149,7 +169,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -175,7 +200,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -198,7 +228,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -223,7 +258,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -246,7 +286,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -271,7 +316,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                   // break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -294,7 +344,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -319,7 +374,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -342,7 +402,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -367,7 +432,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                   // break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -390,7 +460,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -415,7 +490,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -438,7 +518,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -463,7 +548,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                   // break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -486,7 +576,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -512,7 +607,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                   // break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -536,7 +636,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    break;
+                                    //break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
                                     //return "#Error";
                                 }
 
@@ -558,7 +663,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         if (valor1.Contains("#Error") == true)
                         {
                             System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                            break;
+                            //break;
+                            return "#Error";
+                        }
+                        if (valor1.Contains("BREAK") == true)
+                        {
+                            return "BREAK";
                             //return "#Error";
                         }
 
