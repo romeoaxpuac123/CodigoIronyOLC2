@@ -89,7 +89,8 @@ namespace AnalizadorCQL.Analizadores
             var ELIF = ToTerm("IF");
             var ELELSE = ToTerm("ELSE");
             var ELBREAK = ToTerm("break");
-
+            var exists = ToTerm("exists");
+            var elnot = ToTerm("not");
 
 
             this.RegisterOperators(8, Associativity.Left, "]");
@@ -232,11 +233,13 @@ namespace AnalizadorCQL.Analizadores
 
             LISTA_IDS2.Rule = LISTA_IDS2 + coma + id2
                              | id2;
-            CREATE_TYPE.Rule = create + type + id + ParA  + LISTA_IDS + ParC+ PYC ;
+            CREATE_TYPE.Rule = create + type + id + ParA + LISTA_IDS + ParC + PYC
+                              | create + type + CorcheteA + ELIF + elnot + exists + CorcheteC + id + ParA + LISTA_IDS + ParC + PYC;
 
-            USER_TYPE.Rule = id +id2
-                             | id2 + igual + nuevo +id
-                             | id + id2 + igual + llaveAbierta + LISTA_EXPRESION + llaverCerrada;
+            USER_TYPE.Rule = id + id2
+                             | id2 + igual + nuevo + id
+                             | id + id2 + igual + nuevo + id;
+                           //  | id + id2 + igual + llaveAbierta + LISTA_EXPRESION + llaverCerrada;
 
             LISTA_IDS.Rule = LISTA_IDS + coma + TIPOS_VARIABLES + id
                             | LISTA_IDS + coma + USER_TYPE

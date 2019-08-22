@@ -67,6 +67,16 @@ namespace AnalizadorCQL.Analizadores
                         //Raiz = nuevox;
                         return RESULT1;
                     }
+                    else if (root.ToString().Contains("(id)"))
+                    {
+                        NodoAbstracto RESULT1 = null;
+                        NodoAbstracto nuevox = new Nodo("id");
+                        NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        nuevox.Hijos.Add(nuevovalor);
+                        RESULT1 = nuevox;
+                        //Raiz = nuevox;
+                        return RESULT1;
+                    }
                     else if (root.ToString().Contains("indexoutexception"))
                     {
                         NodoAbstracto RESULT1 = null;
@@ -241,7 +251,7 @@ namespace AnalizadorCQL.Analizadores
                    // Recorrido1(root.ChildNodes.ElementAt(1));
                     System.Diagnostics.Debug.WriteLine("CAso2 -> " + root.ToString());
                     if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("id")
-                        && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2") 
+                        && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2")
                        )
                     {
                         System.Diagnostics.Debug.WriteLine("CODIGO PARA CREAR UN OJBETO Estudiante @est;");
@@ -257,7 +267,7 @@ namespace AnalizadorCQL.Analizadores
 
 
                     }
-                    else if(root.ToString() == "SENTENCIAS")
+                    else if (root.ToString() == "SENTENCIAS")
                     {
                         NodoAbstracto nuevo = Recorrido1(root.ChildNodes.ElementAt(0));
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
@@ -273,7 +283,7 @@ namespace AnalizadorCQL.Analizadores
                     {
 
                         if (root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("(numero)")
-                            && root.ChildNodes.ElementAt(0).ToString().Contains("- (Key symbol") )
+                            && root.ChildNodes.ElementAt(0).ToString().Contains("- (Key symbol"))
                         {
                             //    CODIGO PARA MENOS1;
                             NodoAbstracto RESULT = null;
@@ -282,27 +292,27 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
                             nuevo.Hijos.Add(nuevooperador);
                             nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
-                            
+
                             RESULT = nuevo;
                             RESULT.TipoDato = "entero";
                             return RESULT;
 
                         }
                         else if ((root.ChildNodes.ElementAt(1).ToString().Contains("++ (Key symbol")))
-                            {
+                        {
                             System.Diagnostics.Debug.WriteLine("CODIGO PARA ++ CREAR UN OJBETO Estudiante @est;");
 
                             NodoAbstracto nuevo = new Aritmetica("EXP");
-                                NodoAbstracto nuevooperador = new Nodo("+");
-                                nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
-                                nuevo.Hijos.Add(nuevooperador);
-                                nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
-                                nuevo.AutoIncrmentable = 1;
-                                nuevo.TipoDato = "decimal";
+                            NodoAbstracto nuevooperador = new Nodo("+");
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+                            nuevo.AutoIncrmentable = 1;
+                            nuevo.TipoDato = "decimal";
 
-                                return nuevo;
+                            return nuevo;
 
-                            
+
                         }
                         else if (root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("(numdecimal)")
                            && root.ChildNodes.ElementAt(0).ToString().Contains("- (Key symbol"))
@@ -358,8 +368,35 @@ namespace AnalizadorCQL.Analizadores
                         NodoAbstracto nuevo = new BREAK("BREAK");
                         return nuevo;
                     }
+                    else if (root.ToString() == "DEFINCION_GENERAL_CQL")
+                    {
+                        //System.Diagnostics.Debug.WriteLine("___" + root.ChildNodes.ElementAt(0).ToString());
+                        if (root.ChildNodes.ElementAt(0).ToString() == "USER_TYPE")
+                        {
+                            if (root.ChildNodes.ElementAt(0).ChildNodes.Count == 2)
+                            {
+                                System.Diagnostics.Debug.WriteLine("Nombre Objeto" + root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString());
+                                System.Diagnostics.Debug.WriteLine("Nombre Variable" + root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(1).ToString());
+                                NodoAbstracto nuevo = new DECOBJETO("INSTANCIA");
+                                NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace(" (id)", ""));
+                                NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
+                                nuevo.Hijos.Add(id);
+                                nuevo.Hijos.Add(id2);
+                                return nuevo;
+                            }
+                            else if (root.ChildNodes.ElementAt(0).ChildNodes.Count == 4)
+                            {
+                                NodoAbstracto nuevo = new INSTANCIA1OBJETO("INSTANCIA");
+                                NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(3).ToString().Replace(" (id)", ""));
+                                NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
+                                nuevo.Hijos.Add(id);
+                                nuevo.Hijos.Add(id2);
+                                return nuevo;
+                            }
+                        }
+                    }
 
-                        break;
+                    break;
                     
                 case 3:                    
                     //Recorrido1(root.ChildNodes.ElementAt(0));
@@ -999,7 +1036,21 @@ namespace AnalizadorCQL.Analizadores
 
                    )
                     {
-                        System.Diagnostics.Debug.WriteLine("Codigo para LA CREACION DE OBJETOS;");
+                        
+                        ListaIDSObjeto(root.ChildNodes.ElementAt(4));
+                        System.Diagnostics.Debug.WriteLine("Codigo para LA CREACION DE OBJETOSXS;");
+                        NodoAbstracto nuevo = new USER_TYPE("USER_TYPE");
+                        NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString());
+                        nuevo.Hijos.Add(nuevoid);
+                        for(int i = 0; i<STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        
+
+                        //ListaIDSObjeto(root.ChildNodes.ElementAt(4));
+                        STN.Clear();
+                        return nuevo;
                     }
                     break;
                 case 8:
@@ -1100,26 +1151,26 @@ namespace AnalizadorCQL.Analizadores
                     }
                     break;
                 case 12:
-                 /*   Recorrido1(root.ChildNodes.ElementAt(0));
-                    Recorrido1(root.ChildNodes.ElementAt(1));
-                    Recorrido1(root.ChildNodes.ElementAt(2));
-                    Recorrido1(root.ChildNodes.ElementAt(3));
-                    Recorrido1(root.ChildNodes.ElementAt(4));
-                    Recorrido1(root.ChildNodes.ElementAt(5));
-                    Recorrido1(root.ChildNodes.ElementAt(6));
-                    Recorrido1(root.ChildNodes.ElementAt(7));
-                    Recorrido1(root.ChildNodes.ElementAt(8));
-                    Recorrido1(root.ChildNodes.ElementAt(9)); */
-                     if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("TRY") &&
-                            root.ChildNodes.ElementAt(4).ToString().ToUpper().Contains("CATCH"))
+                    /*   Recorrido1(root.ChildNodes.ElementAt(0));
+                       Recorrido1(root.ChildNodes.ElementAt(1));
+                       Recorrido1(root.ChildNodes.ElementAt(2));
+                       Recorrido1(root.ChildNodes.ElementAt(3));
+                       Recorrido1(root.ChildNodes.ElementAt(4));
+                       Recorrido1(root.ChildNodes.ElementAt(5));
+                       Recorrido1(root.ChildNodes.ElementAt(6));
+                       Recorrido1(root.ChildNodes.ElementAt(7));
+                       Recorrido1(root.ChildNodes.ElementAt(8));
+                       Recorrido1(root.ChildNodes.ElementAt(9)); */
+                    if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("TRY") &&
+                           root.ChildNodes.ElementAt(4).ToString().ToUpper().Contains("CATCH"))
                     {
                         System.Diagnostics.Debug.WriteLine("CODIGO TRY_CATCH");
-                        
 
-                         NodoAbstracto nuevo = new TRY_CATCH("TRY_CATCH");
-                        nuevo.Hijos.Add ( Recorrido1(root.ChildNodes.ElementAt(2)) );
-                        nuevo.Hijos.Add ( Recorrido1(root.ChildNodes.ElementAt(10)) );
-                        nuevo.Hijos.Add ( Recorrido1(root.ChildNodes.ElementAt(6)));
+
+                        NodoAbstracto nuevo = new TRY_CATCH("TRY_CATCH");
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(10)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
                         return nuevo;
 
 
@@ -1138,7 +1189,22 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(10)));
                         return nuevo;
                     }
+                    else if (root.ToString().Contains("CREATE_TYPE")) {
+                        ListaIDSObjeto(root.ChildNodes.ElementAt(9));
+                        System.Diagnostics.Debug.WriteLine("Codigo para LA CREACION DE OBJETOSXS;");
+                        NodoAbstracto nuevo = new USER_TYPE("USER_TYPE");
+                        NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(7).FindToken().ToString());
+                        nuevo.Hijos.Add(nuevoid);
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        nuevo.AutoIncrmentable2 = 5;
 
+                        //ListaIDSObjeto(root.ChildNodes.ElementAt(4));
+                        STN.Clear();
+                        return nuevo;
+                    }
                     break;
                 default:
                 break;
@@ -1160,9 +1226,9 @@ namespace AnalizadorCQL.Analizadores
              //Console.WriteLine("pureba for " + sentencia.Nombre + raiz.TipoDato);
              //System.Diagnostics.Debug.WriteLine("CA:"+sentencia.Hijos[0].Ejecutar(entorno).ToString());
                 String valor1 = sentencia.Ejecutar(entorno);
-                if (valor1.Contains("#Error") == true || valor1.Contains("BREAK") == true)
+                if (valor1.ToUpper().Contains("#ERROR") == true || valor1.Contains("BREAK") == true)
                 {
-                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL WHILE");
+                    System.Diagnostics.Debug.WriteLine("ERROR SEMANTICO");
                     elbreak = true;
                     break;
                     //return "#Error";
@@ -1186,6 +1252,30 @@ namespace AnalizadorCQL.Analizadores
                
             }
         }
+        List<String> STN = new List<String>();
+        public List<String> ListaIDSObjeto(ParseTreeNode root)
+        {
+            
+            switch (root.ChildNodes.Count)
+            {
+                case 2:
+                    System.Diagnostics.Debug.WriteLine("dos hijo");
+                   // String valor1 = root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (Keyword)", "");
+                   // String valor2 = root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", "");
+                    STN.Add(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (Keyword)", "") + "," + root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                    
+                    break;
+                case 4:
+                    System.Diagnostics.Debug.WriteLine("cuatro hijo");
+                  //  String valor1 = root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (Keyword)","");
+                  //  String valor2 = root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)","");
+                    STN.Add(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (Keyword)", "") + "," + root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                   
+                    ListaIDSObjeto(root.ChildNodes.ElementAt(0));
+                    break;
+            }
+                    return STN;
+        } 
 
         public List<String> ListaID2(ParseTreeNode root)
         {

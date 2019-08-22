@@ -197,10 +197,13 @@
     <Compile Include="Analizadores_CodigoAST\ELIF.cs" />
     <Compile Include="Analizadores_CodigoAST\ELSEIF.cs" />
     <Compile Include="Analizadores_CodigoAST\Incremento.cs" />
+    <Compile Include="Analizadores_CodigoAST\DECOBJETO.cs" />
+    <Compile Include="Analizadores_CodigoAST\INSTANCIA1OBJETO.cs" />
     <Compile Include="Analizadores_CodigoAST\LOG.cs" />
     <Compile Include="Analizadores_CodigoAST\Nodo.cs" />
     <Compile Include="Analizadores_CodigoAST\NodoAbstracto.cs" />
     <Compile Include="Analizadores_CodigoAST\TRY_CATCH.cs" />
+    <Compile Include="Analizadores_CodigoAST\USER_TYPE.cs" />
     <Compile Include="Analizadores_CodigoAST\While.cs" />
     <Compile Include="Analizadores_Codigo\Entorno.cs" />
     <Compile Include="Analizadores_Codigo\Simbolo.cs" />
