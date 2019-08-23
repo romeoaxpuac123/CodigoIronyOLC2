@@ -225,7 +225,9 @@ namespace AnalizadorCQL.Analizadores
                                         | LALISTA;
 
             LALISTA.Rule = LISTA + id2 + igual + nuevo + LISTA + menor + TIPOS_VARIABLES + mayor + PYC
-                          |LISTA + id2 + igual + nuevo + CorcheteA  + LISTA_EXPRESION + CorcheteC + PYC;
+                          | LISTA + id2 + PYC
+                          | id2 + igual + nuevo + CorcheteA + LISTA_EXPRESION + CorcheteC + PYC
+                          | LISTA + id2 + igual + nuevo + CorcheteA  + LISTA_EXPRESION + CorcheteC + PYC;
 
            
 

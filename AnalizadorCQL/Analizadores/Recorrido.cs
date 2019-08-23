@@ -805,9 +805,16 @@ namespace AnalizadorCQL.Analizadores
 
                         return RESULT;
                     }
-                        
-                   
+                    else if (root.ToString().ToUpper().Contains("LALISTA"))
+                    {
+                        NodoAbstracto nuevo = new LISTAS("LISTAPAR");
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id1)", ""));
+                        nuevo.Hijos.Add(id);
+                        nuevo.AutoIncrmentable2 = 22;
+                        return nuevo;
+                    }
                     break;
+
                 case 4:
                     
                    // Recorrido1(root.ChildNodes.ElementAt(0));
@@ -1101,6 +1108,24 @@ namespace AnalizadorCQL.Analizadores
 
                         return nuevo;
                     }
+                    else if (root.ToString().ToUpper().Contains("LALISTA"))
+                    {
+                        NodoAbstracto nuevo = new LISTAS("LISTAPAR");
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
+                        nuevo.Hijos.Add(id);
+                        nuevo.AutoIncrmentable2 = 33;
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        Atributos(root.ChildNodes.ElementAt(4));
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+
+                        return nuevo;
+                    }
+                    
                     break;
                 case 8:
 
@@ -1189,7 +1214,7 @@ namespace AnalizadorCQL.Analizadores
                     else if (root.ToString().ToUpper().Contains("LALISTA"))
                     {
                         NodoAbstracto nuevo = new LISTAS("LISTAPAR");
-                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id1)", ""));
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
                         nuevo.Hijos.Add(id);
                         nuevo.AutoIncrmentable2 = 99;                        
                         System.Diagnostics.Debug.WriteLine("sdaf");
