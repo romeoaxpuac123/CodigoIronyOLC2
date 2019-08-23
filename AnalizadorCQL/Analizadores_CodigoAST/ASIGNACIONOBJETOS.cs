@@ -22,13 +22,25 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         {
             System.Diagnostics.Debug.WriteLine("Se está Ejecutnado ASIGNACION OBJETO");
             System.Diagnostics.Debug.WriteLine("Se está Ejecutnado DELCARCION-INSTANCIA OBJETO");
-            String Objeto1 = this.Hijos[0].Nombre.ToString();
+            String Objeto1 = "";
+            if (this.AutoIncrmentable2 == 9)
+            {
+                Objeto1 = entorno.ObtenerTipo(this.Hijos[0].Nombre.ToString());
+            }
+            else {
+               Objeto1 = this.Hijos[0].Nombre.ToString();
+            }
+            if(Objeto1.ToUpper().ToString() != this.Hijos[2].Nombre.ToUpper().ToString())
+            {
+                Objeto1 = "BAYRONROMEOAXPUACYOC201314474";
+            }
             String Variable = this.Hijos[1].Nombre.ToString();
             if (entorno.Agregar(Objeto1, "Objeto", "Objeto") == false)
             {
                 System.Diagnostics.Debug.WriteLine("EL OBJETO SI EXISTE");
                 Boolean B = entorno.Agregar(Variable, Objeto1, "1");
-                if (B == true)
+                String O = entorno.ObtenerValor(Variable);
+                if (B == true || O.ToString()=="1")
                 {
                     System.Diagnostics.Debug.WriteLine("SE AGREGO VARIABLE-OBJETO SI EXISTE");
                     System.Diagnostics.Debug.WriteLine("#VAMOS A INSTANCIAR -> " + Variable);
@@ -50,7 +62,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                             System.Diagnostics.Debug.WriteLine("#VAMOS A INSTANCIAR con " + Atributo);
                             String valor = entorno.ObtenerValor(Atributo);
                             String tipo = entorno.ObtenerTipo(Atributo);
-                            String NuevaVariable = Variable + "."+ Atributo.Replace(Objeto1, "").Replace(".", "");
+                            String NuevaVariable = Variable + "." + Atributo.Replace(Objeto1, "").Replace(".", "");
                             entorno.AgregarElementoObjeto(NuevaVariable, valor, tipo, i.ToString());
                         }
                         //objeto no instanciado
@@ -61,6 +73,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         //objeto ya instanciado
                         return "#ERROR objeto ya instanciado";
                     }
+                }
+                else {
+                    System.Diagnostics.Debug.WriteLine("EL OBJETO declarado");
                 }
             }
             else

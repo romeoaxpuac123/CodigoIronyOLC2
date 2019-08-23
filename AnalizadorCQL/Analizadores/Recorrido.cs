@@ -697,7 +697,7 @@ namespace AnalizadorCQL.Analizadores
                             return RESULT;
                             //Raiz = nuevo;
                         }
-                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("] (Key symbol")))
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("? (Key symbol")))
                         {
 
                             NodoAbstracto nuevo = new Aritmetica("EXP");
@@ -969,6 +969,27 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(3)));
                         return nuevo;
                     }
+                    else if( root.ToString().ToUpper().Contains("USER_TYPE2"))
+                    {
+                        NodoAbstracto nuevo = new ASIGNACIONOBJETOS("INSTANCIA");
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
+                        NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
+                        nuevo.Hijos.Add(id);
+                        nuevo.Hijos.Add(id2);
+                        nuevo.AutoIncrmentable2 = 9;
+                        STN.Add("CADENA");
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        Atributos(root.ChildNodes.ElementAt(3));
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+
+                        return nuevo;
+                    }
+
                     break;
                 case 6:
                    
@@ -988,30 +1009,6 @@ namespace AnalizadorCQL.Analizadores
                     {
                             System.Diagnostics.Debug.WriteLine("CODIGO PARA ALTER TABLE ADD");
                        
-                    }else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("id") &&
-                              root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2") &&
-                              root.ChildNodes.ElementAt(2).FindToken().ToString().Contains("Key symbol") &&
-                              root.ChildNodes.ElementAt(3).FindToken().ToString().Contains("Key symbol") &&
-                              root.ChildNodes.ElementAt(4).ToString().Contains("LISTA_EXPRESION") &&
-                              root.ChildNodes.ElementAt(5).FindToken().ToString().Contains("Key symbol") 
-                    ) {
-                        System.Diagnostics.Debug.WriteLine("CODIGO ASIGNAR VALORES A UN OBJETO Estudiante @est3 = {201504481, \"Julio Arango\",@est2};");
-                        NodoAbstracto nuevo = new ASIGNACIONOBJETOS("INSTANCIA");
-                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id)", ""));
-                        NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
-                        nuevo.Hijos.Add(id);
-                        nuevo.Hijos.Add(id2);
-                        STN.Add("CADENA");
-                        System.Diagnostics.Debug.WriteLine("sdaf");
-                        Atributos(root.ChildNodes.ElementAt(4));
-                        System.Diagnostics.Debug.WriteLine("sdaf");
-                        for(int i  = 0; i<STN.Count; i++)
-                        {
-                            nuevo.ListaID1.Add(STN[i]);
-                        }
-                        STN.Clear();
-
-                        return nuevo;
                     }
                     
                     break;
@@ -1081,6 +1078,29 @@ namespace AnalizadorCQL.Analizadores
                         STN.Clear();
                         return nuevo;
                     }
+                    else if (root.ToString().ToUpper().Contains("USER_TYPE2"))
+                    {
+                        NodoAbstracto nuevo = new ASIGNACIONOBJETOS("INSTANCIA");
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
+                        NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
+                        NodoAbstracto id3 = new Nodo(root.ChildNodes.ElementAt(6).ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(id);
+                        nuevo.Hijos.Add(id2);
+
+                        nuevo.Hijos.Add(id3);
+                        nuevo.AutoIncrmentable2 = 9;
+                        STN.Add("CADENA");
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        Atributos(root.ChildNodes.ElementAt(3));
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+
+                        return nuevo;
+                    }
                     break;
                 case 8:
 
@@ -1138,6 +1158,51 @@ namespace AnalizadorCQL.Analizadores
                     {
                         System.Diagnostics.Debug.WriteLine("CODIGO ALTER TYPE ADD");
                     }
+                    else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("id") &&
+                              root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2") &&
+                              root.ChildNodes.ElementAt(2).FindToken().ToString().Contains("Key symbol") &&
+                              root.ChildNodes.ElementAt(3).FindToken().ToString().Contains("Key symbol") &&
+                              root.ChildNodes.ElementAt(4).ToString().Contains("LISTA_EXPRESION") &&
+                              root.ChildNodes.ElementAt(5).FindToken().ToString().Contains("Key symbol")
+                    )
+                    {
+                        System.Diagnostics.Debug.WriteLine("CODIGO ASIGNAR VALORES A UN OBJETO Estudiante @est3 = {201504481, \"Julio Arango\",@est2};");
+                        NodoAbstracto nuevo = new ASIGNACIONOBJETOS("INSTANCIA");
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id)", ""));
+                        NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
+                        NodoAbstracto id3 = new Nodo(root.ChildNodes.ElementAt(7).ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(id);
+                        nuevo.Hijos.Add(id2);
+                        nuevo.Hijos.Add(id3);
+                        STN.Add("CADENA");
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        Atributos(root.ChildNodes.ElementAt(4));
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+
+                        return nuevo;
+                    }
+                    else if (root.ToString().ToUpper().Contains("LALISTA"))
+                    {
+                        NodoAbstracto nuevo = new LISTAS("LISTAPAR");
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id1)", ""));
+                        nuevo.Hijos.Add(id);
+                        nuevo.AutoIncrmentable2 = 99;                        
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        Atributos(root.ChildNodes.ElementAt(5));
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+
+                        return nuevo;
+                    }
                     break;
                 case 9:
                     System.Diagnostics.Debug.WriteLine("CAso9 -> " + root.ToString());
@@ -1156,6 +1221,18 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
                         return nuevo;
                     }
+                    else if (root.ToString().Contains("LALISTA"))
+                    {
+                        NodoAbstracto nuevo = new LISTAS("LISTA");
+                        NodoAbstracto NombreLista = new Nodo(root.ChildNodes.ElementAt(1).ToString());
+                        NodoAbstracto TipoLista = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString());
+                        nuevo.Hijos.Add(NombreLista);
+                        nuevo.Hijos.Add(TipoLista);
+                        nuevo.AutoIncrmentable2 = 88;
+                        return nuevo;
+                           
+                    }
+
                     break;
                 case 10:
                     if (root.ToString().Contains("EL_FOR"))

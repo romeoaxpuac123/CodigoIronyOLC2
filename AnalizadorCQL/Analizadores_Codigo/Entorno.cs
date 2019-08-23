@@ -136,6 +136,41 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
         }
 
+        public void AgregarLista(String id, String valor)
+        {
+            if (Elementos.ContainsKey(id))
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (id == datos.Key.ToString())
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+                        p.AgregarALista(valor);
+                        
+                    }
+                }
+            }
+        }
+        public void Mostrar(String id)
+        {
+            if (Elementos.ContainsKey(id))
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (id == datos.Key.ToString())
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+                        System.Diagnostics.Debug.WriteLine("La lista" + " " + id);
+                        for (int i = 0; i< p.lalista().Count; i++)
+                        {
+                            System.Diagnostics.Debug.WriteLine(p.lalista()[i]);
+                        }
+
+                    }
+                }
+            }
+        }
+
         public String ObtenerValor(String id)
         {
             String Valor = "";
@@ -196,6 +231,27 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     {
                         Simbolo p = (Simbolo)datos.Value;
                         tipo = p.ObtenerTipo();
+                    }
+                }
+                return tipo;
+            }
+            else
+            {
+                return "#Error";
+            }
+
+        }
+        public String ObtenerObjeto(String id)
+        {
+            String tipo = "";
+            if (Elementos.ContainsKey(id))
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (id == datos.Key.ToString())
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+                        tipo = p.RetornarPosicionObjeto();
                     }
                 }
                 return tipo;

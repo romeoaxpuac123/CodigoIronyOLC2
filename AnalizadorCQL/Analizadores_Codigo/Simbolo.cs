@@ -11,11 +11,17 @@ namespace AnalizadorCQL.Analizadores_Codigo
         String Valor;
         String Tipo;
         String Objeto;
+        List<String> Lista = new List<String>();
         public Simbolo(String Id, String Valor, String Tipo)
         {
             this.Id = Id;
             this.Valor = Valor;
             this.Tipo = Tipo;
+        }
+       
+        public void AgregarALista(String elemento)
+        {
+            this.Lista.Add(elemento);
         }
         public Simbolo(String Id, String Valor, String Tipo,String objetox)
         {
@@ -28,6 +34,10 @@ namespace AnalizadorCQL.Analizadores_Codigo
         public String ObtenerId()
         {
             return Id;
+        }
+        public List<String> lalista()
+        {
+            return this.Lista;
         }
 
         public String ObtenerValor()

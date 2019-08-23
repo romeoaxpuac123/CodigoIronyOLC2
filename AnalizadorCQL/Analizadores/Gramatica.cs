@@ -81,6 +81,8 @@ namespace AnalizadorCQL.Analizadores
             var elincre = ToTerm("++");
             var CorcheteA = ToTerm("[");
             var CorcheteC = ToTerm("]");
+            var CorcheteAA = ToTerm("¿");
+            var CorcheteCA = ToTerm("?");
             var ArithmeticException = ToTerm("ArithmeticException");
             var IndexOutException = ToTerm("IndexOutException");
             var WHILE = ToTerm("WHILE");
@@ -91,9 +93,11 @@ namespace AnalizadorCQL.Analizadores
             var ELBREAK = ToTerm("break");
             var exists = ToTerm("exists");
             var elnot = ToTerm("not");
+            var ELAS = ToTerm("as");
+            var LISTA = ToTerm("list");
 
 
-            this.RegisterOperators(8, Associativity.Left, "]");
+            this.RegisterOperators(8, Associativity.Left, "?");
             this.RegisterOperators(1, Associativity.Left, "+", "-");
             this.RegisterOperators(2, Associativity.Left, "*", "/", "%");            
             this.RegisterOperators(3, Associativity.Left, "**");
@@ -131,6 +135,8 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal EL_IF = new NonTerminal("EL_IF");
             NonTerminal SINO = new NonTerminal("SINO");
             NonTerminal EL_BREAK = new NonTerminal("ELBREAK");
+            NonTerminal LALISTA = new NonTerminal("LALISTA");
+            NonTerminal LISTAPARASITOS = new NonTerminal("LISTAPARASITOS");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
@@ -215,7 +221,13 @@ namespace AnalizadorCQL.Analizadores
                                         | USER_TYPE2
                                         | ASIGNACION
                                         | ALTER_TYPE
-                                        | DELETE_TYPE;
+                                        | DELETE_TYPE
+                                        | LALISTA;
+
+            LALISTA.Rule = LISTA + id2 + igual + nuevo + LISTA + menor + TIPOS_VARIABLES + mayor + PYC
+                          |LISTA + id2 + igual + nuevo + CorcheteA  + LISTA_EXPRESION + CorcheteC + PYC;
+
+           
 
             DELETE_TYPE.Rule = borrar1 + type + id + PYC;
             ALTER_TYPE.Rule = ALTERAR + type + id + add1 + ParA +  LISTA_IDS+ ParC + PYC
@@ -241,7 +253,8 @@ namespace AnalizadorCQL.Analizadores
             USER_TYPE.Rule = id + id2
                              | id2 + igual + nuevo + id
                              | id + id2 + igual + nuevo + id;
-            USER_TYPE2.Rule = id + id2 + igual + llaveAbierta + LISTA_EXPRESION + llaverCerrada;
+            USER_TYPE2.Rule = id + id2 + igual + llaveAbierta + LISTA_EXPRESION + llaverCerrada +  ELAS + id
+                             | id2 + igual + llaveAbierta + LISTA_EXPRESION + llaverCerrada + ELAS + id;
             //  | id + id2 + igual + llaveAbierta + LISTA_EXPRESION + llaverCerrada;
 
             LISTA_IDS.Rule = LISTA_IDS + coma + TIPOS_VARIABLES + id
@@ -284,8 +297,8 @@ namespace AnalizadorCQL.Analizadores
                     | fechas
                     | hora
                     | ParA + E + ParC
-                    | E + CorcheteC + E
-                    | CorcheteA + TIPOS_VARIABLES ;
+                    | E + CorcheteCA + E
+                    | CorcheteAA + TIPOS_VARIABLES ;
 
            
 
