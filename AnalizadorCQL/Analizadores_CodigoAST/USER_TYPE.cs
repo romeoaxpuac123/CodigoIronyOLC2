@@ -48,7 +48,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     {
                         Valor = "false";
                     }
-                    Boolean procura =  entorno.AgregarElementoObjeto(NombreObjeto+"."+ separadas[1], Valor, separadas[0], NombreObjeto);
+                    Boolean procura =  entorno.AgregarElementoObjeto(NombreObjeto+"."+ separadas[1], Valor, separadas[0], (i+1).ToString());
                     if(procura == false && this.AutoIncrmentable2 !=5)
                     {
                         return "#Error7 atributos repetidos";

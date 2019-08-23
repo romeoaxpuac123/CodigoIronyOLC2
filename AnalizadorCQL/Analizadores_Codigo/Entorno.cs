@@ -10,7 +10,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
     public class Entorno
     {
 
-        Hashtable Elementos;
+        public Hashtable Elementos;
 
         public Entorno()
         {
@@ -52,6 +52,27 @@ namespace AnalizadorCQL.Analizadores_Codigo
             
         }
 
+        public String ElementosVariableObjeto(String Objeto)
+        {
+            String supercadena = "INICIO";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(Objeto))
+                {
+                    String id = datos.Key.ToString().Replace(" ", "");
+                    if (id != "" && id.Contains(".")==true)
+                    {
+                        supercadena = supercadena + "," + id;
+                        System.Diagnostics.Debug.WriteLine("Parametro del objeto -> " + id);
+                        
+                    }
+
+                }
+            }
+            return supercadena;
+
+        }
+
         public bool Agregar(String id, String tipo, String valor)
         {
             if (!Elementos.ContainsKey(id))
@@ -70,18 +91,35 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         public void EliminarVariable(String id)
         {
+            Boolean i = false;
+            Hashtable Reemplazo = new Hashtable();
             if (Elementos.ContainsKey(id))
             {
                 foreach (DictionaryEntry datos in Elementos)
                 {
-                    if (id == datos.Key.ToString())
+                    Simbolo p = (Simbolo)datos.Value;
+                    //Reemplazo.Add(p.ObtenerId(), p);
+                    if (id != datos.Key.ToString())
                     {
-                        Simbolo p = (Simbolo)datos.Value;
-                        Elementos.Remove(id);
+                        //Simbolo p = (Simbolo)datos.Value;
+                        //Elementos.Remove(id);
+                        Reemplazo.Add(p.ObtenerId(), p);
+                        
                     }
                 }
+                i = true;
+            }
+
+            foreach(DictionaryEntry x in Reemplazo)
+            {
+                System.Diagnostics.Debug.WriteLine("La variableeeee ->" + x.Key.ToString());
+            }
+            if (i == true)
+            {
+                Elementos = Reemplazo;
             }
         }
+
 
         public void AsignarValor(String id, String valor)
         {
@@ -112,6 +150,34 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     }
                 }
                 return Valor;
+            }
+            else
+            {
+                return "#Error2";
+            }
+        }
+        public String ObtenerPosicion(String id, String numero)
+        {
+            String Valor = "";
+            String Valor2 = "";
+            if (Elementos.ContainsKey(id))
+            {
+                
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (datos.Key.ToString().Contains(id))
+                    {
+                        
+                        Simbolo p = (Simbolo)datos.Value;
+                        Valor = p.RetornarPosicionObjeto();
+                       // System.Diagnostics.Debug.WriteLine("sososos" + Valor);
+                        if (Valor== numero)
+                        {
+                            Valor2 = p.ObtenerId();
+                        }
+                    }
+                }
+                return Valor2;
             }
             else
             {

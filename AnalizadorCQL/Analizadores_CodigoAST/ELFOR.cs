@@ -52,9 +52,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 
 
             }
-
-            entorno.EliminarVariable(VariableContador);
-
+            System.Diagnostics.Debug.WriteLine("III");
+         entorno.EliminarVariable(VariableContador);
+            System.Diagnostics.Debug.WriteLine("III");
             return "FOR";
         }
     }

@@ -208,6 +208,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 return "";
 
             }
+            System.Diagnostics.Debug.WriteLine("VARX" + this.Hijos[0].Nombre);
+            System.Diagnostics.Debug.WriteLine("tipo de la expresionX" + this.Hijos[1].TipoDato);
             System.Diagnostics.Debug.WriteLine("tipo de la expresion" + this.Hijos[1].Hijos[0].Nombre);
             System.Diagnostics.Debug.WriteLine("valor" + this.Hijos[1].Ejecutar(entorno).Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", ""));
             String Variable1 = this.Hijos[1].Ejecutar(entorno).Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "").Replace(".",",");
@@ -267,10 +269,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     if (Variable1.Contains(","))
                     {
                         entorno.AsignarValor(this.Hijos[0].Nombre, Variable1.Remove(Variable1.IndexOf(",")));
+                       return "ASIGNAR";
                     }
                     else
                     {
                         entorno.AsignarValor(this.Hijos[0].Nombre, Variable1);
+                        return "ASIGNAR";
                     }
                   
                 }
@@ -282,6 +286,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     //ASIGANACION DE UNA VARIABLE DE TIPO DOUBLE
                     System.Diagnostics.Debug.WriteLine("la variable es decimal");
                     entorno.AsignarValor(this.Hijos[0].Nombre, Variable1);
+                    return "ASIGNAR";
                 }
                 else if (entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("BOOLEAN")
                     && (this.Hijos[1].Nombre.ToString().Contains("Booleano") || this.Hijos[1].Nombre == "EXP")
@@ -292,7 +297,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     //ASIGANACION DE UNA VARIABLE DE TIPO voolena
                     //System.Diagnostics.Debug.WriteLine("la variable es boleano");
                     entorno.AsignarValor(this.Hijos[0].Nombre, Variable1);
-                    
+                    return "ASIGNAR";
+
                 }
                 else if (entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("STRING")
                     && (this.Hijos[1].Nombre.ToString().Contains("Cadena") || this.Hijos[1].Nombre == "EXP")
@@ -301,9 +307,10 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     )
                 {
                     //ASIGANACION DE UNA VARIABLE DE TIPO string
-                    System.Diagnostics.Debug.WriteLine("la variable es String");
+                    System.Diagnostics.Debug.WriteLine("la variable es StringX");
                     entorno.AsignarValor(this.Hijos[0].Nombre, Variable1);
 
+                    return "ASIGNAR";
                 }
                 else if (entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("DATE")
                    && (this.Hijos[1].Nombre.ToString().Contains("Fecha") || this.Hijos[1].Nombre == "EXP")
@@ -313,6 +320,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 {
                     //ASIGANACION DE UNA VARIABLE DE TIPO fechas
                     entorno.AsignarValor(this.Hijos[0].Nombre, Variable1);
+                    return "ASIGNAR";
 
                 }
                 else if (entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("TIME")
@@ -323,8 +331,10 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 {
                     //ASIGANACION DE UNA VARIABLE DE TIPO fechas
                     entorno.AsignarValor(this.Hijos[0].Nombre, Variable1);
+                    return "ASIGNAR";
 
-                }else if (this.Hijos[1].TipoDato == "id2")
+                }
+                else if (this.Hijos[1].TipoDato == "id2")
                 {
                     String TIPO1 = entorno.ObtenerTipo(this.Hijos[1].NombreVariable);
                     String TIPO2 = entorno.ObtenerTipo(this.Hijos[0].Nombre);
@@ -334,17 +344,20 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     {
                         System.Diagnostics.Debug.WriteLine("SON DEL MISMO TIPO");
                         entorno.AsignarValor(this.Hijos[0].Nombre, entorno.ObtenerValor(this.Hijos[1].NombreVariable));
+                        return "ASIGNAR";
                     }
                     else
                     {
                         if (TIPO1.ToUpper().Contains("INT") && TIPO2.ToUpper().Contains("DOUBLE"))
                         {
                             entorno.AsignarValor(this.Hijos[0].Nombre, entorno.ObtenerValor(this.Hijos[1].NombreVariable));
+                            return "ASIGNAR";
 
                         }
                         else if (TIPO1.ToUpper().Contains("DOUBLE") && TIPO2.ToUpper().Contains("INT"))
                         {
                             entorno.AsignarValor(this.Hijos[0].Nombre, entorno.ObtenerValor(this.Hijos[1].NombreVariable));
+                            return "ASIGNAR";
 
                         }
                         else {

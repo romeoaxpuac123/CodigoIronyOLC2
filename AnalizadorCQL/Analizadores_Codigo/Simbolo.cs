@@ -44,7 +44,11 @@ namespace AnalizadorCQL.Analizadores_Codigo
         {
             this.Valor = Valor;
         }
-        public String RetornarObjeto(String id)
+        public void Cambiar(String Valor)
+        {
+            this.Id = Valor;
+        }
+        public String RetornarPosicionObjeto()
         {
             return this.Objeto;
         }

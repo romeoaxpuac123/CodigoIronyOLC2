@@ -103,20 +103,20 @@ namespace AnalizadorCQL.Analizadores
                     else if (root.ToString() == "SENTENCIA")
                     {
                         //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
-                        
+
 
                         return (Recorrido1(root.ChildNodes.ElementAt(0)));
-                        
+
 
                     }
-                   
+
                     else if (root.ToString() == "DEFINCION_GENERAL_CQL")
                     {
                         //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
 
 
                         return (Recorrido1(root.ChildNodes.ElementAt(0)));
-                        
+
 
                     }
                     else if (root.ToString() == "LISTA_ID2")
@@ -199,7 +199,7 @@ namespace AnalizadorCQL.Analizadores
                             //    Console.WriteLine("PASO POR UN NUMERO");
                             NodoAbstracto RESULT1 = null;
                             NodoAbstracto nuevox = new Nodo("Booleano");
-                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (Keyword)",""));
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (Keyword)", ""));
                             nuevox.Hijos.Add(nuevovalor);
                             nuevox.TipoDato = "Booleano";
                             RESULT1 = nuevox;
@@ -237,7 +237,7 @@ namespace AnalizadorCQL.Analizadores
                         {
                             //      Console.WriteLine("PASO POR UN ID ");
                             NodoAbstracto nuevo = new Nodo("id2");
-                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)",""));
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
                             nuevo.Hijos.Add(nuevovalor);
                             nuevo.TipoDato = "id2";
                             nuevo.NombreVariable = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", "");
@@ -245,7 +245,9 @@ namespace AnalizadorCQL.Analizadores
 
                         }
                     }
-                        break;
+                    
+
+                    break;
                 case 2:
                    // Recorrido1(root.ChildNodes.ElementAt(0));
                    // Recorrido1(root.ChildNodes.ElementAt(1));
@@ -391,6 +393,17 @@ namespace AnalizadorCQL.Analizadores
                                 NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
                                 nuevo.Hijos.Add(id);
                                 nuevo.Hijos.Add(id2);
+                                return nuevo;
+                            }
+                            else if (root.ChildNodes.ElementAt(0).ChildNodes.Count == 5)
+                            {
+                                NodoAbstracto nuevo = new DECLARACIONINSTANCIA("INSTANCIA");
+                                NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace(" (id)", ""));
+                                NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
+                                NodoAbstracto id3 = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(4).ToString().Replace(" (id)", ""));
+                                nuevo.Hijos.Add(id);
+                                nuevo.Hijos.Add(id2);
+                                nuevo.Hijos.Add(id3);
                                 return nuevo;
                             }
                         }
@@ -983,6 +996,22 @@ namespace AnalizadorCQL.Analizadores
                               root.ChildNodes.ElementAt(5).FindToken().ToString().Contains("Key symbol") 
                     ) {
                         System.Diagnostics.Debug.WriteLine("CODIGO ASIGNAR VALORES A UN OBJETO Estudiante @est3 = {201504481, \"Julio Arango\",@est2};");
+                        NodoAbstracto nuevo = new ASIGNACIONOBJETOS("INSTANCIA");
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id)", ""));
+                        NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
+                        nuevo.Hijos.Add(id);
+                        nuevo.Hijos.Add(id2);
+                        STN.Add("CADENA");
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        Atributos(root.ChildNodes.ElementAt(4));
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        for(int i  = 0; i<STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+
+                        return nuevo;
                     }
                     
                     break;
@@ -1266,17 +1295,39 @@ namespace AnalizadorCQL.Analizadores
                     
                     break;
                 case 4:
+                    ListaIDSObjeto(root.ChildNodes.ElementAt(0));
                     System.Diagnostics.Debug.WriteLine("cuatro hijo");
                   //  String valor1 = root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (Keyword)","");
                   //  String valor2 = root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)","");
                     STN.Add(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (Keyword)", "") + "," + root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
                    
-                    ListaIDSObjeto(root.ChildNodes.ElementAt(0));
+                    
                     break;
             }
                     return STN;
-        } 
+        }
+        public void Atributos(ParseTreeNode root)
+        {
+            switch (root.ChildNodes.Count)
+            {
+                case 1:
+                    String Var1 = root.ChildNodes.ElementAt(0).FindToken().ToString();
+                    System.Diagnostics.Debug.WriteLine("un hijo" + Var1);
+                    STN.Add(Var1);
+                    //Atributos(root.ChildNodes.ElementAt(0));
+                    break;
+                case 3:
+                    //                    Atributos(root.ChildNodes.ElementAt(0));                    
+                    
+                    String Var2 = root.ChildNodes.ElementAt(0).FindToken().ToString();
+                    STN.Add(Var2);
+                    System.Diagnostics.Debug.WriteLine("tres hijos" + Var2);
+                    Atributos(root.ChildNodes.ElementAt(2));
 
+
+                    break;
+            }
+        }
         public List<String> ListaID2(ParseTreeNode root)
         {
             List<String> Lista = new List<String>();
@@ -1292,7 +1343,7 @@ namespace AnalizadorCQL.Analizadores
 
                     break;
                 case 3:
-                    String Var2 = root.ChildNodes.ElementAt(2).ToString().Replace(" (id2)", "");
+                    String Var2 = root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", "");
                     System.Diagnostics.Debug.WriteLine("tres hijos" + Var2);
                     Lista.Add(Var2);
                     primes.Add(Var2);
@@ -1304,6 +1355,8 @@ namespace AnalizadorCQL.Analizadores
             }
                     return Lista;
         }
+
+        
 
         public int repeticiones(String cadena)
         {

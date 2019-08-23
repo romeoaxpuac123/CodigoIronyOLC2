@@ -20,7 +20,7 @@ namespace AnalizadorCQL.Analizadores
             /*LO nuevo*/
             CommentTerminal comentarioLinea = new CommentTerminal("comentarioLinea", "//", "\n", "\r\n"); //si viene una nueva linea se termina de reconocer el comentario.
             CommentTerminal comentarioBloque = new CommentTerminal("comentarioBloque", "/*", "*/");
-            RegexBasedTerminal id2 = new RegexBasedTerminal("id2", "[@](_|[0-9]|[a-z])*");
+            RegexBasedTerminal id2 = new RegexBasedTerminal("id2", "[@](_|[0-9]|[a-z])*(\\.(_|[0-9]|[a-z])*)*");
             RegexBasedTerminal fechas = new RegexBasedTerminal("fechas", "'[0-9][0-9][0-9][0-9]-[0-1]*[0-9]-[0-3]*[0-9]'");
             RegexBasedTerminal hora = new RegexBasedTerminal("hora", "'[0-2]*[0-9]:[0-5]*[0-9]:[0-5]*[0-9]'");
             #endregion
@@ -115,6 +115,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal CREATE_TYPE = new NonTerminal("CREATE_TYPE");
             NonTerminal LISTA_IDS = new NonTerminal("LISTA_IDS");
             NonTerminal USER_TYPE = new NonTerminal("USER_TYPE");
+            NonTerminal USER_TYPE2 = new NonTerminal("USER_TYPE2");
             NonTerminal LISTA_EXPRESION = new NonTerminal("LISTA_EXPRESION");
             NonTerminal ASIGNACION = new NonTerminal("ASIGNACION");
             NonTerminal ALTER_TYPE = new NonTerminal("ALTER_TYPE");
@@ -211,6 +212,7 @@ namespace AnalizadorCQL.Analizadores
                                         | comentarioBloque
                                         | CREATE_TYPE
                                         | USER_TYPE + PYC
+                                        | USER_TYPE2
                                         | ASIGNACION
                                         | ALTER_TYPE
                                         | DELETE_TYPE;
@@ -239,15 +241,16 @@ namespace AnalizadorCQL.Analizadores
             USER_TYPE.Rule = id + id2
                              | id2 + igual + nuevo + id
                              | id + id2 + igual + nuevo + id;
-                           //  | id + id2 + igual + llaveAbierta + LISTA_EXPRESION + llaverCerrada;
+            USER_TYPE2.Rule = id + id2 + igual + llaveAbierta + LISTA_EXPRESION + llaverCerrada;
+            //  | id + id2 + igual + llaveAbierta + LISTA_EXPRESION + llaverCerrada;
 
             LISTA_IDS.Rule = LISTA_IDS + coma + TIPOS_VARIABLES + id
                             | LISTA_IDS + coma + USER_TYPE
                             | TIPOS_VARIABLES + id
                             | USER_TYPE;
 
-            LISTA_EXPRESION.Rule = LISTA_EXPRESION + coma + E
-                                | E;
+            LISTA_EXPRESION.Rule = E 
+                                | E + coma + LISTA_EXPRESION;
 
 
             TIPOS_VARIABLES.Rule = Entero | Decimal | Cadena | Boolenano | Date | Time;
