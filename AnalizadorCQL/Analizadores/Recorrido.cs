@@ -244,6 +244,17 @@ namespace AnalizadorCQL.Analizadores
                             return nuevo;
 
                         }
+                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(id)"))
+                        {
+                            //      Console.WriteLine("PASO POR UN ID ");
+                            NodoAbstracto RESULT1 = null;
+                            NodoAbstracto nuevox = new Nodo("id");
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                            nuevox.Hijos.Add(nuevovalor);
+                            RESULT1 = nuevox;
+                            //Raiz = nuevox;
+                            return RESULT1;
+                        }
                     }
                     
 
@@ -908,19 +919,11 @@ namespace AnalizadorCQL.Analizadores
                  //   Recorrido1(root.ChildNodes.ElementAt(3));
                  //   Recorrido1(root.ChildNodes.ElementAt(4));
                     System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
-                    if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("id2") && 
-                        root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("Key symbol") &&
-                        root.ChildNodes.ElementAt(2).FindToken().ToString().Contains("id") &&
-                        root.ChildNodes.ElementAt(3).FindToken().ToString().Contains("Key symbol") &&
-                        root.ChildNodes.ElementAt(4).ToString().ToUpper().Contains("E")
-                    )
-                    {
-                        System.Diagnostics.Debug.WriteLine("Codigo para Asignacion de Objeto de la forma @id2.id = e");
-                    }else if (root.ChildNodes.ElementAt(0).ToString().Contains("TIPOS_VARIABLES") &&
-                        root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2") &&
-                        root.ChildNodes.ElementAt(2).FindToken().ToString().Contains("Key symbol") &&
-                        root.ChildNodes.ElementAt(4).ToString().ToUpper().Contains("E")
-                    )
+                    if (root.ChildNodes.ElementAt(0).ToString().Contains("TIPOS_VARIABLES") &&
+                       root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2") &&
+                       root.ChildNodes.ElementAt(2).FindToken().ToString().Contains("Key symbol") &&
+                       root.ChildNodes.ElementAt(4).ToString().ToUpper().Contains("E")
+                   )
                     {
                         System.Diagnostics.Debug.WriteLine("Codigo para Asignacion de una variable tipo @var1 = Exprsion");
 
@@ -943,7 +946,7 @@ namespace AnalizadorCQL.Analizadores
                             return nuevo;
                         }
                         else
-                        {   
+                        {
                             NodoAbstracto nuevo = new DeclararAsignacion("DECLARARASIGNAR");
                             NodoAbstracto nuevotipo = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace("(Keyword)", ""));
                             NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id2)", ""));
@@ -955,9 +958,9 @@ namespace AnalizadorCQL.Analizadores
 
                     }
                     else if (root.ChildNodes.ElementAt(0).ToString().Contains("LOG") ||
-                        root.ChildNodes.ElementAt(0).ToString().Contains("log")||
+                        root.ChildNodes.ElementAt(0).ToString().Contains("log") ||
                         root.ChildNodes.ElementAt(0).ToString().Contains("Log") ||
-                        root.ChildNodes.ElementAt(0).ToString().Contains("lOg")||
+                        root.ChildNodes.ElementAt(0).ToString().Contains("lOg") ||
                         root.ChildNodes.ElementAt(0).ToString().Contains("loG")
                         )
                     {
@@ -976,7 +979,7 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(3)));
                         return nuevo;
                     }
-                    else if( root.ToString().ToUpper().Contains("USER_TYPE2"))
+                    else if (root.ToString().ToUpper().Contains("USER_TYPE2"))
                     {
                         NodoAbstracto nuevo = new ASIGNACIONOBJETOS("INSTANCIA");
                         NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
@@ -996,8 +999,21 @@ namespace AnalizadorCQL.Analizadores
 
                         return nuevo;
                     }
+                    else if (root.ToString().ToUpper().Contains("FUNCIONES_PROPIAS"))
+                    {
+                        NodoAbstracto nuevo = new FUNCIONESCOLEECTIONS("FUNCIONES");
+                        NodoAbstracto nuevooperador = new Nodo(".");
+                        NodoAbstracto tipoCasteo = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                        NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
 
-                    break;
+                        //System.Diagnostics.Debug.WriteLine("EXPRESION DE 4);" + root.ChildNodes.ElementAt(1).FindToken().ToString());
+                        nuevo.Hijos.Add(tipoCasteo);
+                        nuevo.Hijos.Add(nuevooperador);
+                        nuevo.Hijos.Add(nuevoid);
+                        nuevo.TipoDato = "CAST";
+                        return nuevo;
+                    }
+                        break;
                 case 6:
                    
                  //   Recorrido1(root.ChildNodes.ElementAt(0));
@@ -1211,7 +1227,7 @@ namespace AnalizadorCQL.Analizadores
 
                         return nuevo;
                     }
-                    else if (root.ToString().ToUpper().Contains("LALISTA"))
+                    else if (root.ToString().ToUpper().Contains("LALISTA") && root.ChildNodes.ElementAt(0).ToString().Contains("(Keyword")==true)
                     {
                         NodoAbstracto nuevo = new LISTAS("LISTAPAR");
                         NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
@@ -1225,6 +1241,17 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.ListaID1.Add(STN[i]);
                         }
                         STN.Clear();
+
+                        return nuevo;
+                    }
+                    else if (root.ToString().ToUpper().Contains("LALISTA") && root.ChildNodes.ElementAt(0).ToString().Contains("(id2)") == true)
+                    {
+                        NodoAbstracto nuevo = new LISTAS("LISTA");
+                        NodoAbstracto NombreLista = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        NodoAbstracto TipoLista = new Nodo(root.ChildNodes.ElementAt(5).FindToken().ToString());
+                        nuevo.Hijos.Add(NombreLista);
+                        nuevo.Hijos.Add(TipoLista);
+                        nuevo.AutoIncrmentable2 = 101;
 
                         return nuevo;
                     }

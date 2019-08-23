@@ -134,8 +134,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     entorno.Agregar(nOMBRE, tipolista, "LISTA");
                     for(int i = 0; i < ListaID1.Count; i++)
                     {
-                        String NOmbrx = ListaID1[i].ToString().Remove(ListaID1[i].IndexOf("("));
-                        entorno.AgregarLista(nOMBRE, NOmbrx);
+                        String NOmbrx = ListaID1[i].ToString().Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", "");
+                    entorno.AgregarLista(nOMBRE, NOmbrx);
                     }
                    
                     entorno.Mostrar(nOMBRE);
@@ -256,7 +256,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     entorno.Agregar(nOMBRE, tipolista, "LISTA");
                     for (int i = 0; i < ListaID1.Count; i++)
                     {
-                        String NOmbrx = ListaID1[i].ToString().Remove(ListaID1[i].IndexOf("("));
+                        String NOmbrx = ListaID1[i].ToString().Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", "");
                         entorno.AgregarLista(nOMBRE, NOmbrx);
                     }
 
@@ -265,6 +265,35 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             }
 
+
+            if (AutoIncrmentable2 ==101)
+            {
+                String NombreListax = this.Hijos[0].Nombre.ToString().Replace(" (id2)", "");
+                String TipoLista = this.Hijos[1].Nombre.ToString().Replace(" (Keyword)","");
+
+                System.Diagnostics.Debug.WriteLine("NOMBREx " + NombreListax);
+                System.Diagnostics.Debug.WriteLine("TIPOx: " + TipoLista);
+                String tipoxxxxxx = entorno.ObtenerTipo(NombreListax);
+                if (tipoxxxxxx.ToUpper().Contains("NUL") == true)
+                {
+                    entorno.EliminarVariable(NombreListax);
+                    Boolean Existencia = entorno.Agregar(NombreListax.Replace(" (id2)", ""), "LISTABRAY", TipoLista.Replace(" (Keyword)", ""));
+                    if (Existencia == false)
+                    {
+                        return "#ERROR LISTA YA EXISTENTE";
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("lista exitosax");
+                    }
+                }
+                else
+                {
+                    return "#ERROR LISTA YA INSTANCIADA";
+                }
+
+
+            }
             return "LISTAS";
         }
     }

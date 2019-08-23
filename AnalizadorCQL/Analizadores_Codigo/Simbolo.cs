@@ -40,9 +40,24 @@ namespace AnalizadorCQL.Analizadores_Codigo
             return this.Lista;
         }
 
+        public void EliminarDeLista(String dato)
+        {
+            this.Lista.Remove(dato);
+        }
         public String ObtenerValor()
         {
             return Valor;
+        }
+
+        public Boolean ExistenEnLista(String dato)
+        {
+            Boolean eso = false;
+            for(int i = 0; i< this.Lista.Count; i++)
+            {
+                if (this.Lista[i] == dato)
+                    eso = true;
+            }
+            return eso;
         }
 
         public String ObtenerTipo()

@@ -95,6 +95,13 @@ namespace AnalizadorCQL.Analizadores
             var elnot = ToTerm("not");
             var ELAS = ToTerm("as");
             var LISTA = ToTerm("list");
+            var INSERT = ToTerm("Insert");
+            var GET = ToTerm("Get");
+            var SET = ToTerm("Set");
+            var REMOVE = ToTerm("Remove");
+            var SIZE = ToTerm("Size");
+            var CLEAR = ToTerm("Clear");
+            var CONSTAINTS = ToTerm("Contains");
 
 
             this.RegisterOperators(8, Associativity.Left, "?");
@@ -137,6 +144,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal EL_BREAK = new NonTerminal("ELBREAK");
             NonTerminal LALISTA = new NonTerminal("LALISTA");
             NonTerminal LISTAPARASITOS = new NonTerminal("LISTAPARASITOS");
+            NonTerminal FUNCIONES_PROPIAS= new NonTerminal("FUNCIONES_PROPIAS");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
@@ -158,7 +166,8 @@ namespace AnalizadorCQL.Analizadores
                              | DO_WHILE
                              | EL_FOR
                              | EL_IF
-                             | EL_BREAK;
+                             | EL_BREAK
+                             | FUNCIONES_PROPIAS;
 
             EL_BREAK.Rule = ELBREAK + PYC;
 
@@ -226,10 +235,17 @@ namespace AnalizadorCQL.Analizadores
 
             LALISTA.Rule = LISTA + id2 + igual + nuevo + LISTA + menor + TIPOS_VARIABLES + mayor + PYC
                           | LISTA + id2 + PYC
+                          | id2 + igual + nuevo + LISTA + menor + TIPOS_VARIABLES + mayor + PYC
                           | id2 + igual + nuevo + CorcheteA + LISTA_EXPRESION + CorcheteC + PYC
                           | LISTA + id2 + igual + nuevo + CorcheteA  + LISTA_EXPRESION + CorcheteC + PYC;
 
-           
+            FUNCIONES_PROPIAS.Rule = id2 + ParA + ParC + PYC
+                                    | id2 + ParA + E + ParC + PYC
+                                    | id2 + ParA + E + coma + E + ParC + PYC;
+                                    
+
+
+
 
             DELETE_TYPE.Rule = borrar1 + type + id + PYC;
             ALTER_TYPE.Rule = ALTERAR + type + id + add1 + ParA +  LISTA_IDS+ ParC + PYC

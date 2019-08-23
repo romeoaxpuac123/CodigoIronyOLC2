@@ -151,6 +151,88 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
         }
+
+        public Boolean RemoverLista(String id, String valor)
+        {
+            if (Elementos.ContainsKey(id))
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (id == datos.Key.ToString())
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+
+                        
+                        for (int i = 0; i < p.lalista().Count; i++)
+                        {
+                           // System.Diagnostics.Debug.WriteLine("sadfdsa" + p.lalista()[i] + "<id>" + valor);
+                            if (p.lalista()[i] == valor)
+                            {
+                                p.lalista().Remove(valor);
+                                return true;
+                            }
+                        }
+
+                    }
+                }
+            }
+            return false;
+        }
+
+        public Boolean ExisteEnLista(String id, String valor)
+        {
+            if (Elementos.ContainsKey(id))
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (id == datos.Key.ToString())
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+
+
+                        for (int i = 0; i < p.lalista().Count; i++)
+                        {
+                            // System.Diagnostics.Debug.WriteLine("sadfdsa" + p.lalista()[i] + "<id>" + valor);
+                            if (p.lalista()[i] == valor)
+                            {
+                                
+                                return true;
+                            }
+                        }
+
+                    }
+                }
+            }
+            return false;
+        }
+
+        public int PosicionLista(String id, String valor)
+        {
+            if (Elementos.ContainsKey(id))
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (id == datos.Key.ToString())
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+
+
+                        for (int i = 0; i < p.lalista().Count; i++)
+                        {
+                            // System.Diagnostics.Debug.WriteLine("sadfdsa" + p.lalista()[i] + "<id>" + valor);
+                            if (p.lalista()[i] == valor)
+                            {
+                                //p.lalista().Remove(valor);
+                                return i;
+                            }
+                        }
+
+                    }
+                }
+            }
+            return -1;
+        }
+
         public void Mostrar(String id)
         {
             if (Elementos.ContainsKey(id))
