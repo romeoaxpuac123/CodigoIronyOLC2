@@ -21,7 +21,111 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         public override string Ejecutar(Entorno entorno)
         {
             System.Diagnostics.Debug.WriteLine("Ejecucion funpro");
-            if (this.Hijos[1].Nombre == ".")
+            if (AutoIncrmentable2 == 90)
+            {
+                String cadena = this.Hijos[0].Nombre;
+                string[] separadas;
+                separadas = cadena.Split('.');
+                String TipoFuncion = separadas[separadas.Length - 1];
+                System.Diagnostics.Debug.WriteLine("ES funcion" + TipoFuncion);
+                String ElColector = cadena.Replace(TipoFuncion, "").TrimEnd('.');
+                System.Diagnostics.Debug.WriteLine("Colector" + ElColector);
+                String TipoColector = entorno.ObtenerTipo(ElColector);
+                String ValorColector = entorno.ObtenerValor(ElColector);
+                System.Diagnostics.Debug.WriteLine("Verificando el tamaño de la lista" + ElColector);
+                if (entorno.Agregar(ElColector, "list", "list") == false)
+                {
+                    if (TipoFuncion.ToUpper().Contains("SIZE") == true)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Verificando el tamaño de la lista" + ElColector + "=" + entorno.TotalLista(ElColector).ToString());
+                        this.TipoDato = "entero";
+                        return entorno.TotalLista(ElColector).ToString();
+                    }
+                    else if (TipoFuncion.ToUpper().Contains("CLEAR") == true) {
+                        entorno.liMPIARLista(ElColector);
+                        System.Diagnostics.Debug.WriteLine("LIMPIANDO  la lista" + ElColector);
+                        
+                        
+                    }
+                }
+                else
+                {
+                    return "#ERROR, LISTA NO EXISTE";
+                }
+
+
+            }else if(this.AutoIncrmentable2 == 9099)
+            {
+                String cadena = this.Hijos[0].Nombre;
+                string[] separadas;
+                separadas = cadena.Split('.');
+                String TipoFuncion = separadas[separadas.Length - 1];
+                System.Diagnostics.Debug.WriteLine("ES funcion" + TipoFuncion);
+                String ElColector = cadena.Replace(TipoFuncion, "").TrimEnd('.');
+                System.Diagnostics.Debug.WriteLine("Colector" + ElColector);
+                String TipoColector = entorno.ObtenerTipo(ElColector);
+                String ValorColector = entorno.ObtenerValor(ElColector);
+                String TipoVariable = "";
+                if (this.Hijos[2].Nombre.Contains("(id2)"))
+                {
+                    TipoVariable = entorno.ObtenerTipo(this.Hijos[2].Nombre.Replace(" (id2)", ""));
+                }
+                else
+                {
+                    if (this.Hijos[2].Nombre.ToUpper().Contains("(CADENA)"))
+                    {
+                        TipoVariable = "STRING";
+                    }
+                    else if (this.Hijos[2].Nombre.ToUpper().Contains("(NUMERO)"))
+                    {
+                        TipoVariable = "INT";
+                    }
+                    else if (this.Hijos[2].Nombre.ToUpper().Contains("(NUMDECIMAL)"))
+                    {
+                        TipoVariable = "DOUBLE";
+                    }
+                    else if (this.Hijos[2].Nombre.ToUpper().Contains("(KEYWORD)") && ((ListaID1[0].ToUpper().Contains("TRUE")) || (ListaID1[0].ToUpper().Contains("FALSE"))))
+                    {
+                        TipoVariable = "BOOLEANO";
+                    }
+                    else if (this.Hijos[2].Nombre.ToUpper().Contains("(FECHAS)"))
+                    {
+                        TipoVariable = "DATE";
+                    }
+                    else if (this.Hijos[2].Nombre.ToUpper().Contains("(HORA)"))
+                    {
+                        TipoVariable = "TIME";
+                    }
+                }
+                String TPOSICION = "";
+                if (this.Hijos[1].Nombre.Contains("(id2)"))
+                {
+                    TPOSICION = entorno.ObtenerTipo(this.Hijos[1].Nombre.Replace(" (id2)", ""));
+                }
+                else if(this.Hijos[1].Nombre.ToUpper().Contains("(NUMERO)"))
+                    {
+                    TPOSICION = this.Hijos[1].Nombre.Replace(" (numero)","");
+                }
+                if(int.Parse(TPOSICION) > 0)
+                {
+                    System.Diagnostics.Debug.WriteLine("MODIFICANDO UN ELEMENTO DE LA LISTA" + ElColector);
+                    if (entorno.Agregar(ElColector, "", "")==false)
+                    {
+                        entorno.MODIFICARLista(ElColector, int.Parse(TPOSICION), this.Hijos[2].Nombre.Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", ""));
+                    }
+                    else
+                    {
+                        return "#ERROR, LA LISTA NO EXISTE";
+                    }
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("el inidice MODIFICANDO UN ELEMENTO DE LA LISTA es error" + ElColector);
+                    return "#ERROR, INDICE MAL PUESTO";
+                }
+                
+            }
+            else if (this.Hijos[1].Nombre == ".")
             {
                 //System.Diagnostics.Debug.WriteLine("ES funcion");
                 String cadena = this.Hijos[0].Nombre;
@@ -34,6 +138,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 String TipoColector = entorno.ObtenerTipo(ElColector);
                 String ValorColector = entorno.ObtenerValor(ElColector);
                 String TipoVariable = "";
+                System.Diagnostics.Debug.WriteLine("insertar" + ValorColector);
+
                 if (this.Hijos[2].Nombre.Contains("(id2)"))
                 {
                     TipoVariable = entorno.ObtenerTipo(this.Hijos[2].Nombre.Replace(" (id2)",""));
@@ -72,16 +178,33 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     if (ValorColector.ToUpper().Contains("LIST"))
                     {
                         System.Diagnostics.Debug.WriteLine("ES UNA LISTA>" + TipoColector + "tv>" + TipoVariable);
-                        if(TipoColector.ToUpper() == TipoVariable.ToUpper())
+                        if (TipoColector.ToUpper() == TipoVariable.ToUpper())
                         {
-                            entorno.AgregarLista(ElColector, this.Hijos[2].Nombre.Replace(" (id2)","").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", ""));
+                            entorno.AgregarLista(ElColector, this.Hijos[2].Nombre.Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", ""));
                         }
                         else
                         {
                             return "#ERROR, PARAMETROS DIFERENTES";
                         }
                         entorno.Mostrar(ElColector);
-                        
+
+                    }
+                    else if (ValorColector.ToUpper().Contains("SET")) {
+                        System.Diagnostics.Debug.WriteLine("ES UNA SET>" + TipoColector + "tv>" + TipoVariable);
+                        if (TipoColector.ToUpper() == TipoVariable.ToUpper())
+                        {
+                            entorno.Mostrar(ElColector);
+                            entorno.AgregarLista(ElColector, this.Hijos[2].Nombre.Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", ""));
+                            System.Diagnostics.Debug.WriteLine("redmi2>");
+                            entorno.ordenarlista(ElColector, TipoVariable);
+                            entorno.EliminarRepetidos(ElColector);
+                            entorno.Mostrar(ElColector);
+                        }
+                        else
+                        {
+                            return "#ERROR, PARAMETROS DIFERENTES";
+                        }
+                        entorno.Mostrar(ElColector);
                     }
                     else
                     {

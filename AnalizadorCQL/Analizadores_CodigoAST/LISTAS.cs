@@ -29,9 +29,18 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                 System.Diagnostics.Debug.WriteLine("NOMBRE " + NombreLista);
                 System.Diagnostics.Debug.WriteLine("TIPO: " + TipoLista);
+                Boolean Existencia = false;
+                if (this.TipoDato == "SET")
+                {
+                    Existencia = entorno.Agregar(NombreLista.Replace(" (id2)", ""), TipoLista.Replace(" (Keyword)", ""),"SETBRAY");
 
-                Boolean Existencia = entorno.Agregar(NombreLista.Replace(" (id2)",""),"LISTABRAY", TipoLista.Replace(" (Keyword)", ""));
-                if (Existencia == false)
+                }
+                else
+                {
+                    Existencia = entorno.Agregar(NombreLista.Replace(" (id2)", ""), TipoLista.Replace(" (Keyword)",""), "SETBRAY");
+
+                }
+                 if (Existencia == false)
                 {
                     return "#ERROR LISTA YA EXISTENTE";
                 }
@@ -131,7 +140,15 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 else
                 {
                     System.Diagnostics.Debug.WriteLine("CREAR LISTA");
-                    entorno.Agregar(nOMBRE, tipolista, "LISTA");
+                    if (this.TipoDato == "SET")
+                    {
+                        entorno.Agregar(nOMBRE, tipolista, "SET");
+                    }
+                    else
+                    {
+                        entorno.Agregar(nOMBRE, tipolista, "LISTA");
+                    }
+                   
                     for(int i = 0; i < ListaID1.Count; i++)
                     {
                         String NOmbrx = ListaID1[i].ToString().Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", "");
@@ -149,8 +166,15 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 String NombreLista = this.Hijos[0].Nombre.ToString();
 
                 System.Diagnostics.Debug.WriteLine("NOMBRE " + NombreLista);
-
-                Boolean Existencia = entorno.Agregar(NombreLista.Replace(" (id2)", ""), "nulo", "nulo");
+                Boolean Existencia = false;
+                if (this.TipoDato == "SET")
+                {
+                    Existencia = entorno.Agregar(NombreLista.Replace(" (id2)", ""), "nulo", "SET");
+                }
+                else{
+                     Existencia = entorno.Agregar(NombreLista.Replace(" (id2)", ""), "nulo", "LISTA");
+                }
+                
                 if (Existencia == false)
                 {
                     return "#ERROR LISTA YA EXISTENTE";
@@ -253,7 +277,14 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 {
                     System.Diagnostics.Debug.WriteLine("CREAR LISTA");
                     entorno.EliminarVariable(nOMBRE);
-                    entorno.Agregar(nOMBRE, tipolista, "LISTA");
+                    if(this.TipoDato == "SET")
+                    {
+                        entorno.Agregar(nOMBRE, tipolista, "SET");
+                    }
+                    else
+                    {
+                        entorno.Agregar(nOMBRE, tipolista, "LISTA");
+                    }
                     for (int i = 0; i < ListaID1.Count; i++)
                     {
                         String NOmbrx = ListaID1[i].ToString().Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", "");
@@ -293,6 +324,16 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
 
 
+            }
+
+            if(this.TipoDato == "SET")
+            {
+                System.Diagnostics.Debug.WriteLine("lista exitosax nombre" + this.Hijos[0].Nombre.ToString());
+                String tipo = entorno.ObtenerTipo(this.Hijos[0].Nombre.ToString());
+                System.Diagnostics.Debug.WriteLine("lista exitosax tipo" + tipo);
+                entorno.ordenarlista(this.Hijos[0].Nombre.ToString(), tipo);
+                entorno.EliminarRepetidos(this.Hijos[0].Nombre.ToString());
+                entorno.Mostrar(this.Hijos[0].Nombre.ToString());
             }
             return "LISTAS";
         }

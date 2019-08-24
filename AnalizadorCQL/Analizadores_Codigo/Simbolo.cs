@@ -77,5 +77,10 @@ namespace AnalizadorCQL.Analizadores_Codigo
         {
             return this.Objeto;
         }
+
+        public void NuevaLista(List<String> Listax)
+        {
+            this.Lista = Listax;
+        }
     }
 }

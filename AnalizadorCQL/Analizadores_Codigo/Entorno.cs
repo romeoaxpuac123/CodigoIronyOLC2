@@ -73,6 +73,48 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         }
 
+      
+
+        public void ordenarlista(String id, String Tipo)
+        {
+            if (Elementos.ContainsKey(id))
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (id == datos.Key.ToString())
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+                        if (Tipo.ToUpper().Contains("INT"))
+                        {
+                            List<int> numros = p.lalista().Select(int.Parse).ToList();
+                            numros.Sort();
+                            List<String> nueva = new List<String>();
+                            for (int i = 0; i < numros.Count; i++)
+                            {
+                                nueva.Add(numros[i].ToString());
+                            }
+                            p.NuevaLista(nueva);
+                        }else if (Tipo.ToUpper().Contains("DOUBLE"))
+                        {
+                            List<float> numros = p.lalista().Select(float.Parse).ToList();
+                            numros.Sort();
+                            List<String> nueva = new List<String>();
+                            for (int i = 0; i < numros.Count; i++)
+                            {
+                                nueva.Add(numros[i].ToString());
+                            }
+                            p.NuevaLista(nueva);
+                        }
+                        else
+                        {
+                            p.lalista().Sort();
+                        }
+                       
+                    }
+                }
+            }
+        }
+
         public bool Agregar(String id, String tipo, String valor)
         {
             if (!Elementos.ContainsKey(id))
@@ -136,6 +178,29 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
         }
 
+        public void EliminarRepetidos(String id)
+        {
+            if (Elementos.ContainsKey(id))
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (id == datos.Key.ToString())
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+                        List<String> NuevaLista = new List<String>();
+                        for (int i = 0;i < p.lalista().Count; i++)
+                        {
+                            if (NuevaLista.Contains(p.lalista()[i]) == false)
+                            {
+                                NuevaLista.Add((p.lalista()[i]));
+                            }
+                        }
+                        p.NuevaLista(NuevaLista);
+                    }
+                }
+            }
+        }
+
         public void AgregarLista(String id, String valor)
         {
             if (Elementos.ContainsKey(id))
@@ -160,11 +225,8 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 {
                     if (id == datos.Key.ToString())
                     {
-                        Simbolo p = (Simbolo)datos.Value;
-
-                        
-                        for (int i = 0; i < p.lalista().Count; i++)
-                        {
+                        Simbolo p = (Simbolo)datos.Value;                        
+                        for (int i = 0; i < p.lalista().Count; i++)                        {
                            // System.Diagnostics.Debug.WriteLine("sadfdsa" + p.lalista()[i] + "<id>" + valor);
                             if (p.lalista()[i] == valor)
                             {
@@ -179,6 +241,70 @@ namespace AnalizadorCQL.Analizadores_Codigo
             return false;
         }
 
+        public int TotalLista(String id)
+        {
+            int cantidad = 0;
+            if (Elementos.ContainsKey(id))
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (id == datos.Key.ToString())
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+                        for (int i = 0; i < p.lalista().Count; i++)
+                        {
+                            // System.Diagnostics.Debug.WriteLine("sadfdsa" + p.lalista()[i] + "<id>" + valor);
+                            cantidad++;
+                        }
+
+                    }
+                }
+            }
+            return cantidad;
+        }
+
+
+        public int liMPIARLista(String id)
+        {
+            int cantidad = 0;
+            if (Elementos.ContainsKey(id))
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (id == datos.Key.ToString())
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+                        p.lalista().Clear();
+
+                    }
+                }
+            }
+            return cantidad;
+        }
+        public Boolean MODIFICARLista(String id, int posicion, String Valor)
+        {
+           
+            if (Elementos.ContainsKey(id))
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (id == datos.Key.ToString())
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+                        for(int i = 0; i < p.lalista().Count; i++)
+                        {
+                            if (i == posicion)
+                            {
+                                p.lalista()[i] = Valor;
+                                return true;
+                            }
+                        }
+
+                    }
+                }
+            }
+            return false;
+        }
         public Boolean ExisteEnLista(String id, String valor)
         {
             if (Elementos.ContainsKey(id))

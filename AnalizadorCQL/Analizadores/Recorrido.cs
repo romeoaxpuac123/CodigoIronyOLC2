@@ -819,11 +819,16 @@ namespace AnalizadorCQL.Analizadores
                     else if (root.ToString().ToUpper().Contains("LALISTA"))
                     {
                         NodoAbstracto nuevo = new LISTAS("LISTAPAR");
-                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id1)", ""));
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
                         nuevo.Hijos.Add(id);
                         nuevo.AutoIncrmentable2 = 22;
+                        if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("SET"))
+                        {
+                            nuevo.TipoDato = "SET";
+                        }
                         return nuevo;
                     }
+                  
                     break;
 
                 case 4:
@@ -908,7 +913,17 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.TipoDato = "CAST";
                         return nuevo;
                     }
+                    else if (root.ToString().ToUpper().Contains("FUNCIONES_PROPIAS"))
+                    {
+                        NodoAbstracto nuevo = new FUNCIONESCOLEECTIONS("FUNCIONES");
 
+                        NodoAbstracto tipoCasteo = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                        NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
+                        //System.Diagnostics.Debug.WriteLine("EXPRESION DE 4);" + root.ChildNodes.ElementAt(1).FindToken().ToString());
+                        nuevo.Hijos.Add(tipoCasteo);
+                        nuevo.AutoIncrmentable2 = 90;
+                        return nuevo;
+                    }
 
                     break;
                 case 5:
@@ -1010,7 +1025,7 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(tipoCasteo);
                         nuevo.Hijos.Add(nuevooperador);
                         nuevo.Hijos.Add(nuevoid);
-                        nuevo.TipoDato = "CAST";
+                        nuevo.TipoDato = "funk";
                         return nuevo;
                     }
                         break;
@@ -1138,10 +1153,26 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.ListaID1.Add(STN[i]);
                         }
                         STN.Clear();
-
+                        if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("SET"))
+                        {
+                            nuevo.TipoDato = "SET";
+                        }
                         return nuevo;
                     }
-                    
+                    else if (root.ToString().ToUpper().Contains("FUNCIONES_PROPIAS"))
+                    {
+                        NodoAbstracto nuevo = new FUNCIONESCOLEECTIONS("FUNCIONES");
+                        NodoAbstracto tipoCasteo = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                        NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
+                        NodoAbstracto nuevoid2 = new Nodo(root.ChildNodes.ElementAt(4).FindToken().ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(tipoCasteo);
+                        nuevo.Hijos.Add(nuevoid);
+                        nuevo.Hijos.Add(nuevoid2);
+                        nuevo.AutoIncrmentable2 = 9099;
+                        nuevo.TipoDato = "funk";
+                        return nuevo;
+                    }
+
                     break;
                 case 8:
 
@@ -1241,7 +1272,10 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.ListaID1.Add(STN[i]);
                         }
                         STN.Clear();
-
+                        if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("SET"))
+                        {
+                            nuevo.TipoDato = "SET";
+                        }
                         return nuevo;
                     }
                     else if (root.ToString().ToUpper().Contains("LALISTA") && root.ChildNodes.ElementAt(0).ToString().Contains("(id2)") == true)
@@ -1281,6 +1315,10 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(NombreLista);
                         nuevo.Hijos.Add(TipoLista);
                         nuevo.AutoIncrmentable2 = 88;
+                        if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("SET"))
+                        {
+                            nuevo.TipoDato = "SET";
+                        }
                         return nuevo;
                            
                     }

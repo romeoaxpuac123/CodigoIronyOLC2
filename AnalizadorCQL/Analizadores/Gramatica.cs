@@ -237,11 +237,16 @@ namespace AnalizadorCQL.Analizadores
                           | LISTA + id2 + PYC
                           | id2 + igual + nuevo + LISTA + menor + TIPOS_VARIABLES + mayor + PYC
                           | id2 + igual + nuevo + CorcheteA + LISTA_EXPRESION + CorcheteC + PYC
-                          | LISTA + id2 + igual + nuevo + CorcheteA  + LISTA_EXPRESION + CorcheteC + PYC;
+                          | LISTA + id2 + igual + nuevo + CorcheteA  + LISTA_EXPRESION + CorcheteC + PYC
+                          | SET + id2 + igual + nuevo + SET + menor + TIPOS_VARIABLES + mayor + PYC
+                          | SET + id2 + PYC
+                          | id2 + igual + nuevo + SET + menor + TIPOS_VARIABLES + mayor + PYC
+                          | SET + id2 + igual + nuevo + CorcheteA + LISTA_EXPRESION + CorcheteC + PYC;
 
             FUNCIONES_PROPIAS.Rule = id2 + ParA + ParC + PYC
                                     | id2 + ParA + E + ParC + PYC
-                                    | id2 + ParA + E + coma + E + ParC + PYC;
+                                    | id2 + ParA + E + coma + E + ParC + PYC
+                                    | id2 + ParA + ParC+PYC;
                                     
 
 
