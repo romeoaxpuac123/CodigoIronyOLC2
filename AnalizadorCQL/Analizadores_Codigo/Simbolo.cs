@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using AnalizadorCQL.Analizadores_Codigo;
+using AnalizadorCQL.Analizadores_CodigoAST;
 
 namespace AnalizadorCQL.Analizadores_Codigo
 {
@@ -13,19 +15,23 @@ namespace AnalizadorCQL.Analizadores_Codigo
         String Tipo;
         String Objeto;
         List<String> Lista = new List<String>();
+        NodoAbstracto nuevo;
+        
         public Simbolo(String Id, String Valor, String Tipo)
         {
             this.Id = Id;
             this.Valor = Valor;
             this.Tipo = Tipo;
         }
-        public Simbolo(String id, String NombreFuncion, String Tipo, List<String> Listax)
+        public Simbolo(String id, String NombreFuncion, String Tipo, List<String> Listax, NodoAbstracto nodo)
         {
             this.Id = id;
             this.NombreFuncion = NombreFuncion;
             this.Tipo = Tipo;
             this.Lista = Listax;
+            this.nuevo = nodo;
         }
+
        
         public void AgregarALista(String elemento)
         {
@@ -47,7 +53,10 @@ namespace AnalizadorCQL.Analizadores_Codigo
         {
             return this.Lista;
         }
-
+        public String NombreFuncionGuardada()
+        {
+            return this.NombreFuncion;
+        }
         public void EliminarDeLista(String dato)
         {
             this.Lista.Remove(dato);

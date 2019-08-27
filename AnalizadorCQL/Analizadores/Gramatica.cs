@@ -177,8 +177,10 @@ namespace AnalizadorCQL.Analizadores
                              | FUNCIONES_PROPIAS
                              | FUNCIONES_CREADAS;
 
-            FUNCIONES_CREADAS.Rule = TIPOS_VARIABLES + id + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + llaveAbierta + llaverCerrada
-                                    | TIPOS_VARIABLES + id + ParA + ParC + llaveAbierta + llaverCerrada;
+            FUNCIONES_CREADAS.Rule = TIPOS_VARIABLES + id + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
+                                    | TIPOS_VARIABLES + id + ParA + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
+                                    | TIPOS_VARIABLES2 + id + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
+                                    | TIPOS_VARIABLES2 + id + ParA + ParC + llaveAbierta + SENTENCIAS + llaverCerrada;
 
             LISTA_PARAMETROS_FUNCIONES.Rule = TIPOS_VARIABLES + id2 + LISTA_PARAMETROS_FUNCIONES
                                              | coma + TIPOS_VARIABLES + id2 + LISTA_PARAMETROS_FUNCIONES

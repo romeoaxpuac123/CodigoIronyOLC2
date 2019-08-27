@@ -1095,19 +1095,7 @@ namespace AnalizadorCQL.Analizadores
                             return nuevo;
                         }
                     }
-                    else if (root.ToString() == "FUNCIONES_CREADAS")
-                    {
-
-                        System.Diagnostics.Debug.WriteLine("FUNCIONES_cREADAS");
-                        NodoAbstracto nuevo = new FUNCIONES("FUN_CREADAS");
-                        NodoAbstracto tipofuncion = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (Keyword)", ""));
-                        NodoAbstracto NombreFuncion = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
-                        nuevo.Hijos.Add(tipofuncion);
-                        nuevo.Hijos.Add(NombreFuncion);
-                        nuevo.AutoIncrmentable2 = 67;
-                        return nuevo;
-
-                    }
+                   
                     if (root.ChildNodes.ElementAt(3).FindToken().ToString().ToUpper().Contains("DROP") && root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("ALTER"))
                     {
                             System.Diagnostics.Debug.WriteLine("CODIGO PARA ALTER TABLE DROP");
@@ -1146,7 +1134,8 @@ namespace AnalizadorCQL.Analizadores
                         NodoAbstracto NombreFuncion = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
                         nuevo.Hijos.Add(tipofuncion);
                         nuevo.Hijos.Add(NombreFuncion);
-                        nuevo.AutoIncrmentable2 = 68;
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
+                        nuevo.AutoIncrmentable2 = 67;
                         return nuevo;
 
                     }
@@ -1276,6 +1265,27 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(7)));
                         return nuevo;
+                    }
+                    else if (root.ToString() == "FUNCIONES_CREADAS")
+                    {
+
+                        System.Diagnostics.Debug.WriteLine("FUNCIONES_cREADAS");
+                        NodoAbstracto nuevo = new FUNCIONES("FUN_CREADAS");
+                        NodoAbstracto tipofuncion = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (Keyword)", ""));
+                        NodoAbstracto NombreFuncion = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                       // NodoAbstracto ListaDeSentenias = new Nodo(root.ChildNodes.ElementAt(6));
+                        nuevo.Hijos.Add(tipofuncion);
+                        nuevo.Hijos.Add(NombreFuncion);
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
+                        AtributosFunciones(root.ChildNodes.ElementAt(3));
+                        for(int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+                        nuevo.AutoIncrmentable2 = 68;
+                        return nuevo;
+
                     }
                     else if (root.ToString().Contains("SINO"))
                     {
@@ -1556,6 +1566,75 @@ namespace AnalizadorCQL.Analizadores
             }
                     return STN;
         }
+
+        public void AtributosFunciones(ParseTreeNode root)
+        {
+            switch (root.ChildNodes.Count)
+            {
+                case 2:
+                    String Tipo1 = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (Keyword)", "");
+                    String Valor1 = root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id2)", "");
+                    String Parametro1 = Tipo1 + "*" + Valor1;
+                    STN.Add(Parametro1);                    
+                    System.Diagnostics.Debug.WriteLine("Dos hijos:" + Parametro1);
+                    break;
+                case 3:
+                    String Hijo1 = root.ChildNodes.ElementAt(0).ToString();
+                    String Valor31 = "";
+                    String Tipo31 = "";
+                    Boolean recorrido = false;
+                    if (Hijo1.ToUpper().Contains("TIPOS_VARIABLES"))
+                    {
+                        
+                        Tipo31 = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (Keyword)", "");
+                        Valor31 = root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id2)", "");
+                        recorrido = true;
+                        
+                    }
+                    else
+                    {
+                        Tipo31 = root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Keyword)", "");
+                        Valor31 = root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id2)", "");
+                    }
+                    
+                    String Parametro31 = Tipo31 + "*" + Valor31;
+                    STN.Add(Parametro31);
+                    System.Diagnostics.Debug.WriteLine("Tres Hijos:" + Parametro31);
+                    if (recorrido == true)
+                    {
+                        AtributosFunciones(root.ChildNodes.ElementAt(2));
+                    }
+                    break;
+                case 4:
+                    String Hijo41 = root.ChildNodes.ElementAt(0).ToString();
+                    String Valor41 = "";
+                    String Tipo41 = "";
+                    Boolean recorrido4 = false;
+                    if (Hijo41.ToUpper().Contains("TIPOS_VARIABLES"))
+                    {
+
+                        Tipo41 = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (Keyword)", "");
+                        Valor41 = root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id2)", "");
+                       
+
+                    }
+                    else
+                    {
+                        Tipo41 = root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Keyword)", "");
+                        Valor41 = root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id2)", "");
+                        recorrido4 = true;
+                    }
+                    String Parametro41 = Tipo41 + "*" + Valor41;
+                    STN.Add(Parametro41);
+                    System.Diagnostics.Debug.WriteLine("Cuatro Hijos:" + Parametro41);
+                    if (recorrido4 == true)
+                    {
+                        AtributosFunciones(root.ChildNodes.ElementAt(3));
+                    }
+                    break;
+            }
+        }
+
         public void Atributos(ParseTreeNode root)
         {
             switch (root.ChildNodes.Count)

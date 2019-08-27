@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AnalizadorCQL.Analizadores_CodigoAST;
 
 namespace AnalizadorCQL.Analizadores_Codigo
 {
@@ -34,11 +35,11 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         }
 
-        public Boolean AgregarFuncion(String id, String NombreFuncion, String Tipo, List<String> Listax)
+        public Boolean AgregarFuncion(String id, String NombreFuncion, String Tipo, List<String> Listax, NodoAbstracto nuevo)
         {
             if (!Elementos.ContainsKey(id))
             {
-                Simbolo sim = new Simbolo(id, NombreFuncion, Tipo, Listax);
+                Simbolo sim = new Simbolo(id, NombreFuncion, Tipo, Listax, nuevo);
                 Elementos.Add(id, sim);
                 System.Diagnostics.Debug.WriteLine("La variables Del objeto se agregó -> " + id);
                 return true;
@@ -70,15 +71,88 @@ namespace AnalizadorCQL.Analizadores_Codigo
         public void MostrarFunciones()
         {
             String id = "BRAY-FUNC";
-            int a = 0;
-
             foreach (DictionaryEntry datos in Elementos)
             {
                 if (datos.Key.ToString().Contains(id))
                 {
-                    System.Diagnostics.Debug.WriteLine("NombreFuncion -> " + datos.Key.ToString());
+                    Simbolo p = (Simbolo)datos.Value;
+                    System.Diagnostics.Debug.WriteLine("NombreFuncion -> " + datos.Key.ToString() + " funcion "+ p.NombreFuncionGuardada() + " #Par " + p.lalista().Count);
                 }
             }
+        }
+
+        public Boolean MismosParametros(String Nombre, List<String> Listax)
+        {
+            String id = "BRAY-FUNC";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if (p.NombreFuncionGuardada().ToString().ToUpper() == Nombre.ToUpper())
+                    {
+                       if(p.lalista().Count == Listax.Count)
+                        {
+                            for(int i = 0; i < Listax.Count; i++)
+                            {
+                                string[] separadas;
+                                separadas = Listax[i].Split('*');
+                                if(p.lalista()[i].ToUpper().Contains(separadas[0].ToUpper()) == true)
+                                {
+                                    return true;
+                                }
+                                else
+                                {
+                                    for(int j = 0; j < p.lalista().Count; j++)
+                                    {
+                                        if (p.lalista()[j].ToUpper().Contains(separadas[1].ToUpper()) == true)
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+      public Boolean ExisteFuncion(String Nombre)
+        {
+            String id = "BRAY-FUNC";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if(p.NombreFuncionGuardada().ToString().ToUpper() == Nombre.ToUpper())
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public Boolean ExisteListaConLaMismaCantidadDeParametros(String Nombre, int elementos)
+        {
+
+            String id = "BRAY-FUNC";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if (p.lalista().Count == elementos)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
      public String ElementosObjetos(String Objeto)
