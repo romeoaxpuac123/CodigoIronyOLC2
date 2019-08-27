@@ -8,6 +8,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
     public class Simbolo
     {
         String Id;
+        String NombreFuncion;
         String Valor;
         String Tipo;
         String Objeto;
@@ -17,6 +18,13 @@ namespace AnalizadorCQL.Analizadores_Codigo
             this.Id = Id;
             this.Valor = Valor;
             this.Tipo = Tipo;
+        }
+        public Simbolo(String id, String NombreFuncion, String Tipo, List<String> Listax)
+        {
+            this.Id = id;
+            this.NombreFuncion = NombreFuncion;
+            this.Tipo = Tipo;
+            this.Lista = Listax;
         }
        
         public void AgregarALista(String elemento)

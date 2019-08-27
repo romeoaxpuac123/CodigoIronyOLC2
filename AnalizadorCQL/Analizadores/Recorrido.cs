@@ -1095,6 +1095,19 @@ namespace AnalizadorCQL.Analizadores
                             return nuevo;
                         }
                     }
+                    else if (root.ToString() == "FUNCIONES_CREADAS")
+                    {
+
+                        System.Diagnostics.Debug.WriteLine("FUNCIONES_cREADAS");
+                        NodoAbstracto nuevo = new FUNCIONES("FUN_CREADAS");
+                        NodoAbstracto tipofuncion = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (Keyword)", ""));
+                        NodoAbstracto NombreFuncion = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(tipofuncion);
+                        nuevo.Hijos.Add(NombreFuncion);
+                        nuevo.AutoIncrmentable2 = 67;
+                        return nuevo;
+
+                    }
                     if (root.ChildNodes.ElementAt(3).FindToken().ToString().ToUpper().Contains("DROP") && root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("ALTER"))
                     {
                             System.Diagnostics.Debug.WriteLine("CODIGO PARA ALTER TABLE DROP");
@@ -1123,6 +1136,19 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
                         return nuevo;
+                    }
+                    else if (root.ToString() == "FUNCIONES_CREADAS")
+                    {
+
+                        System.Diagnostics.Debug.WriteLine("FUNCIONES_cREADAS");
+                        NodoAbstracto nuevo = new FUNCIONES("FUN_CREADAS");
+                        NodoAbstracto tipofuncion = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (Keyword)", ""));
+                        NodoAbstracto NombreFuncion = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(tipofuncion);
+                        nuevo.Hijos.Add(NombreFuncion);
+                        nuevo.AutoIncrmentable2 = 68;
+                        return nuevo;
+
                     }
                     else if (root.ToString().Contains("EL_IF"))
                     {

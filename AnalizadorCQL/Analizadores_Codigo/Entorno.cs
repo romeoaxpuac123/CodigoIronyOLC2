@@ -34,7 +34,54 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         }
 
-        public String ElementosObjetos(String Objeto)
+        public Boolean AgregarFuncion(String id, String NombreFuncion, String Tipo, List<String> Listax)
+        {
+            if (!Elementos.ContainsKey(id))
+            {
+                Simbolo sim = new Simbolo(id, NombreFuncion, Tipo, Listax);
+                Elementos.Add(id, sim);
+                System.Diagnostics.Debug.WriteLine("La variables Del objeto se agregó -> " + id);
+                return true;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("La variables ya existe -> " + id);
+                return false;
+            }
+        }
+
+        public int CantidadDeFunciones()
+        {
+            String id = "BRAY-FUNC";
+            int a = 0;
+           
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                if (datos.Key.ToString().Contains(id))
+                    {
+                        a++;
+                    }
+                }
+            
+
+            return a;
+        }
+
+        public void MostrarFunciones()
+        {
+            String id = "BRAY-FUNC";
+            int a = 0;
+
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    System.Diagnostics.Debug.WriteLine("NombreFuncion -> " + datos.Key.ToString());
+                }
+            }
+        }
+
+     public String ElementosObjetos(String Objeto)
         { String supercadena = "INICIO"; 
                 foreach (DictionaryEntry datos in Elementos)
                 {

@@ -149,6 +149,9 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal LISTAPARASITOS = new NonTerminal("LISTAPARASITOS");
             NonTerminal FUNCIONES_PROPIAS= new NonTerminal("FUNCIONES_PROPIAS");
             NonTerminal FUNCIONES_PROPIAS_DEL_SISTEMA = new NonTerminal("FUNCIONES_PROPIAS_DEL_SISTEMA");
+            NonTerminal FUNCIONES_CREADAS = new NonTerminal("FUNCIONES_CREADAS");
+            NonTerminal LISTA_PARAMETROS_FUNCIONES = new NonTerminal("LISTA_PARAMETROS_FUNCIONES");
+            NonTerminal TIPOS_VARIABLES2 = new NonTerminal("TIPOS_VARIABLES2");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
@@ -171,7 +174,21 @@ namespace AnalizadorCQL.Analizadores
                              | EL_FOR
                              | EL_IF
                              | EL_BREAK
-                             | FUNCIONES_PROPIAS;
+                             | FUNCIONES_PROPIAS
+                             | FUNCIONES_CREADAS;
+
+            FUNCIONES_CREADAS.Rule = TIPOS_VARIABLES + id + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + llaveAbierta + llaverCerrada
+                                    | TIPOS_VARIABLES + id + ParA + ParC + llaveAbierta + llaverCerrada;
+
+            LISTA_PARAMETROS_FUNCIONES.Rule = TIPOS_VARIABLES + id2 + LISTA_PARAMETROS_FUNCIONES
+                                             | coma + TIPOS_VARIABLES + id2 + LISTA_PARAMETROS_FUNCIONES
+                                             | coma + TIPOS_VARIABLES + id2
+                                             | TIPOS_VARIABLES + id2
+                                             | TIPOS_VARIABLES2 + id2 + LISTA_PARAMETROS_FUNCIONES
+                                             | coma + TIPOS_VARIABLES2 + id2 + LISTA_PARAMETROS_FUNCIONES
+                                             | coma + TIPOS_VARIABLES2 + id2
+                                             | TIPOS_VARIABLES2 + id2;
+            TIPOS_VARIABLES2.Rule = LISTA | SET | id;
 
             EL_BREAK.Rule = ELBREAK + PYC;
 
