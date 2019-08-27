@@ -43,6 +43,10 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     //Console.WriteLine("puto el que lo leaxd");
                     sali = this.Hijos[0].Nombre;
                     break;
+                case "Funcion":
+                    //Console.WriteLine("puto el que lo leaxd");
+                    sali = this.Hijos[0].Nombre;
+                    break;
                 case "Decimal":
                     sali = this.Hijos[0].Nombre;
                     break;

@@ -102,6 +102,9 @@ namespace AnalizadorCQL.Analizadores
             var SIZE = ToTerm("Size");
             var CLEAR = ToTerm("Clear");
             var CONSTAINTS = ToTerm("Contains");
+            var HOY = ToTerm("today");
+            var AHORA = ToTerm("now");
+
 
 
             this.RegisterOperators(8, Associativity.Left, "?");
@@ -145,6 +148,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal LALISTA = new NonTerminal("LALISTA");
             NonTerminal LISTAPARASITOS = new NonTerminal("LISTAPARASITOS");
             NonTerminal FUNCIONES_PROPIAS= new NonTerminal("FUNCIONES_PROPIAS");
+            NonTerminal FUNCIONES_PROPIAS_DEL_SISTEMA = new NonTerminal("FUNCIONES_PROPIAS_DEL_SISTEMA");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
@@ -247,9 +251,9 @@ namespace AnalizadorCQL.Analizadores
                                     | id2 + ParA + E + ParC + PYC
                                     | id2 + ParA + E + coma + E + ParC + PYC
                                     | id2 + ParA + ParC+PYC;
-                                    
 
 
+            
 
 
             DELETE_TYPE.Rule = borrar1 + type + id + PYC;
@@ -290,22 +294,22 @@ namespace AnalizadorCQL.Analizadores
 
 
             TIPOS_VARIABLES.Rule = Entero | Decimal | Cadena | Boolenano | Date | Time;
-           
-            E.Rule =  E + mas + E
+
+            E.Rule = E + mas + E
                     | E + menos + E
                     | E + por + E
                     | E + div + E
                     | E + potencia + E
                     | E + modulo + E
                     | E + mayor + E
-                    | E + menor + E  
+                    | E + menor + E
                     | E + mayor_que + E
                     | E + menor_que + E
                     | E + igual_igual + E
-                    | E + diferente + E                    
+                    | E + diferente + E
                     | E + OR + E
                     | E + AND + E
-                    | E+ XOR + E
+                    | E + XOR + E
                     | E + mas + mas
                     | E + menos + menos
                     | NOT + E
@@ -315,13 +319,18 @@ namespace AnalizadorCQL.Analizadores
                     | cadena
                     | id
                     | id2
+                    | id2 + ParA + ParC  // para las funciones que retornan algo, sin parametros
+                    | id2 + ParA + E + ParC // para para una expresion
+                    | id2 + ParA + E + coma + E + ParC // PARA UNA FUNCION CON DOS PARAMETROS
                     | falso
                     | verdadero
                     | fechas
                     | hora
                     | ParA + E + ParC
                     | E + CorcheteCA + E
-                    | CorcheteAA + TIPOS_VARIABLES ;
+                    | CorcheteAA + TIPOS_VARIABLES
+                    | HOY + ParA + ParC
+                    | AHORA + ParA + ParC;
 
            
 

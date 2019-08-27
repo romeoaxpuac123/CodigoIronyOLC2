@@ -199,6 +199,7 @@
     <Compile Include="Analizadores_CodigoAST\ELIF.cs" />
     <Compile Include="Analizadores_CodigoAST\ELSEIF.cs" />
     <Compile Include="Analizadores_CodigoAST\FUNCIONESCOLEECTIONS.cs" />
+    <Compile Include="Analizadores_CodigoAST\FUNCIONES_PROPIAS.cs" />
     <Compile Include="Analizadores_CodigoAST\Incremento.cs" />
     <Compile Include="Analizadores_CodigoAST\DECOBJETO.cs" />
     <Compile Include="Analizadores_CodigoAST\INSTANCIA1OBJETO.cs" />
