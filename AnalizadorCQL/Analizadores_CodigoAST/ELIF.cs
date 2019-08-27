@@ -43,6 +43,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         return "BREAK";
                         //return "#Error";
                     }
+                    if (valor1.Contains("RETORNO:") == true)
+                    {
+
+                        return valor1;
+                    }
 
                 }
                 //ValorExpresion = this.Hijos[0].Ejecutar(entorno);

@@ -39,6 +39,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         //break;
                         return "#Error";
                     }
+                    if (valor1.Contains("RETORNO:") == true)
+                    {
+
+                        return valor1;
+                    }
                     if (valor1.Contains("BREAK") == true)
                     {
                         // return "BREAK";

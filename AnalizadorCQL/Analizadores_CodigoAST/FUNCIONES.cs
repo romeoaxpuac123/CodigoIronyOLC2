@@ -71,29 +71,57 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 //la función no existe así que se agrega todo sin problemas
                 entorno.AgregarFuncion(IdFuncion, NombreFuncion, tipoFuncion, ListaID1, this.Hijos[2]);
             }
+            Boolean hayr = false;
             entorno.MostrarFunciones();
-           /* System.Diagnostics.Debug.WriteLine("PROBANDO ACCIONES");
+            System.Diagnostics.Debug.WriteLine("PROBANDO ACCIONES");
             this.Hijos[2].Ejecutar(entorno);
             String valor1 = "";
+            String Retorno = "";
+            Entorno x = new Entorno();
             foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos)
+
             {
                 System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                valor1 = sentencia.Ejecutar(entorno);
+                valor1 = sentencia.Ejecutar(x);
                 if (valor1.Contains("#Error") == true)
                 {
                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                    break;
+                    return "#ERROR EN FUNCION";
                     //return "#Error";
                 }
-                if (valor1.Contains("BREAK") == true)
+                if(valor1.Contains("RETORNO:") == true)
                 {
-                    return "BREAK";
-                    //return "#Error";
+                    hayr = true;
+                    Retorno = valor1;
                 }
 
             }
             System.Diagnostics.Debug.WriteLine("FIN ACCIONES");
-            */
+            
+            if(hayr == false)
+            {
+                System.Diagnostics.Debug.WriteLine("eroror no tiene returno");
+                entorno.EliminarVariable(IdFuncion);
+                return "#ERROR FALTA RETURNO";
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Si existe retorno" + Retorno);
+                string[] separadas;
+                separadas = Retorno.Split(',');
+
+
+                string[] separadas2;
+                separadas2 = separadas[1].Split(':');
+
+                if (separadas2[1].ToUpper().ToString().Contains(tipoFuncion.ToUpper())==false)
+                {
+                    System.Diagnostics.Debug.WriteLine("eroror no tiene returno");
+                    entorno.EliminarVariable(IdFuncion);
+                    return "#ERROR FALTA RETURNO";
+                }
+            }
+
             return "FUNCIONUSUARIO";
         }
     }

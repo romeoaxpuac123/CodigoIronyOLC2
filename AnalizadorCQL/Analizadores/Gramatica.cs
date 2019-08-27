@@ -104,6 +104,7 @@ namespace AnalizadorCQL.Analizadores
             var CONSTAINTS = ToTerm("Contains");
             var HOY = ToTerm("today");
             var AHORA = ToTerm("now");
+            var RETORNO = ToTerm("return");
 
 
 
@@ -155,7 +156,8 @@ namespace AnalizadorCQL.Analizadores
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
-           
+            NonTerminal ELRETORNO = new NonTerminal("ELRETORNO");
+
             #endregion
 
             #region Gramatica
@@ -175,7 +177,10 @@ namespace AnalizadorCQL.Analizadores
                              | EL_IF
                              | EL_BREAK
                              | FUNCIONES_PROPIAS
-                             | FUNCIONES_CREADAS;
+                             | FUNCIONES_CREADAS
+                             | ELRETORNO;
+
+            ELRETORNO.Rule =  RETORNO + E + PYC;
 
             FUNCIONES_CREADAS.Rule = TIPOS_VARIABLES + id + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
                                     | TIPOS_VARIABLES + id + ParA + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
@@ -191,7 +196,7 @@ namespace AnalizadorCQL.Analizadores
                                              | coma + TIPOS_VARIABLES2 + id2
                                              | TIPOS_VARIABLES2 + id2;
             TIPOS_VARIABLES2.Rule = LISTA | SET | id;
-
+                        
             EL_BREAK.Rule = ELBREAK + PYC;
 
             EL_IF.Rule = ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
@@ -255,6 +260,8 @@ namespace AnalizadorCQL.Analizadores
                                         | ALTER_TYPE
                                         | DELETE_TYPE
                                         | LALISTA;
+
+           
 
             LALISTA.Rule = LISTA + id2 + igual + nuevo + LISTA + menor + TIPOS_VARIABLES + mayor + PYC
                           | LISTA + id2 + PYC

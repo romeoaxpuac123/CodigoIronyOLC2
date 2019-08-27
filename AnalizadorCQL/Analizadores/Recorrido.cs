@@ -851,6 +851,12 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.TipoDato = "SET";
                         }
                         return nuevo;
+                    }else if (root.ToString().ToUpper().Contains("ELRETORNO"))
+                    {
+                        NodoAbstracto nuevo = new RETORNO("RETORNO");
+                        ///NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+                        return nuevo;
                     }
                   
                     break;
@@ -1515,7 +1521,8 @@ namespace AnalizadorCQL.Analizadores
              //Console.WriteLine("pureba for " + sentencia.Nombre + raiz.TipoDato);
              //System.Diagnostics.Debug.WriteLine("CA:"+sentencia.Hijos[0].Ejecutar(entorno).ToString());
                 String valor1 = sentencia.Ejecutar(entorno);
-                if (valor1.ToUpper().Contains("#ERROR") == true || valor1.Contains("BREAK") == true)
+                if (valor1.ToUpper().Contains("#ERROR") == true || valor1.Contains("BREAK") == true || 
+                    valor1.Contains("RETORNO:")==true)
                 {
                     System.Diagnostics.Debug.WriteLine("ERROR SEMANTICO");
                     elbreak = true;

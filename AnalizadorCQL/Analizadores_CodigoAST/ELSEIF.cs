@@ -46,6 +46,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         return "BREAK";
                         //return "#Error";
                     }
+                    if (valor1.Contains("RETORNO:") == true)
+                    {
+
+                        return valor1;
+                    }
 
                 }
                 //ValorExpresion = this.Hijos[0].Ejecutar(entorno);
@@ -93,6 +98,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                     return "BREAK";
                                     //return "#Error";
                                 }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
 
                             }
                         Expresion2 = this.Hijos[2].Hijos[0].Hijos[0].Nombre;
@@ -120,6 +130,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 {
                                     return "BREAK";
                                     //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
                                 }
 
                             }
@@ -149,6 +164,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                     return "BREAK";
                                     //return "#Error";
                                 }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
 
                             }
                         Expresion3 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Nombre;
@@ -176,6 +196,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 {
                                     return "BREAK";
                                     //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
                                 }
 
                             }
@@ -208,6 +233,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                     return "BREAK";
                                     //return "#Error";
                                 }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
 
                             }
                         Expresion4 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
@@ -235,6 +265,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 {
                                     return "BREAK";
                                     //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
                                 }
 
                             }
@@ -266,6 +301,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                     return "BREAK";
                                     //return "#Error";
                                 }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
 
                             }
                         Expresion5= this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
@@ -293,6 +333,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 {
                                     return "BREAK";
                                     //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
                                 }
 
                             }
@@ -324,6 +369,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                     return "BREAK";
                                     //return "#Error";
                                 }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
 
                             }
                         Expresion6 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
@@ -351,6 +401,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 {
                                     return "BREAK";
                                     //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
                                 }
 
                             }
@@ -382,6 +437,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                     return "BREAK";
                                     //return "#Error";
                                 }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
 
                             }
                         Expresion7 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
@@ -409,6 +469,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 {
                                     return "BREAK";
                                     //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
                                 }
 
                             }
@@ -440,6 +505,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                     return "BREAK";
                                     //return "#Error";
                                 }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
 
                             }
                         Expresion8= this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
@@ -467,6 +537,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 {
                                     return "BREAK";
                                     //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
                                 }
 
                             }
@@ -498,6 +573,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                     return "BREAK";
                                     //return "#Error";
                                 }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
 
                             }
                         Expresion9 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
@@ -525,6 +605,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 {
                                     return "BREAK";
                                     //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
                                 }
 
                             }
@@ -556,6 +641,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                     return "BREAK";
                                     //return "#Error";
                                 }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
 
                             }
                         Expresion10 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
@@ -583,6 +673,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 {
                                     return "BREAK";
                                     //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
                                 }
 
                             }
@@ -615,6 +710,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                     return "BREAK";
                                     //return "#Error";
                                 }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
 
                             }
                         //ya esta para evaluar
@@ -643,6 +743,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 {
                                     return "BREAK";
                                     //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
                                 }
 
                             }
