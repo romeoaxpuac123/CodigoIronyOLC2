@@ -100,7 +100,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             
             if(hayr == false)
             {
-                System.Diagnostics.Debug.WriteLine("eroror no tiene returno");
+                System.Diagnostics.Debug.WriteLine("eroror no tiene returnox");
                 entorno.EliminarVariable(IdFuncion);
                 return "#ERROR FALTA RETURNO";
             }

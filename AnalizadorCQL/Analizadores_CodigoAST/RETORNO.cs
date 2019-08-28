@@ -60,7 +60,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                 System.Diagnostics.Debug.WriteLine("Valor: " + ValorRetorno);
                 System.Diagnostics.Debug.WriteLine("Tipo: " + TipoRetorno);
-
+                ValorRetorno = ValorRetorno.Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "");
 
 
             }

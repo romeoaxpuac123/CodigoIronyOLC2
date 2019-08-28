@@ -198,6 +198,7 @@
     <Compile Include="Analizadores_CodigoAST\ELFOR.cs" />
     <Compile Include="Analizadores_CodigoAST\ELIF.cs" />
     <Compile Include="Analizadores_CodigoAST\ELSEIF.cs" />
+    <Compile Include="Analizadores_CodigoAST\FUN-RETORNO.cs" />
     <Compile Include="Analizadores_CodigoAST\FUNCIONES.cs" />
     <Compile Include="Analizadores_CodigoAST\FUNCIONESCOLEECTIONS.cs" />
     <Compile Include="Analizadores_CodigoAST\FUNCIONES_PROPIAS.cs" />

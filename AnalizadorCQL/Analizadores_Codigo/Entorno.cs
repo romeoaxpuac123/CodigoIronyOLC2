@@ -81,6 +81,26 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
         }
 
+        public NodoAbstracto NodoSinParametros(String NombreFuncion)
+        {
+            String id = "BRAY-FUNC";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if (p.NombreFuncionGuardada().ToUpper().Contains(NombreFuncion.ToUpper()) == true)
+                    {
+                        if(p.lalista().Count == 0)
+                        {
+                            return p.Sentencias();
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
         public Boolean MismosParametros(String Nombre, List<String> Listax)
         {
             String id = "BRAY-FUNC";

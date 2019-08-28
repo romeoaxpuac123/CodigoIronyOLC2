@@ -31,7 +31,10 @@ namespace AnalizadorCQL.Analizadores_Codigo
             this.Lista = Listax;
             this.nuevo = nodo;
         }
-
+        public NodoAbstracto Sentencias()
+        {
+            return this.nuevo;
+        }
        
         public void AgregarALista(String elemento)
         {

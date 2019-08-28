@@ -507,6 +507,21 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.AutoIncrmentable2 = 102;
                             return nuevo;
                         }
+                        else if ((root.ChildNodes.ElementAt(0).ToString().Contains(" (id)")) &&
+                            (root.ChildNodes.ElementAt(1).ToString().Contains("( (Key symbol)")) &&
+                            (root.ChildNodes.ElementAt(2).ToString().Contains(") (Key symbol)"))
+                            )
+                        {
+                            NodoAbstracto nuevo = new FUN_RETORNO("RETORNO");
+                            NodoAbstracto Funcion = new  Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Funcion);
+                            nuevo.AutoIncrmentable2 = 54;
+                            return nuevo;
+
+
+                        }
+
+
                         else if ((root.ChildNodes.ElementAt(2).ToString().Contains("+ (Key symbol")))
                         {
                             /* System.Diagnostics.Debug.WriteLine("entrooooooooooooooooo");
@@ -1401,9 +1416,10 @@ namespace AnalizadorCQL.Analizadores
                     else if (root.ToString().Contains("SINO"))
                     {
                         NodoAbstracto nuevo = new Nodo("SINO");
-                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(3)));
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
+                        nuevo.AutoIncrmentable2 = 9090;
                         return nuevo;
                     }
                     else if (root.ToString().Contains("LALISTA"))
@@ -1482,8 +1498,12 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(3)));
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(10)));
+                        nuevo.AutoIncrmentable2 = 666;
                         return nuevo;
                     }
+                
+
+
                     else if (root.ToString().Contains("CREATE_TYPE")) {
                         ListaIDSObjeto(root.ChildNodes.ElementAt(9));
                         System.Diagnostics.Debug.WriteLine("Codigo para LA CREACION DE OBJETOSXS;");
@@ -1521,13 +1541,18 @@ namespace AnalizadorCQL.Analizadores
              //Console.WriteLine("pureba for " + sentencia.Nombre + raiz.TipoDato);
              //System.Diagnostics.Debug.WriteLine("CA:"+sentencia.Hijos[0].Ejecutar(entorno).ToString());
                 String valor1 = sentencia.Ejecutar(entorno);
-                if (valor1.ToUpper().Contains("#ERROR") == true || valor1.Contains("BREAK") == true || 
-                    valor1.Contains("RETORNO:")==true)
+                if (valor1.ToUpper().Contains("#ERROR") == true || valor1.Contains("BREAK") == true  
+                    )
                 {
                     System.Diagnostics.Debug.WriteLine("ERROR SEMANTICO");
                     elbreak = true;
                     break;
                     //return "#Error";
+                }
+                if (valor1.Contains("RETORNO:") == true)
+                {
+                    System.Diagnostics.Debug.WriteLine("ERROR SEMANTICO");
+                    break;
                 }
                 if (elbreak)
                     break;
@@ -1691,9 +1716,7 @@ namespace AnalizadorCQL.Analizadores
             }
                     return Lista;
         }
-
         
-
         public int repeticiones(String cadena)
         {
             int contador = 0;

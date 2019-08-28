@@ -57,31 +57,117 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             }
             else
             {
-                
+
                 // primer ELSE IF 
                 String Expresion1 = this.Hijos[2].Hijos[0].Nombre;
                 System.Diagnostics.Debug.WriteLine("EL ESE 1" + Expresion1);
-                
-                int hijo1 = 1;
-                String Expresion2 = "";
-                String Expresion3 = "";
-                String Expresion4 = "";
-                String Expresion5 = "";
-                String Expresion6 = "";
-                String Expresion7 = "";
-                String Expresion8 = "";
-                String Expresion9 = "";
-                String Expresion10 = "";
+                System.Diagnostics.Debug.WriteLine("EL ESE 2" + this.Hijos[2].Nombre);
+                String TipoNodo2 = this.Hijos[2].Nombre;
+
                 ///PARA EL PRIMER ELSE IF
                 ///
-                if (hijo1 == 1)
+                if (TipoNodo2.ToUpper().Contains("SENTENCIAS") == true)
                 {
-                    if (Expresion1.Contains("SINO") && ValorElse.Contains("FALSE"))
+                    ValorElse = "TRUE";
+                    if (ValorElse.ToUpper().Contains("TRUE"))
+                        foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos)
+                        {
+                            //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
+                            valor1 = sentencia.Ejecutar(entorno);
+                            if (valor1.Contains("#Error") == true)
+                            {
+                                System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
+                                // break;
+                                return "#Error";
+                            }
+                            if (valor1.Contains("BREAK") == true)
+                            {
+                                return "BREAK";
+                                //return "#Error";
+                            }
+                            if (valor1.Contains("RETORNO:") == true)
+                            {
+
+                                return valor1;
+                            }
+
+                        }
+                    return "ELSE IF";
+                }
+                else if (TipoNodo2.ToUpper().Contains("SINO") && ValorElse.Contains("FALSE"))
+                {
+                    ValorElse = this.Hijos[2].Hijos[0].Ejecutar(entorno);
+                    // System.Diagnostics.Debug.WriteLine("debus Romeo: x" + ValorElse);
+                    if (ValorElse.ToUpper().Contains("TRUE"))
                     {
-                        String ValorExpresion1 = this.Hijos[2].Hijos[1].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 1" + ValorExpresion1);
-                        hijo1 = 2;
-                        ValorElse = ValorExpresion1.ToUpper();
+                        foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[1].Hijos)
+                        {
+                            //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
+                            valor1 = sentencia.Ejecutar(entorno);
+                            if (valor1.Contains("#Error") == true)
+                            {
+                                System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
+                                // break;
+                                return "#Error";
+                            }
+                            if (valor1.Contains("BREAK") == true)
+                            {
+                                return "BREAK";
+                                //return "#Error";
+                            }
+                            if (valor1.Contains("RETORNO:") == true)
+                            {
+
+                                return valor1;
+                            }
+
+                        }
+                        return "ELSE IF";
+                    }
+
+                }
+
+                //para el segundo else if
+                if (ValorElse.ToUpper().Contains("FALSE"))
+                {
+                    //if(this.Hijos[2].Hijos[])
+
+                    //System.Diagnostics.Debug.WriteLine("probando else del nivel 2 " + this.Hijos[2].Hijos[2].Nombre);
+                    if (this.Hijos[2].AutoIncrmentable2 == 9090)
+                    {
+                        ValorElse = this.Hijos[2].Hijos[2].Hijos[0].Ejecutar(entorno);
+                        // System.Diagnostics.Debug.WriteLine("debus Romeo: x" + ValorElse);
+                        if (ValorElse.ToUpper().Contains("TRUE"))
+                        {
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[1].Hijos)
+                            {
+                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
+                                valor1 = sentencia.Ejecutar(entorno);
+                                if (valor1.Contains("#Error") == true)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
+                                    // break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
+                                    //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
+
+                            }
+                            return "ELSE IF";
+                        }
+                        //fin
+                    }
+                    else if (this.Hijos[2].AutoIncrmentable2 == 666)
+                    {
+                        ValorElse = "TRUE";
                         if (ValorElse.ToUpper().Contains("TRUE"))
                             foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos)
                             {
@@ -90,7 +176,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                   // break;
+                                    // break;
                                     return "#Error";
                                 }
                                 if (valor1.Contains("BREAK") == true)
@@ -105,127 +191,31 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 }
 
                             }
-                        Expresion2 = this.Hijos[2].Hijos[0].Hijos[0].Nombre;
-                        System.Diagnostics.Debug.WriteLine("EL ESE 2" + Expresion2);
+                        return "ELSE IF";
                     }
-                    else if (ValorElse.Contains("FALSE"))
+                    else
                     {
-                        System.Diagnostics.Debug.WriteLine("caca");
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 1" + ValorExpresion1);
-
-                        ValorElse = ValorExpresion1.ToUpper();
-                        if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[1].Hijos)
-                            {
-                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                                valor1 = sentencia.Ejecutar(entorno);
-                                if (valor1.Contains("#Error") == true)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
-                                    return "#Error";
-                                }
-                                if (valor1.Contains("BREAK") == true)
-                                {
-                                    return "BREAK";
-                                    //return "#Error";
-                                }
-                                if (valor1.Contains("RETORNO:") == true)
-                                {
-
-                                    return valor1;
-                                }
-
-                            }
+                        return "IF-ESLE";
                     }
                 }
-                //para el segundo els if
-                if (hijo1 == 2) {
-                    if (Expresion2.Contains("SINO") && ValorElse.Contains("FALSE"))
-                    {
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[1].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 2" + ValorExpresion1);
-                        hijo1 = 3;
-                        ValorElse = ValorExpresion1.ToUpper();
-                        if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[2].Hijos)
-                            {
-                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                                valor1 = sentencia.Ejecutar(entorno);
-                                if (valor1.Contains("#Error") == true)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
-                                    return "#Error";
-                                }
-                                if (valor1.Contains("BREAK") == true)
-                                {
-                                    return "BREAK";
-                                    //return "#Error";
-                                }
-                                if (valor1.Contains("RETORNO:") == true)
-                                {
-
-                                    return valor1;
-                                }
-
-                            }
-                        Expresion3 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Nombre;
-                        //System.Diagnostics.Debug.WriteLine("EL ESE 2" + Expresion2);
-                    }
-                    else if(ValorElse.Contains("FALSE"))
-                    {
-                        System.Diagnostics.Debug.WriteLine("caca");
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 1" + ValorExpresion1);
-
-                        ValorElse = ValorExpresion1.ToUpper();
-                        if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[1].Hijos)
-                            {
-                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                                valor1 = sentencia.Ejecutar(entorno);
-                                if (valor1.Contains("#Error") == true)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
-                                    return "#Error";
-                                }
-                                if (valor1.Contains("BREAK") == true)
-                                {
-                                    return "BREAK";
-                                    //return "#Error";
-                                }
-                                if (valor1.Contains("RETORNO:") == true)
-                                {
-
-                                    return valor1;
-                                }
-
-                            }
-                    }
-
-
-                }
-                // para el tercero
-                if(hijo1 == 3)
+                //para el tercer else if
+                if (ValorElse.ToUpper().Contains("FALSE"))
                 {
-                    if (Expresion3.Contains("SINO") && ValorElse.Contains("FALSE"))
+                    System.Diagnostics.Debug.WriteLine("probando else del nivel 3 " + this.Hijos[2].Hijos[2].AutoIncrmentable2);
+                    if (this.Hijos[2].Hijos[2].AutoIncrmentable2 == 9090)
                     {
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[1].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 2" + ValorExpresion1);
-                        hijo1 = 4;
-                        ValorElse = ValorExpresion1.ToUpper();
+                        ValorElse = this.Hijos[2].Hijos[2].Hijos[2].Hijos[0].Ejecutar(entorno);
+                        // System.Diagnostics.Debug.WriteLine("debus Romeo: x" + ValorElse);
                         if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[2].Hijos)
+                        {
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[1].Hijos)
                             {
                                 //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
                                 valor1 = sentencia.Ejecutar(entorno);
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
+                                    // break;
                                     return "#Error";
                                 }
                                 if (valor1.Contains("BREAK") == true)
@@ -240,25 +230,23 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 }
 
                             }
-                        Expresion4 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
-                        //System.Diagnostics.Debug.WriteLine("EL ESE 2" + Expresion2);
+                            return "ELSE IF";
+                        }
+                        //fin
                     }
-                    else if (ValorElse.Contains("FALSE"))
+                    else if (this.Hijos[2].Hijos[2].AutoIncrmentable2 == 666)
                     {
-                        System.Diagnostics.Debug.WriteLine("caca");
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 1" + ValorExpresion1);
 
-                        ValorElse = ValorExpresion1.ToUpper();
+                        ValorElse = "TRUE";
                         if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[1].Hijos)
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos)
                             {
                                 //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
                                 valor1 = sentencia.Ejecutar(entorno);
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
+                                    // break;
                                     return "#Error";
                                 }
                                 if (valor1.Contains("BREAK") == true)
@@ -273,27 +261,105 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 }
 
                             }
+                        return "ELSE IF";
+
+                    }
+                    else
+                    {
+                        return "IF-ESLE";
+                    }
+                }
+
+                //para el cuarto else if
+                if (ValorElse.ToUpper().Contains("FALSE"))
+                {
+                    System.Diagnostics.Debug.WriteLine("probando else del nivel 4 " + this.Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2);
+                    if (this.Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 9090)
+                    {
+                        ValorElse = this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[0].Ejecutar(entorno);
+                        // System.Diagnostics.Debug.WriteLine("debus Romeo: x" + ValorElse);
+                        if (ValorElse.ToUpper().Contains("TRUE"))
+                        {
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[1].Hijos)
+                            {
+                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
+                                valor1 = sentencia.Ejecutar(entorno);
+                                if (valor1.Contains("#Error") == true)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
+                                    // break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
+                                    //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
+
+                            }
+                            return "ELSE IF";
+                        }
+                        //fin
+                    }
+                    else if (this.Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 666)
+                    {
+
+                        ValorElse = "TRUE";
+                        if (ValorElse.ToUpper().Contains("TRUE"))
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos)
+                            {
+                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
+                                valor1 = sentencia.Ejecutar(entorno);
+                                if (valor1.Contains("#Error") == true)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
+                                    // break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
+                                    //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
+
+                            }
+                        return "ELSE IF";
+
+                    }
+                    else
+                    {
+                        return "IF-ESLE";
                     }
 
                 }
-                // para el cuarto
-                if (hijo1 == 4)
+                //para el quinto else if
+                if (ValorElse.ToUpper().Contains("FALSE"))
                 {
-                    if (Expresion4.Contains("SINO") && ValorElse.Contains("FALSE"))
+                    System.Diagnostics.Debug.WriteLine("probando else del nivel 5 " + this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2);
+                    if (this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 9090)
                     {
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 2" + ValorExpresion1);
-                        hijo1 = 5;
-                        ValorElse = ValorExpresion1.ToUpper();
+                        ValorElse = this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[0].Ejecutar(entorno);
+                        // System.Diagnostics.Debug.WriteLine("debus Romeo: x" + ValorElse);
                         if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[2].Hijos)
+                        {
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[1].Hijos)
                             {
                                 //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
                                 valor1 = sentencia.Ejecutar(entorno);
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
+                                    // break;
                                     return "#Error";
                                 }
                                 if (valor1.Contains("BREAK") == true)
@@ -308,25 +374,23 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 }
 
                             }
-                        Expresion5= this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
-                        //System.Diagnostics.Debug.WriteLine("EL ESE 2" + Expresion2);
+                            return "ELSE IF";
+                        }
+                        //fin
                     }
-                    else if (ValorElse.Contains("FALSE"))
+                    else if (this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 666)
                     {
-                        System.Diagnostics.Debug.WriteLine("caca");
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 1" + ValorExpresion1);
 
-                        ValorElse = ValorExpresion1.ToUpper();
+                        ValorElse = "TRUE";
                         if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Hijos)
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos)
                             {
                                 //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
                                 valor1 = sentencia.Ejecutar(entorno);
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
+                                    // break;
                                     return "#Error";
                                 }
                                 if (valor1.Contains("BREAK") == true)
@@ -341,27 +405,175 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 }
 
                             }
+                        return "ELSE IF";
+
+                    }
+                    else
+                    {
+                        return "IF-ESLE";
+                    }
+                }
+                //para el sexto else if
+                if (ValorElse.ToUpper().Contains("FALSE"))
+                {
+                    System.Diagnostics.Debug.WriteLine("probando else del nivel 6 " + this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2);
+                    if (this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 9090)
+                    {
+                        ValorElse = this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[0].Ejecutar(entorno);
+                        // System.Diagnostics.Debug.WriteLine("debus Romeo: x" + ValorElse);
+                        if (ValorElse.ToUpper().Contains("TRUE"))
+                        {
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[1].Hijos)
+                            {
+                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
+                                valor1 = sentencia.Ejecutar(entorno);
+                                if (valor1.Contains("#Error") == true)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
+                                    // break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
+                                    //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
+
+                            }
+                            return "ELSE IF";
+                        }
+                        //fin
+                    }
+                    else if (this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 666)
+                    {
+
+                        ValorElse = "TRUE";
+                        if (ValorElse.ToUpper().Contains("TRUE"))
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos)
+                            {
+                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
+                                valor1 = sentencia.Ejecutar(entorno);
+                                if (valor1.Contains("#Error") == true)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
+                                    // break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
+                                    //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
+
+                            }
+                        return "ELSE IF";
+
+                    }
+                    else
+                    {
+                        return "IF-ESLE";
+                    }
+                }
+                //para el septimo else if
+                if (ValorElse.ToUpper().Contains("FALSE"))
+                {
+                    System.Diagnostics.Debug.WriteLine("probando else del nivel 7 " + this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2);
+                    if (this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 9090)
+                    {
+                        ValorElse = this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[0].Ejecutar(entorno);
+                        // System.Diagnostics.Debug.WriteLine("debus Romeo: x" + ValorElse);
+                        if (ValorElse.ToUpper().Contains("TRUE"))
+                        {
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[1].Hijos)
+                            {
+                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
+                                valor1 = sentencia.Ejecutar(entorno);
+                                if (valor1.Contains("#Error") == true)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
+                                    // break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
+                                    //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
+
+                            }
+                            return "ELSE IF";
+                        }
+                        //fin
+                    }
+                    else if (this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 666)
+                    {
+
+                        ValorElse = "TRUE";
+                        if (ValorElse.ToUpper().Contains("TRUE"))
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos)
+                            {
+                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
+                                valor1 = sentencia.Ejecutar(entorno);
+                                if (valor1.Contains("#Error") == true)
+                                {
+                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
+                                    // break;
+                                    return "#Error";
+                                }
+                                if (valor1.Contains("BREAK") == true)
+                                {
+                                    return "BREAK";
+                                    //return "#Error";
+                                }
+                                if (valor1.Contains("RETORNO:") == true)
+                                {
+
+                                    return valor1;
+                                }
+
+                            }
+                        return "ELSE IF";
+
+                    }
+                    else
+                    {
+                        return "IF-ESLE";
                     }
 
                 }
-                // para el quinto
-                if (hijo1 == 5)
+                //para el octavo
+                if (ValorElse.ToUpper().Contains("FALSE"))
                 {
-                    if (Expresion5.Contains("SINO") && ValorElse.Contains("FALSE"))
+                    System.Diagnostics.Debug.WriteLine("probando else del nivel 8 " + this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2);
+                    if (this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 9090)
                     {
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 2" + ValorExpresion1);
-                        hijo1 = 6;
-                        ValorElse = ValorExpresion1.ToUpper();
+                        ValorElse = this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[0].Ejecutar(entorno);
+                        // System.Diagnostics.Debug.WriteLine("debus Romeo: x" + ValorElse);
                         if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[2].Hijos)
+                        {
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[1].Hijos)
                             {
                                 //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
                                 valor1 = sentencia.Ejecutar(entorno);
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                   // break;
+                                    // break;
                                     return "#Error";
                                 }
                                 if (valor1.Contains("BREAK") == true)
@@ -376,25 +588,23 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 }
 
                             }
-                        Expresion6 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
-                        //System.Diagnostics.Debug.WriteLine("EL ESE 2" + Expresion2);
+                            return "ELSE IF";
+                        }
+                        //fin
                     }
-                    else if (ValorElse.Contains("FALSE"))
+                    else if (this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 666)
                     {
-                        System.Diagnostics.Debug.WriteLine("caca");
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 1" + ValorExpresion1);
 
-                        ValorElse = ValorExpresion1.ToUpper();
+                        ValorElse = "TRUE";
                         if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Hijos)
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos)
                             {
                                 //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
                                 valor1 = sentencia.Ejecutar(entorno);
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
+                                    // break;
                                     return "#Error";
                                 }
                                 if (valor1.Contains("BREAK") == true)
@@ -409,27 +619,34 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 }
 
                             }
+                        return "ELSE IF";
+
                     }
+                    else
+                    {
+                        return "IF-ESLE";
+                    }
+
 
                 }
-                // para el sexto
-                if (hijo1 == 6)
+                //para el noveno
+                if (ValorElse.ToUpper().Contains("FALSE"))
                 {
-                    if (Expresion6.Contains("SINO") && ValorElse.Contains("FALSE"))
+                    System.Diagnostics.Debug.WriteLine("probando else del nivel 9 " + this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2);
+                    if (this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 9090)
                     {
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 2" + ValorExpresion1);
-                        hijo1 = 7;
-                        ValorElse = ValorExpresion1.ToUpper();
+                        ValorElse = this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[0].Ejecutar(entorno);
+                        // System.Diagnostics.Debug.WriteLine("debus Romeo: x" + ValorElse);
                         if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[2].Hijos)
+                        {
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[1].Hijos)
                             {
                                 //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
                                 valor1 = sentencia.Ejecutar(entorno);
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
+                                    // break;
                                     return "#Error";
                                 }
                                 if (valor1.Contains("BREAK") == true)
@@ -444,25 +661,23 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 }
 
                             }
-                        Expresion7 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
-                        //System.Diagnostics.Debug.WriteLine("EL ESE 2" + Expresion2);
+                            return "ELSE IF";
+                        }
+                        //fin
                     }
-                    else if (ValorElse.Contains("FALSE"))
+                    else if (this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 666)
                     {
-                        System.Diagnostics.Debug.WriteLine("caca");
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 1" + ValorExpresion1);
 
-                        ValorElse = ValorExpresion1.ToUpper();
+                        ValorElse = "TRUE";
                         if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Hijos)
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos)
                             {
                                 //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
                                 valor1 = sentencia.Ejecutar(entorno);
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
+                                    // break;
                                     return "#Error";
                                 }
                                 if (valor1.Contains("BREAK") == true)
@@ -477,27 +692,33 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 }
 
                             }
+                        return "ELSE IF";
+
                     }
 
+                    else
+                    {
+                        return "IF-ESLE";
+                    }
                 }
-                // para el sieto
-                if (hijo1 == 7)
+                //para el decimo
+                if (ValorElse.ToUpper().Contains("FALSE"))
                 {
-                    if (Expresion7.Contains("SINO") && ValorElse.Contains("FALSE"))
+                    System.Diagnostics.Debug.WriteLine("probando else del nivel 10 " + this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2);
+                    if (this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 9090)
                     {
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 2" + ValorExpresion1);
-                        hijo1 = 8;
-                        ValorElse = ValorExpresion1.ToUpper();
+                        ValorElse = this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[0].Ejecutar(entorno);
+                        // System.Diagnostics.Debug.WriteLine("debus Romeo: x" + ValorElse);
                         if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[2].Hijos)
+                        {
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[1].Hijos)
                             {
                                 //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
                                 valor1 = sentencia.Ejecutar(entorno);
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                   // break;
+                                    // break;
                                     return "#Error";
                                 }
                                 if (valor1.Contains("BREAK") == true)
@@ -512,25 +733,23 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 }
 
                             }
-                        Expresion8= this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
-                        //System.Diagnostics.Debug.WriteLine("EL ESE 2" + Expresion2);
+                            return "ELSE IF";
+                        }
+                        //fin
                     }
-                    else if (ValorElse.Contains("FALSE"))
+                    else if (this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].AutoIncrmentable2 == 666)
                     {
-                        System.Diagnostics.Debug.WriteLine("caca");
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 1" + ValorExpresion1);
 
-                        ValorElse = ValorExpresion1.ToUpper();
+                        ValorElse = "TRUE";
                         if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Hijos)
+                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos[2].Hijos)
                             {
                                 //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
                                 valor1 = sentencia.Ejecutar(entorno);
                                 if (valor1.Contains("#Error") == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
+                                    // break;
                                     return "#Error";
                                 }
                                 if (valor1.Contains("BREAK") == true)
@@ -545,242 +764,19 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 }
 
                             }
+                        return "ELSE IF";
+
                     }
 
-                }
-                // para el ocho
-                if (hijo1 == 8)
-                {
-                    if (Expresion8.Contains("SINO") && ValorElse.Contains("FALSE"))
+                    else
                     {
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 2" + ValorExpresion1);
-                        hijo1 = 9;
-                        ValorElse = ValorExpresion1.ToUpper();
-                        if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[2].Hijos)
-                            {
-                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                                valor1 = sentencia.Ejecutar(entorno);
-                                if (valor1.Contains("#Error") == true)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
-                                    return "#Error";
-                                }
-                                if (valor1.Contains("BREAK") == true)
-                                {
-                                    return "BREAK";
-                                    //return "#Error";
-                                }
-                                if (valor1.Contains("RETORNO:") == true)
-                                {
-
-                                    return valor1;
-                                }
-
-                            }
-                        Expresion9 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
-                        //System.Diagnostics.Debug.WriteLine("EL ESE 2" + Expresion2);
+                        return "IF-ESLE";
                     }
-                    else if (ValorElse.Contains("FALSE"))
-                    {
-                        System.Diagnostics.Debug.WriteLine("caca");
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 1" + ValorExpresion1);
-
-                        ValorElse = ValorExpresion1.ToUpper();
-                        if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Hijos)
-                            {
-                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                                valor1 = sentencia.Ejecutar(entorno);
-                                if (valor1.Contains("#Error") == true)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
-                                    return "#Error";
-                                }
-                                if (valor1.Contains("BREAK") == true)
-                                {
-                                    return "BREAK";
-                                    //return "#Error";
-                                }
-                                if (valor1.Contains("RETORNO:") == true)
-                                {
-
-                                    return valor1;
-                                }
-
-                            }
-                    }
-
-                }
-                // para el nueve
-                if (hijo1 == 9)
-                {
-                    if (Expresion9.Contains("SINO") && ValorElse.Contains("FALSE"))
-                    {
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 2" + ValorExpresion1);
-                        hijo1 = 10;
-                        ValorElse = ValorExpresion1.ToUpper();
-                        if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[2].Hijos)
-                            {
-                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                                valor1 = sentencia.Ejecutar(entorno);
-                                if (valor1.Contains("#Error") == true)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                   // break;
-                                    return "#Error";
-                                }
-                                if (valor1.Contains("BREAK") == true)
-                                {
-                                    return "BREAK";
-                                    //return "#Error";
-                                }
-                                if (valor1.Contains("RETORNO:") == true)
-                                {
-
-                                    return valor1;
-                                }
-
-                            }
-                        Expresion10 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
-                        //System.Diagnostics.Debug.WriteLine("EL ESE 2" + Expresion2);
-                    }
-                    else if (ValorElse.Contains("FALSE"))
-                    {
-                        System.Diagnostics.Debug.WriteLine("caca");
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 1" + ValorExpresion1);
-
-                        ValorElse = ValorExpresion1.ToUpper();
-                        if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Hijos)
-                            {
-                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                                valor1 = sentencia.Ejecutar(entorno);
-                                if (valor1.Contains("#Error") == true)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
-                                    return "#Error";
-                                }
-                                if (valor1.Contains("BREAK") == true)
-                                {
-                                    return "BREAK";
-                                    //return "#Error";
-                                }
-                                if (valor1.Contains("RETORNO:") == true)
-                                {
-
-                                    return valor1;
-                                }
-
-                            }
-                    }
-
-                }
-                // para el nueve
-                if (hijo1 == 10)
-                {
-                    if (Expresion10.Contains("SINO") && ValorElse.Contains("FALSE"))
-                    {
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Ejecutar(entorno);
-
-                        System.Diagnostics.Debug.WriteLine("EL bool 10" + ValorExpresion1);
-                        hijo1 = 11;
-                        ValorElse = ValorExpresion1.ToUpper();
-                        if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[2].Hijos)
-                            {
-                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                                valor1 = sentencia.Ejecutar(entorno);
-                                if (valor1.Contains("#Error") == true)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                   // break;
-                                    return "#Error";
-                                }
-                                if (valor1.Contains("BREAK") == true)
-                                {
-                                    return "BREAK";
-                                    //return "#Error";
-                                }
-                                if (valor1.Contains("RETORNO:") == true)
-                                {
-
-                                    return valor1;
-                                }
-
-                            }
-                        //ya esta para evaluar
-                        //Expresion11 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Nombre;
-                        //System.Diagnostics.Debug.WriteLine("EL ESE 2" + Expresion2);
-                    }
-                    else if (ValorElse.Contains("FALSE"))
-                    {
-                        System.Diagnostics.Debug.WriteLine("caca");
-                        String ValorExpresion1 = this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Ejecutar(entorno);
-                        System.Diagnostics.Debug.WriteLine("EL bool 1" + ValorExpresion1);
-
-                        ValorElse = ValorExpresion1.ToUpper();
-                        if (ValorElse.ToUpper().Contains("TRUE"))
-                            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[0].Hijos[1].Hijos)
-                            {
-                                //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                                valor1 = sentencia.Ejecutar(entorno);
-                                if (valor1.Contains("#Error") == true)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                    //break;
-                                    return "#Error";
-                                }
-                                if (valor1.Contains("BREAK") == true)
-                                {
-                                    return "BREAK";
-                                    //return "#Error";
-                                }
-                                if (valor1.Contains("RETORNO:") == true)
-                                {
-
-                                    return valor1;
-                                }
-
-                            }
-                    }
-
                 }
 
             }
-            if(ValorElse == "FALSE")
-            {
-                System.Diagnostics.Debug.WriteLine("el esles" + this.Hijos[2].Nombre);
-                if (this.Hijos[2].Nombre.ToUpper().ToString().Contains("SINO"))
-                {
-                    foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos[2].Hijos)
-                    {
-                        //System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                        valor1 = sentencia.Ejecutar(entorno);
-                        if (valor1.Contains("#Error") == true)
-                        {
-                            System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                            //break;
-                            return "#Error";
-                        }
-                        if (valor1.Contains("BREAK") == true)
-                        {
-                            return "BREAK";
-                            //return "#Error";
-                        }
-
-                    }
-                }
-            }
-            return "ELSE IF";
+                return "ELSE IF";
         }
+           
     }
 }
