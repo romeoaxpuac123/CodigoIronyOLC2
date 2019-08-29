@@ -105,7 +105,7 @@ namespace AnalizadorCQL.Analizadores
             var HOY = ToTerm("today");
             var AHORA = ToTerm("now");
             var RETORNO = ToTerm("return");
-
+            var Procedure = ToTerm("procedure");
 
 
             this.RegisterOperators(8, Associativity.Left, "?");
@@ -153,6 +153,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal FUNCIONES_CREADAS = new NonTerminal("FUNCIONES_CREADAS");
             NonTerminal LISTA_PARAMETROS_FUNCIONES = new NonTerminal("LISTA_PARAMETROS_FUNCIONES");
             NonTerminal TIPOS_VARIABLES2 = new NonTerminal("TIPOS_VARIABLES2");
+            NonTerminal PROCEDIMIENTOS = new NonTerminal("PROCEDIMIENTOS");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
@@ -178,7 +179,14 @@ namespace AnalizadorCQL.Analizadores
                              | EL_BREAK
                              | FUNCIONES_PROPIAS
                              | FUNCIONES_CREADAS
-                             | ELRETORNO;
+                             | ELRETORNO
+                             | PROCEDIMIENTOS;
+
+            PROCEDIMIENTOS.Rule = Procedure + id + ParA + ParC + coma + ParA + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
+                | Procedure + id + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + coma + ParA + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
+                | Procedure + id + ParA + ParC + coma + ParA + LISTA_PARAMETROS_FUNCIONES+ ParC + llaveAbierta + SENTENCIAS + llaverCerrada
+                | Procedure + id + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + coma + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + llaveAbierta + SENTENCIAS + llaverCerrada;
+
 
             ELRETORNO.Rule =  RETORNO + E + PYC;
 

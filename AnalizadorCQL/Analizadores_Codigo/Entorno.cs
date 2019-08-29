@@ -34,6 +34,126 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
 
         }
+        public Boolean AgregarProcedimiento(String id, String NombreFuncion, String Tipo, List<String> Listax, List<String> Listaxy, NodoAbstracto nuevo)
+        {
+            if (!Elementos.ContainsKey(id))
+            {
+                Simbolo sim = new Simbolo(id, NombreFuncion, Tipo, Listax, Listaxy, nuevo);
+                Elementos.Add(id, sim);
+                System.Diagnostics.Debug.WriteLine("La variables Del objeto se agregó -> " + id);
+                return true;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("La variables ya existe -> " + id);
+                return false;
+            }
+        }
+        public Boolean ExisteProcedimiento(String Nombre)
+        {
+            String id = "PROC-BRAY";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if (p.NombreFuncionGuardada().ToString().ToUpper() == Nombre.ToUpper())
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public int CantidadDeProcedimientos()
+        {
+            String id = "PROC-BRAY";
+            int a = 0;
+
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    a++;
+                }
+            }
+
+
+            return a;
+        }
+        public Boolean ExisteListaConLaMismaCantidadDeParametrosEnProc(String Nombre, int elementos)
+        {
+
+            String id = "PROC-BRAY";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    System.Diagnostics.Debug.WriteLine(Nombre + ";");
+                    Simbolo p = (Simbolo)datos.Value;
+                    System.Diagnostics.Debug.WriteLine(p.lalista().Count + ";");
+                    if (p.lalista().Count == elementos)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public Boolean MismosParametrosEnProc(String Nombre, List<String> Listax)
+        {
+            String id = "PROC-BRAY";
+
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if (p.NombreFuncionGuardada().ToString().ToUpper() == Nombre.ToUpper())
+                    {
+                        if (p.lalista().Count == Listax.Count)
+                        {
+                            for (int i = 0; i < Listax.Count; i++)
+                            {
+                                string[] separadas;
+                                separadas = Listax[i].Split('*');
+                                if (p.lalista()[i].ToUpper().Contains(separadas[0].ToUpper()) == true)
+                                {
+                                    return true;
+                                }
+                                else
+                                {
+                                    for (int j = 0; j < p.lalista().Count; j++)
+                                    {
+                                        if (p.lalista()[j].ToUpper().Contains(separadas[1].ToUpper()) == true)
+                                        {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+        public void MostrarProcedimientos()
+        {
+            String id = "PROC-BRAY";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    System.Diagnostics.Debug.WriteLine("NombreFuncion -> " + datos.Key.ToString() + " funcion " + p.NombreFuncionGuardada() + " #Par " + p.lalista().Count  + " #retu " + p.lalista2().Count );
+                }
+            }
+        }
+
+
 
         public Boolean AgregarFuncion(String id, String NombreFuncion, String Tipo, List<String> Listax, NodoAbstracto nuevo)
         {
@@ -51,6 +171,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
         }
 
+        
         public int CantidadDeFunciones()
         {
             String id = "BRAY-FUNC";

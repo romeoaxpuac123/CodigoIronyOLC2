@@ -1544,6 +1544,7 @@ namespace AnalizadorCQL.Analizadores
 
                     break;
                 case 10:
+                    System.Diagnostics.Debug.WriteLine("CAso10 -> " + root.ToString());
                     if (root.ToString().Contains("EL_FOR"))
                     {
                         NodoAbstracto nuevo = new ELFOR("FOR");
@@ -1554,8 +1555,20 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
                         return nuevo;
                     }
+                    else if (root.ToString().Contains("PROCEDIMIENTOS"))
+                    {
+                        NodoAbstracto nuevo = new PROCEDIMIENTOS("EXP");
+                        NodoAbstracto Nombre = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(Nombre);
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
+                        nuevo.ListaID1 = new List<String>();
+                        nuevo.ListaR1 = new List<String>();
+                        nuevo.AutoIncrmentable2 = 9000;
+                        return nuevo;
+                    }
                     break;
                 case 11:
+                    System.Diagnostics.Debug.WriteLine("CAso11 -> " + root.ToString());
                     if (root.ToString().Contains("EL_IF"))
                     {
                         NodoAbstracto nuevo = new ELSEIF("ELSEIF");
@@ -1563,6 +1576,47 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(9)));
                         return nuevo;
+                    }
+                    else if (root.ToString().Contains("PROCEDIMIENTOS"))
+                    {
+                        if (root.ChildNodes.ElementAt(3).ToString().Contains("LISTA"))
+                        {
+                            NodoAbstracto nuevo = new PROCEDIMIENTOS("EXP");
+                            NodoAbstracto Nombre = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Nombre);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(9)));
+                            //nuevo.ListaID1 = new List<String>();
+                            STN.Clear();
+                            AtributosFunciones(root.ChildNodes.ElementAt(3));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            nuevo.AutoIncrmentable2 = 9000;
+                            return nuevo;
+                        }
+                        else
+                        {
+                            NodoAbstracto nuevo = new PROCEDIMIENTOS("EXP");
+                            NodoAbstracto Nombre = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Nombre);
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(9)));
+                            //nuevo.ListaID1 = new List<String>();
+                            nuevo.ListaR1 = new List<String>();
+                            STN.Clear();
+                            AtributosFunciones(root.ChildNodes.ElementAt(6));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            //nuevo.ListaR1 = new List<String>();
+                            nuevo.AutoIncrmentable2 = 9000;
+                            return nuevo;
+                        }
+                       
                     }
                     break;
                 case 12:
@@ -1605,10 +1659,41 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.AutoIncrmentable2 = 666;
                         return nuevo;
                     }
-                
+                    else if (root.ToString().Contains("PROCEDIMIENTOS"))
+                    {
+                        NodoAbstracto nuevo = new PROCEDIMIENTOS("EXP");
+                        NodoAbstracto Nombre = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(Nombre);
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(10)));
+                        //nuevo.ListaID1 = new List<String>();
+                        nuevo.ListaR1 = new List<String>();
+                        STN.Clear();
+                        AtributosFunciones(root.ChildNodes.ElementAt(7));
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaR1.Add(STN[i]);
+                        }
+                        STN.Clear();
+
+                        STN.Clear();
+                        AtributosFunciones(root.ChildNodes.ElementAt(3));
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
 
 
-                    else if (root.ToString().Contains("CREATE_TYPE")) {
+
+                        //nuevo.ListaR1 = new List<String>();
+                        nuevo.AutoIncrmentable2 = 9000;
+                        return nuevo;
+
+                    }
+
+
+                    else if (root.ToString().Contains("CREATE_TYPE"))
+                    {
                         ListaIDSObjeto(root.ChildNodes.ElementAt(9));
                         System.Diagnostics.Debug.WriteLine("Codigo para LA CREACION DE OBJETOSXS;");
                         NodoAbstracto nuevo = new USER_TYPE("USER_TYPE");

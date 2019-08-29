@@ -21,6 +21,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         public int AutoMinision;
         public List<NodoAbstracto> Hijos;
         public List<String> ListaID1  ;
+        public List<String> ListaR1;
         public NodoAbstracto()
         {
         }

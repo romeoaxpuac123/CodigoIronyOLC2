@@ -15,6 +15,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
         String Tipo;
         String Objeto;
         List<String> Lista = new List<String>();
+        List<String> Lista2 = new List<String>();
         NodoAbstracto nuevo;
         
         public Simbolo(String Id, String Valor, String Tipo)
@@ -29,6 +30,15 @@ namespace AnalizadorCQL.Analizadores_Codigo
             this.NombreFuncion = NombreFuncion;
             this.Tipo = Tipo;
             this.Lista = Listax;
+            this.nuevo = nodo;
+        }
+        public Simbolo(String id, String NombreFuncion, String Tipo, List<String> Listax, List<String> Listaxy, NodoAbstracto nodo)
+        {
+            this.Id = id;
+            this.NombreFuncion = NombreFuncion;
+            this.Tipo = Tipo;
+            this.Lista = Listax;
+            this.Lista2 = Listaxy;
             this.nuevo = nodo;
         }
         public NodoAbstracto Sentencias()
@@ -55,6 +65,10 @@ namespace AnalizadorCQL.Analizadores_Codigo
         public List<String> lalista()
         {
             return this.Lista;
+        }
+        public List<String> lalista2()
+        {
+            return this.Lista2;
         }
         public String NombreFuncionGuardada()
         {
