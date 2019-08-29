@@ -30,6 +30,31 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                   System.Diagnostics.Debug.WriteLine("PROC-NOMBRE " + NombreProcedimiento);
                   System.Diagnostics.Debug.WriteLine("PROC-PARAMETROS " + CantidadDeParametros);
                   System.Diagnostics.Debug.WriteLine("PROC-RETORNOS " + CantidadDeRetornos);
+            List<String> Lista1 = new List<String>();
+            Lista1 = ListaR1;
+
+            for (int i = 0; i< this.ListaR1.Count ; i++)
+            {
+                
+               
+               
+                int contador = 0;
+                for(int j= 0; j< Lista1.Count; j++)
+                {
+                    if (Lista1[j] == ListaR1[i])
+                    {
+                        contador++;
+                       
+                    }
+                }
+
+                if (contador > 1)
+                {
+                    return "#ERROR EN returnos DE PROCE";
+                }
+
+            }
+
 
                   if (entorno.ExisteProcedimiento(NombreProcedimiento) == true)
                   {
