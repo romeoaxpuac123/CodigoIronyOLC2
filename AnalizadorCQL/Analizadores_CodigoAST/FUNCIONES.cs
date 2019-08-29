@@ -56,6 +56,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     else
                     {
                         entorno.AgregarFuncion(IdFuncion, NombreFuncion, tipoFuncion, ListaID1, this.Hijos[2]);
+                      
                     }
 
                 }
@@ -63,13 +64,14 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 {
                     //la función tiene diferente cantidad de parametros
                     entorno.AgregarFuncion(IdFuncion, NombreFuncion, tipoFuncion, ListaID1, this.Hijos[2]);
-
+                   
                 }
             }
             else
             {
                 //la función no existe así que se agrega todo sin problemas
                 entorno.AgregarFuncion(IdFuncion, NombreFuncion, tipoFuncion, ListaID1, this.Hijos[2]);
+               
             }
             Boolean hayr = false;
             entorno.MostrarFunciones();
@@ -78,21 +80,60 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String valor1 = "";
             String Retorno = "";
             Entorno x = new Entorno();
+            //x = entorno;
+            for (int i = 0; i < ListaID1.Count; i++)
+            {
+                string[] separadas;
+                separadas = ListaID1[i].Split('*');
+                String Valorxxxx = "";
+                if (separadas[0].ToUpper().Contains("STRING"))
+                {
+                    Valorxxxx = " ";
+                }
+                if (separadas[0].ToUpper().Contains("INT"))
+                {
+                    Valorxxxx = "0";
+                }
+                if (separadas[0].ToUpper().Contains("DOUBLE"))
+                {
+                    Valorxxxx = "2.2";
+                }
+                if (separadas[0].ToUpper().Contains("BOOLEAN"))
+                {
+                    Valorxxxx = "false";
+                }
+                if (separadas[0].ToUpper().Contains("DATE"))
+                {
+                    Valorxxxx = "'2019-1-1'";
+                }
+                if (separadas[0].ToUpper().Contains("TIME"))
+                {
+                    Valorxxxx = "'1::1:1'";
+                }
+                x.Agregar(separadas[1], separadas[0], Valorxxxx);
+            }
             foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos)
 
             {
                 System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
+                System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if" + sentencia.Nombre.ToString());
+                //valor1 = sentencia.Ejecutar(x);
+                
+                entorno.NuevasFunciones(x);
                 valor1 = sentencia.Ejecutar(x);
-                if (valor1.Contains("#Error") == true)
+                if (valor1.Contains("RETORNO:") == true)
                 {
-                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
+                        hayr = true;
+                        Retorno = valor1;
+                    //Retorno = valor1;
+                    
+                }
+                if (valor1.ToUpper().Contains("#ERROR") == true)
+                {
+                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if" + valor1);
+
                     return "#ERROR EN FUNCION";
                     //return "#Error";
-                }
-                if(valor1.Contains("RETORNO:") == true)
-                {
-                    hayr = true;
-                    Retorno = valor1;
                 }
 
             }
@@ -106,13 +147,15 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("Si existe retorno" + Retorno);
+                System.Diagnostics.Debug.WriteLine(NombreFuncion + " Si existe retornor" + Retorno);
                 string[] separadas;
                 separadas = Retorno.Split(',');
 
 
                 string[] separadas2;
                 separadas2 = separadas[1].Split(':');
+
+                entorno.MostrarFunciones();
 
                 if (separadas2[1].ToUpper().ToString().Contains(tipoFuncion.ToUpper())==false)
                 {

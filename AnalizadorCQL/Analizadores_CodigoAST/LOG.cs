@@ -22,7 +22,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         {
             System.Diagnostics.Debug.WriteLine("entro a imrpirmi");
             String val = this.Hijos[0].Ejecutar(entorno);
-            if (val.Equals("#Error") == false)
+            if (val.ToUpper().Contains("#ERROR") == false)
             {
 
                 //salida.Text = val + "\n";

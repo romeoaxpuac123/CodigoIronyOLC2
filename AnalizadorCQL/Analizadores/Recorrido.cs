@@ -10,6 +10,7 @@ namespace AnalizadorCQL.Analizadores
     {
         public NodoAbstracto Raiz;
         List<String> primes = new List<String>();
+        List<String> FuncionesXD = new List<String>();
         public NodoAbstracto Recorrido1(ParseTreeNode root)
         {
             Gramatica g = new Gramatica();
@@ -512,9 +513,48 @@ namespace AnalizadorCQL.Analizadores
                             (root.ChildNodes.ElementAt(2).ToString().Contains(") (Key symbol)"))
                             )
                         {
-                            NodoAbstracto nuevo = new FUN_RETORNO("RETORNO");
+                            NodoAbstracto nuevo = new FUN_RETORNO("EXP");
                             NodoAbstracto Funcion = new  Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", ""));
                             nuevo.Hijos.Add(Funcion);
+                            String TipoRetorno = "";
+                            for(int i = 0; i < FuncionesXD.Count; i++)
+                            {
+                                string[] separadas;
+                                separadas = FuncionesXD[i].Split('*');
+                                TipoRetorno = separadas[1];
+                                if (separadas[0].ToUpper().Contains(root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Replace(" (ID)", "")))
+                                {
+                                    if(separadas[2] == "0")
+                                    {
+                                        if (TipoRetorno.ToUpper().Contains("INT"))
+                                        {
+                                            TipoRetorno = "entero";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("DOUBLE"))
+                                        {
+                                            TipoRetorno = "decimal";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("STRING"))
+                                        {
+                                            TipoRetorno = "cadena";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("BOOLEANO"))
+                                        {
+                                            TipoRetorno = "Booleano";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("DATE"))
+                                        {
+                                            TipoRetorno = "Fechas";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("TIME"))
+                                        {
+                                            TipoRetorno = "hora";
+                                        }
+                                    }
+                                }
+                            }
+
+                            nuevo.TipoDato = TipoRetorno;
                             nuevo.AutoIncrmentable2 = 54;
                             return nuevo;
 
@@ -960,6 +1000,66 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.AutoIncrmentable2 = 103;
                             return nuevo;
                         }
+                        else if ((root.ChildNodes.ElementAt(0).ToString().Contains(" (id)")) &&
+                          (root.ChildNodes.ElementAt(1).ToString().Contains("( (Key symbol)")) &&
+                          (root.ChildNodes.ElementAt(3).ToString().Contains(") (Key symbol)"))
+                          )
+                        {
+                            System.Diagnostics.Debug.WriteLine("FUNCIONES usuario----------");
+                            NodoAbstracto nuevo = new  FUN_RETORNO("EXP");
+                            NodoAbstracto nuevohijo = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(nuevohijo);
+                            AtributosFuncionesUsuario(root.ChildNodes.ElementAt(2));
+                            for(int i=0; i< STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            String TipoRetorno = "";
+                            String TipoRetornox = "";
+                            for (int i = 0; i < FuncionesXD.Count; i++)
+                            {
+                                string[] separadas;
+                                separadas = FuncionesXD[i].Split('*');
+                                TipoRetorno = separadas[1];
+                                if (separadas[0].ToUpper().Contains(root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Replace(" (ID)", "")))
+                                {
+                                    if (separadas[2].ToString() == STN.Count.ToString())
+                                    {
+                                        if (TipoRetorno.ToUpper().Contains("INT"))
+                                        {
+                                            TipoRetornox = "entero";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("DOUBLE"))
+                                        {
+                                            TipoRetornox = "decimal";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("STRING"))
+                                        {
+                                            TipoRetornox = "cadena";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("BOOLEANO"))
+                                        {
+                                            TipoRetornox = "Booleano";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("DATE"))
+                                        {
+                                            TipoRetornox = "Fechas";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("TIME"))
+                                        {
+                                            TipoRetornox = "hora";
+                                        }
+                                    }
+                                }
+                            }
+
+                            nuevo.TipoDato = TipoRetornox;
+                            //nuevo.TipoDato = "entero";
+                            STN.Clear();
+                            //nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            nuevo.AutoIncrmentable2 = 345;
+                            return nuevo;
+                        }
                         else
                         {
                             System.Diagnostics.Debug.WriteLine("EXPRESION DE 4);");
@@ -1157,6 +1257,8 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(NombreFuncion);
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
                         nuevo.AutoIncrmentable2 = 67;
+                        FuncionesXD.Add(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", "") + "*" + root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "") + "*" + 0);
+                        
                         return nuevo;
 
                     }
@@ -1303,8 +1405,10 @@ namespace AnalizadorCQL.Analizadores
                         {
                             nuevo.ListaID1.Add(STN[i]);
                         }
-                        STN.Clear();
+                        
                         nuevo.AutoIncrmentable2 = 68;
+                        FuncionesXD.Add(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", "") + "*" + root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "") + "*" + STN.Count);
+                        STN.Clear();
                         return nuevo;
 
                     }
@@ -1541,6 +1645,7 @@ namespace AnalizadorCQL.Analizadores
              //Console.WriteLine("pureba for " + sentencia.Nombre + raiz.TipoDato);
              //System.Diagnostics.Debug.WriteLine("CA:"+sentencia.Hijos[0].Ejecutar(entorno).ToString());
                 String valor1 = sentencia.Ejecutar(entorno);
+                //System.Diagnostics.Debug.WriteLine("-------" + valor1 + "----");
                 if (valor1.ToUpper().Contains("#ERROR") == true || valor1.Contains("BREAK") == true  
                     )
                 {
@@ -1597,6 +1702,29 @@ namespace AnalizadorCQL.Analizadores
                     break;
             }
                     return STN;
+        }
+
+        public void AtributosFuncionesUsuario(ParseTreeNode root)
+        {
+            switch (root.ChildNodes.Count)
+            {
+                case 1:
+                    String Var1 = root.ChildNodes.ElementAt(0).FindToken().ToString();
+                    System.Diagnostics.Debug.WriteLine("un hijoxxx" + Var1);
+                    STN.Add(Var1);
+                    //Atributos(root.ChildNodes.ElementAt(0));
+                    break;
+                case 3:
+                    //                    Atributos(root.ChildNodes.ElementAt(0));                    
+
+                    String Var2 = root.ChildNodes.ElementAt(0).FindToken().ToString();
+                    STN.Add(Var2);
+                    System.Diagnostics.Debug.WriteLine("tres hijosxxx" + Var2);
+                    AtributosFuncionesUsuario(root.ChildNodes.ElementAt(2));
+
+
+                    break;
+            }
         }
 
         public void AtributosFunciones(ParseTreeNode root)

@@ -345,6 +345,7 @@ namespace AnalizadorCQL.Analizadores
                     | cadena
                     | id
                     | id + ParA + ParC // para las funciones sin parametros que un usuario creo
+                    | id + ParA + LISTA_EXPRESION + ParC
                     | id2
                     | id2 + ParA + ParC  // para las funciones que retornan algo, sin parametros
                     | id2 + ParA + E + ParC // para para una expresion

@@ -18,19 +18,26 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         }
         public override string Ejecutar(Entorno entorno)
         {
+            System.Diagnostics.Debug.WriteLine("Se está Ejecutnado declararasiganar");
             String tipo = this.Hijos[0].Nombre;
             String id = this.Hijos[1].Nombre;
             String sali = entorno.ObtenerValor(this.Hijos[1].Nombre);
             System.Diagnostics.Debug.WriteLine("tipo de variable" + this.Hijos[0].Nombre);
             System.Diagnostics.Debug.WriteLine("VAR" + this.Hijos[1].Nombre);
             System.Diagnostics.Debug.WriteLine("tipo de la expresion" + this.Hijos[2].Nombre);
-            System.Diagnostics.Debug.WriteLine("valor" + this.Hijos[2].Ejecutar(entorno).Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", ""));
+            System.Diagnostics.Debug.WriteLine("valoxxxr" + this.Hijos[2].Ejecutar(entorno).Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", ""));
             String Variable1 = this.Hijos[2].Ejecutar(entorno).Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "").Replace(".", ",");
+            if (this.Hijos[2].Nombre.ToUpper().Contains("FUNCION") == true)
+            {
+                Variable1 = this.Hijos[2].Ejecutar(entorno).ToString();
+            }
+
             Boolean DecimalEntero = true;
             Boolean ElBool = true;
             ///casteo 
             String TipoDato1 = "";
             String var = this.Hijos[1].Nombre;
+
            
 
             if (this.Hijos[2].TipoDato == "entero" || this.Hijos[2].TipoDato == "decimal")
@@ -48,7 +55,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     && DecimalEntero == false
                     )
                 {
-                    System.Diagnostics.Debug.WriteLine("la variable es entera" + Variable1);
+                    System.Diagnostics.Debug.WriteLine("la variable es entera" + Variable1 + "-"+id);
                     if (Variable1.Contains(","))
                     {
                         entorno.Agregar(id, tipo, Variable1.Remove(Variable1.IndexOf(",")));
