@@ -269,7 +269,12 @@ namespace AnalizadorCQL.Analizadores
                        )
                     {
                         System.Diagnostics.Debug.WriteLine("CODIGO PARA CREAR UN OJBETO Estudiante @est;");
-
+                        NodoAbstracto nuevox = new Nodo("SENTENCIAS");
+                        NodoAbstracto nuevo1 = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        NodoAbstracto nuevo2 = new Nodo(root.ChildNodes.ElementAt(1).ToString());
+                        nuevox.Hijos.Add(nuevo1);
+                        nuevox.Hijos.Add(nuevo2);
+                        return nuevox;
 
                     }
                     else if (root.ToString() == "SENTENCIA")
@@ -283,9 +288,23 @@ namespace AnalizadorCQL.Analizadores
                     }
                     else if (root.ToString() == "SENTENCIAS")
                     {
+                        /*
+                        if (Recorrido1(root.ChildNodes.ElementAt(0)) == null){
+                            NodoAbstracto nuevox = new Nodo("SENTENCIAS");
+                            NodoAbstracto nuevo1 = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                            NodoAbstracto nuevo2 = new Nodo(root.ChildNodes.ElementAt(1).ToString());
+                            nuevox.Hijos.Add(nuevo1);
+                            nuevox.Hijos.Add(nuevo2);
+                            return nuevox;
+                        }
+                        */
                         NodoAbstracto nuevo = Recorrido1(root.ChildNodes.ElementAt(0));
-                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+                        // esto que pexNodoAbstracto nuevo = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        //NodoAbstracto nuevx = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        //nuevo.Hijos.Add(nuevx);
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+                        
                         //Recorrido1(root.ChildNodes.ElementAt(0)).Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
                         //*eSTO FUNCIONO PARA LA PARTE DE IMPRIMIR VARIAS COSAS :d
                         //NodoAbstracto nuevo = new Nodo("SENTENCIAS");
@@ -419,6 +438,7 @@ namespace AnalizadorCQL.Analizadores
                                 return nuevo;
                             }
                         }
+                        
                     }
 
                     break;
@@ -906,11 +926,31 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.TipoDato = "SET";
                         }
                         return nuevo;
-                    }else if (root.ToString().ToUpper().Contains("ELRETORNO"))
+                    }
+                    else if (root.ToString().ToUpper().Contains("ELRETORNO"))
                     {
+                        
                         NodoAbstracto nuevo = new RETORNO("RETORNO");
                         ///NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
-                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+                        if (root.ChildNodes.ElementAt(1).ToString() == "E")
+                        {
+                            nuevo.AutoIncrmentable2 = 100;
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
+                        }
+                        else
+                        {
+                            nuevo.AutoIncrmentable2 = 200;
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for(int i = 0; i< STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                        }
+                        
+
                         return nuevo;
                     }
                   
@@ -1396,22 +1436,49 @@ namespace AnalizadorCQL.Analizadores
                         NodoAbstracto nuevo = new FUNCIONES("FUN_CREADAS");
                         NodoAbstracto tipofuncion = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (Keyword)", ""));
                         NodoAbstracto NombreFuncion = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
-                       // NodoAbstracto ListaDeSentenias = new Nodo(root.ChildNodes.ElementAt(6));
+                        // NodoAbstracto ListaDeSentenias = new Nodo(root.ChildNodes.ElementAt(6));
                         nuevo.Hijos.Add(tipofuncion);
                         nuevo.Hijos.Add(NombreFuncion);
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
                         AtributosFunciones(root.ChildNodes.ElementAt(3));
-                        for(int i = 0; i < STN.Count; i++)
+                        for (int i = 0; i < STN.Count; i++)
                         {
                             nuevo.ListaID1.Add(STN[i]);
                         }
-                        
+
                         nuevo.AutoIncrmentable2 = 68;
                         FuncionesXD.Add(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", "") + "*" + root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "") + "*" + STN.Count);
                         STN.Clear();
                         return nuevo;
 
                     }
+                    else if (root.ToString().Contains("ELCALL"))
+                    {
+                        NodoAbstracto nuevo = new CALL("EXP");
+                        NodoAbstracto proc = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)",""));
+                        STN.Clear();
+                        Atributos(root.ChildNodes.ElementAt(0));
+                        for(int i = 0; i<STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i].Replace( " (id2)",""));
+                        }
+                        STN.Clear();
+
+                        STN.Clear();
+                        nuevo.ListaR1 = new List<String>();
+                        Atributos(root.ChildNodes.ElementAt(5));
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaR1.Add(STN[i].Replace(" (id2)", ""));
+                        }
+                        STN.Clear();
+
+
+                        nuevo.Hijos.Add(proc);
+                        return nuevo;
+
+                    }
+
                     else if (root.ToString().Contains("SINO"))
                     {
                         NodoAbstracto nuevo = new Nodo("SINO");
@@ -1429,14 +1496,15 @@ namespace AnalizadorCQL.Analizadores
                     )
                     {
                         System.Diagnostics.Debug.WriteLine("CODIGO CASTEO OBLIGATORIO");
-                    } 
+                    }
 
                     else if (root.ChildNodes.ElementAt(0).ToString().Contains("alter") &&
-                            root.ChildNodes.ElementAt(1).ToString().Contains("type")&&
+                            root.ChildNodes.ElementAt(1).ToString().Contains("type") &&
                             root.ChildNodes.ElementAt(2).ToString().Contains("(id)") &&
                             root.ChildNodes.ElementAt(3).ToString().Contains("delete")
 
-                    ){
+                    )
+                    {
                         System.Diagnostics.Debug.WriteLine("CODIGO ALTER TYPE DELETE");
                     }
                     else if (root.ChildNodes.ElementAt(0).ToString().Contains("alter") &&
@@ -1476,12 +1544,12 @@ namespace AnalizadorCQL.Analizadores
 
                         return nuevo;
                     }
-                    else if (root.ToString().ToUpper().Contains("LALISTA") && root.ChildNodes.ElementAt(0).ToString().Contains("(Keyword")==true)
+                    else if (root.ToString().ToUpper().Contains("LALISTA") && root.ChildNodes.ElementAt(0).ToString().Contains("(Keyword") == true)
                     {
                         NodoAbstracto nuevo = new LISTAS("LISTAPAR");
                         NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
                         nuevo.Hijos.Add(id);
-                        nuevo.AutoIncrmentable2 = 99;                        
+                        nuevo.AutoIncrmentable2 = 99;
                         System.Diagnostics.Debug.WriteLine("sdaf");
                         Atributos(root.ChildNodes.ElementAt(5));
                         System.Diagnostics.Debug.WriteLine("sdaf");
@@ -1557,7 +1625,7 @@ namespace AnalizadorCQL.Analizadores
                     }
                     else if (root.ToString().Contains("PROCEDIMIENTOS"))
                     {
-                        NodoAbstracto nuevo = new PROCEDIMIENTOS("EXP");
+                        NodoAbstracto nuevo = new PROCEDIMIENTOS("PROC");
                         NodoAbstracto Nombre = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
                         nuevo.Hijos.Add(Nombre);
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
@@ -1581,7 +1649,7 @@ namespace AnalizadorCQL.Analizadores
                     {
                         if (root.ChildNodes.ElementAt(3).ToString().Contains("LISTA"))
                         {
-                            NodoAbstracto nuevo = new PROCEDIMIENTOS("EXP");
+                            NodoAbstracto nuevo = new PROCEDIMIENTOS("PROC");
                             NodoAbstracto Nombre = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
                             nuevo.Hijos.Add(Nombre);
                             nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(9)));
@@ -1661,7 +1729,7 @@ namespace AnalizadorCQL.Analizadores
                     }
                     else if (root.ToString().Contains("PROCEDIMIENTOS"))
                     {
-                        NodoAbstracto nuevo = new PROCEDIMIENTOS("EXP");
+                        NodoAbstracto nuevo = new PROCEDIMIENTOS("PROC");
                         NodoAbstracto Nombre = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
                         nuevo.Hijos.Add(Nombre);
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(10)));
@@ -1764,6 +1832,7 @@ namespace AnalizadorCQL.Analizadores
             }
         }
         List<String> STN = new List<String>();
+
         public List<String> ListaIDSObjeto(ParseTreeNode root)
         {
             

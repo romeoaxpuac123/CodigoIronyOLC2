@@ -106,6 +106,7 @@ namespace AnalizadorCQL.Analizadores
             var AHORA = ToTerm("now");
             var RETORNO = ToTerm("return");
             var Procedure = ToTerm("procedure");
+            var CALL = ToTerm("call");
 
 
             this.RegisterOperators(8, Associativity.Left, "?");
@@ -154,6 +155,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal LISTA_PARAMETROS_FUNCIONES = new NonTerminal("LISTA_PARAMETROS_FUNCIONES");
             NonTerminal TIPOS_VARIABLES2 = new NonTerminal("TIPOS_VARIABLES2");
             NonTerminal PROCEDIMIENTOS = new NonTerminal("PROCEDIMIENTOS");
+            NonTerminal ELCALL = new NonTerminal("ELCALL");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
@@ -180,7 +182,11 @@ namespace AnalizadorCQL.Analizadores
                              | FUNCIONES_PROPIAS
                              | FUNCIONES_CREADAS
                              | ELRETORNO
-                             | PROCEDIMIENTOS;
+                             | PROCEDIMIENTOS
+                             | ELCALL;
+
+            ELCALL.Rule = LISTA_EXPRESION + igual + CALL + id + ParA + LISTA_EXPRESION + ParC + PYC;
+
 
             PROCEDIMIENTOS.Rule = Procedure + id + ParA + ParC + coma + ParA + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
                 | Procedure + id + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + coma + ParA + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
@@ -188,7 +194,8 @@ namespace AnalizadorCQL.Analizadores
                 | Procedure + id + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + coma + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + llaveAbierta + SENTENCIAS + llaverCerrada;
 
 
-            ELRETORNO.Rule =  RETORNO + E + PYC;
+            ELRETORNO.Rule =  RETORNO + E + PYC
+                             | RETORNO + LISTA_EXPRESION + PYC;
 
             FUNCIONES_CREADAS.Rule = TIPOS_VARIABLES + id + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
                                     | TIPOS_VARIABLES + id + ParA + ParC + llaveAbierta + SENTENCIAS + llaverCerrada

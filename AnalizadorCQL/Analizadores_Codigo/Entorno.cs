@@ -34,6 +34,20 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
 
         }
+
+        public Boolean ExisteVariable(String id)
+        {
+            if (Elementos.ContainsKey(id)==true)
+            {
+                
+                return true;
+            }
+            else
+            {
+                
+                return false;
+            }
+        }
         public Boolean AgregarProcedimiento(String id, String NombreFuncion, String Tipo, List<String> Listax, List<String> Listaxy, NodoAbstracto nuevo)
         {
             if (!Elementos.ContainsKey(id))
@@ -151,6 +165,113 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     System.Diagnostics.Debug.WriteLine("NombreFuncion -> " + datos.Key.ToString() + " funcion " + p.NombreFuncionGuardada() + " #Par " + p.lalista().Count  + " #retu " + p.lalista2().Count );
                 }
             }
+        }
+        public Boolean MismosParametros2Proc(String Nombre, List<String> Listax)
+        {
+            String id = "PROC-BRAY";
+            Boolean Mismos = false;
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if (p.NombreFuncionGuardada().ToString().ToUpper() == Nombre.ToUpper())
+                    {
+                        if (p.lalista().Count == Listax.Count)
+                        {
+
+                            for (int i = 0; i < Listax.Count; i++)
+                            {
+                                System.Diagnostics.Debug.WriteLine(p.lalista()[i] + "JJ" + Listax[i]);
+                                if (p.lalista()[i].ToUpper().Contains(Listax[i].ToUpper()) == true)
+                                {
+                                    Mismos = true;
+                                }
+                                else
+                                {
+                                    Mismos = false;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            return Mismos;
+        }
+        public List<String> MismosParametros3Proc(String Nombre, List<String> Listax)
+        {
+            String id = "PROC-BRAY";
+            Boolean Mismos = false;
+            List<String> Listaxx = new List<String>();
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if (p.NombreFuncionGuardada().ToString().ToUpper() == Nombre.ToUpper())
+                    {
+                        if (p.lalista().Count == Listax.Count)
+                        {
+
+                            for (int i = 0; i < Listax.Count; i++)
+                            {
+                                System.Diagnostics.Debug.WriteLine(p.lalista()[i] + "JJ" + Listax[i]);
+                                if (p.lalista()[i].ToUpper().Contains(Listax[i].ToUpper()) == true)
+                                {
+                                    Mismos = true;
+                                    Listaxx = p.lalista();
+                                }
+                                else
+                                {
+                                    Mismos = false;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            return Listaxx;
+
+        }
+        public NodoAbstracto ElNodoParametrosProc(String Nombre, List<String> Listax)
+        {
+            String id = "PROC-BRAY";
+            Boolean Mismos = false;
+            NodoAbstracto nodo = null;
+            List<String> Listaxx = new List<String>();
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if (p.NombreFuncionGuardada().ToString().ToUpper() == Nombre.ToUpper())
+                    {
+                        if (p.lalista().Count == Listax.Count)
+                        {
+
+                            for (int i = 0; i < Listax.Count; i++)
+                            {
+                                System.Diagnostics.Debug.WriteLine(p.lalista()[i] + "JJ" + Listax[i]);
+                                if (p.lalista()[i].ToUpper().Contains(Listax[i].ToUpper()) == true)
+                                {
+                                    Mismos = true;
+                                    nodo = p.Sentencias();
+                                }
+                                else
+                                {
+                                    Mismos = false;
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+            return nodo;
+
         }
 
 

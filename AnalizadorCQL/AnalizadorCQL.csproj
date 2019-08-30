@@ -189,6 +189,7 @@
     <Compile Include="Analizadores_CodigoAST\ASIGNACION_OPERACION.cs" />
     <Compile Include="Analizadores_CodigoAST\Asignar.cs" />
     <Compile Include="Analizadores_CodigoAST\BREAK.cs" />
+    <Compile Include="Analizadores_CodigoAST\CALL.cs" />
     <Compile Include="Analizadores_CodigoAST\DECLARACIONINSTANCIA.cs" />
     <Compile Include="Analizadores_CodigoAST\DeclararAsignacion.cs" />
     <Compile Include="Analizadores_CodigoAST\Declarar.cs" />
