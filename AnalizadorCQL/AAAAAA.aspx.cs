@@ -44,9 +44,11 @@ namespace AnalizadorCQL
             text = text.Replace("(INT)", "¿Int?");
             text = text.Replace("(TIME)", "¿Time?");
             text = text.Replace("(DATE)", "¿Date?");
+            text = text.ToUpper();
 
             Boolean resultado = Analizadores.Sintactico.Analizar(text);
             ParseTreeNode resul2 = Analizadores.Sintactico.Analizar2(text);
+            ParseTree resul2x = Analizadores.Sintactico.Analizar2x(text);
             if (resultado == true)
             {
                 TextBox1.Text = "Cadena Valida";
@@ -62,6 +64,15 @@ namespace AnalizadorCQL
             }
             else
             {
+                for(int i = 0; i< resul2x.ParserMessages.Count(); i++)
+                {
+                    System.Diagnostics.Debug.WriteLine("ERROR-BRAY->" + 
+                        " Tipo de error: "  + "Sintactico" +
+                        " Linea: " + resul2x.ParserMessages.ElementAt(i).Location.Line +
+                        " Columna: " + resul2x.ParserMessages.ElementAt(i).Location.Column);
+
+                }
+                
                 TextBox1.Text = "Cadena NO Valida";
             }
             

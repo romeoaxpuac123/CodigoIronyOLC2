@@ -160,6 +160,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal DDL = new NonTerminal("DDL");
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
             NonTerminal ELRETORNO = new NonTerminal("ELRETORNO");
+            NonTerminal LISTA_IDSxx = new NonTerminal("LISTA_IDSxx");
 
             #endregion
 
@@ -315,8 +316,29 @@ namespace AnalizadorCQL.Analizadores
 
             LISTA_IDS2.Rule = LISTA_IDS2 + coma + id2
                              | id2;
-            CREATE_TYPE.Rule = create + type + id + ParA + LISTA_IDS + ParC + PYC
-                              | create + type + CorcheteA + ELIF + elnot + exists + CorcheteC + id + ParA + LISTA_IDS + ParC + PYC;
+
+
+
+
+            #region CREACION_USER_TYPE
+            // GRAMATICA PARA LA CREACIÓN DE USER TYPE**************************
+            CREATE_TYPE.Rule = create + type + id + ParA + LISTA_IDSxx + ParC + PYC
+                              | create + type  + ELIF + elnot + exists  + id + ParA + LISTA_IDSxx + ParC + PYC;
+            CREATE_TYPE.ErrorRule = SyntaxError + "}";
+            #endregion
+
+
+            #region PARAMETROS_USER_TYPE
+            // GRAMATICA PARA LOS PARAMETROS DEL USER TYPE
+            LISTA_IDSxx.Rule = LISTA_IDSxx + coma + id + TIPOS_VARIABLES
+                              | LISTA_IDSxx + coma + id + id
+                              | id + TIPOS_VARIABLES
+                              | id + id;
+            LISTA_IDSxx.ErrorRule = SyntaxError + "}";
+            #endregion
+
+
+
 
             USER_TYPE.Rule = id + id2
                              | id2 + igual + nuevo + id

@@ -63,6 +63,21 @@ namespace AnalizadorCQL.Analizadores
             GenerarImagen(raiz);
             return raiz;
         }
+        public static ParseTree Analizar2x(String Cadena)
+        {
+            Gramatica gramatica = new Gramatica();
+            LanguageData lenguaje = new LanguageData(gramatica);
+            Parser parser = new Parser(lenguaje);
+            ParseTree arbol = parser.Parse(Cadena);
+            ParseTreeNode raiz = arbol.Root;
+
+            if (raiz == null)
+            {
+                return arbol;
+            }
+            GenerarImagen(raiz);
+            return arbol;
+        }
 
         private static void GenerarImagen(ParseTreeNode raiz)
         {

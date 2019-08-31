@@ -10,7 +10,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
 {
     public class Entorno
     {
-
+        public List<Object> Objetos = new List<Object>();
         public Hashtable Elementos;
 
         public Entorno()
@@ -18,6 +18,19 @@ namespace AnalizadorCQL.Analizadores_Codigo
             Elementos = new Hashtable();
         }
 
+
+        public void AgregarObjeto(Object objetodeclarado)
+        {
+            Objetos.Add(objetodeclarado);
+        }
+
+        public void MostrarObjetos()
+        {
+            for(int i = 0; i< Objetos.Count; i++)
+            {
+                System.Diagnostics.Debug.WriteLine("EL OBJETO -> " + Objetos[i].ToString());
+            }
+        }
         public Boolean AgregarElementoObjeto(String id, String valor, String tipo, String Objeto)
         {
             if (!Elementos.ContainsKey(id))
@@ -37,7 +50,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         public Boolean ExisteVariable(String id)
         {
-            if (Elementos.ContainsKey(id)==true)
+            if (Elementos.ContainsKey(id) ==true)
             {
                 
                 return true;
@@ -665,7 +678,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
             foreach(DictionaryEntry x in Reemplazo)
             {
-                System.Diagnostics.Debug.WriteLine("La variableeeee ->" + x.Key.ToString());
+               // System.Diagnostics.Debug.WriteLine("La variableeeee ->" + x.Key.ToString());
             }
             if (i == true)
             {

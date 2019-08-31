@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using AnalizadorCQL.Analizadores_Codigo;
+using AnalizadorCQL.Zclases;
 
 namespace AnalizadorCQL.Analizadores_CodigoAST
 {
     public class USER_TYPE : NodoAbstracto
     {
+
+        
         public USER_TYPE(String Nombre) : base(Nombre)
         {
             
@@ -15,58 +20,106 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
         public override void Ejecutar()
         {
-            System.Diagnostics.Debug.WriteLine("CREACIÓN USER TYPE");
+         //   System.Diagnostics.Debug.WriteLine("CREACIÓN USER TYPE");
         }
 
         public override string Ejecutar(Entorno entorno)
         {
-            System.Diagnostics.Debug.WriteLine("CREACIÓN USER TYPE");
+           // System.Diagnostics.Debug.WriteLine("CREACIÓN USER TYPE");
             String NombreObjeto = this.Hijos[0].Nombre.ToString().Replace(" (id)","");
-            System.Diagnostics.Debug.WriteLine("nombre objeto:" + NombreObjeto);
-
-            Boolean NuevoObjeto = entorno.Agregar(NombreObjeto, "Objeto", "Objeto");
-
-            if(NuevoObjeto == true)
+          //  System.Diagnostics.Debug.WriteLine("nombre objeto:" + NombreObjeto);
+            if (entorno.ExisteVariable(NombreObjeto) == false)
             {
-                System.Diagnostics.Debug.WriteLine("NUEVO OBJETO");
-                for (int i = 0; i < this.ListaID1.Count; i++)
+                Boolean NuevoObjeto = entorno.Agregar(NombreObjeto, "Objeto", "Objeto");
+                Boolean ExistenRepetidos = false;
+                if (NuevoObjeto == true)
                 {
-                    String[] separadas;
-                    separadas = ListaID1[i].Split(',');
-                    String Valor = "";
-                    if(separadas[0].ToUpper().Contains("STRING") || separadas[0].ToUpper().Contains("DATE") || separadas[0].ToUpper().Contains("TIME"))
+                    System.Diagnostics.Debug.WriteLine("NUEVO OBJETO");
+                    for (int i = 0; i < this.ListaID1.Count; i++)
                     {
-                        Valor = "null";
-                    }else if (separadas[0].ToUpper().Contains("INT"))
-                    {
-                        Valor = "0";
+                        String[] separadas;
+                        separadas = ListaID1[i].Split(',');
+                        String Valor = "";
+                        //System.Diagnostics.Debug.WriteLine("CREACIÓN USER TYPE " + separadas[0]);
+                        if (separadas[0].ToUpper().Contains("STRING") || separadas[0].ToUpper().Contains("DATE") || separadas[0].ToUpper().Contains("TIME")|| separadas[0].ToUpper().Contains("ID"))
+                        {
+                            Valor = "null";
+                            if (separadas[0].ToUpper().Contains("ID") == true)
+                            {
+                                //System.Diagnostics.Debug.WriteLine("CREACIÓN USER TYPE " + separadas[0]);
+                                if (entorno.ExisteVariable(separadas[0].Replace(" (id)", ""))==false)
+                                {
+                                    if(separadas[0].ToUpper().Contains("SET")== true|| separadas[0].ToUpper().Contains("LIST") == true)
+                                    {
+                                       
+                                    }
+                                    else
+                                    {
+                                        ExistenRepetidos = true;
+                                    }
+                                    
+                                }
+                            }
+                        }
+                        else if (separadas[0].ToUpper().Contains("INT"))
+                        {
+                            Valor = "0";
+                        }
+                        else if (separadas[0].ToUpper().Contains("DOUBLE"))
+                        {
+                            Valor = "0";
+                        }
+                        else if (separadas[0].ToUpper().Contains("BOOLEAN"))
+                        {
+                            Valor = "false";
+                        }
+                        Boolean procura = entorno.AgregarElementoObjeto(NombreObjeto + "." + separadas[1], Valor, separadas[0].Replace(" (id)", ""), (i + 1).ToString());
+                        if (procura == false )
+                        {
+                            ExistenRepetidos = true;
+                            //return "#ERROR7 atributos repetidos";
+                        }
+
                     }
-                    else if (separadas[0].ToUpper().Contains("DOUBLE"))
+
+                    if (ExistenRepetidos == true)
                     {
-                        Valor = "0";
-                    }else if (separadas[0].ToUpper().Contains("BOOLEAN"))
-                    {
-                        Valor = "false";
+                        entorno.EliminarVariable(NombreObjeto);
+                        for (int i = 0; i < this.ListaID1.Count; i++)
+                        {
+                            String[] separadas;
+                            separadas = ListaID1[i].Split(',');
+                            entorno.EliminarVariable(NombreObjeto + "." + separadas[1]);
+                        }
+
+                        if(this.AutoIncrmentable2 != 5)
+                        return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametro ya existente.";
+
                     }
-                    Boolean procura =  entorno.AgregarElementoObjeto(NombreObjeto+"."+ separadas[1], Valor, separadas[0], (i+1).ToString());
-                    if(procura == false && this.AutoIncrmentable2 !=5)
-                    {
-                        return "#Error7 atributos repetidos";
-                    }
+
+                   
+
+
+
 
                 }
+                else
+                {
+                    // System.Diagnostics.Debug.WriteLine("OBJETO EXISTENTE");
+                    if (this.AutoIncrmentable2 != 5)
+                        return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre ya existente.";
+
+                }
+                //reCORRAMOS LA LISTA DE IDS DEL OBJETO
 
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("OBJETO EXISTENTE");
-                return "#ERROR6";
-
+                // System.Diagnostics.Debug.WriteLine("OBJETO EXISTENTE");
+                if (this.AutoIncrmentable2 != 5)
+                    return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre ya existente.";
             }
-            //reCORRAMOS LA LISTA DE IDS DEL OBJETO
-            
-
-                return "USER_TYPE";
+                return "PROCESO USER-TYPE CRADO";
         }
     }
 }
