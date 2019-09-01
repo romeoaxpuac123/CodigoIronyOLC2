@@ -44,7 +44,7 @@ namespace AnalizadorCQL
             text = text.Replace("(INT)", "¿Int?");
             text = text.Replace("(TIME)", "¿Time?");
             text = text.Replace("(DATE)", "¿Date?");
-            text = text.ToUpper();
+          //  text = text.ToUpper();
 
             Boolean resultado = Analizadores.Sintactico.Analizar(text);
             ParseTreeNode resul2 = Analizadores.Sintactico.Analizar2(text);

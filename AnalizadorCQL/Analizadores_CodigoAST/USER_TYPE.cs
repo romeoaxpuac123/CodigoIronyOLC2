@@ -94,6 +94,10 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                         if(this.AutoIncrmentable2 != 5)
                         return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametro ya existente.";
+                        else
+                        {
+                            return "#ERROR6 con Exist if";
+                        }
 
                     }
 
@@ -108,6 +112,10 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     // System.Diagnostics.Debug.WriteLine("OBJETO EXISTENTE");
                     if (this.AutoIncrmentable2 != 5)
                         return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre ya existente.";
+                    else
+                    {
+                        return "#ERROR6 con Exist if";
+                    }
 
                 }
                 //reCORRAMOS LA LISTA DE IDS DEL OBJETO
@@ -118,8 +126,61 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 // System.Diagnostics.Debug.WriteLine("OBJETO EXISTENTE");
                 if (this.AutoIncrmentable2 != 5)
                     return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre ya existente.";
+                else
+                {
+                    return "#ERROR6 con Exist if";
+                }
             }
-                return "PROCESO USER-TYPE CRADO";
+
+            
+
+            entorno.EliminarVariable(NombreObjeto);
+            for (int i = 0; i < this.ListaID1.Count; i++)
+            {
+                String[] separadas;
+                separadas = ListaID1[i].Split(',');
+                entorno.EliminarVariable(NombreObjeto + "." + separadas[1]);
+            }
+            
+
+            List<Simbolo> ElementosUT = new List<Simbolo>();
+
+            for (int i = 0; i < this.ListaID1.Count; i++)
+            {
+                String[] separadas;
+                separadas = ListaID1[i].Split(',');
+                String Valor = "";
+                //System.Diagnostics.Debug.WriteLine("CREACIÓN USER TYPE " + separadas[0]);
+                if (separadas[0].ToUpper().Contains("STRING") || separadas[0].ToUpper().Contains("DATE") || separadas[0].ToUpper().Contains("TIME") || separadas[0].ToUpper().Contains("ID"))
+                {
+                    Valor = "null";
+                }
+                else if (separadas[0].ToUpper().Contains("INT"))
+                {
+                    Valor = "0";
+                }
+                else if (separadas[0].ToUpper().Contains("DOUBLE"))
+                {
+                    Valor = "0";
+                }
+                else if (separadas[0].ToUpper().Contains("BOOLEAN"))
+                {
+                    Valor = "false";
+                }
+                //Boolean procura = entorno.AgregarElementoObjeto(NombreObjeto + "." + separadas[1], Valor, separadas[0].Replace(" (id)", ""), (i + 1).ToString());
+                Simbolo SimboloXD = new Simbolo(separadas[1], Valor,separadas[0].Replace(" (id)", ""));
+                ElementosUT.Add(SimboloXD);
+
+            }
+            for(int i=0; i< ElementosUT.Count; i++)
+            {
+                System.Diagnostics.Debug.WriteLine("PARAMETRO: "+ElementosUT[i].ObtenerId() + " Tipo: " + ElementosUT[i].ObtenerTipo() + " Valor" + ElementosUT[i].ObtenerValor());
+            }
+
+            entorno.AgregarObjeto(NombreObjeto, "Objeto", ElementosUT);
+            
+
+            return "PROCESO USER-TYPE CRADO";
         }
     }
 }

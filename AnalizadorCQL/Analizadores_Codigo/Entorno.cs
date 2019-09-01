@@ -48,6 +48,66 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         }
 
+        public Boolean AgregarObjeto(String id, String valor, List<Simbolo> ElementosUT)
+        {
+            if (!Elementos.ContainsKey(id))
+            {
+                Simbolo sim = new Simbolo(id, valor, ElementosUT) ;
+                Elementos.Add(id, sim);
+                System.Diagnostics.Debug.WriteLine("SE agregó objeto -> " + id);
+                return true;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("La variables ya existe -> " + id);
+                return false;
+            }
+
+        }
+
+        public void MostrarObjetosx()
+        {
+           
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                
+                    Simbolo p = (Simbolo)datos.Value;
+                if (p.ObtenerValor() == "OBJETO_BRAY" )
+                {
+                    if(p.ListaElementos() == null)
+                    {
+                        System.Diagnostics.Debug.WriteLine(p.ObtenerId() + "<--->" + p.ObtenerTipo());
+                        System.Diagnostics.Debug.WriteLine("INICIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine(p.ObtenerId() + "<--->" + p.ObtenerTipo());
+                        System.Diagnostics.Debug.WriteLine("INICIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            System.Diagnostics.Debug.WriteLine(p.ListaElementos()[i].ObtenerId() + "--" + p.ListaElementos()[i].ObtenerTipo() + "--" + p.ListaElementos()[i].ObtenerValor());
+                        }
+                    }
+                   
+                }
+            }
+        }
+
+        public List<Simbolo> ElementosUT (String id)
+        {
+            
+            List<Simbolo> Listaxx = new List<Simbolo>();
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    Listaxx = p.ListaElementos();
+                }
+            }
+            return Listaxx;
+        }
+
         public Boolean ExisteVariable(String id)
         {
             if (Elementos.ContainsKey(id) ==true)

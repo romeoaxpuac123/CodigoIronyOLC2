@@ -24,60 +24,38 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String Objeto1 = this.Hijos[0].Nombre.ToString();
             String Variable = this.Hijos[1].Nombre.ToString();
             String Objeto2 = this.Hijos[2].Nombre.ToString();
-            if(Objeto1.ToUpper() == Objeto2.ToUpper())
+            if (Objeto1.ToUpper() == Objeto2.ToUpper())
             {
-                System.Diagnostics.Debug.WriteLine("LOS OBJETOS SON IGUALES SE PUEDEN INSTANCIAR");
-                if(entorno.Agregar(Objeto1,"Objeto","Objeto") == false)
+                if (entorno.ExisteVariable(Objeto1) == true)
                 {
-                    System.Diagnostics.Debug.WriteLine("EL OBJETO SI EXISTE");
-                    Boolean B = entorno.Agregar(Variable,Objeto1,"1");
-                    if (B == true)
+                    List<Simbolo> Lista =  entorno.ElementosUT(Objeto1);
+                    entorno.AgregarObjeto(Variable, "OBJETO_BRAY", Lista);
+                    System.Diagnostics.Debug.WriteLine("Elemenos");
+                    for (int i = 0; i < Lista.Count; i++)
                     {
-                        System.Diagnostics.Debug.WriteLine("SE AGREGO VARIABLE-OBJETO SI EXISTE");
-                        System.Diagnostics.Debug.WriteLine("#VAMOS A INSTANCIAR -> " + Variable);
-                        String valorsito = entorno.ObtenerValor(Variable);
-                        if (valorsito == "1")
-                        {
-                            String Cadena = entorno.ElementosObjetos(Objeto1);
-                            System.Diagnostics.Debug.WriteLine(Cadena);
-                            String[] separadas;
-                            separadas = Cadena.Split(',');
-                            for (int i = 1; i < separadas.Length; i++)
-                            {
-                                String valor = entorno.ObtenerValor(Objeto1 + "." + separadas[i]);
-                                String tipo = entorno.ObtenerTipo(Objeto1 + "." + separadas[i]);
-                                System.Diagnostics.Debug.WriteLine("#VAMOS A INSTANCIAR -> " + Variable + "." + separadas[i] + " valor " + valor + " tipo " + tipo);
-                                entorno.AgregarElementoObjeto(Variable + "." + separadas[i], valor, tipo, i.ToString());
+                        System.Diagnostics.Debug.WriteLine("Elemenos" + Lista[i].ObtenerId() + "-" + Lista[i].ObtenerTipo());
+                       if( (Lista[i].ObtenerTipo().ToUpper() != ("STRING") )&& (Lista[i].ObtenerTipo().ToUpper() != ("DOUBLE")) 
+                            && (Lista[i].ObtenerTipo().ToUpper() != ("TIME")) && (Lista[i].ObtenerTipo().ToUpper() != ("INT"))
+                            && (Lista[i].ObtenerTipo().ToUpper() != ("DATE")) && (Lista[i].ObtenerTipo().ToUpper() != ("LIST"))
+                            && (Lista[i].ObtenerTipo().ToUpper() != ("SET"))
 
-                            }
-                            //objeto no instanciado
-                            entorno.AsignarValor(Variable, "2");
+                        ){
+                            //entorno.AgregarObjeto(Variable + "." + Lista[i].ObtenerId(), "OBJETO_BRAY", null);
+                            entorno.AgregarObjeto(Variable + "." + Lista[i].ObtenerId(), "OBJETO_BRAY", Lista);
                         }
-                        else
-                        {
-                            //objeto ya instanciado
-                            return "#ERROR objeto ya instanciado";
-                        }
-                    }
-                    else
-                    {
-                        System.Diagnostics.Debug.WriteLine("LA VARIBALE YA EXISTE");
-                        return "#ERROR9 LA VARIABLE YA EXISTE";
                     }
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("EL OBJETO NO EXISTE");
-                    return "#ERROR9 OBJETOS NO EXISTENE";
+                    return "#ERROR6 ? Exception: ObjectAlreadyExists: instancia con identificador ya existente. 3";
                 }
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("OBJETOS DIFERENTES");
-                return "#ERROR9 OBJETOS DIFERENTES";
+                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre no existente. 3";
             }
-
-            return "DECLARACION-INSTANCIA OBJETOS";
+               
+                return "DECLARACION-INSTANCIA OBJETOS";
         }
     }
 }

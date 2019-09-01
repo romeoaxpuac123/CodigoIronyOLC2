@@ -20,176 +20,491 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
         public override string Ejecutar(Entorno entorno)
         {
-            System.Diagnostics.Debug.WriteLine("Se está Ejecutnado ASIGNACION OBJETO");
+            List<String> Valores = new List<String>();
+            for (int i = this.ListaID1.Count-1; i >= 0; i--)
+            {
+                Valores.Add(this.ListaID1[i]);
+            }
             System.Diagnostics.Debug.WriteLine("Se está Ejecutnado DELCARCION-INSTANCIA OBJETO");
-            String Objeto1 = "";
-            if (this.AutoIncrmentable2 == 9)
+            if(this.AutoIncrmentable2 == 9999)
             {
-                Objeto1 = entorno.ObtenerTipo(this.Hijos[0].Nombre.ToString());
-            }
-            else {
-               Objeto1 = this.Hijos[0].Nombre.ToString();
-            }
-            if(Objeto1.ToUpper().ToString() != this.Hijos[2].Nombre.ToUpper().ToString())
-            {
-                Objeto1 = "BAYRONROMEOAXPUACYOC201314474";
-            }
-            String Variable = this.Hijos[1].Nombre.ToString();
-            if (entorno.Agregar(Objeto1, "Objeto", "Objeto") == false)
-            {
-                System.Diagnostics.Debug.WriteLine("EL OBJETO SI EXISTE");
-                Boolean B = entorno.Agregar(Variable, Objeto1, "1");
-                String O = entorno.ObtenerValor(Variable);
-                if (B == true || O.ToString()=="1")
-                {
-                    System.Diagnostics.Debug.WriteLine("SE AGREGO VARIABLE-OBJETO SI EXISTE");
-                    System.Diagnostics.Debug.WriteLine("#VAMOS A INSTANCIAR -> " + Variable);
-                    String valorsito = entorno.ObtenerValor(Variable);
-                    if (valorsito == "1")
-                    {
-                        String Cadena = entorno.ElementosObjetos(Objeto1);
-                        System.Diagnostics.Debug.WriteLine(Cadena);
-                        String[] separadas;
-                        separadas = Cadena.Split(',');
-                        for (int i = 1; i < separadas.Length; i++)
-                        {
-                            //String valor = entorno.ObtenerValor(Objeto1 + "." + separadas[i]);
-                            //String tipo = entorno.ObtenerTipo(Objeto1 + "." + separadas[i]);
-                            //System.Diagnostics.Debug.WriteLine("#VAMOS A INSTANCIAR -> " + Variable + "." + separadas[i] + " valor " + valor + " tipo " + tipo);
-                            //entorno.AgregarElementoObjeto(Variable + "." + separadas[i], valor, tipo, i.ToString() ) ;
-                            //vamos a mostrar los valores del mero objeto en orden
-                            String Atributo = entorno.ObtenerPosicion(Objeto1, i.ToString());
-                            System.Diagnostics.Debug.WriteLine("#VAMOS A INSTANCIAR con " + Atributo);
-                            String valor = entorno.ObtenerValor(Atributo);
-                            String tipo = entorno.ObtenerTipo(Atributo);
-                            String NuevaVariable = Variable + "." + Atributo.Replace(Objeto1, "").Replace(".", "");
-                            entorno.AgregarElementoObjeto(NuevaVariable, valor, tipo, i.ToString());
-                        }
-                        //objeto no instanciado
-                        entorno.AsignarValor(Variable, "2");
-                    }
-                    else
-                    {
-                        //objeto ya instanciado
-                        return "#ERROR objeto ya instanciado";
-                    }
-                }
-                else {
-                    System.Diagnostics.Debug.WriteLine("EL OBJETO declarado");
-                }
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine("EL OBJETO NO EXISTE");
-                return "#ERROR9 OBJETOS NO EXISTENE";
-            }
-            String valorsito2 = entorno.ObtenerValor(Variable);
-            if (valorsito2 == "2")
-            {
-                System.Diagnostics.Debug.WriteLine("EL OBJETO ya intanciado procedemos a la asignacion");
-                String Cadena2 = entorno.ElementosVariableObjeto(Variable);
-                String[] separadas;
-                separadas = Cadena2.Split(',');
-                System.Diagnostics.Debug.WriteLine("EL OBJETO ya intanciado procedemos a la asignacionxd");
-                System.Diagnostics.Debug.WriteLine("lista" + this.ListaID1.Count);
-                System.Diagnostics.Debug.WriteLine("arreglo" + separadas.Length);
+                String Objeto1 = this.Hijos[0].Nombre.ToString().Replace(" (id)","");
+                String Objeto2 = this.Hijos[2].Nombre.ToString().Replace(" (id)", "");
+                String Variable = this.Hijos[1].Nombre.ToString().Replace(" (id2)", "");
 
-                if (this.ListaID1.Count == separadas.Length)
+                if (Objeto1 == Objeto2)
                 {
-                    System.Diagnostics.Debug.WriteLine("LA LISTA DE PARAMETROS COINCIDE");
-                    for (int i = 1; i < separadas.Length; i++)
+                    if (entorno.ExisteVariable(Objeto1) == true)
                     {
-                        String ElTipo = entorno.ObtenerTipo(separadas[i]);
-                        if (separadas[i].ToUpper() != Variable.ToUpper())
+                        if (entorno.ExisteVariable(Variable) == false)
                         {
-                            Boolean SonIguales = false;
-                            String TipoVariable = ElTipo;
-                            String Variablex = "";
-                            String posicion = entorno.ObtenerPosicion(Variable,i.ToString());
-                            System.Diagnostics.Debug.WriteLine("variable vol " +i+"-> " + posicion);
-                            String TipoXD = entorno.ObtenerTipo(posicion);
-                            System.Diagnostics.Debug.WriteLine("variable vol " + i + "-> " + posicion + "<>" + TipoXD + "%" + ListaID1[i]);
-                            if (TipoXD.ToUpper().Contains("STRING") && ListaID1[i].ToUpper().Contains("(CADENA)"))
-                            {
-                                SonIguales = true;
-                                Variablex = ListaID1[i].Replace(" (cadena)", "");
-                            }
-                            if (TipoXD.ToUpper().Contains("INT") && ListaID1[i].ToUpper().Contains("(NUMERO)"))
-                            {
-                                SonIguales = true;
-                                Variablex = ListaID1[i].Replace(" (numero)", "");
-                            }
-                            if (TipoXD.ToUpper().Contains("BOOLEAN") && ((ListaID1[i].ToUpper().Contains("TRUE")|| ListaID1[i].ToUpper().Contains("FALSE"))&& ListaID1[i].ToUpper().Contains("KEYWORD")))
-                            {
-                                SonIguales = true;
-                                Variablex = ListaID1[i].Replace(" (Keyword)", "");
-                            }
-                            if (TipoXD.ToUpper().Contains("TIME") && (ListaID1[i].ToUpper().Contains("(HORA)")))
-                            {
-                                SonIguales = true;
-                                Variablex = ListaID1[i].Replace(" (hora)", "");
-                            }
-                            if (TipoXD.ToUpper().Contains("DATE") && (ListaID1[i].ToUpper().Contains("(FECHAS)")))
-                            {
-                                SonIguales = true;
-                                Variablex = ListaID1[i].Replace(" (fechas)", "");
-                            }
+                            List<Simbolo> ListaParametrosUT = entorno.ElementosUT(Objeto1);
 
-                            if (SonIguales == true)
+
+
+                            if (ListaParametrosUT.Count == this.ListaID1.Count)
                             {
-                                entorno.AsignarValor(posicion, Variablex);
+                                for (int i = 0; i < ListaParametrosUT.Count; i++)
+                                {
+                                    //Revisando que los Parametros Cumplan con el Tipo del objeto
+                                   // System.Diagnostics.Debug.WriteLine("Nombre: ->" + ListaParametrosUT[i].ObtenerId() + " Tipo-> " + ListaParametrosUT[i].ObtenerTipo() + " Valor-> " + ListaParametrosUT[i].ObtenerValor());
+                                   // System.Diagnostics.Debug.WriteLine("Nombrel: ->" + Valores[i]);
+                                    //Verificando si tiene }
+                                    if (Valores[i].Contains("}") == true)
+                                    {
+                                        String[] separadas;
+                                        separadas = Valores[i].Split('}');
+                                        String ElObjeto = separadas[1];
+                                        System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO PARAMETRO}: " + ElObjeto.Replace(" (id)", "").Replace("AS", "").Replace(" ", ""));
+                                        System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UT}: " + ListaParametrosUT[i].ObtenerTipo());
+
+                                        if (entorno.ExisteVariable(ElObjeto.Replace(" (id)", "").Replace("AS", "").Replace(" ", "")) == true)
+                                        {
+                                            //CODIGO PARA AGREGAR VALORES A UN ATRIBUTO UT
+                                            ListaParametrosUT[i].AsignarValor("OBJETO_BRAY");
+                                            List<Simbolo> ListaParametrosUT2 = entorno.ElementosUT(ElObjeto.Replace(" (id)", "").Replace("AS", "").Replace(" ", ""));
+                                            #region INSTANCIAR UN SUB OBJETO
+                                            String[] separadasx;
+                                            separadasx = separadas[0].Split(',');
+                                            List<String> Valores2 = new List<String>();
+                                            for (int i2 = separadasx.Length - 1; i2 >= 0; i2--)
+                                            {
+                                                Valores2.Add(separadasx[i2]);
+                                            }
+
+                                            if(Valores2.Count == ListaParametrosUT2.Count)
+                                            {
+                                                for (int x = 0; x < Valores2.Count; x++)
+                                                {
+                                                    System.Diagnostics.Debug.WriteLine(x + "parametro sub:" + Valores2[x].Replace("{", "") + " NV " + ListaParametrosUT2[x].ObtenerId());
+                                                    String TipoVariable = "";
+                                                    String ValorDeLaVariable = "";
+                                                    //procedimiento que mira si las variables son iguales
+                                                    if (Valores2[x].ToUpper().Contains("(CADENA)"))
+                                                    {
+                                                        TipoVariable = "STRING";
+                                                        ValorDeLaVariable = (Valores2[x].ToUpper().Replace(" (cadena)", "").Replace(" (CADENA)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores2[x].ToUpper().Contains("(NUMERO)"))
+                                                    {
+                                                        TipoVariable = "INT";
+                                                        ValorDeLaVariable = (Valores2[x].ToUpper().Replace(" (numero)", "").Replace(" (NUMERO)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores2[x].ToUpper().Contains("(NUMDECIMAL)"))
+                                                    {
+                                                        TipoVariable = "DOUBLE";
+                                                        ValorDeLaVariable = (Valores2[x].ToUpper().Replace(" (numdecimal)", "").Replace(" (NUMDECIMAL)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores2[x].ToUpper().Contains("(KEYWORD)") && ((Valores2[x].ToUpper().Contains("TRUE")) || (Valores2[x].ToUpper().Contains("FALSE"))))
+                                                    {
+                                                        TipoVariable = "BOOLEANO";
+                                                        ValorDeLaVariable = (Valores2[x].ToUpper().Replace(" (Keyword)", "").Replace(" (KEYWORD)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores2[x].ToUpper().Contains("(FECHAS)"))
+                                                    {
+                                                        TipoVariable = "DATE";
+                                                        ValorDeLaVariable = (Valores2[x].ToUpper().Replace(" (Fechas)", "").Replace(" (FECHAS)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores2[x].ToUpper().Contains("(HORA)"))
+                                                    {
+                                                        TipoVariable = "TIME";
+                                                        ValorDeLaVariable = (Valores2[x].ToUpper().Replace(" (hora)", "").Replace(" (HORA)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores[x].ToUpper().Contains(" (ID2)"))
+                                                    {
+                                                        TipoVariable = entorno.ObtenerTipo(Valores2[x].Replace(" (id2)", ""));
+                                                        ValorDeLaVariable = entorno.ObtenerValor(Valores2[x].Replace(" (id2)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores2[x].ToUpper().Contains("NULL"))
+                                                    {
+                                                        TipoVariable = "OBJETO_BRAY";
+                                                        ValorDeLaVariable = "null";
+                                                    }
+                                                    System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO PARAMETRO}->: " + ListaParametrosUT2[x].ObtenerId());
+                                                    System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UT}->: " + ListaParametrosUT2[x].ObtenerTipo());
+                                                    System.Diagnostics.Debug.WriteLine("Valor OBJETO UT}->: " + ValorDeLaVariable);
+                                                    ListaParametrosUT2[x].AsignarValor(ValorDeLaVariable);
+                                                   
+                                                
+                                                }
+                                                String xx = ListaParametrosUT[i].ObtenerId();
+                                                entorno.AgregarObjeto(Variable + "." + xx, "OBJETO_BRAY", ListaParametrosUT2);
+                                            }
+                                            else
+                                            {
+                                                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+
+                                            }
+
+
+
+                                            #endregion
+                                        }
+                                        else
+                                        {
+                                            return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        String TipoVariable = "";
+                                        String ValorDeLaVariable = "";
+                                        //procedimiento que mira si las variables son iguales
+                                        if (Valores[i].ToUpper().Contains("(CADENA)"))
+                                        {
+                                            TipoVariable = "STRING";
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (cadena)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("(NUMERO)"))
+                                        {
+                                            TipoVariable = "INT";
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (numero)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("(NUMDECIMAL)"))
+                                        {
+                                            TipoVariable = "DOUBLE";
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (numdecimal)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("(KEYWORD)") && ((ListaID1[0].ToUpper().Contains("TRUE")) || (ListaID1[0].ToUpper().Contains("FALSE"))))
+                                        {
+                                            TipoVariable = "BOOLEANO";
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (Keyword)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("(FECHAS)"))
+                                        {
+                                            TipoVariable = "DATE";
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (Fechas)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("(HORA)"))
+                                        {
+                                            TipoVariable = "TIME";
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (hora)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains(" (ID2)"))
+                                        {
+                                            TipoVariable = entorno.ObtenerTipo(Valores[i].Replace(" (id2)", ""));
+                                            ValorDeLaVariable = entorno.ObtenerValor(Valores[i].Replace(" (id2)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("NULL"))
+                                        {
+                                            TipoVariable = "OBJETO_BRAY";
+                                            ValorDeLaVariable = "null";
+                                        }
+                                        System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO PARAMETRO: " + TipoVariable);
+                                        System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UT: " + ListaParametrosUT[i].ObtenerTipo());
+                                        System.Diagnostics.Debug.WriteLine("Valor OBJETO UT: " + ValorDeLaVariable);
+                                        if (TipoVariable == "OBJETO_BRAY")
+                                        {
+                                            System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UTxx: " + ListaParametrosUT[i].ObtenerValor());
+                                            //asignar null a algo XD
+                                            entorno.AgregarObjeto(Variable + "." + ListaParametrosUT[i].ObtenerId(), "OBJETO_BRAY", null);
+
+                                            if (ListaParametrosUT[i].ObtenerValor() == "null")
+                                            {
+                                                //agregamos null
+                                                ListaParametrosUT[i].AsignarValor(ValorDeLaVariable);
+                                               // entorno.AgregarObjeto(Objeto1 + "." + ListaParametrosUT[i].ObtenerId(), "OBJETO_BRAY", null);
+
+                                            }
+                                            else
+                                            {
+                                                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+                                            }
+
+                                        }
+                                        else if ((TipoVariable.ToUpper().Contains("#ERROR")))
+                                        {
+                                            return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+                                        }
+                                        else if ((TipoVariable.ToUpper().Replace(" ", "") != ListaParametrosUT[i].ObtenerTipo().ToUpper().Replace(" ", "")))
+                                        {
+                                            return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+                                        }
+                                        else
+                                        {
+                                            ///codigo para asignar XD
+                                            ListaParametrosUT[i].AsignarValor(ValorDeLaVariable);
+                                        }
+
+                                    }
+                                }
+                                for (int i = 0; i < ListaParametrosUT.Count; i++)
+                                {
+                                    //Revisando que los Parametros Cumplan con el Tipo del objeto
+                                 //   System.Diagnostics.Debug.WriteLine("la nueva lista ->" + ListaParametrosUT[i].ObtenerId() + " Tipo-> " + ListaParametrosUT[i].ObtenerTipo() + " Valor-> " + ListaParametrosUT[i].ObtenerValor());
+
+                                }
+
                             }
                             else
                             {
-                                System.Diagnostics.Debug.WriteLine("error");
-                                //entorno.EliminarVariablecONTENIDA(Variable);
-                                System.Diagnostics.Debug.WriteLine("LA LISTA DE PARAMETROS NO COINCIDE");
-                                String Cadena2x = entorno.ElementosVariableObjeto(Variable);
-                                String[] separadasx;
-                                separadasx = Cadena2x.Split(',');
-                                for (int x = 1; i < separadasx.Length; i++)
-                                {
-                                    System.Diagnostics.Debug.WriteLine(separadasx[x]);
-                                    entorno.EliminarVariable(separadasx[x]);
-
-                                }
-                                entorno.EliminarVariable(Variable);
-                                System.Diagnostics.Debug.WriteLine("EL OBJETO NO EXISTEyyyy");
-                                return "#ERROR9 OBJETOS NO EXISTENE";
+                                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
                             }
-                            System.Diagnostics.Debug.WriteLine(posicion + entorno.ObtenerValor(posicion));
 
-
+                            entorno.AgregarObjeto(Variable, "OBJETO_BRAY", ListaParametrosUT);
                         }
-                        
-
+                        else
+                        {
+                            return "#ERROR6 ? Exception: ObjectAlreadyExists: instancia con identificador ya existente. 4";
+                        }
                     }
-
+                    else
+                    {
+                        return "#ERROR6 ? Exception: ObjectAlreadyExists: instancia con identificador ya existente. 4";
+                    }
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("LA LISTA DE PARAMETROS NO COINCIDE");
-                    String Cadena2x = entorno.ElementosVariableObjeto(Variable);
-                    String[] separadasx;
-                    separadasx = Cadena2x.Split(',');
-                    for(int i = 1; i<separadasx.Length; i++)
-                    {
-                        System.Diagnostics.Debug.WriteLine(separadasx[i]);
-                        entorno.EliminarVariable(separadasx[i]);
-
-                    }
-                    entorno.EliminarVariable(Variable);
-                    System.Diagnostics.Debug.WriteLine("***");
-                    System.Diagnostics.Debug.WriteLine("EL OBJETO NO EXISTExs");
-                    return "#ERROR9 OBJETOS NO EXISTENE";
+                    return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre no existente. 4";
                 }
-               
+
+
                 
+
             }
 
-           // Entorno x = new Entorno();
-           // x.Agregar("Bayron", "romoe", "a");
-           // x.EliminarVariable("Bayron");
+            if (AutoIncrmentable2 == 18000)
+            {
+                String Objeto1 = this.Hijos[0].Nombre.ToString().Replace(" (id)", "");
+                String Objeto2 = this.Hijos[2].Nombre.ToString().Replace(" (id)", "");
+                String Variable = this.Hijos[1].Nombre.ToString().Replace(" (id2)", "");
+
+                if (Objeto1 == Objeto2)
+                {
+                    if (entorno.ExisteVariable(Objeto1) == true)
+                    {
+                       // System.Diagnostics.Debug.WriteLine("Nombre: loooooooooog");
+                        if (entorno.ExisteVariable(Variable) == true)
+                        {
+                            List<Simbolo> ListaParametrosUT = entorno.ElementosUT(Objeto1);
+
+                            //System.Diagnostics.Debug.WriteLine("Nombre: loooooooooog");
+                            if (ListaParametrosUT.Count == this.ListaID1.Count)
+                            {
+                                //System.Diagnostics.Debug.WriteLine("Nombre: loooooooooog");
+                                for (int i = 0; i < ListaParametrosUT.Count; i++)
+                                {
+                                    //Revisando que los Parametros Cumplan con el Tipo del objeto
+                                    // System.Diagnostics.Debug.WriteLine("Nombre: ->" + ListaParametrosUT[i].ObtenerId() + " Tipo-> " + ListaParametrosUT[i].ObtenerTipo() + " Valor-> " + ListaParametrosUT[i].ObtenerValor());
+                                    // System.Diagnostics.Debug.WriteLine("Nombrel: ->" + Valores[i]);
+                                    //Verificando si tiene }
+                                    if (Valores[i].Contains("}") == true)
+                                    {
+                                        String[] separadas;
+                                        separadas = Valores[i].Split('}');
+                                        String ElObjeto = separadas[1];
+                                        System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO PARAMETRO}: " + ElObjeto.Replace(" (id)", "").Replace("AS", "").Replace(" ", ""));
+                                        System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UT}: " + ListaParametrosUT[i].ObtenerTipo());
+
+                                        if (entorno.ExisteVariable(ElObjeto.Replace(" (id)", "").Replace("AS", "").Replace(" ", "")) == true)
+                                        {
+                                            //CODIGO PARA AGREGAR VALORES A UN ATRIBUTO UT
+                                            ListaParametrosUT[i].AsignarValor("OBJETO_BRAY");
+                                            List<Simbolo> ListaParametrosUT2 = entorno.ElementosUT(ElObjeto.Replace(" (id)", "").Replace("AS", "").Replace(" ", ""));
+                                            #region INSTANCIAR UN SUB OBJETO
+                                            String[] separadasx;
+                                            separadasx = separadas[0].Split(',');
+                                            List<String> Valores2 = new List<String>();
+                                            for (int i2 = separadasx.Length - 1; i2 >= 0; i2--)
+                                            {
+                                                Valores2.Add(separadasx[i2]);
+                                            }
+
+                                            if (Valores2.Count == ListaParametrosUT2.Count)
+                                            {
+                                                for (int x = 0; x < Valores2.Count; x++)
+                                                {
+                                                    System.Diagnostics.Debug.WriteLine(x + "parametro sub:" + Valores2[x].Replace("{", "") + " NV " + ListaParametrosUT2[x].ObtenerId());
+                                                    String TipoVariable = "";
+                                                    String ValorDeLaVariable = "";
+                                                    //procedimiento que mira si las variables son iguales
+                                                    if (Valores2[x].ToUpper().Contains("(CADENA)"))
+                                                    {
+                                                        TipoVariable = "STRING";
+                                                        ValorDeLaVariable = (Valores2[x].ToUpper().Replace(" (cadena)", "").Replace(" (CADENA)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores2[x].ToUpper().Contains("(NUMERO)"))
+                                                    {
+                                                        TipoVariable = "INT";
+                                                        ValorDeLaVariable = (Valores2[x].ToUpper().Replace(" (numero)", "").Replace(" (NUMERO)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores2[x].ToUpper().Contains("(NUMDECIMAL)"))
+                                                    {
+                                                        TipoVariable = "DOUBLE";
+                                                        ValorDeLaVariable = (Valores2[x].ToUpper().Replace(" (numdecimal)", "").Replace(" (NUMDECIMAL)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores2[x].ToUpper().Contains("(KEYWORD)") && ((Valores2[x].ToUpper().Contains("TRUE")) || (Valores2[x].ToUpper().Contains("FALSE"))))
+                                                    {
+                                                        TipoVariable = "BOOLEANO";
+                                                        ValorDeLaVariable = (Valores2[x].ToUpper().Replace(" (Keyword)", "").Replace(" (KEYWORD)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores2[x].ToUpper().Contains("(FECHAS)"))
+                                                    {
+                                                        TipoVariable = "DATE";
+                                                        ValorDeLaVariable = (Valores2[x].ToUpper().Replace(" (Fechas)", "").Replace(" (FECHAS)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores2[x].ToUpper().Contains("(HORA)"))
+                                                    {
+                                                        TipoVariable = "TIME";
+                                                        ValorDeLaVariable = (Valores2[x].ToUpper().Replace(" (hora)", "").Replace(" (HORA)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores[x].ToUpper().Contains(" (ID2)"))
+                                                    {
+                                                        TipoVariable = entorno.ObtenerTipo(Valores2[x].Replace(" (id2)", ""));
+                                                        ValorDeLaVariable = entorno.ObtenerValor(Valores2[x].Replace(" (id2)", "").Replace("{", ""));
+                                                    }
+                                                    else if (Valores2[x].ToUpper().Contains("NULL"))
+                                                    {
+                                                        TipoVariable = "OBJETO_BRAY";
+                                                        ValorDeLaVariable = "null";
+                                                    }
+                                                    System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO PARAMETRO}->: " + ListaParametrosUT2[x].ObtenerId());
+                                                    System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UT}->: " + ListaParametrosUT2[x].ObtenerTipo());
+                                                    System.Diagnostics.Debug.WriteLine("Valor OBJETO UT}->: " + ValorDeLaVariable);
+                                                    ListaParametrosUT2[x].AsignarValor(ValorDeLaVariable);
+
+
+                                                }
+                                                String xx = ListaParametrosUT[i].ObtenerId();
+                                                entorno.AgregarObjeto(Variable + "." + xx, "OBJETO_BRAY", ListaParametrosUT2);
+                                            }
+                                            else
+                                            {
+                                                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+
+                                            }
+
+
+
+                                            #endregion
+                                        }
+                                        else
+                                        {
+                                            return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        String TipoVariable = "";
+                                        String ValorDeLaVariable = "";
+                                        //procedimiento que mira si las variables son iguales
+                                        if (Valores[i].ToUpper().Contains("(CADENA)"))
+                                        {
+                                            TipoVariable = "STRING";
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (cadena)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("(NUMERO)"))
+                                        {
+                                            TipoVariable = "INT";
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (numero)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("(NUMDECIMAL)"))
+                                        {
+                                            TipoVariable = "DOUBLE";
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (numdecimal)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("(KEYWORD)") && ((ListaID1[0].ToUpper().Contains("TRUE")) || (ListaID1[0].ToUpper().Contains("FALSE"))))
+                                        {
+                                            TipoVariable = "BOOLEANO";
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (Keyword)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("(FECHAS)"))
+                                        {
+                                            TipoVariable = "DATE";
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (Fechas)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("(HORA)"))
+                                        {
+                                            TipoVariable = "TIME";
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (hora)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains(" (ID2)"))
+                                        {
+                                            TipoVariable = entorno.ObtenerTipo(Valores[i].Replace(" (id2)", ""));
+                                            ValorDeLaVariable = entorno.ObtenerValor(Valores[i].Replace(" (id2)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("NULL"))
+                                        {
+                                            TipoVariable = "OBJETO_BRAY";
+                                            ValorDeLaVariable = "null";
+                                        }
+                                        System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO PARAMETRO: " + TipoVariable);
+                                        System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UT: " + ListaParametrosUT[i].ObtenerTipo());
+                                        System.Diagnostics.Debug.WriteLine("Valor OBJETO UT: " + ValorDeLaVariable);
+
+                                        if (TipoVariable == "OBJETO_BRAY")
+                                        {
+                                            System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UTxx: " + ListaParametrosUT[i].ObtenerValor());
+                                            entorno.AgregarObjeto(Variable + "." + ListaParametrosUT[i].ObtenerId(), "OBJETO_BRAY", null);
+                                            //asignar null a algo XD
+                                            if (ListaParametrosUT[i].ObtenerValor() == "null")
+                                            {
+                                                //agregamos null
+                                                ListaParametrosUT[i].AsignarValor(ValorDeLaVariable);
+                                                
+
+
+                                            }
+                                            else
+                                            {
+                                                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+                                            }
+
+                                        }
+                                        else if ((TipoVariable.ToUpper().Contains("#ERROR")))
+                                        {
+                                            return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+                                        }
+                                        else if ((TipoVariable.ToUpper().Replace(" ", "") != ListaParametrosUT[i].ObtenerTipo().ToUpper().Replace(" ", "")))
+                                        {
+                                            return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+                                        }
+                                        else
+                                        {
+                                            ///codigo para asignar XD
+                                            ListaParametrosUT[i].AsignarValor(ValorDeLaVariable);
+                                        }
+
+                                    }
+                                }
+                                for (int i = 0; i < ListaParametrosUT.Count; i++)
+                                {
+                                    //Revisando que los Parametros Cumplan con el Tipo del objeto
+                                    //   System.Diagnostics.Debug.WriteLine("la nueva lista ->" + ListaParametrosUT[i].ObtenerId() + " Tipo-> " + ListaParametrosUT[i].ObtenerTipo() + " Valor-> " + ListaParametrosUT[i].ObtenerValor());
+
+                                }
+
+                            }
+                            else
+                            {
+                                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+                            }
+
+                            entorno.EliminarVariable(Variable);
+                            entorno.AgregarObjeto(Variable, "OBJETO_BRAY", ListaParametrosUT);
+                        }
+                        else
+                        {
+                            return "#ERROR6 ? Exception: ObjectAlreadyExists: instancia con identificador ya existente. 4";
+                        }
+                    }
+                    else
+                    {
+                        return "#ERROR6 ? Exception: ObjectAlreadyExists: instancia con identificador ya existente. 4";
+                    }
+                }
+                else
+                {
+                    return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre no existente. 4";
+                }
+
+            }
+
+
+            entorno.MostrarObjetosx();
+
             return "ASIGNACION-OBJETO";
         }
     }

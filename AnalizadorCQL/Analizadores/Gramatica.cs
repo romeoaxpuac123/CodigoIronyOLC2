@@ -107,7 +107,7 @@ namespace AnalizadorCQL.Analizadores
             var RETORNO = ToTerm("return");
             var Procedure = ToTerm("procedure");
             var CALL = ToTerm("call");
-
+            var NULO = ToTerm("null");
 
             this.RegisterOperators(8, Associativity.Left, "?");
             this.RegisterOperators(1, Associativity.Left, "+", "-");
@@ -161,6 +161,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
             NonTerminal ELRETORNO = new NonTerminal("ELRETORNO");
             NonTerminal LISTA_IDSxx = new NonTerminal("LISTA_IDSxx");
+            NonTerminal LISTA_EXPRESIONobjetos = new NonTerminal("LISTA_EXPRESIONobjetos");
 
             #endregion
 
@@ -338,22 +339,44 @@ namespace AnalizadorCQL.Analizadores
             #endregion
 
 
-
+            #region CREACIO1 DE UT
 
             USER_TYPE.Rule = id + id2
+                             | id + id2 + igual + NULO
                              | id2 + igual + nuevo + id
                              | id + id2 + igual + nuevo + id;
-            USER_TYPE2.Rule = id + id2 + igual + llaveAbierta + LISTA_EXPRESION + llaverCerrada +  ELAS + id
-                             | id2 + igual + llaveAbierta + LISTA_EXPRESION + llaverCerrada + ELAS + id;
+            USER_TYPE.ErrorRule = SyntaxError + ";";
+            #endregion
+
+
+
+
+            #region ASIGNAR VALORES UT
+            USER_TYPE2.Rule = id + id2 + igual + llaveAbierta + LISTA_EXPRESIONobjetos + llaverCerrada + ELAS + id + PYC
+                             | id2 + igual + llaveAbierta + LISTA_EXPRESIONobjetos + llaverCerrada + ELAS + id + PYC;
             //  | id + id2 + igual + llaveAbierta + LISTA_EXPRESION + llaverCerrada;
+            USER_TYPE2.ErrorRule = SyntaxError + ";";
+            
+            LISTA_EXPRESIONobjetos.Rule = E
+                                    | E + coma + LISTA_EXPRESIONobjetos
+                                    | llaveAbierta + LISTA_EXPRESIONobjetos + llaverCerrada + ELAS + id
+                                    | llaveAbierta + LISTA_EXPRESIONobjetos + llaverCerrada + ELAS + id + coma + LISTA_EXPRESIONobjetos;
+            LISTA_EXPRESIONobjetos.ErrorRule = SyntaxError + ";";
+
+            #endregion
+
+
+
+
+            LISTA_EXPRESION.Rule = E  
+                                | E + coma + LISTA_EXPRESION;
+            LISTA_EXPRESION.ErrorRule = SyntaxError + ";";
+
 
             LISTA_IDS.Rule = LISTA_IDS + coma + TIPOS_VARIABLES + id
                             | LISTA_IDS + coma + USER_TYPE
                             | TIPOS_VARIABLES + id
                             | USER_TYPE;
-
-            LISTA_EXPRESION.Rule = E 
-                                | E + coma + LISTA_EXPRESION;
 
 
             TIPOS_VARIABLES.Rule = Entero | Decimal | Cadena | Boolenano | Date | Time;

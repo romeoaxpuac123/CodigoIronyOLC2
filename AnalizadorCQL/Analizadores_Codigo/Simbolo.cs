@@ -16,6 +16,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
         String Objeto;
         List<String> Lista = new List<String>();
         List<String> Lista2 = new List<String>();
+        List<Simbolo> Simblosxd = new List<Simbolo>();
         NodoAbstracto nuevo;
         
         public Simbolo(String Id, String Valor, String Tipo)
@@ -23,6 +24,21 @@ namespace AnalizadorCQL.Analizadores_Codigo
             this.Id = Id;
             this.Valor = Valor;
             this.Tipo = Tipo;
+        }
+
+        public void DarleUnValor(String Valor)
+        {
+            this.Valor = Valor;
+        }
+        public Simbolo (String id, String Valor, List<Simbolo> Simblosxd)
+        {
+            this.Id = id;
+            this.Valor = Valor;
+            this.Simblosxd = Simblosxd;
+        }
+        public List<Simbolo> ListaElementos()
+        {
+            return this.Simblosxd;
         }
         public Simbolo(String id, String NombreFuncion, String Tipo, List<String> Listax, NodoAbstracto nodo)
         {

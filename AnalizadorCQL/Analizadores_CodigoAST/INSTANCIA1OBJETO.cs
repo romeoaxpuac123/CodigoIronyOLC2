@@ -23,8 +23,52 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             System.Diagnostics.Debug.WriteLine("Se está Ejecutnado ISNTANCIA OBJETO");
             String Objeto = this.Hijos[0].Nombre.ToString();
             String Variable = this.Hijos[1].Nombre.ToString();
-            System.Diagnostics.Debug.WriteLine("Objeto " + Objeto);
-            System.Diagnostics.Debug.WriteLine("NombreVariable " + Variable);
+          //  System.Diagnostics.Debug.WriteLine("Objeto " + Objeto);
+          //  System.Diagnostics.Debug.WriteLine("NombreVariable " + Variable);
+
+            if(Objeto.ToUpper().Contains("NULL"))
+            {
+                //INSTANCIA CON VALOR NULO;
+                if(entorno.ExisteVariable(Variable.Replace(" (id)",""))==true)
+                {
+                    if(entorno.ExisteVariable(this.Hijos[2].Nombre.Replace(" (id2)", ""))== false){
+                        entorno.AgregarObjeto(this.Hijos[2].Nombre.Replace(" (id2)", ""), Variable.Replace(" (id)", ""), null);
+
+                    }
+                    else
+                    {
+                        return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre ya existente.";
+                    }
+                    
+                }
+                else
+                {
+                    return "#ERROR6 ? Exception: NullPointerException: Objeto no existente o apunta a null.";
+                }
+
+            }
+            else
+            {
+                if (entorno.ExisteVariable(Objeto) == true)
+                {
+                    if (entorno.ExisteVariable(Variable) == true)
+                    {
+                        entorno.EliminarVariable(Variable);
+                        List<Simbolo> Lista = entorno.ElementosUT(Objeto);
+                        entorno.AgregarObjeto(Variable, "OBJETO_BRAY", Lista);
+                     
+                    }
+                    else{
+                        return "#ERROR6 ? Exception: NullPointerException: Objeto no existente o apunta a null.";
+                    }
+                }
+                else
+                {
+                    return "#ERROR6 ? Exception: NullPointerException: Objeto no existente o apunta a null.";
+                }
+            }
+            
+            /*
             Boolean ObjetoA = entorno.Agregar(Objeto, "Objeto", "Objeto");
             if (ObjetoA == true)
             {
@@ -60,6 +104,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
                 
             }
+            */
             return "INSTANCIA";
         }
     }

@@ -422,8 +422,10 @@ namespace AnalizadorCQL.Analizadores
                                 NodoAbstracto nuevo = new INSTANCIA1OBJETO("INSTANCIA");
                                 NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(3).ToString().Replace(" (id)", ""));
                                 NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
+                                NodoAbstracto id3 = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
                                 nuevo.Hijos.Add(id);
                                 nuevo.Hijos.Add(id2);
+                                nuevo.Hijos.Add(id3);
                                 return nuevo;
                             }
                             else if (root.ChildNodes.ElementAt(0).ChildNodes.Count == 5)
@@ -1352,29 +1354,7 @@ namespace AnalizadorCQL.Analizadores
                         STN.Clear();
                         return nuevo;
                     }
-                    else if (root.ToString().ToUpper().Contains("USER_TYPE2"))
-                    {
-                        NodoAbstracto nuevo = new ASIGNACIONOBJETOS("INSTANCIA");
-                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
-                        NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
-                        NodoAbstracto id3 = new Nodo(root.ChildNodes.ElementAt(6).ToString().Replace(" (id)", ""));
-                        nuevo.Hijos.Add(id);
-                        nuevo.Hijos.Add(id2);
-
-                        nuevo.Hijos.Add(id3);
-                        nuevo.AutoIncrmentable2 = 9;
-                        STN.Add("CADENA");
-                        System.Diagnostics.Debug.WriteLine("sdaf");
-                        Atributos(root.ChildNodes.ElementAt(3));
-                        System.Diagnostics.Debug.WriteLine("sdaf");
-                        for (int i = 0; i < STN.Count; i++)
-                        {
-                            nuevo.ListaID1.Add(STN[i]);
-                        }
-                        STN.Clear();
-
-                        return nuevo;
-                    }
+                
                     else if (root.ToString().ToUpper().Contains("LALISTA"))
                     {
                         NodoAbstracto nuevo = new LISTAS("LISTAPAR");
@@ -1422,7 +1402,33 @@ namespace AnalizadorCQL.Analizadores
                   //  Recorrido1(root.ChildNodes.ElementAt(7));
                     System.Diagnostics.Debug.WriteLine("CAso8 -> " + root.ToString());
 
-                    if (root.ToString().Contains("EL_IF"))
+                    if (root.ToString().ToUpper().Contains("USER_TYPE2"))
+                    {
+                        NodoAbstracto nuevo = new ASIGNACIONOBJETOS("INSTANCIA");
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(6).ToString().Replace(" (id2)", ""));
+                        NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id)", ""));
+                        NodoAbstracto id3 = new Nodo(root.ChildNodes.ElementAt(6).ToString().Replace(" (id2)", ""));
+                        nuevo.Hijos.Add(id);
+                        nuevo.Hijos.Add(id2);
+                        nuevo.Hijos.Add(id3);
+                        nuevo.AutoIncrmentable2 = 18000;
+
+                        STN.Clear();
+                        System.Diagnostics.Debug.WriteLine("__________________________________________________");
+
+
+                      
+                        AtributosUT(root.ChildNodes.ElementAt(3));
+                        
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+                        System.Diagnostics.Debug.WriteLine("__________________________________________________");
+                        return nuevo;
+                    }
+                    else if (root.ToString().Contains("EL_IF"))
                     {
                         NodoAbstracto nuevo = new ELSEIF("IF");
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
@@ -1487,36 +1493,7 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
                         return nuevo;
                     }
-                    else if (root.ChildNodes.ElementAt(0).ToString().Contains("TIPOS_VARIABLES")
-                        && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("(id2)")
-                        && root.ChildNodes.ElementAt(2).FindToken().ToString().Contains("=")
-                        && root.ChildNodes.ElementAt(3).FindToken().ToString().Contains("(")
-                        && root.ChildNodes.ElementAt(4).ToString().Contains("TIPOS_VARIABLES")
-                        && root.ChildNodes.ElementAt(5).FindToken().ToString().Contains(")")
-                         && root.ChildNodes.ElementAt(6).ToString().Contains("E")
-                    )
-                    {
-                        System.Diagnostics.Debug.WriteLine("CODIGO CASTEO OBLIGATORIO");
-                    }
 
-                    else if (root.ChildNodes.ElementAt(0).ToString().Contains("alter") &&
-                            root.ChildNodes.ElementAt(1).ToString().Contains("type") &&
-                            root.ChildNodes.ElementAt(2).ToString().Contains("(id)") &&
-                            root.ChildNodes.ElementAt(3).ToString().Contains("delete")
-
-                    )
-                    {
-                        System.Diagnostics.Debug.WriteLine("CODIGO ALTER TYPE DELETE");
-                    }
-                    else if (root.ChildNodes.ElementAt(0).ToString().Contains("alter") &&
-                            root.ChildNodes.ElementAt(1).ToString().Contains("type") &&
-                            root.ChildNodes.ElementAt(2).ToString().Contains("(id)") &&
-                            root.ChildNodes.ElementAt(3).ToString().Contains("add")
-
-                    )
-                    {
-                        System.Diagnostics.Debug.WriteLine("CODIGO ALTER TYPE ADD");
-                    }
                     else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("id") &&
                               root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2") &&
                               root.ChildNodes.ElementAt(2).FindToken().ToString().Contains("Key symbol") &&
@@ -1609,6 +1586,32 @@ namespace AnalizadorCQL.Analizadores
                         }
                         return nuevo;
                            
+                    }
+                    else if (root.ToString().ToUpper().Contains("USER_TYPE2"))
+                    {
+                        NodoAbstracto nuevo = new ASIGNACIONOBJETOS("INSTANCIA");
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
+                        NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
+                        NodoAbstracto id3 = new Nodo(root.ChildNodes.ElementAt(7).ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(id);
+                        nuevo.Hijos.Add(id2);
+                        nuevo.Hijos.Add(id3);
+                        nuevo.AutoIncrmentable2 = 9999;
+
+                        STN.Clear();
+                        System.Diagnostics.Debug.WriteLine("__________________________________________________");
+
+                      
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        AtributosUT(root.ChildNodes.ElementAt(4));
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                       for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+                        System.Diagnostics.Debug.WriteLine("__________________________________________________");
+                        return nuevo;
                     }
 
                     break;
@@ -1912,6 +1915,80 @@ namespace AnalizadorCQL.Analizadores
 
                     break;
             }
+        }
+        public void AtributosUT(ParseTreeNode root)
+        {
+            switch (root.ChildNodes.Count)
+            {
+                case 1:
+                    String Var1 = root.ChildNodes.ElementAt(0).FindToken().ToString();
+                    System.Diagnostics.Debug.WriteLine("un hijo" + Var1);
+                    STN.Add(Var1);
+                    //Atributos(root.ChildNodes.ElementAt(0));
+                    break;
+                case 3:
+                    //                    Atributos(root.ChildNodes.ElementAt(0));                    
+
+                    String Var2 = root.ChildNodes.ElementAt(0).FindToken().ToString();
+                    STN.Add(Var2);
+                    System.Diagnostics.Debug.WriteLine("tres hijos" + Var2);
+                    AtributosUT(root.ChildNodes.ElementAt(2));
+                    break;
+                case 5:
+                    //                    Atributos(root.ChildNodes.ElementAt(0));                    
+
+                    //String Var3 = root.ChildNodes.ElementAt(0).FindToken().ToString();
+                    //STN.Add(Var2);
+                    //System.Diagnostics.Debug.WriteLine("tres hijos" + Var3);
+                    AtributoLargo = "";
+                    AtributoLargo = "{";
+                    AtributosUT2(root.ChildNodes.ElementAt(1));
+                    AtributoLargo = AtributoLargo + "} AS "+ root.ChildNodes.ElementAt(4).ToString().Replace(" (id)","");
+                    System.Diagnostics.Debug.WriteLine("Cinco hijos" + AtributoLargo);
+                    STN.Add(AtributoLargo);
+                    break;
+                case 7:
+                    //                    Atributos(root.ChildNodes.ElementAt(0));                    
+
+                    //String Var3 = root.ChildNodes.ElementAt(0).FindToken().ToString();
+                    //STN.Add(Var2);
+                    //System.Diagnostics.Debug.WriteLine("tres hijos" + Var3);
+                    
+                    AtributoLargo = "";
+                    AtributoLargo = "{";
+                    AtributosUT2(root.ChildNodes.ElementAt(1));
+                    AtributoLargo = AtributoLargo + "} AS " + root.ChildNodes.ElementAt(4).ToString().Replace(" (id)", "");
+                    System.Diagnostics.Debug.WriteLine("Siete hijos" + AtributoLargo);
+                    STN.Add(AtributoLargo);
+                    AtributosUT(root.ChildNodes.ElementAt(6));
+                    break;
+            }
+        }
+        String AtributoLargo = "";
+        public void AtributosUT2(ParseTreeNode root)
+        {
+            
+            switch (root.ChildNodes.Count)
+            {
+                case 1:
+                    String Var1 = root.ChildNodes.ElementAt(0).FindToken().ToString();
+                    System.Diagnostics.Debug.WriteLine("un hijo" + Var1);
+                    AtributoLargo = AtributoLargo + Var1; 
+                    //STN.Add(Var1);
+                    //Atributos(root.ChildNodes.ElementAt(0));
+                    break;
+                case 3:
+                    //                    Atributos(root.ChildNodes.ElementAt(0));                    
+
+                    String Var2 = root.ChildNodes.ElementAt(0).FindToken().ToString();
+                    //STN.Add(Var2);
+                    AtributoLargo = AtributoLargo + Var2 + ",";
+                    System.Diagnostics.Debug.WriteLine("tres hijos" + Var2);
+                    AtributosUT2(root.ChildNodes.ElementAt(2));
+                    break;
+               
+            }
+            
         }
 
         public void AtributosFunciones(ParseTreeNode root)

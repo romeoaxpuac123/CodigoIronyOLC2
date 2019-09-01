@@ -25,6 +25,25 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String Variable = this.Hijos[1].Nombre.ToString();
             System.Diagnostics.Debug.WriteLine("Objeto " + Objeto);
             System.Diagnostics.Debug.WriteLine("NombreVariable " + Variable);
+
+            if (entorno.ExisteVariable(Objeto)==true)
+            {
+                if (entorno.ExisteVariable(Variable) == false)
+                {
+                    entorno.AgregarObjeto(Variable, "OBJETO_BRAY", null);
+                }
+                else
+                {
+                    return "#ERROR6 ? Exception: ObjectAlreadyExists: instancia con identificador ya existente. .";
+                }
+
+            }
+            else
+            {
+                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre no existente.";
+            }
+
+            /*
             Boolean ObjetoA = entorno.Agregar(Objeto, "Objeto", "Objeto");
             if  (ObjetoA == true)
             {
@@ -42,7 +61,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     return "#ERROR7 DECLARACION DE OBJETO YA REALIZADA";
                 }
             }
-
+            */
             return "DECOBJETO";
         }
     }
