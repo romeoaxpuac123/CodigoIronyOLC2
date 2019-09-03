@@ -33,6 +33,10 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 String TipoColector = entorno.ObtenerTipo(ElColector);
                 String ValorColector = entorno.ObtenerValor(ElColector);
                 System.Diagnostics.Debug.WriteLine("Verificando el tamaño de la lista" + ElColector);
+                if (TipoColector == null)
+                {
+                    return "#ERROR, LISTA NO VALIDA";
+                }
                 if (entorno.Agregar(ElColector, "list", "list") == false)
                 {
                     if (TipoFuncion.ToUpper().Contains("SIZE") == true)
@@ -97,6 +101,10 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         TipoVariable = "TIME";
                     }
                 }
+                if (TipoColector == null)
+                {
+                    return "#ERROR, LISTA NO VALIDA";
+                }
                 String TPOSICION = "";
                 if (this.Hijos[1].Nombre.Contains("(id2)"))
                 {
@@ -139,6 +147,10 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 String ValorColector = entorno.ObtenerValor(ElColector);
                 String TipoVariable = "";
                 System.Diagnostics.Debug.WriteLine("insertar" + ValorColector);
+                if (TipoColector == null)
+                {
+                    return "#ERROR, LISTA NO VALIDA";
+                }
 
                 if (this.Hijos[2].Nombre.Contains("(id2)"))
                 {
@@ -171,14 +183,21 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         TipoVariable = "TIME";
                     }
                 }
-
+                if (TipoColector == null)
+                {
+                    return "#ERROR, LISTA NO VALIDA";
+                }
                 if (TipoFuncion.ToUpper().Contains("INSERT"))
                 {
                     //CODIGO PARA INSIERTAR EN UNA LISTA
                     if (ValorColector.ToUpper().Contains("LIST"))
                     {
                         System.Diagnostics.Debug.WriteLine("ES UNA LISTA>" + TipoColector + "tv>" + TipoVariable);
-                        if (TipoColector.ToUpper() == TipoVariable.ToUpper())
+                        if(TipoColector == null)
+                        {
+                            return "#ERROR, LISTA NO VALIDA";
+                        }
+                        else if (TipoColector.ToUpper() == TipoVariable.ToUpper())
                         {
                             entorno.AgregarLista(ElColector, this.Hijos[2].Nombre.Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", ""));
                         }
@@ -191,7 +210,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     }
                     else if (ValorColector.ToUpper().Contains("SET")) {
                         System.Diagnostics.Debug.WriteLine("ES UNA SET>" + TipoColector + "tv>" + TipoVariable);
-                        if (TipoColector.ToUpper() == TipoVariable.ToUpper())
+                        if (TipoColector == null)
+                        {
+                            return "#ERROR, LISTA NO VALIDA";
+                        }
+                        else if(TipoColector.ToUpper() == TipoVariable.ToUpper())
                         {
                             entorno.Mostrar(ElColector);
                             entorno.AgregarLista(ElColector, this.Hijos[2].Nombre.Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", ""));
@@ -217,7 +240,14 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 else if (TipoFuncion.ToUpper().Contains("GET"))
                 {
                     //CODIGO PARA GET EN UNA LISTA
-                    int borrar = entorno.PosicionLista(ElColector, this.Hijos[2].Nombre.Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", ""));
+                    if (TipoColector == null)
+                    {
+                        return "#ERROR, LISTA NO VALIDA";
+                    }
+                    
+                    /*
+                     * 
+                        int borrar = entorno.PosicionLista(ElColector, this.Hijos[2].Nombre.Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", ""));
                     if (borrar != -1)
                     {
                         System.Diagnostics.Debug.WriteLine("LA VARIABLE esta en la poscion " + borrar);
@@ -227,12 +257,19 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     else
                     {
                         System.Diagnostics.Debug.WriteLine("LA VARIABLE NO EXISTE EN LA LISTA");
-                    }
+                    }*/
                     entorno.Mostrar(ElColector);
+                    System.Diagnostics.Debug.WriteLine("El elemento es: en la pos:" + entorno.PosicionLista2(ElColector, Int32.Parse(this.Hijos[2].Nombre.Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", ""))));
+
+                    return entorno.PosicionLista2(ElColector,Int32.Parse( this.Hijos[2].Nombre.Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", "")));
                 }
                 if (TipoFuncion.ToUpper().Contains("REMOVE"))
                 {
                     //CODIGO PARA REMOVER EN UNA LISTA
+                    if (TipoColector == null)
+                    {
+                        return "#ERROR, LISTA NO VALIDA";
+                    }
                     Boolean borrar =  entorno.RemoverLista(ElColector, this.Hijos[2].Nombre.Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", ""));
                     if (borrar==true)
                     {
@@ -246,6 +283,10 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
                 if (TipoFuncion.ToUpper().Contains("CONTAINS"))
                 {
+                    if (TipoColector == null)
+                    {
+                        return "#ERROR, LISTA NO VALIDA";
+                    }
                     //CODIGO PARA CONSTAIN EN UNA LISTA
                     Boolean borrar = entorno.ExisteEnLista(ElColector, this.Hijos[2].Nombre.Replace(" (id2)", "").Replace(" (Keyword)", "").Replace(" (cadena)", "").Replace(" (id)", "").Replace(" (numero)", "").Replace(" (numdecimal)", "").Replace(" (Fechas)", "").Replace(" (hora)", ""));
                     if (borrar == true)

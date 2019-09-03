@@ -28,6 +28,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             System.Diagnostics.Debug.WriteLine("Se está Ejecutnado DELCARCION-INSTANCIA OBJETO");
             if(this.AutoIncrmentable2 == 9999)
             {
+                System.Diagnostics.Debug.WriteLine("Se está Ejecutnado DELCARCION-INSTANCIA OBJETO9999");
                 String Objeto1 = this.Hijos[0].Nombre.ToString().Replace(" (id)","");
                 String Objeto2 = this.Hijos[2].Nombre.ToString().Replace(" (id)", "");
                 String Variable = this.Hijos[1].Nombre.ToString().Replace(" (id2)", "");
@@ -47,10 +48,28 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 for (int i = 0; i < ListaParametrosUT.Count; i++)
                                 {
                                     //Revisando que los Parametros Cumplan con el Tipo del objeto
-                                   // System.Diagnostics.Debug.WriteLine("Nombre: ->" + ListaParametrosUT[i].ObtenerId() + " Tipo-> " + ListaParametrosUT[i].ObtenerTipo() + " Valor-> " + ListaParametrosUT[i].ObtenerValor());
-                                   // System.Diagnostics.Debug.WriteLine("Nombrel: ->" + Valores[i]);
+                                    // System.Diagnostics.Debug.WriteLine("Nombre: ->" + ListaParametrosUT[i].ObtenerId() + " Tipo-> " + ListaParametrosUT[i].ObtenerTipo() + " Valor-> " + ListaParametrosUT[i].ObtenerValor());
+                                    // System.Diagnostics.Debug.WriteLine("Nombrel: ->" + Valores[i]);
                                     //Verificando si tiene }
-                                    if (Valores[i].Contains("}") == true)
+                                    System.Diagnostics.Debug.WriteLine("Nombrel: ->xxxxxxxxxxxxxxxx" + Valores[i]);
+                                    if (Valores[i].Contains("NEW") == true)
+                                    {
+                                        String[] separadas;
+                                        separadas = Valores[i].Split(',');
+                                        String ElObjeto = separadas[1];
+                                        
+                                        String Tipaso = ListaParametrosUT[i].ObtenerTipo();
+                                        String Nombraso = ListaParametrosUT[i].ObtenerId();
+
+                                        System.Diagnostics.Debug.WriteLine("Tipo de Colector: " + ElObjeto.Replace(" (id)", "").Replace("AS", "").Replace(" ", ""));
+                                        System.Diagnostics.Debug.WriteLine("Tipo del Parametro: " + ListaParametrosUT[i].ObtenerTipo());
+                                        System.Diagnostics.Debug.WriteLine("Nombre del colector: " + ListaParametrosUT[i].ObtenerId());
+
+                                        //entorno.EliminarVariable(ListaParametrosUT[i].ObtenerId());
+                                        entorno.Agregar(Variable + "." + Nombraso, ElObjeto.Replace(" (id)", "").Replace("AS", "").Replace(" ", ""), Tipaso.ToUpper());
+
+                                    }
+                                    else if (Valores[i].Contains("}") == true)
                                     {
                                         String[] separadas;
                                         separadas = Valores[i].Split('}');
@@ -151,40 +170,52 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                         String TipoVariable = "";
                                         String ValorDeLaVariable = "";
                                         //procedimiento que mira si las variables son iguales
+                                        System.Diagnostics.Debug.WriteLine("Nombrelsdfsd: ->" + Valores[i]+"------------------------");
                                         if (Valores[i].ToUpper().Contains("(CADENA)"))
                                         {
                                             TipoVariable = "STRING";
-                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (cadena)", ""));
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (cadena)", "").Replace(" (CADENA)", ""));
                                         }
                                         else if (Valores[i].ToUpper().Contains("(NUMERO)"))
                                         {
                                             TipoVariable = "INT";
-                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (numero)", ""));
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (numero)", "").Replace(" (NUMERO)", ""));
                                         }
                                         else if (Valores[i].ToUpper().Contains("(NUMDECIMAL)"))
                                         {
                                             TipoVariable = "DOUBLE";
-                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (numdecimal)", ""));
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (numdecimal)", "").Replace(" (NUMDECIMAL)", ""));
                                         }
                                         else if (Valores[i].ToUpper().Contains("(KEYWORD)") && ((ListaID1[0].ToUpper().Contains("TRUE")) || (ListaID1[0].ToUpper().Contains("FALSE"))))
                                         {
                                             TipoVariable = "BOOLEANO";
-                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (Keyword)", ""));
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (Keyword)", "").Replace(" (KEYWORD)", ""));
                                         }
                                         else if (Valores[i].ToUpper().Contains("(FECHAS)"))
                                         {
                                             TipoVariable = "DATE";
-                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (Fechas)", ""));
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (Fechas)", "").Replace(" (FECHAS)", ""));
                                         }
                                         else if (Valores[i].ToUpper().Contains("(HORA)"))
                                         {
                                             TipoVariable = "TIME";
-                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (hora)", ""));
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (hora)", "").Replace(" (HORA)", ""));
                                         }
                                         else if (Valores[i].ToUpper().Contains(" (ID2)"))
                                         {
-                                            TipoVariable = entorno.ObtenerTipo(Valores[i].Replace(" (id2)", ""));
-                                            ValorDeLaVariable = entorno.ObtenerValor(Valores[i].Replace(" (id2)", ""));
+                                            TipoVariable = entorno.ObtenerTipo(Valores[i].Replace(" (id2)", "").Replace(" (ID2)", ""));
+                                            ValorDeLaVariable = entorno.ObtenerValor(Valores[i].Replace(" (id2)", "").Replace(" (ID2)", ""));
+                                        }
+                                       
+                                        else if (Valores[i].ToUpper().Contains("NULL") && ListaParametrosUT[i].ObtenerTipo().ToUpper().Contains("LIST"))
+                                        {
+                                            TipoVariable = "LISTA";
+                                            ValorDeLaVariable = "null";
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("NULL") && ListaParametrosUT[i].ObtenerTipo().ToUpper().Contains("SET"))
+                                        {
+                                            TipoVariable = "SET";
+                                            ValorDeLaVariable = "null";
                                         }
                                         else if (Valores[i].ToUpper().Contains("NULL"))
                                         {
@@ -194,7 +225,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                         System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO PARAMETRO: " + TipoVariable);
                                         System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UT: " + ListaParametrosUT[i].ObtenerTipo());
                                         System.Diagnostics.Debug.WriteLine("Valor OBJETO UT: " + ValorDeLaVariable);
-                                        if (TipoVariable == "OBJETO_BRAY")
+                                        if (TipoVariable== "LISTA"|| TipoVariable == "SET")
+                                        {
+                                            entorno.Agregar(Variable + "." + ListaParametrosUT[i].ObtenerId(), null, TipoVariable);
+                                            ListaParametrosUT[i].AsignarValor(ValorDeLaVariable);
+                                        }
+                                        else if (TipoVariable == "OBJETO_BRAY")
                                         {
                                             System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UTxx: " + ListaParametrosUT[i].ObtenerValor());
                                             //asignar null a algo XD
@@ -209,22 +245,25 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                             }
                                             else
                                             {
-                                                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+                                                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 41";
                                             }
 
                                         }
                                         else if ((TipoVariable.ToUpper().Contains("#ERROR")))
                                         {
-                                            return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+                                            return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 42";
                                         }
                                         else if ((TipoVariable.ToUpper().Replace(" ", "") != ListaParametrosUT[i].ObtenerTipo().ToUpper().Replace(" ", "")))
                                         {
-                                            return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+                                            return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 43";
                                         }
                                         else
                                         {
                                             ///codigo para asignar XD
                                             ListaParametrosUT[i].AsignarValor(ValorDeLaVariable);
+                                            System.Diagnostics.Debug.WriteLine("HOLIIS->"+Variable + "." + ListaParametrosUT[i].ObtenerId() +"-"+ TipoVariable + "-" + ValorDeLaVariable);
+
+                                            entorno.Agregar(Variable + "." + ListaParametrosUT[i].ObtenerId(), TipoVariable, ValorDeLaVariable);
                                         }
 
                                     }
@@ -239,24 +278,24 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                             }
                             else
                             {
-                                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 4";
+                                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 44";
                             }
 
                             entorno.AgregarObjeto(Variable, "OBJETO_BRAY", ListaParametrosUT);
                         }
                         else
                         {
-                            return "#ERROR6 ? Exception: ObjectAlreadyExists: instancia con identificador ya existente. 4";
+                            return "#ERROR6 ? Exception: ObjectAlreadyExists: instancia con identificador ya existente. 45";
                         }
                     }
                     else
                     {
-                        return "#ERROR6 ? Exception: ObjectAlreadyExists: instancia con identificador ya existente. 4";
+                        return "#ERROR6 ? Exception: ObjectAlreadyExists: instancia con identificador ya existente. 46";
                     }
                 }
                 else
                 {
-                    return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre no existente. 4";
+                    return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre no existente. 47";
                 }
 
 
@@ -264,7 +303,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             }
 
-            if (AutoIncrmentable2 == 18000)
+            if (AutoIncrmentable2 == 181890)
             {
                 String Objeto1 = this.Hijos[0].Nombre.ToString().Replace(" (id)", "");
                 String Objeto2 = this.Hijos[2].Nombre.ToString().Replace(" (id)", "");
@@ -287,9 +326,26 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 {
                                     //Revisando que los Parametros Cumplan con el Tipo del objeto
                                     // System.Diagnostics.Debug.WriteLine("Nombre: ->" + ListaParametrosUT[i].ObtenerId() + " Tipo-> " + ListaParametrosUT[i].ObtenerTipo() + " Valor-> " + ListaParametrosUT[i].ObtenerValor());
-                                    // System.Diagnostics.Debug.WriteLine("Nombrel: ->" + Valores[i]);
+
                                     //Verificando si tiene }
-                                    if (Valores[i].Contains("}") == true)
+                                    if (Valores[i].Contains("NEW") == true)
+                                    {
+                                        String[] separadas;
+                                        separadas = Valores[i].Split(',');
+                                        String ElObjeto = separadas[1];
+
+                                        String Tipaso = ListaParametrosUT[i].ObtenerTipo();
+                                        String Nombraso = ListaParametrosUT[i].ObtenerId();
+
+                                        System.Diagnostics.Debug.WriteLine("Tipo de Colector: " + ElObjeto.Replace(" (id)", "").Replace("AS", "").Replace(" ", ""));
+                                        System.Diagnostics.Debug.WriteLine("Tipo del Parametro: " + ListaParametrosUT[i].ObtenerTipo());
+                                        System.Diagnostics.Debug.WriteLine("Nombre del colector: " + ListaParametrosUT[i].ObtenerId());
+
+                                        //entorno.EliminarVariable(ListaParametrosUT[i].ObtenerId());
+                                        entorno.Agregar(Variable + "." + Nombraso, ElObjeto.Replace(" (id)", "").Replace("AS", "").Replace(" ", ""), Tipaso.ToUpper());
+
+                                    }
+                                    else if (Valores[i].Contains("}") == true)
                                     {
                                         String[] separadas;
                                         separadas = Valores[i].Split('}');
@@ -393,37 +449,47 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                         if (Valores[i].ToUpper().Contains("(CADENA)"))
                                         {
                                             TipoVariable = "STRING";
-                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (cadena)", ""));
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (cadena)", "").Replace(" (CADENA)", ""));
                                         }
                                         else if (Valores[i].ToUpper().Contains("(NUMERO)"))
                                         {
                                             TipoVariable = "INT";
-                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (numero)", ""));
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (numero)", "").Replace(" (NUMERO)", ""));
                                         }
                                         else if (Valores[i].ToUpper().Contains("(NUMDECIMAL)"))
                                         {
                                             TipoVariable = "DOUBLE";
-                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (numdecimal)", ""));
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (numdecimal)", "").Replace(" (NUMDECIMAL)", ""));
                                         }
                                         else if (Valores[i].ToUpper().Contains("(KEYWORD)") && ((ListaID1[0].ToUpper().Contains("TRUE")) || (ListaID1[0].ToUpper().Contains("FALSE"))))
                                         {
                                             TipoVariable = "BOOLEANO";
-                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (Keyword)", ""));
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (Keyword)", "").Replace(" (KEYWORD)", ""));
                                         }
                                         else if (Valores[i].ToUpper().Contains("(FECHAS)"))
                                         {
                                             TipoVariable = "DATE";
-                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (Fechas)", ""));
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (Fechas)", "").Replace(" (FECHAS)", ""));
                                         }
                                         else if (Valores[i].ToUpper().Contains("(HORA)"))
                                         {
                                             TipoVariable = "TIME";
-                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (hora)", ""));
+                                            ValorDeLaVariable = (Valores[i].ToUpper().Replace(" (hora)", "").Replace(" (HORA)", ""));
                                         }
                                         else if (Valores[i].ToUpper().Contains(" (ID2)"))
                                         {
-                                            TipoVariable = entorno.ObtenerTipo(Valores[i].Replace(" (id2)", ""));
-                                            ValorDeLaVariable = entorno.ObtenerValor(Valores[i].Replace(" (id2)", ""));
+                                            TipoVariable = entorno.ObtenerTipo(Valores[i].Replace(" (id2)", "").Replace(" (ID2", ""));
+                                            ValorDeLaVariable = entorno.ObtenerValor(Valores[i].Replace(" (id2)", "").Replace(" (ID2)", ""));
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("NULL") && ListaParametrosUT[i].ObtenerTipo().ToUpper().Contains("LIST"))
+                                        {
+                                            TipoVariable = "LISTA";
+                                            ValorDeLaVariable = "null";
+                                        }
+                                        else if (Valores[i].ToUpper().Contains("NULL") && ListaParametrosUT[i].ObtenerTipo().ToUpper().Contains("SET"))
+                                        {
+                                            TipoVariable = "SET";
+                                            ValorDeLaVariable = "null";
                                         }
                                         else if (Valores[i].ToUpper().Contains("NULL"))
                                         {
@@ -433,8 +499,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                         System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO PARAMETRO: " + TipoVariable);
                                         System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UT: " + ListaParametrosUT[i].ObtenerTipo());
                                         System.Diagnostics.Debug.WriteLine("Valor OBJETO UT: " + ValorDeLaVariable);
-
-                                        if (TipoVariable == "OBJETO_BRAY")
+                                        if (TipoVariable == "LISTA" || TipoVariable == "SET")
+                                        {
+                                            entorno.Agregar(Variable + "." + ListaParametrosUT[i].ObtenerId(), null, TipoVariable);
+                                        }
+                                        else if (TipoVariable == "OBJETO_BRAY")
                                         {
                                             System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UTxx: " + ListaParametrosUT[i].ObtenerValor());
                                             entorno.AgregarObjeto(Variable + "." + ListaParametrosUT[i].ObtenerId(), "OBJETO_BRAY", null);
@@ -465,6 +534,10 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                         {
                                             ///codigo para asignar XD
                                             ListaParametrosUT[i].AsignarValor(ValorDeLaVariable);
+                                            System.Diagnostics.Debug.WriteLine("HOLIIS->" + Variable + "." + ListaParametrosUT[i].ObtenerId() + "-" + TipoVariable + "-" + ValorDeLaVariable);
+
+                                            entorno.Agregar(Variable + "." + ListaParametrosUT[i].ObtenerId(), TipoVariable, ValorDeLaVariable);
+
                                         }
 
                                     }

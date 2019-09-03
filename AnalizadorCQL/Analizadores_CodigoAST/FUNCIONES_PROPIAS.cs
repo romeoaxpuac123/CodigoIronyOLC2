@@ -142,12 +142,42 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 String TipoVariable = entorno.ObtenerTipo(Variable);
                 String ValorVariable = entorno.ObtenerValor(Variable);
 
+               
+
+
                 String Expresion =  this.Hijos[1].Ejecutar(entorno).ToString();
                 String TipoExpresion = this.Hijos[1].Nombre.ToString();
                 System.Diagnostics.Debug.WriteLine("Tipo Expresion en parentesis: " + TipoExpresion);
                 //System.Diagnostics.Debug.WriteLine("Expresion en parentesis: " + Expresion);
 
-                if (TipoFuncion.ToUpper().Contains("STARTSWITH"))
+                if (TipoFuncion.ToUpper().Contains("GET"))
+                {
+                    System.Diagnostics.Debug.WriteLine("PUTO" + this.Hijos[1].Hijos[0].Nombre.Replace(" (numero",""));
+   
+                   // this.Nombre = "Cadena";
+                   // this.TipoDato = "Cadena";
+                    System.Diagnostics.Debug.WriteLine("PUTO" + entorno.PosicionLista2(Variable, 1));
+                    return entorno.PosicionLista2(Variable, 1);
+                  
+                }else if (TipoFuncion.ToUpper() == ("CONTAINS"))
+                {
+                    Boolean borrar = entorno.ExisteEnLista(Variable,Expresion);
+                    if (borrar == true)
+                    {
+                        System.Diagnostics.Debug.WriteLine("LA VARIABLE SI EXISTE EN LA LISTA");
+                        this.TipoDato = "Booleano";
+                        return "true";
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine("LA VARIABLE NO EXISTE EN LA LISTA");
+                        this.TipoDato = "Booleano";
+                        return "false";
+                    }
+
+                }
+
+                else if(TipoFuncion.ToUpper().Contains("STARTSWITH"))
                 {
                     String VariableAFusionar = entorno.ObtenerTipo(Variable);
                     if (TipoExpresion.ToUpper().Contains("ID"))

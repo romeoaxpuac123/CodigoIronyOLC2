@@ -943,6 +943,35 @@ namespace AnalizadorCQL.Analizadores_Codigo
             return -1;
         }
 
+
+
+        public String PosicionLista2(String id, int pos)
+        {
+            if (Elementos.ContainsKey(id))
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (id == datos.Key.ToString())
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+
+
+                        for (int i = 0; i < p.lalista().Count; i++)
+                        {
+                            // System.Diagnostics.Debug.WriteLine("sadfdsa" + p.lalista()[i] + "<id>" + valor);
+                            if (i == pos)
+                            {
+                                //p.lalista().Remove(valor);
+                                return p.lalista()[i];
+                            }
+                        }
+
+                    }
+                }
+            }
+            return "null";
+        }
+
         public void Mostrar(String id)
         {
             if (Elementos.ContainsKey(id))

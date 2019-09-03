@@ -360,7 +360,9 @@ namespace AnalizadorCQL.Analizadores
             LISTA_EXPRESIONobjetos.Rule = E
                                     | E + coma + LISTA_EXPRESIONobjetos
                                     | llaveAbierta + LISTA_EXPRESIONobjetos + llaverCerrada + ELAS + id
-                                    | llaveAbierta + LISTA_EXPRESIONobjetos + llaverCerrada + ELAS + id + coma + LISTA_EXPRESIONobjetos;
+                                    | llaveAbierta + LISTA_EXPRESIONobjetos + llaverCerrada + ELAS + id + coma + LISTA_EXPRESIONobjetos
+                                    | nuevo + LISTA + menor + TIPOS_VARIABLES  + mayor
+                                    | nuevo + LISTA + menor + TIPOS_VARIABLES + mayor + coma + LISTA_EXPRESIONobjetos;
             LISTA_EXPRESIONobjetos.ErrorRule = SyntaxError + ";";
 
             #endregion
