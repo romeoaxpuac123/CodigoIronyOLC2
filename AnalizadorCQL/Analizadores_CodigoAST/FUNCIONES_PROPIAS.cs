@@ -26,12 +26,18 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 string[] separadas;
                 separadas = cadena.Split('.');
                 String TipoFuncion = separadas[separadas.Length - 1];
-                System.Diagnostics.Debug.WriteLine("ES funcion: " + TipoFuncion);
+                System.Diagnostics.Debug.WriteLine("ES funcionY: " + TipoFuncion);
                 String Variable = cadena.Replace(TipoFuncion, "").TrimEnd('.');
                 System.Diagnostics.Debug.WriteLine("VAriable: " + Variable);
                 String TipoVariable = entorno.ObtenerTipo(Variable);
                 String ValorVariable = entorno.ObtenerValor(Variable);
+                if (TipoFuncion.ToUpper().Contains("SIZE"))
+                {
+                    System.Diagnostics.Debug.WriteLine("TAMAÑOOOOOOOOOOOOOOOOOOOOOOO");
+                    this.TipoDato = "entero";
+                    return entorno.TotalLista(Variable).ToString();
 
+                }
                 if (TipoVariable.ToUpper().Contains("STRING") == true && TipoFuncion.ToUpper().Contains("LENGTH") == true)
                 {
                     int tam = ValorVariable.Length;
@@ -136,7 +142,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 string[] separadas;
                 separadas = cadena.Split('.');
                 String TipoFuncion = separadas[separadas.Length - 1];
-                System.Diagnostics.Debug.WriteLine("ES funcion: " + TipoFuncion);
+                System.Diagnostics.Debug.WriteLine("ES funcionX: " + TipoFuncion);
                 String Variable = cadena.Replace(TipoFuncion, "").TrimEnd('.');
                 System.Diagnostics.Debug.WriteLine("VAriable: " + Variable);
                 String TipoVariable = entorno.ObtenerTipo(Variable);
@@ -152,14 +158,18 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                 if (TipoFuncion.ToUpper().Contains("GET"))
                 {
-                    System.Diagnostics.Debug.WriteLine("PUTO" + this.Hijos[1].Hijos[0].Nombre.Replace(" (numero",""));
+                    System.Diagnostics.Debug.WriteLine("PUTO" + this.Hijos[1].Hijos[0].Nombre.Replace(" (numero)",""));
    
-                   // this.Nombre = "Cadena";
-                   // this.TipoDato = "Cadena";
-                    System.Diagnostics.Debug.WriteLine("PUTO" + entorno.PosicionLista2(Variable, 1));
-                    return entorno.PosicionLista2(Variable, 1);
-                  
-                }else if (TipoFuncion.ToUpper() == ("CONTAINS"))
+                    this.Nombre = "cadena";
+                    this.TipoDato = "cadena";
+                    
+                    //System.Diagnostics.Debug.WriteLine("PUTO" + entorno.PosicionLista2(Variable, 1));
+                    int posicion = Int32.Parse(this.Hijos[1].Hijos[0].Nombre.Replace(" (numero)", ""));
+                    return entorno.PosicionLista2(Variable, posicion);
+                     
+
+                }
+                else if (TipoFuncion.ToUpper() == ("CONTAINS"))
                 {
                     Boolean borrar = entorno.ExisteEnLista(Variable,Expresion);
                     if (borrar == true)
@@ -176,6 +186,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     }
 
                 }
+             
 
                 else if(TipoFuncion.ToUpper().Contains("STARTSWITH"))
                 {

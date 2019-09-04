@@ -185,7 +185,7 @@ namespace AnalizadorCQL.Analizadores
                         else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(cadena)"))
                         {
                             NodoAbstracto RESULT1 = null;
-                            String valor = root.ChildNodes.ElementAt(0).ToString().Replace("\"", "");
+                            String valor = root.ChildNodes.ElementAt(0).ToString();
                             valor = valor.Replace(" (cadena)", "");
                             NodoAbstracto nuevo = new Nodo("Cadena");
                             NodoAbstracto nuevovalor = new Nodo(valor);
@@ -1042,14 +1042,7 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
                             nuevo.AutoIncrmentable2 = 103;
 
-                            if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("GET"))
-                            {
-                                nuevo.TipoDato = "Cadena";
-                            }
-                            else
-                            {
-                                nuevo.TipoDato = "Booleano";
-                            }
+                            
                             return nuevo;
                         }
                         else if ((root.ChildNodes.ElementAt(0).ToString().Contains(" (id)")) &&

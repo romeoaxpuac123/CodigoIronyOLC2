@@ -21,14 +21,12 @@ namespace AnalizadorCQL
 
         }
 
-       
-
         protected void Button1_Click1(object sender, EventArgs e)
         {
-            
             string text = System.IO.File.ReadAllText(@"C:\Users\Bayyron\Desktop\entrada.txt");
 
-
+         
+            
             text = text.Replace("(String)", "¿String?");
             text = text.Replace("(Double)", "¿Double?");
             text = text.Replace("(Int)", "¿Int?");
@@ -44,7 +42,7 @@ namespace AnalizadorCQL
             text = text.Replace("(INT)", "¿Int?");
             text = text.Replace("(TIME)", "¿Time?");
             text = text.Replace("(DATE)", "¿Date?");
-          //  text = text.ToUpper();
+            //  text = text.ToUpper();
 
             Boolean resultado = Analizadores.Sintactico.Analizar(text);
             ParseTreeNode resul2 = Analizadores.Sintactico.Analizar2(text);
@@ -52,30 +50,29 @@ namespace AnalizadorCQL
             if (resultado == true)
             {
                 TextBox1.Text = "Cadena Valida";
-                
+
                 //Recorrido.Recorrido1(resul2);
                 Recorrido Re = new Recorrido();
                 //Re.RecorrerArbol(resultado);
                 Re.Recorrido1(resul2);
                 Console.WriteLine("**********************");
                 Re.Analizar(Re.Raiz);
-                
+
                 System.Diagnostics.Debug.WriteLine("FIIIIIIIIIIIIIIIIIN");
             }
             else
             {
-                for(int i = 0; i< resul2x.ParserMessages.Count(); i++)
+                for (int i = 0; i < resul2x.ParserMessages.Count(); i++)
                 {
-                    System.Diagnostics.Debug.WriteLine("ERROR-BRAY->" + 
-                        " Tipo de error: "  + "Sintactico" +
+                    System.Diagnostics.Debug.WriteLine("ERROR-BRAY->" +
+                        " Tipo de error: " + "Sintactico" +
                         " Linea: " + resul2x.ParserMessages.ElementAt(i).Location.Line +
                         " Columna: " + resul2x.ParserMessages.ElementAt(i).Location.Column);
 
                 }
-                
+
                 TextBox1.Text = "Cadena NO Valida";
             }
-            
         }
     }
 }
