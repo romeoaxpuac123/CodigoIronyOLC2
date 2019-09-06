@@ -84,6 +84,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 case "x":
 
                     break;
+                default:
+                    sali = this.Nombre;
+                    break;
 
             }
             return sali;

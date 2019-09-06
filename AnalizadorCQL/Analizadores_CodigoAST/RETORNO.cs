@@ -22,42 +22,78 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         {
             String Todos = "";
             System.Diagnostics.Debug.WriteLine("Se esta ejecutnado RETORNO");
-            if(this.AutoIncrmentable2 == 100) { 
-
-            String ValorRetorno = this.Hijos[0].Ejecutar(entorno);
-            String TipoRetorno = this.Hijos[0].Nombre;
-
-            if (TipoRetorno.ToUpper().Contains("ID2") == true)
+            if (this.AutoIncrmentable2 == 100) {
+                String ValorRetorno = this.Hijos[0].Ejecutar(entorno);
+                String TipoRetorno = this.Hijos[0].Nombre;
+                System.Diagnostics.Debug.WriteLine("Tipo: ->" + TipoRetorno);
+                if (TipoRetorno.ToUpper().Contains("ID2") == true)
             {
                 TipoRetorno = entorno.ObtenerTipo(this.Hijos[0].NombreVariable);
             }
             else
             {
                 TipoRetorno = this.Hijos[0].TipoDato;
-                if (TipoRetorno.ToUpper().Contains("ENTERO"))
-                {
-                    TipoRetorno = "int";
-                }
-                else if (TipoRetorno.ToUpper().Contains("DECIMAL"))
-                {
-                    TipoRetorno = "double";
-                }
-                else if (TipoRetorno.ToUpper().Contains("CADENA"))
-                {
-                    TipoRetorno = "String";
-                }
-                else if (TipoRetorno.ToUpper().Contains("BOOLEANO"))
-                {
-                    TipoRetorno = "Booleano";
-                }
-                else if (TipoRetorno.ToUpper().Contains("FECHAS"))
-                {
-                    TipoRetorno = "Date";
-                }
-                else if (TipoRetorno.ToUpper().Contains("HORA"))
-                {
-                    TipoRetorno = "Time";
-                }
+                    if (TipoRetorno.ToUpper().Contains("ENTERO"))
+                    {
+                        TipoRetorno = "int";
+                    }
+                    else if (TipoRetorno.ToUpper().Contains("DECIMAL"))
+                    {
+                        TipoRetorno = "double";
+                    }
+                    else if (TipoRetorno.ToUpper().Contains("CADENA"))
+                    {
+                        TipoRetorno = "String";
+                    }
+                    else if (TipoRetorno.ToUpper().Contains("BOOLEANO"))
+                    {
+                        TipoRetorno = "Booleano";
+                    }
+                    else if (TipoRetorno.ToUpper().Contains("FECHAS"))
+                    {
+                        TipoRetorno = "Date";
+                    }
+                    else if (TipoRetorno.ToUpper().Contains("HORA"))
+                    {
+                        TipoRetorno = "Time";
+                    }
+                    else
+                    {
+                        String ValorNuevo = TipoRetorno;
+                        if(TipoRetorno.ToUpper().Contains("FALSE") || TipoRetorno.ToUpper().Contains("TRUE"))
+                        {
+                            TipoRetorno = "Booleano";
+                        }
+
+                        else if (ValorNuevo.ToUpper().Contains("A") || ValorNuevo.ToUpper().Contains("B") || ValorNuevo.ToUpper().Contains("C") || ValorNuevo.ToUpper().Contains("D")
+                      || ValorNuevo.ToUpper().Contains("D") || ValorNuevo.ToUpper().Contains("E") || ValorNuevo.ToUpper().Contains("F") || ValorNuevo.ToUpper().Contains("G")
+                      || ValorNuevo.ToUpper().Contains("H") || ValorNuevo.ToUpper().Contains("I") || ValorNuevo.ToUpper().Contains("J") || ValorNuevo.ToUpper().Contains("K")
+                      || ValorNuevo.ToUpper().Contains("L") || ValorNuevo.ToUpper().Contains("M") || ValorNuevo.ToUpper().Contains("Ñ") || ValorNuevo.ToUpper().Contains("O")
+                      || ValorNuevo.ToUpper().Contains("P") || ValorNuevo.ToUpper().Contains("Q") || ValorNuevo.ToUpper().Contains("R") || ValorNuevo.ToUpper().Contains("S")
+                      || ValorNuevo.ToUpper().Contains("T") || ValorNuevo.ToUpper().Contains("U") || ValorNuevo.ToUpper().Contains("V") || ValorNuevo.ToUpper().Contains("W")
+                      || ValorNuevo.ToUpper().Contains("X") || ValorNuevo.ToUpper().Contains("Y") || ValorNuevo.ToUpper().Contains("Z")
+                      )
+                        {
+                            TipoRetorno = "String";
+                        }else if (TipoRetorno.Contains("."))
+                        {
+                            TipoRetorno = "double";
+                        }
+                        else  if (TipoRetorno.Contains(":"))
+                        {
+                            TipoRetorno = "Time";
+                        }
+                        else if (TipoRetorno.Contains("-"))
+                        {
+                            TipoRetorno = "Date";
+                        }
+                        else
+                        {
+                            TipoRetorno = "int";
+                        }
+
+
+                    }
 
 
 
@@ -68,6 +104,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             }
             return "RETORNO:" + ValorRetorno + ",TIPO:" + TipoRetorno;
+
+                
             }
 
             if (this.AutoIncrmentable2 == 200)

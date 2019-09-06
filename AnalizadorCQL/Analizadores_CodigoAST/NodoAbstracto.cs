@@ -22,6 +22,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         public List<NodoAbstracto> Hijos;
         public List<String> ListaID1  ;
         public List<String> ListaR1;
+        public List<NodoAbstracto> Parametros;
         public NodoAbstracto()
         {
         }

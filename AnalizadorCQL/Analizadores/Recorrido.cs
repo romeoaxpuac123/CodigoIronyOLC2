@@ -111,7 +111,7 @@ namespace AnalizadorCQL.Analizadores
 
 
                     }
-
+                  
                     else if (root.ToString() == "DEFINCION_GENERAL_CQL")
                     {
                         //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
@@ -258,7 +258,17 @@ namespace AnalizadorCQL.Analizadores
                             return RESULT1;
                         }
                     }
-                    
+                    else if (root.ToString() == "LISTA_EXPRESION")
+                    {
+
+                        NodoAbstracto nuevo = Recorrido1(root.ChildNodes.ElementAt(0));
+                        // esto que pexNodoAbstracto nuevo = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        //NodoAbstracto nuevx = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        //nuevo.Hijos.Add(nuevx);
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                       // nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                        return nuevo;
+                    }
 
                     break;
                 case 2:
@@ -451,7 +461,7 @@ namespace AnalizadorCQL.Analizadores
                     //Recorrido1(root.ChildNodes.ElementAt(1));
                     //Recorrido1(root.ChildNodes.ElementAt(2));
                     System.Diagnostics.Debug.WriteLine("CAso3 -> " + root.ToString());
-                    if(root.ToString().Contains("INC_DEC")== true)
+                   if (root.ToString().Contains("INC_DEC")== true)
                     {
                         System.Diagnostics.Debug.WriteLine("INC_DEC");
                         NodoAbstracto nuevo = new Incremento("INCREMENTO");
@@ -461,6 +471,16 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(nuevoid2);
                         return nuevo;
 
+                    }
+                    else if(root.ToString() == "LISTA_EXPRESION")
+                    {
+                        NodoAbstracto nuevo = Recorrido1(root.ChildNodes.ElementAt(0));
+                        // esto que pexNodoAbstracto nuevo = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        //NodoAbstracto nuevx = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        //nuevo.Hijos.Add(nuevx);
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                        return nuevo;
                     }
                     else if (root.ToString() == "ASIGNACION")
                     {
@@ -538,6 +558,7 @@ namespace AnalizadorCQL.Analizadores
                         {
                             NodoAbstracto nuevo = new FUN_RETORNO("EXP");
                             NodoAbstracto Funcion = new  Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", ""));
+                           
                             nuevo.Hijos.Add(Funcion);
                             String TipoRetorno = "";
                             for(int i = 0; i < FuncionesXD.Count; i++)
@@ -1053,9 +1074,22 @@ namespace AnalizadorCQL.Analizadores
                             System.Diagnostics.Debug.WriteLine("FUNCIONES usuario----------");
                             NodoAbstracto nuevo = new  FUN_RETORNO("EXP");
                             NodoAbstracto nuevohijo = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", ""));
+                            //NodoAbstracto Parametro1 =  Recorrido1(root.ChildNodes.ElementAt(2));
+                            
                             nuevo.Hijos.Add(nuevohijo);
+                            nuevo.Parametros = new List<NodoAbstracto>();
                             AtributosFuncionesUsuario(root.ChildNodes.ElementAt(2));
-                            for(int i=0; i< STN.Count; i++)
+                            LalistaPTN.Clear();
+                            contador = 0;
+                            nuevo.Parametros.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            AtributosDeNodosExpresiones(root);
+                            for (int i = 0; i < LalistaPTN.Count; i++)
+                            {
+                                nuevo.Parametros.Add(LalistaPTN[i]);
+                            }
+
+                            LalistaPTN.Clear();
+                            for (int i=0; i< STN.Count; i++)
                             {
                                 nuevo.ListaID1.Add(STN[i]);
                             }
@@ -1200,26 +1234,7 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(3)));
                         return nuevo;
                     }
-                    /*else if (root.ToString().ToUpper().Contains("USER_TYPE2"))
-                    { 
-                        NodoAbstracto nuevo = new ASIGNACIONOBJETOS("INSTANCIA");
-                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
-                        NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
-                        nuevo.Hijos.Add(id);
-                        nuevo.Hijos.Add(id2);
-                        nuevo.AutoIncrmentable2 = 9;
-                        STN.Add("CADENA");
-                        System.Diagnostics.Debug.WriteLine("sdaf");
-                        Atributos(root.ChildNodes.ElementAt(3));
-                        System.Diagnostics.Debug.WriteLine("sdaf");
-                        for (int i = 0; i < STN.Count; i++)
-                        {
-                            nuevo.ListaID1.Add(STN[i]);
-                        }
-                        STN.Clear();
-
-                        return nuevo; 
-            }*/
+     
                     else if (root.ToString().ToUpper().Contains("FUNCIONES_PROPIAS"))
                     {
                         NodoAbstracto nuevo = new FUNCIONESCOLEECTIONS("FUNCIONES");
@@ -1789,7 +1804,7 @@ namespace AnalizadorCQL.Analizadores
             }
             catch (Exception e)
             {
-               
+                e.ToString();
             }
         }
         List<String> STN = new List<String>();
@@ -1863,6 +1878,33 @@ namespace AnalizadorCQL.Analizadores
                     STN.Add(Var2);
                     System.Diagnostics.Debug.WriteLine("tres hijosxxx" + Var2);
                     AtributosFuncionesUsuario(root.ChildNodes.ElementAt(2));
+
+
+                    break;
+            }
+        }
+        List<NodoAbstracto> LalistaPTN = new List<NodoAbstracto>();
+        int contador = 0;
+        public void AtributosDeNodosExpresiones(ParseTreeNode root)
+        {
+            switch (root.ChildNodes.Count)
+            {
+                case 4:
+                    //NodoAbstracto Var1 = Recorrido1(root.ChildNodes.ElementAt(0));
+
+                    //NodoAbstracto Var1 = Recorrido1(root.ChildNodes.ElementAt(2).ChildNodes.ElementAt(0));
+                    //LalistaPTN.Add(Var1);
+                     AtributosDeNodosExpresiones((root.ChildNodes.ElementAt(2)));
+                    //Atributos(root.ChildNodes.ElementAt(0));
+                    break;
+                case 3:
+                    //                    Atributos(root.ChildNodes.ElementAt(0));                    
+                    // NodoAbstracto Var2 = Recorrido1(root.ChildNodes.ElementAt(0));
+               
+                    NodoAbstracto Var2 = Recorrido1(root);
+                  
+                    LalistaPTN.Add(Var2);
+                    AtributosDeNodosExpresiones((root.ChildNodes.ElementAt(2)));
 
 
                     break;

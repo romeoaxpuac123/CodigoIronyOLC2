@@ -40,48 +40,100 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             System.Diagnostics.Debug.WriteLine("id FUNCIONE " + IdFuncion);
             System.Diagnostics.Debug.WriteLine("Existe FUNCIONE? " + ExisteFuncion);
             System.Diagnostics.Debug.WriteLine("Parametros Iguales? " + CantidadDeParametrosIguales);
+            
+            
+            #region AGREGAR FUNCION
+
             if (ExisteFuncion == true)
             {
+                if (CantidadDeParametrosIguales == true)
+                {
+                    if (ExistenMismoParametros == true)
+                    {
+                        return "#ERROR EN PARAMETROS DE FUNCION";
+                    }
+                    else
+                    {
+                        entorno.AgregarFuncion(IdFuncion, NombreFuncion, tipoFuncion, ListaID1, this.Hijos[2]);
+
+                    }
+                }
+                else
+                {
+                    entorno.AgregarFuncion(IdFuncion, NombreFuncion, tipoFuncion, ListaID1, this.Hijos[2]);
+
+                }
 
             }
             else
             {
-                Entorno x = new Entorno();
-                foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos)
-
-                {
-                    System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                    System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if" + sentencia.Nombre.ToString());
-                    //valor1 = sentencia.Ejecutar(x);
-                    String valor1 = "";
-                    String Retorno = "";
-                    Boolean hayr = false;
-                    entorno.NuevasFunciones(x);
-                    valor1 = sentencia.Ejecutar(x);
-                    if (valor1.Contains("RETORNO:") == true)
-                    {
-                        hayr = true;
-                        Retorno = valor1;
-                        //Retorno = valor1;
-
-                    }
-                    if (valor1.ToUpper().Contains("#ERROR") == true)
-                    {
-                        System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if" + valor1);
-
-                        return "#ERROR EN FUNCION";
-                        //return "#Error";
-                    }
-
-                }
-                System.Diagnostics.Debug.WriteLine("FIN ACCIONES");
-
-
+                entorno.AgregarFuncion(IdFuncion, NombreFuncion, tipoFuncion, ListaID1, this.Hijos[2]);
 
             }
+
+            #endregion
+          /*
+            #region Verificando Retornos
+            Entorno x = new Entorno();
+            //x = entorno;
+            for (int i = 0; i < ListaID1.Count; i++)
+            {
+                string[] separadas;
+                separadas = ListaID1[i].Split('*');
+                String Valorxxxx = "";
+                if (separadas[0].ToUpper().Contains("STRING"))
+                {
+                    Valorxxxx = " ";
+                }
+                if (separadas[0].ToUpper().Contains("INT"))
+                {
+                    Valorxxxx = "10";
+                }
+                if (separadas[0].ToUpper().Contains("DOUBLE"))
+                {
+                    Valorxxxx = "2.2";
+                }
+                if (separadas[0].ToUpper().Contains("BOOLEAN"))
+                {
+                    Valorxxxx = "false";
+                }
+                if (separadas[0].ToUpper().Contains("DATE"))
+                {
+                    Valorxxxx = "'2019-1-1'";
+                }
+                if (separadas[0].ToUpper().Contains("TIME"))
+                {
+                    Valorxxxx = "'1::1:1'";
+                }
+                x.Agregar(separadas[1], separadas[0], Valorxxxx);
+            }
+            String valor1 = "";
+            String Retorno = "";
+            Boolean hayr = false;
+            foreach (NodoAbstracto sentencia in this.Hijos[2].Hijos)
+            {
+
+                entorno.NuevasFunciones(x);
+                valor1 = sentencia.Ejecutar(x);
+                if (valor1.Contains("RETORNO:") == true)
+                {
+                    hayr = true;
+                    Retorno = valor1;
+
+                }
+
+            }
+            System.Diagnostics.Debug.WriteLine("FIN ACCIONES->" + Retorno);
+
+            #endregion
+
+            */
+            /*
+
+
                 //entorno.AgregarFuncion(IdFuncion, NombreFuncion, tipoFuncion, ListaID1);
                 //entorno.MostrarFunciones();
-                /*
+
                 if(ExisteFuncion == true)
                 {
                     //la funcion ya existe entonces se pasa a revisar las otras condiciones :D
@@ -132,7 +184,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     }
                     if (separadas[0].ToUpper().Contains("INT"))
                     {
-                        Valorxxxx = "0";
+                        Valorxxxx = "10";
                     }
                     if (separadas[0].ToUpper().Contains("DOUBLE"))
                     {
@@ -204,16 +256,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         return "#ERROR FALTA RETURNO";
                     }
                 }
-                */
+               */
 
-               
-                return "FUNCIONUSUARIO";
+
+            return "FUNCIONUSUARIO";
         }
-        String b = "10";
-        int funcion1(int a)
-        {
-            int b = 5 + a;
-            return funcion1(b);
-        }
+       
     }
 }

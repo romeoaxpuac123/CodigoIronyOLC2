@@ -20,103 +20,172 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
         public override string Ejecutar(Entorno entorno)
         {
-         System.Diagnostics.Debug.WriteLine("Ejecucion funCIONES URUAIOAR------" + this.TipoDato);
-         //   this.TipoDato = "entero";
-         //   System.Diagnostics.Debug.WriteLine("Ejecucion funCIONES URUAIOAR------" + this.TipoDato);
+            System.Diagnostics.Debug.WriteLine("Ejecucion funCIONES URUAIOAR------" + this.TipoDato + "x---");
+            
 
-            if (this.AutoIncrmentable2 == 54)
-            {
-                String NombreFuncion = this.Hijos[0].Nombre;
-                System.Diagnostics.Debug.WriteLine("NOMBRE FUNCION: " + NombreFuncion);
-                NodoAbstracto Acciones = entorno.NodoSinParametros(NombreFuncion);
-                String Retorno = "";
-                if (Acciones == null)
-                {
-                    return "#ERROR FUNCION NO EXISTENTE";
-                }
-                else
-                {
-                   
-                    String valor1 = "";
-                    Entorno x = new Entorno();
-                    foreach (NodoAbstracto sentencia in Acciones.Hijos)
+                    //LA FUCNION SE ENCONTRO
+                    //   this.TipoDato = "entero";
+                    //   System.Diagnostics.Debug.WriteLine("Ejecucion funCIONES URUAIOAR------" + this.TipoDato);
+                         
+                              if (this.AutoIncrmentable2 == 54)
+                              {
+                                  String NombreFuncion = this.Hijos[0].Nombre;
+                                  System.Diagnostics.Debug.WriteLine("NOMBRE FUNCION: " + NombreFuncion);
+                                  NodoAbstracto Acciones = entorno.NodoSinParametros(NombreFuncion);
+                                  String Retorno = "";
+                                  if (Acciones == null)
+                                  {
+                                      return "#ERROR FUNCION NO EXISTENTE";
+                                  }
+                                  else
+                                  {
 
-                    {
-                        System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                        valor1 = sentencia.Ejecutar(x);
-                        if (valor1.Contains("#Error") == true)
-                        {
-                            System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                            return "#ERROR EN FUNCION";
-                            //return "#Error";
-                        }
-                        if (valor1.Contains("RETORNO:") == true)
-                        {
-                            
-                            Retorno = valor1;
-                            break;
-                        }
+                                      String valor1 = "";
+                                      Entorno x = new Entorno();
+                                      foreach (NodoAbstracto sentencia in Acciones.Hijos)
 
-                    }
-                }
+                                      {
+                                          System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
+                                          valor1 = sentencia.Ejecutar(x);
+                                          if (valor1.Contains("#Error") == true)
+                                          {
+                                              System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
+                                              return "#ERROR EN FUNCION";
+                                              //return "#Error";
+                                          }
+                                          if (valor1.Contains("RETORNO:") == true)
+                                          {
 
-                System.Diagnostics.Debug.WriteLine("valor retorno: "+ Retorno);
+                                              Retorno = valor1;
+                                              break;
+                                          }
 
-                string[] separadas;
-                separadas = Retorno .Split(',');
+                                      }
+                                  }
 
-                string[] separadas2;
-                separadas2 = separadas[0].Split(':');
+                                  System.Diagnostics.Debug.WriteLine("valor retorno: "+ Retorno);
 
-                string[] separadas3;
-                separadas3 = separadas[1].Split(':');
-                String TipoRetorno = separadas3[1];
+                                  string[] separadas;
+                                  separadas = Retorno .Split(',');
 
-                if (TipoRetorno.ToUpper().Contains("INT"))
-                {
-                    TipoRetorno = "entero";
-                }
-                else if (TipoRetorno.ToUpper().Contains("DOUBLE"))
-                {
-                    TipoRetorno = "decimal";
-                }
-                else if (TipoRetorno.ToUpper().Contains("STRING"))
-                {
-                    TipoRetorno = "cadena";
-                }
-                else if (TipoRetorno.ToUpper().Contains("BOOLEANO"))
-                {
-                    TipoRetorno = "Booleano";
-                }
-                else if (TipoRetorno.ToUpper().Contains("DATE"))
-                {
-                    TipoRetorno = "Fechas";
-                }
-                else if (TipoRetorno.ToUpper().Contains("TIME"))
-                {
-                    TipoRetorno = "hora";
-                }
+                                  string[] separadas2;
+                                  separadas2 = separadas[0].Split(':');
+
+                                  string[] separadas3;
+                                  separadas3 = separadas[1].Split(':');
+                                  String TipoRetorno = separadas3[1];
+
+                                  if (TipoRetorno.ToUpper().Contains("INT"))
+                                  {
+                                      TipoRetorno = "entero";
+                                  }
+                                  else if (TipoRetorno.ToUpper().Contains("DOUBLE"))
+                                  {
+                                      TipoRetorno = "decimal";
+                                  }
+                                  else if (TipoRetorno.ToUpper().Contains("STRING"))
+                                  {
+                                      TipoRetorno = "cadena";
+                                  }
+                                  else if (TipoRetorno.ToUpper().Contains("BOOLEANO"))
+                                  {
+                                      TipoRetorno = "Booleano";
+                                  }
+                                  else if (TipoRetorno.ToUpper().Contains("DATE"))
+                                  {
+                                      TipoRetorno = "Fechas";
+                                  }
+                                  else if (TipoRetorno.ToUpper().Contains("TIME"))
+                                  {
+                                      TipoRetorno = "hora";
+                                  }
 
 
 
-                this.TipoDato = TipoRetorno;
-                return separadas2[1];
-            }
+                                  this.TipoDato = TipoRetorno;
+                                  return separadas2[1];
+                              }
 
             if(this.AutoIncrmentable2 == 345)
             {
                 System.Diagnostics.Debug.WriteLine("VAMOS A BUSCAR LA FUNCION");
                 String NombreFuncion = this.Hijos[0].Nombre;
+                this.Hijos[0].TipoDato = this.TipoDato;
                 System.Diagnostics.Debug.WriteLine("NOMBRE FUNCION: " + NombreFuncion);
                 Boolean MismaCantidadDeParametros = entorno.ExisteListaConLaMismaCantidadDeParametros(NombreFuncion, this.ListaID1.Count);
                 entorno.MostrarFunciones();
+                this.ListaID1.Clear();
+                ///Empiezo 
+                ///
+                System.Diagnostics.Debug.WriteLine("NOMBRE FUNCIONx: " + this.Parametros.Count);
+                for (int i = 0; i < this.Parametros.Count; i++)
+                {
+                    System.Diagnostics.Debug.WriteLine("NOMBRE FUNCION: " + this.Parametros[i].Nombre +"->" + i);
+                    String valor1 = "";
+                    String Retorno = "";
+                    String TipoDatoxd = "";
+                    foreach (NodoAbstracto sentencia in this.Parametros[i].Hijos)
+
+                    {
+
+                        TipoDatoxd = sentencia.TipoDato;
+                        valor1 = sentencia.Ejecutar(entorno);
+                        if (valor1.Contains("#Error") == true)
+                        {
+                            
+                            return "#ERROR EN FUNCION";
+                            //return "#Error";
+                        }
+                        if (valor1.Contains("RETORNO:") == true)
+                        {
+                            System.Diagnostics.Debug.WriteLine("cahiasdjfiassssssssssssssssssssss");
+                            Retorno = valor1;
+                            break;
+                        }
+
+                    }
+                    System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if valor->" + valor1 + " Tipo->"+TipoDatoxd);
+                    if(TipoDatoxd == "entero")
+                    {
+                        valor1 = valor1 + " (numero)";
+                    }
+                    else if (TipoDatoxd == "decimal")
+                    {
+                        valor1 = valor1 + " (numdecimal)";
+                    }
+                    else if (TipoDatoxd == "cadena")
+                    {
+                        valor1 = valor1 + " (cadena)";
+                    }
+                    else if (TipoDatoxd == "Booleano")
+                    {
+                        valor1 = valor1 + " (Keyword)";
+                    }
+                    else if (TipoDatoxd == "id2")
+                    {
+                        valor1 = valor1 + " (numero)";
+                    }
+                    else
+                    {
+                        valor1 = valor1 + " (" + TipoDatoxd + ")";
+                    }
+
+                    this.ListaID1.Add(valor1);
+
+                }
+               
+
+                //termiano
+
+
+
                 System.Diagnostics.Debug.WriteLine("NOMBRE FUNCION: saflog" + this.ListaID1.Count);
                 if (MismaCantidadDeParametros == true)
                 {
                     List<String> TiposParametros   = new List<String>();
                     List<String> ValoresParametros = new List<String>();
                     System.Diagnostics.Debug.WriteLine("MISMA CANTIDAD DE PARAMETROS EN FUNCION" + NombreFuncion);
-                    
+
                     for (int i = 0; i<this.ListaID1.Count; i++)
                     {
                         String TipoRetorno = this.ListaID1[i];
@@ -188,24 +257,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                         String valor1 = "";
                         String Retorno = "";
+                        entorno.NuevasFunciones(Xx);
                         foreach (NodoAbstracto sentencia in Nodo.Hijos)
 
                         {
                             System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                            if (sentencia.Nombre.ToString().Contains("RETORNO"))
-                            {
-                                String Valor2 = sentencia.Ejecutar(entorno);
-                                System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if" + Valor2);
-                                if (Valor2.ToUpper().Contains("#ERROR") != true)
-                                {
-                                   
-                                    Retorno = Valor2;
-                                    break;
-                                }
-                            }
-                            ///Espacio para Agregar variables
-                            entorno.NuevasFunciones(Xx);
-
                             valor1 = sentencia.Ejecutar(Xx);
                             if (valor1.Contains("#Error") == true)
                             {
@@ -221,11 +277,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                             }
 
                         }
-                    
+
                         ///eliminar funciones
 
                         System.Diagnostics.Debug.WriteLine("valor retorno: " + Retorno);
-                        
+
                         string[] separadas;
                         separadas = Retorno.Split(',');
 
@@ -267,27 +323,27 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         this.TipoDato = TipoRetornox;
                         //System.Diagnostics.Debug.WriteLine("Ejecucion funCIONES URUAIOAR------" + this.TipoDato);
                         return separadas2[1];
-                        
+
                     }
                     else
                     {
                         return "#ERROR TIPO DE PARAMETROS INCORRECTO";
                     }
-                    
+
                     ///Verificando Si el tipo de Parametros es igual
 
                 }
                 else
                 {
-                    
+
                     return "#ERROR CANTIDAD DE PARAMETROS INCORRECTO";
                 }
 
-
+                
             }
 
-
-            return "FuncionesPropias";
+                  
+                    return "FuncionesPropias";
         }
     }
 }
