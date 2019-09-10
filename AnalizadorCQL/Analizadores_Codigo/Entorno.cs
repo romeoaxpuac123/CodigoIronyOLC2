@@ -121,6 +121,8 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 return false;
             }
         }
+        #region PROCEDIMIENTOS
+
         public Boolean AgregarProcedimiento(String id, String NombreFuncion, String Tipo, List<String> Listax, List<String> Listaxy, NodoAbstracto nuevo)
         {
             if (!Elementos.ContainsKey(id))
@@ -346,9 +348,145 @@ namespace AnalizadorCQL.Analizadores_Codigo
             return nodo;
 
         }
+        #endregion
 
 
+        #region USUARIOS
+        public int CantidadDeUsuarios()
+        {
+            String id = "BRAY-US";
+            int a = 0;
 
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    a++;
+                }
+            }
+            
+            return a;
+        }
+
+        public Boolean AgregarUsuario(String id, String NombreUsuario, String pass)
+        {
+            if (!Elementos.ContainsKey(id))
+            {
+                Simbolo sim = new Simbolo(id, NombreUsuario, pass, 1);
+                Elementos.Add(id, sim);
+                System.Diagnostics.Debug.WriteLine("EL USUARIO  se agregó -> " + id);
+                return true;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("EL USUARIO ya existe -> " + id);
+                return false;
+            }
+        }
+
+        public Boolean ExisteUsuario(String Nombre)
+        {
+            String id = "BRAY-US";
+            Boolean Mismos = false;
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if(p.Nombre().ToUpper() == Nombre.ToUpper())
+                    {
+                        Mismos = true;
+                    }
+                  
+                }
+            }
+
+            return Mismos;
+        }
+
+        public void MostrarUsuarios()
+        {
+            String id = "BRAY-US";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    System.Diagnostics.Debug.WriteLine("USUARIOS->" + p.Nombre()  + " Password:->" + p.Pass());
+
+                }
+            }
+        }
+
+        #endregion
+
+        #region BASE DE DATOS
+        public int CantidadDeBD()
+        {
+            String id = "BRAY-BD";
+            int a = 0;
+
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    a++;
+                }
+            }
+
+            return a;
+        }
+        public Boolean AgregarBD(String id, String NombreUsuario)
+        {
+            if (!Elementos.ContainsKey(id))
+            {
+                Simbolo sim = new Simbolo(id, NombreUsuario);
+                Elementos.Add(id, sim);
+                System.Diagnostics.Debug.WriteLine("LA BD  se agregó -> " + id);
+                return true;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("LA BD ya existe -> " + id);
+                return false;
+            }
+        }
+        public Boolean ExisteBD(String Nombre)
+        {
+            String id = "BRAY-BD";
+            Boolean Mismos = false;
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if (p.Nombre().ToUpper() == Nombre.ToUpper())
+                    {
+                        Mismos = true;
+                    }
+
+                }
+            }
+
+            return Mismos;
+        }
+        public void MostrarBD()
+        {
+            String id = "BRAY-BD";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    System.Diagnostics.Debug.WriteLine("USUARIOS->" + p.Nombre() + " Password:->" + p.Pass());
+
+                }
+            }
+        }
+
+        #endregion
+
+        #region FUNCIONES
         public Boolean AgregarFuncion(String id, String NombreFuncion, String Tipo, List<String> Listax, NodoAbstracto nuevo)
         {
             if (!Elementos.ContainsKey(id))
@@ -617,8 +755,95 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
             return false;
         }
+        #endregion
 
-     public String ElementosObjetos(String Objeto)
+        #region PERMISOS
+        public int CantidadPERMISOS()
+        {
+            String id = "BRAY-PER";
+            int a = 0;
+
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    a++;
+                }
+            }
+
+            return a;
+        }
+        public Boolean AgregarPermiso(String id, String NombreUsuario, String BaseDeDatos)
+        {
+            if (!Elementos.ContainsKey(id))
+            {
+                Simbolo sim = new Simbolo(id, BaseDeDatos, NombreUsuario, true);
+                Elementos.Add(id, sim);
+                System.Diagnostics.Debug.WriteLine("EL USUARIO  se agregó -> " + id);
+                return true;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("EL USUARIO ya existe -> " + id);
+                return false;
+            }
+        }
+        public Boolean ExistePermiso(String Nombre, String BD)
+        {
+            String id = "BRAY-PER";
+            Boolean Mismos = false;
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if ( (p.NombreBDP().ToUpper() == Nombre.ToUpper()) && (p.UsuarioBDP().ToUpper() == BD.ToUpper() ))
+                    {
+                        Mismos = true;
+                    }
+
+                }
+            }
+
+            return Mismos;
+        }
+        public void MostrarPermisos()
+        {
+            String id = "BRAY-PER";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    System.Diagnostics.Debug.WriteLine("USUARIOS->" + p.NombreBDP() + " Password:->" + p.UsuarioBDP());
+
+                }
+            }
+        }
+        public String idPermiso(String Nombre, String BD)
+        {
+            String id = "BRAY-PER";
+            String Mismos = "NOT";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if ((p.NombreBDP().ToUpper() == Nombre.ToUpper()) && (p.UsuarioBDP().ToUpper() == BD.ToUpper()))
+                    {
+                        return  p.ObtenerId();
+                    }
+
+                }
+            }
+
+            return Mismos;
+        }
+        
+        #endregion
+
+
+        public String ElementosObjetos(String Objeto)
         { String supercadena = "INICIO"; 
                 foreach (DictionaryEntry datos in Elementos)
                 {

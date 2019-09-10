@@ -18,7 +18,48 @@ namespace AnalizadorCQL.Analizadores_Codigo
         List<String> Lista2 = new List<String>();
         List<Simbolo> Simblosxd = new List<Simbolo>();
         NodoAbstracto nuevo;
-        
+        String NombreUsuario;
+        String Password;
+        String UsuarioPermiso;
+        String BaseDeDatosPermiso;
+        int numero = 0;
+
+        public Simbolo(String id, String NombreUsuairo, String Password, int tipo)
+        {
+            this.Id = id;
+            this.NombreUsuario = NombreUsuairo;
+            this.Password = Password;
+            this.numero = tipo;
+        }
+        public Simbolo(String id, String BaseDeDatos, String Usuario, Boolean autorizo)
+        {
+            this.Id = id;
+            this.UsuarioPermiso = Usuario;
+            this.BaseDeDatosPermiso = BaseDeDatos;
+        }
+
+        public String NombreBDP()
+        {
+            return this.BaseDeDatosPermiso;
+        }
+        public String UsuarioBDP()
+        {
+            return this.UsuarioPermiso;
+        }
+        public Simbolo(String id, String NombreBD)
+        {
+            this.Id = id;
+            this.NombreUsuario = NombreBD;
+        }
+
+        public String Nombre()
+        {
+            return this.NombreUsuario;
+        }
+        public String Pass()
+        {
+            return this.Password;
+        }
         public Simbolo(String Id, String Valor, String Tipo)
         {
             this.Id = Id;

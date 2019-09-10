@@ -17,7 +17,7 @@ namespace AnalizadorCQL.Analizadores
             switch (root.ChildNodes.Count)
             {
                 case 0:
-
+                    #region HIJOS 0
                     if (root.ToString().Contains("- (Key symbol)"))
                     {
                         //    Console.WriteLine("PASO POR UN NUMERO");
@@ -89,9 +89,9 @@ namespace AnalizadorCQL.Analizadores
                         return RESULT1;
                     }
                     break;
-
-                case 1:
-                  //  Recorrido1(root.ChildNodes.ElementAt(0));
+                #endregion
+                case 1:                
+                    #region HIJOS 1
                     System.Diagnostics.Debug.WriteLine("CAso1 -> " + root.ToString());
                     if (root.ToString() == "S")
                     {
@@ -271,9 +271,9 @@ namespace AnalizadorCQL.Analizadores
                     }
 
                     break;
-                case 2:
-                   // Recorrido1(root.ChildNodes.ElementAt(0));
-                   // Recorrido1(root.ChildNodes.ElementAt(1));
+                #endregion
+                case 2:                
+                    #region HIJOS 2
                     System.Diagnostics.Debug.WriteLine("CAso2 -> " + root.ToString());
                     if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("id")
                         && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2")
@@ -455,11 +455,9 @@ namespace AnalizadorCQL.Analizadores
                     }
 
                     break;
-                    
-                case 3:                    
-                    //Recorrido1(root.ChildNodes.ElementAt(0));
-                    //Recorrido1(root.ChildNodes.ElementAt(1));
-                    //Recorrido1(root.ChildNodes.ElementAt(2));
+                #endregion
+                case 3:                 
+                    #region HIJOS 3
                     System.Diagnostics.Debug.WriteLine("CAso3 -> " + root.ToString());
                    if (root.ToString().Contains("INC_DEC")== true)
                     {
@@ -979,33 +977,19 @@ namespace AnalizadorCQL.Analizadores
                     }
                   
                     break;
-
-                case 4:
-                    
-                   // Recorrido1(root.ChildNodes.ElementAt(0));
-                   // Recorrido1(root.ChildNodes.ElementAt(1));
-                   // Recorrido1(root.ChildNodes.ElementAt(2));
-                   // Recorrido1(root.ChildNodes.ElementAt(3));
+                #endregion
+                case 4:                   
+                    #region HIJOS 4
                     System.Diagnostics.Debug.WriteLine("CAso4 -> " + root.ToString());
                     if (root.ToString() == "DDL") {
-                        if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("TRUNCATE"))
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("CREATE"))
                         {
-                            System.Diagnostics.Debug.WriteLine("CODIGO PARA TRUNCATE");
-
+                            NodoAbstracto nuevo = new BD("BD");
+                            NodoAbstracto BDS = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(BDS);
+                            return nuevo;
                         }
-                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("DROP")
-                        && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("table"))
-                        {
-                            System.Diagnostics.Debug.WriteLine("CODIGO PARA DROP TABLE");
-
-
-                        }
-                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("DROP")
-                            && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("database"))
-                        {
-                            System.Diagnostics.Debug.WriteLine("CODIGO PARA DROP BD");
-
-                        }
+                       
                     }
                     else if (root.ToString() == "ASIGNACION")
                     {
@@ -1166,13 +1150,9 @@ namespace AnalizadorCQL.Analizadores
                     }
                    
                     break;
+                #endregion
                 case 5:
-                    
-                 //   Recorrido1(root.ChildNodes.ElementAt(0));
-                 //   Recorrido1(root.ChildNodes.ElementAt(1));
-                 //   Recorrido1(root.ChildNodes.ElementAt(2));
-                 //   Recorrido1(root.ChildNodes.ElementAt(3));
-                 //   Recorrido1(root.ChildNodes.ElementAt(4));
+                    #region HIJOS 5
                     System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
                     if (root.ChildNodes.ElementAt(0).ToString().Contains("TIPOS_VARIABLES") &&
                        root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2") &&
@@ -1249,15 +1229,30 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.TipoDato = "funk";
                         return nuevo;
                     }
-                        break;
-                case 6:
-                   
-                 //   Recorrido1(root.ChildNodes.ElementAt(0));
-                 //   Recorrido1(root.ChildNodes.ElementAt(1));
-                 //   Recorrido1(root.ChildNodes.ElementAt(2));
-                 //   Recorrido1(root.ChildNodes.ElementAt(3));
-                 //   Recorrido1(root.ChildNodes.ElementAt(4));
-                 //   Recorrido1(root.ChildNodes.ElementAt(5));
+
+                    else if( root.ToString() == "PERMISOSUSUARIO")
+                    {
+                        NodoAbstracto nuevo = new PERMISOS("PERMISOS");
+                        NodoAbstracto USUARIO = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                        NodoAbstracto BD= new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(USUARIO);
+                        nuevo.Hijos.Add(BD);
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("GRANT"))
+                        {
+                            nuevo.AutoIncrmentable2 = 1;
+                        }
+                        else
+                        {
+                            nuevo.AutoIncrmentable2 = 2;
+                        }
+                        return nuevo;
+
+                    }
+                    break;
+
+                #endregion
+                case 6:                    
+                    #region HIJOS 6
                     System.Diagnostics.Debug.WriteLine("CAso6 -> " + root.ToString());
                     if (root.ToString() == "E")
                     {
@@ -1289,15 +1284,9 @@ namespace AnalizadorCQL.Analizadores
                     }
                     
                     break;
+                #endregion
                 case 7:
-                    
-                  //  Recorrido1(root.ChildNodes.ElementAt(0));
-                  //  Recorrido1(root.ChildNodes.ElementAt(1));
-                  //  Recorrido1(root.ChildNodes.ElementAt(2));
-                  //  Recorrido1(root.ChildNodes.ElementAt(3));
-                  //  Recorrido1(root.ChildNodes.ElementAt(4));
-                  //  Recorrido1(root.ChildNodes.ElementAt(5));
-                  //  Recorrido1(root.ChildNodes.ElementAt(6));
+                    #region HIJOS 7
                     System.Diagnostics.Debug.WriteLine("CAso7 -> " + root.ToString());
                     if (root.ToString().Contains("ELWHILE"))
                     {
@@ -1329,24 +1318,6 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
                         return nuevo;
                     }
-
-
-                    else if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("CREATE") && root.ChildNodes.ElementAt(1).FindToken().ToString().ToUpper().Contains("TABLE"))
-                    {
-                        System.Diagnostics.Debug.WriteLine("CODIGO PARA CREAR UNA TABLA");
-                    }else if (root.ChildNodes.ElementAt(0).ToString().Contains("TIPOS_VARIABLES") &&
-                        root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2")&&
-                        root.ChildNodes.ElementAt(2).FindToken().ToString().Contains("Key symbol") &&
-                        root.ChildNodes.ElementAt(3).FindToken().ToString().Contains("id2")&&
-                        root.ChildNodes.ElementAt(4).FindToken().ToString().Contains("Key symbol") &&
-                        root.ChildNodes.ElementAt(5).FindToken().ToString().Contains("id")
-
-                    )
-                    {
-                        System.Diagnostics.Debug.WriteLine("Codigo para asignarle a una variable un ojbeto: tipo @id = @id.id;");
-                    }
-               
-                
                     else if (root.ToString().ToUpper().Contains("LALISTA"))
                     {
                         NodoAbstracto nuevo = new LISTAS("LISTAPAR");
@@ -1380,18 +1351,32 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.TipoDato = "funk";
                         return nuevo;
                     }
+                    else if (root.ToString().ToUpper().Contains("CREARUSUARIO"))
+                    {
+                        NodoAbstracto nuevo = new USUARIOS("USUARIO");
+                        NodoAbstracto elusuario = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
+                        NodoAbstracto password = new Nodo(root.ChildNodes.ElementAt(5).FindToken().ToString().Replace(" (cadena)", ""));
+                        nuevo.Hijos.Add(elusuario);
+                        nuevo.Hijos.Add(password);
+                        return nuevo;
+                    }
+                    if (root.ToString() == "DDL")
+                    {
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("CREATE"))
+                        {
+                            NodoAbstracto nuevo = new BD("BD");
+                            NodoAbstracto BDS = new Nodo(root.ChildNodes.ElementAt(5).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(BDS);
+                            nuevo.AutoIncrmentable2 = 2;
+                            return nuevo;
+                        }
 
+                    }
+
+                    #endregion
                     break;
-                case 8:
-
-                 //   Recorrido1(root.ChildNodes.ElementAt(0));
-                 //   Recorrido1(root.ChildNodes.ElementAt(1));
-                  //  Recorrido1(root.ChildNodes.ElementAt(2));
-                  //  Recorrido1(root.ChildNodes.ElementAt(3));
-                  //  Recorrido1(root.ChildNodes.ElementAt(4));
-                  //  Recorrido1(root.ChildNodes.ElementAt(5));
-                  //  Recorrido1(root.ChildNodes.ElementAt(6));
-                  //  Recorrido1(root.ChildNodes.ElementAt(7));
+                case 8:                    
+                    #region HIJOS 8
                     System.Diagnostics.Debug.WriteLine("CAso8 -> " + root.ToString());
 
                     if (root.ToString().ToUpper().Contains("USER_TYPE2"))
@@ -1521,7 +1506,9 @@ namespace AnalizadorCQL.Analizadores
                         return nuevo;
                     }
                     break;
+                #endregion
                 case 9:
+                    #region HIJOS 9
                     System.Diagnostics.Debug.WriteLine("CAso9 -> " + root.ToString());
                     if (root.ToString().Contains("DO_WHILE"))
                     {
@@ -1582,7 +1569,9 @@ namespace AnalizadorCQL.Analizadores
                     }
 
                     break;
+                #endregion
                 case 10:
+                    #region HIJOS 10
                     System.Diagnostics.Debug.WriteLine("CAso10 -> " + root.ToString());
                     if (root.ToString().Contains("EL_FOR"))
                     {
@@ -1623,7 +1612,9 @@ namespace AnalizadorCQL.Analizadores
                         return nuevo;
                     }
                     break;
+                #endregion
                 case 11:
+                    #region HIJOS 11
                     System.Diagnostics.Debug.WriteLine("CAso11 -> " + root.ToString());
                     if (root.ToString().Contains("EL_IF"))
                     {
@@ -1675,17 +1666,9 @@ namespace AnalizadorCQL.Analizadores
                        
                     }
                     break;
-                case 12:
-                    /*   Recorrido1(root.ChildNodes.ElementAt(0));
-                       Recorrido1(root.ChildNodes.ElementAt(1));
-                       Recorrido1(root.ChildNodes.ElementAt(2));
-                       Recorrido1(root.ChildNodes.ElementAt(3));
-                       Recorrido1(root.ChildNodes.ElementAt(4));
-                       Recorrido1(root.ChildNodes.ElementAt(5));
-                       Recorrido1(root.ChildNodes.ElementAt(6));
-                       Recorrido1(root.ChildNodes.ElementAt(7));
-                       Recorrido1(root.ChildNodes.ElementAt(8));
-                       Recorrido1(root.ChildNodes.ElementAt(9)); */
+                #endregion
+                case 12:                    
+                    #region HIJOS 12
                     if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("TRY") &&
                            root.ChildNodes.ElementAt(4).ToString().ToUpper().Contains("CATCH"))
                     {
@@ -1750,6 +1733,7 @@ namespace AnalizadorCQL.Analizadores
 
                    
                     break;
+                #endregion
                 default:
                 break;
                  

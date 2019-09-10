@@ -108,6 +108,12 @@ namespace AnalizadorCQL.Analizadores
             var Procedure = ToTerm("procedure");
             var CALL = ToTerm("call");
             var NULO = ToTerm("null");
+            var USER = ToTerm("USER");
+            var WITH = ToTerm("WITH");
+            var PASSWORD = ToTerm("PASSWORD");
+            var GRANT = ToTerm("GRANT");
+            var REVOKE = ToTerm("REVOKE");
+            var ON = ToTerm("ON");
 
             this.RegisterOperators(8, Associativity.Left, "?");
             this.RegisterOperators(1, Associativity.Left, "+", "-");
@@ -162,6 +168,10 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal ELRETORNO = new NonTerminal("ELRETORNO");
             NonTerminal LISTA_IDSxx = new NonTerminal("LISTA_IDSxx");
             NonTerminal LISTA_EXPRESIONobjetos = new NonTerminal("LISTA_EXPRESIONobjetos");
+
+            //DCL
+            NonTerminal CREARUSUARIO = new NonTerminal("CREARUSUARIO");
+            NonTerminal PERMISOSUSUARIO = new NonTerminal("PERMISOSUSUARIO");
 
             #endregion
 
@@ -247,13 +257,8 @@ namespace AnalizadorCQL.Analizadores
             IMP.Rule = laimpre + ParA + E + ParC + PYC;
 
             DDL.Rule = create + bd + id + PYC
-                       |drope + bd + id + PYC
-                       |use +id + PYC
-                       |create + tabla + id + ParA  + CREATE_TABLA_PAR + ParC+ PYC
-                       |ALTERAR + tabla + id + add1 + CREATE_TABLA_PAR + PYC
-                       |ALTERAR + tabla + id + drope + LISTA_EXPRESION + PYC
-                       |drope + tabla + id+ PYC
-                       |truncate + tabla + id + PYC;
+                       | create + bd + ELIF+ elnot + exists + id + PYC;
+                       
 
             CREATE_TABLA_PAR.Rule = CREATE_TABLA_PAR + coma + id + TIPOS_VARIABLES
                                    | CREATE_TABLA_PAR + coma + id + id
@@ -276,7 +281,9 @@ namespace AnalizadorCQL.Analizadores
                                         | ASIGNACION
                                         | ALTER_TYPE
                                         | DELETE_TYPE
-                                        | LALISTA;
+                                        | LALISTA
+                                        | CREARUSUARIO
+                                        | PERMISOSUSUARIO;
 
            
 
@@ -348,9 +355,7 @@ namespace AnalizadorCQL.Analizadores
             USER_TYPE.ErrorRule = SyntaxError + ";";
             #endregion
 
-
-
-
+                       
             #region ASIGNAR VALORES UT
             USER_TYPE2.Rule = id + id2 + igual + llaveAbierta + LISTA_EXPRESIONobjetos + llaverCerrada + ELAS + id + PYC
                              | id2 + igual + llaveAbierta + LISTA_EXPRESIONobjetos + llaverCerrada + ELAS + id + PYC;
@@ -368,7 +373,12 @@ namespace AnalizadorCQL.Analizadores
             #endregion
 
 
+            #region LENGUAJE DE CONTROL  DCL
+            CREARUSUARIO.Rule = create + USER + E + WITH + PASSWORD + E + PYC;
+            PERMISOSUSUARIO.Rule = GRANT + id + ON + id + PYC
+                                  | REVOKE + id + ON + id + PYC;
 
+            #endregion
 
             LISTA_EXPRESION.Rule = E  
                                 | E + coma + LISTA_EXPRESION;
