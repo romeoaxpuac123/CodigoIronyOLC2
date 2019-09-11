@@ -1362,13 +1362,17 @@ namespace AnalizadorCQL.Analizadores
                     }
                     if (root.ToString() == "DDL")
                     {
-                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("CREATE"))
+                        if (root.ChildNodes.ElementAt(1).ToString().ToUpper().Contains("DATABASE"))
                         {
                             NodoAbstracto nuevo = new BD("BD");
                             NodoAbstracto BDS = new Nodo(root.ChildNodes.ElementAt(5).FindToken().ToString().Replace(" (id)", ""));
                             nuevo.Hijos.Add(BDS);
                             nuevo.AutoIncrmentable2 = 2;
                             return nuevo;
+                        }
+                        else if (root.ChildNodes.ElementAt(1).ToString().ToUpper().Contains("TABLE"))
+                        {
+                           
                         }
 
                     }

@@ -60,8 +60,8 @@ namespace AnalizadorCQL.Analizadores
             var use = ToTerm("USE");
             var drope = ToTerm("drop");
             var tabla = ToTerm("table");
-            var PRIMARIKEY = ToTerm("PRIMARY");
-            var PRIMARIKEY2 = ToTerm("KEY");
+            var PRIMARIKEY = ToTerm("primary");
+            var PRIMARIKEY2 = ToTerm("key");
             var truncate = ToTerm("truncate");
             var laimpre = ToTerm("LOG");
             var potencia = ToTerm("**");
@@ -164,14 +164,17 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal ELCALL = new NonTerminal("ELCALL");
             //DDL
             NonTerminal DDL = new NonTerminal("DDL");
-            NonTerminal CREATE_TABLA_PAR = new NonTerminal("CREATE_TABLA_PAR");
+            NonTerminal PAR_TABLA = new NonTerminal("PAR_TABLA");
             NonTerminal ELRETORNO = new NonTerminal("ELRETORNO");
             NonTerminal LISTA_IDSxx = new NonTerminal("LISTA_IDSxx");
             NonTerminal LISTA_EXPRESIONobjetos = new NonTerminal("LISTA_EXPRESIONobjetos");
+            NonTerminal PARAMETROSPK = new NonTerminal("PARAMETROSPK");
+            NonTerminal LISTA_IDS1 = new NonTerminal("LISTA_IDS1");
 
-            //DCL
+            //DCL 
             NonTerminal CREARUSUARIO = new NonTerminal("CREARUSUARIO");
             NonTerminal PERMISOSUSUARIO = new NonTerminal("PERMISOSUSUARIO");
+           
 
             #endregion
 
@@ -256,22 +259,26 @@ namespace AnalizadorCQL.Analizadores
             
             IMP.Rule = laimpre + ParA + E + ParC + PYC;
 
+            #region GRAMATICA DDL
             DDL.Rule = create + bd + id + PYC
-                       | create + bd + ELIF+ elnot + exists + id + PYC;
-                       
+                       | create + bd + ELIF + elnot + exists + id + PYC
+                       | create + tabla + id + ParA + PAR_TABLA + ParC + PYC
+                       | create + tabla + ELIF + elnot + exists + id + ParA + PAR_TABLA + ParC + PYC;
+            //| create + tabla + id + ParA + PAR_TABLA + ParC + PYC; ;
 
-            CREATE_TABLA_PAR.Rule = CREATE_TABLA_PAR + coma + id + TIPOS_VARIABLES
-                                   | CREATE_TABLA_PAR + coma + id + id
-                                   | id + TIPOS_VARIABLES
-                                   | id + id 
-                                   | CREATE_TABLA_PAR + coma + id + TIPOS_VARIABLES + PRIMARIKEY + PRIMARIKEY2
-                                   | CREATE_TABLA_PAR + coma + id + id + PRIMARIKEY + PRIMARIKEY2
-                                   | id + TIPOS_VARIABLES + PRIMARIKEY + PRIMARIKEY2
-                                   | id + id + PRIMARIKEY + PRIMARIKEY2
-                                   | PRIMARIKEY + PRIMARIKEY2 + ParA + LISTA_EXPRESION + ParC
-                                   | CREATE_TABLA_PAR + coma + PRIMARIKEY + PRIMARIKEY2 + ParA + LISTA_EXPRESION+ ParC;
 
-           
+            LISTA_IDS1.Rule = id
+                      | id + coma + LISTA_IDS1;
+
+            PAR_TABLA.Rule = id + id
+                            | id + id + coma + PAR_TABLA 
+                            | id + id + PRIMARIKEY + PRIMARIKEY2
+                            | id + id + PRIMARIKEY + PRIMARIKEY2 + coma + PAR_TABLA
+                            | PRIMARIKEY + PRIMARIKEY2 + ParA + LISTA_IDS1 + ParC;
+
+            #endregion
+
+
 
             DEFINCION_GENERAL_CQL.Rule = comentarioLinea
                                         | comentarioBloque
