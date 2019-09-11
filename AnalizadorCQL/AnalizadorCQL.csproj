@@ -215,7 +215,9 @@
     <Compile Include="Analizadores_CodigoAST\PERMISOS.cs" />
     <Compile Include="Analizadores_CodigoAST\PROCEDIMIENTOS.cs" />
     <Compile Include="Analizadores_CodigoAST\RETORNO.cs" />
+    <Compile Include="Analizadores_CodigoAST\Tabla.cs" />
     <Compile Include="Analizadores_CodigoAST\TRY_CATCH.cs" />
+    <Compile Include="Analizadores_CodigoAST\USE.cs" />
     <Compile Include="Analizadores_CodigoAST\USER_TYPE.cs" />
     <Compile Include="Analizadores_CodigoAST\USUARIOS.cs" />
     <Compile Include="Analizadores_CodigoAST\While.cs" />

@@ -37,6 +37,16 @@ namespace AnalizadorCQL.Analizadores_Codigo
             this.UsuarioPermiso = Usuario;
             this.BaseDeDatosPermiso = BaseDeDatos;
         }
+        
+        public Simbolo(String id, String NombreTabla, String BD, List<Simbolo> Simblosx, List<String> ListaPK)
+        {
+            this.Id = id;
+            this.NombreUsuario = NombreTabla;
+            this.BaseDeDatosPermiso = BD;
+            this.Simblosxd = Simblosx;
+            this.Lista = ListaPK;
+        }
+
 
         public String NombreBDP()
         {

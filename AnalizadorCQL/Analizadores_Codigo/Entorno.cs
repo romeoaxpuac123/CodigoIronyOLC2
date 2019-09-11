@@ -12,12 +12,21 @@ namespace AnalizadorCQL.Analizadores_Codigo
     {
         public List<Object> Objetos = new List<Object>();
         public Hashtable Elementos;
+        public String UseTabla = "NULITO";
 
         public Entorno()
         {
             Elementos = new Hashtable();
         }
 
+        public void LaBD(String tabla)
+        {
+            this.UseTabla = tabla;
+        }
+        public String Tabla()
+        {
+            return this.UseTabla;
+        }
 
         public void AgregarObjeto(Object objetodeclarado)
         {
@@ -839,8 +848,87 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
             return Mismos;
         }
-        
+
         #endregion
+
+        #region Tablas
+        public int CantidadDeTablas()
+        {
+            String id = "BRAY-TAB";
+            int a = 0;
+
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    a++;
+                }
+            }
+
+            return a;
+        }
+        public Boolean AgregarTabla(String id, String NombreTabla, String BD, List<Simbolo> Simblosx, List<String> ListaPK)
+        {
+            if (!Elementos.ContainsKey(id))
+            {
+                Simbolo sim = new Simbolo(id, NombreTabla,BD,Simblosx,ListaPK);
+                Elementos.Add(id, sim);
+                System.Diagnostics.Debug.WriteLine("EL USUARIO  se tabla -> " + NombreTabla + " A BD->"+BD);
+                return true;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("la tabla ya existe -> " + NombreTabla + " en bd->" + BD);
+                return false;
+            }
+        }
+        public Boolean ExisteTabla(String Nombre, String BD)
+        {
+            String id = "BRAY-TAB";
+            Boolean Mismos = false;
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if ( (p.Nombre().ToUpper() == Nombre.ToUpper()) && ( p.NombreBDP().ToUpper() == BD.ToUpper()))
+                    {
+                        Mismos = true;
+                    }
+
+                }
+            }
+
+            return Mismos;
+        }
+        public void MostrarUTablas()
+        {
+            String id = "BRAY-TAB";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    String LLaves = "";
+                    for(int i = 0; i < p.lalista().Count; i++)
+                    {
+                        LLaves = LLaves + p.lalista()[i] + ",";
+                    }
+                    String LosCampos = "";
+                    System.Diagnostics.Debug.WriteLine("Llaves->" + LLaves);
+                    for(int i = 0; i < p.ListaElementos().Count; i++)
+                    {
+                        LosCampos = LosCampos + p.ListaElementos()[i].ObtenerId() + " " + p.ListaElementos()[i].ObtenerTipo() + "  |  ";
+                    }
+                    System.Diagnostics.Debug.WriteLine(LosCampos);
+
+                }
+            }
+        }
+        #endregion
+
+
 
 
         public String ElementosObjetos(String Objeto)

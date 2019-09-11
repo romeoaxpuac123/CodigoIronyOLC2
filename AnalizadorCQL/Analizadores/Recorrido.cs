@@ -975,7 +975,12 @@ namespace AnalizadorCQL.Analizadores
 
                         return nuevo;
                     }
-                  
+                    else if (root.ToString().ToUpper().Contains("DDL")){
+                        NodoAbstracto nuevo = new USE("USE");
+                        NodoAbstracto bd = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(bd);
+                        return nuevo;
+                    }
                     break;
                 #endregion
                 case 4:                   
@@ -1372,7 +1377,17 @@ namespace AnalizadorCQL.Analizadores
                         }
                         else if (root.ChildNodes.ElementAt(1).ToString().ToUpper().Contains("TABLE"))
                         {
-                           
+                            NodoAbstracto nuevo = new Tabla("Tabla");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            ParametrosTabla(root.ChildNodes.ElementAt(4));
+                            for(int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            return nuevo;
                         }
 
                     }
@@ -1782,8 +1797,98 @@ namespace AnalizadorCQL.Analizadores
 
             }
         }
+        #region PARAMETROS TABLA
+        public void ParametrosTabla(ParseTreeNode root)
+        {
+            switch (root.ChildNodes.Count)
+            {
+                case 2:
+                    String Parametro2 = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "");
+                    String Tipo2 = root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", "");
+                    System.Diagnostics.Debug.WriteLine("dos hijo Par->" + Parametro2 + " Tipo->" + Tipo2);
+                    STN.Add(Parametro2 + "*" + Tipo2);
+                    break;
+                case 4:                    
+                    String Parametro4 = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)","");
+                    String Tipo4 = root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)","");
+                    System.Diagnostics.Debug.WriteLine("cuatro hijo Par->" +Parametro4 + " Tipo->" + Tipo4);
+                    if (root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (Keyword)", "").ToUpper() == "PRIMARY")
+                    {
+                        STN.Add(Parametro4 + "*" + Tipo4 + "*" + "*PRIMARY*KEY*");
+                        //ParametrosTabla(root.ChildNodes.ElementAt(6));
+                    }
+                    else
+                    {
+                        STN.Add(Parametro4 + "*" + Tipo4);
+                        ParametrosTabla(root.ChildNodes.ElementAt(3));
+                    }
+                    break;
+                case 6:
+                    String Parametro6 = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "");
+                    String Tipo6 = root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", "");
+                    System.Diagnostics.Debug.WriteLine("Sies hijo Par->" + Parametro6 + " Tipo->" + Tipo6 + "*PRIMARY*KEY");
+                    STN.Add(Parametro6 + "*" + Tipo6+"*PRIMARY*KEY*");
+                    ParametrosTabla(root.ChildNodes.ElementAt(5));
+                    break;
+                case 5:
+                    String Parametro5 = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "");
+                    String Tipo5 = root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", "");
+                    Cadena = "";
+                    Lista1(root.ChildNodes.ElementAt(3));
+                    System.Diagnostics.Debug.WriteLine("Cinco Hijos->Primary"   + "*key"   + " Lista->" +Cadena);
+                    STN.Add("PRIMARY*KEY*"+Cadena);
+                    break;
+                case 7:
+                    String Parametro7 = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "");
+                    String Tipo7 = root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", "");
+                    String TipoC = root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", "");
+                    System.Diagnostics.Debug.WriteLine("sIETE Hijos->" + Parametro7 + "cOLEE->" + Tipo7);
+                    if (root.ChildNodes.ElementAt(5).FindToken().ToString().Replace(" (Keyword)", "").ToUpper() == "PRIMARY")
+                    {
+                        STN.Add(Parametro7 + "*" + Tipo7 + "*" + TipoC+"*PRIMARY*KEY*");
+                        //ParametrosTabla(root.ChildNodes.ElementAt(6));
+                    }
+                    else
+                    {
+                        STN.Add(Parametro7 + "*" + Tipo7 + "*" + TipoC);
+                        ParametrosTabla(root.ChildNodes.ElementAt(6));
+                    }
+                                  
+                    break;
 
+                case 9:
+                    String Parametro8 = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "");
+                    String Tipo8 = root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", "");
+                    String Tipoc8 = root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", "");
+                    System.Diagnostics.Debug.WriteLine("sIETE Hijos->" + Parametro8 + "cOLEE->" + Tipo8);
+                    STN.Add(Parametro8 + "*" + Tipo8 + "*" + Tipoc8 + "*PRIMARY*KEY*");
+                    ParametrosTabla(root.ChildNodes.ElementAt(8));
+                    break;
+            }
+        }
+        String Cadena = "";
+        public void Lista1(ParseTreeNode root)
+        {
+            switch (root.ChildNodes.Count)
+            {
+                case 3:
+                    String Parametro2 = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "");
+                    String Tipo2 = root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", "");
+                    //System.Diagnostics.Debug.WriteLine("dos hijo Par->" + Parametro2 + " Tipo->" + Tipo2);
+                    Cadena = Cadena + Parametro2 + ",";
+                    Lista1(root.ChildNodes.ElementAt(2));
+                    break;
 
+                case 1:
+                    String Parametro1 = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "");
+                    //System.Diagnostics.Debug.WriteLine("dos hijo Par->" + Parametro2 + " Tipo->" + Tipo2);
+                    Cadena = Cadena + Parametro1;
+                    break;
+
+            }
+            //return Cadena;
+        }
+        #endregion
         public void Analizar(NodoAbstracto raiz)
         {
             try
@@ -1797,6 +1902,7 @@ namespace AnalizadorCQL.Analizadores
         }
         List<String> STN = new List<String>();
 
+        #region LISTAS DE PARAMETROS
         public List<String> ListaIDSObjeto(ParseTreeNode root)
         {
             
@@ -2126,6 +2232,6 @@ namespace AnalizadorCQL.Analizadores
             }
             return contador;
         }
-
+        #endregion
     }
 }

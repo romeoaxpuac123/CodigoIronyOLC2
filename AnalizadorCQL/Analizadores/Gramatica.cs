@@ -114,6 +114,7 @@ namespace AnalizadorCQL.Analizadores
             var GRANT = ToTerm("GRANT");
             var REVOKE = ToTerm("REVOKE");
             var ON = ToTerm("ON");
+            var USE = ToTerm("USE");
 
             this.RegisterOperators(8, Associativity.Left, "?");
             this.RegisterOperators(1, Associativity.Left, "+", "-");
@@ -263,7 +264,8 @@ namespace AnalizadorCQL.Analizadores
             DDL.Rule = create + bd + id + PYC
                        | create + bd + ELIF + elnot + exists + id + PYC
                        | create + tabla + id + ParA + PAR_TABLA + ParC + PYC
-                       | create + tabla + ELIF + elnot + exists + id + ParA + PAR_TABLA + ParC + PYC;
+                       | create + tabla + ELIF + elnot + exists + id + ParA + PAR_TABLA + ParC + PYC
+                       | USE + id+PYC;
             //| create + tabla + id + ParA + PAR_TABLA + ParC + PYC; ;
 
 
@@ -274,6 +276,10 @@ namespace AnalizadorCQL.Analizadores
                             | id + id + coma + PAR_TABLA 
                             | id + id + PRIMARIKEY + PRIMARIKEY2
                             | id + id + PRIMARIKEY + PRIMARIKEY2 + coma + PAR_TABLA
+                            | id + id + menor + id + mayor
+                            | id + id + menor + id + mayor + coma + PAR_TABLA
+                            | id + id + menor + id + mayor + PRIMARIKEY + PRIMARIKEY2
+                            | id + id + menor + id + mayor + PRIMARIKEY + PRIMARIKEY2 + coma + PAR_TABLA
                             | PRIMARIKEY + PRIMARIKEY2 + ParA + LISTA_IDS1 + ParC;
 
             #endregion
