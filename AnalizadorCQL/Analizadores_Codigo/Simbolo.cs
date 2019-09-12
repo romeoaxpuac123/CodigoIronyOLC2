@@ -46,7 +46,13 @@ namespace AnalizadorCQL.Analizadores_Codigo
             this.Simblosxd = Simblosx;
             this.Lista = ListaPK;
         }
-
+        public Simbolo(String id, String NombreTabla, String BD, List<Simbolo> Simblosx)
+        {
+            this.Id = id;
+            this.NombreUsuario = NombreTabla;
+            this.BaseDeDatosPermiso = BD;
+            this.Simblosxd = Simblosx;
+        }
 
         public String NombreBDP()
         {
@@ -81,11 +87,12 @@ namespace AnalizadorCQL.Analizadores_Codigo
         {
             this.Valor = Valor;
         }
-        public Simbolo (String id, String Valor, List<Simbolo> Simblosxd)
+        public Simbolo (String id, String Valor, List<Simbolo> Simblosxd, String tipo)
         {
             this.Id = id;
             this.Valor = Valor;
             this.Simblosxd = Simblosxd;
+            this.Tipo = tipo;
         }
         public List<Simbolo> ListaElementos()
         {

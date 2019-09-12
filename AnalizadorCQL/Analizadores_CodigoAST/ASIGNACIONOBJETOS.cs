@@ -147,7 +147,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                                 
                                                 }
                                                 String xx = ListaParametrosUT[i].ObtenerId();
-                                                entorno.AgregarObjeto(Variable + "." + xx, "OBJETO_BRAY", ListaParametrosUT2);
+                                                entorno.AgregarObjeto(Variable + "." + xx, "OBJETO_BRAY", ListaParametrosUT2,Objeto1);
                                             }
                                             else
                                             {
@@ -234,7 +234,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                         {
                                             System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UTxx: " + ListaParametrosUT[i].ObtenerValor());
                                             //asignar null a algo XD
-                                            entorno.AgregarObjeto(Variable + "." + ListaParametrosUT[i].ObtenerId(), "OBJETO_BRAY", null);
+                                            entorno.AgregarObjeto(Variable + "." + ListaParametrosUT[i].ObtenerId(), "OBJETO_BRAY", null,Objeto1);
 
                                             if (ListaParametrosUT[i].ObtenerValor() == "null")
                                             {
@@ -281,7 +281,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametros no existente. 44";
                             }
 
-                            entorno.AgregarObjeto(Variable, "OBJETO_BRAY", ListaParametrosUT);
+                            entorno.AgregarObjeto(Variable, "OBJETO_BRAY", ListaParametrosUT,Objeto1);
                         }
                         else
                         {
@@ -423,7 +423,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                                                 }
                                                 String xx = ListaParametrosUT[i].ObtenerId();
-                                                entorno.AgregarObjeto(Variable + "." + xx, "OBJETO_BRAY", ListaParametrosUT2);
+                                                entorno.AgregarObjeto(Variable + "." + xx, "OBJETO_BRAY", ListaParametrosUT2,Objeto1);
                                             }
                                             else
                                             {
@@ -506,7 +506,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                         else if (TipoVariable == "OBJETO_BRAY")
                                         {
                                             System.Diagnostics.Debug.WriteLine("NOMBRE OBJETO UTxx: " + ListaParametrosUT[i].ObtenerValor());
-                                            entorno.AgregarObjeto(Variable + "." + ListaParametrosUT[i].ObtenerId(), "OBJETO_BRAY", null);
+                                            entorno.AgregarObjeto(Variable + "." + ListaParametrosUT[i].ObtenerId(), "OBJETO_BRAY", null,Objeto1);
                                             //asignar null a algo XD
                                             if (ListaParametrosUT[i].ObtenerValor() == "null")
                                             {
@@ -556,7 +556,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                             }
 
                             entorno.EliminarVariable(Variable);
-                            entorno.AgregarObjeto(Variable, "OBJETO_BRAY", ListaParametrosUT);
+                            entorno.AgregarObjeto(Variable, "OBJETO_BRAY", ListaParametrosUT,Objeto1);
                         }
                         else
                         {

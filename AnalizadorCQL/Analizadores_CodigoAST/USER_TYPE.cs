@@ -177,7 +177,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 System.Diagnostics.Debug.WriteLine("PARAMETRO: "+ElementosUT[i].ObtenerId() + " Tipo: " + ElementosUT[i].ObtenerTipo() + " Valor" + ElementosUT[i].ObtenerValor());
             }
 
-            entorno.AgregarObjeto(NombreObjeto, "Objeto", ElementosUT);
+            entorno.AgregarObjeto(NombreObjeto, "Objeto", ElementosUT,NombreObjeto);
             
 
             return "PROCESO USER-TYPE CRADO";

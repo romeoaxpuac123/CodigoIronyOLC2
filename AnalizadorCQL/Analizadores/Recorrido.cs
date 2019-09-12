@@ -1524,6 +1524,21 @@ namespace AnalizadorCQL.Analizadores
 
                         return nuevo;
                     }
+                    else if (root.ToString().ToUpper().Contains("DDL"))
+                    {
+                        NodoAbstracto nuevo = new INSERSCION_SIMPLE("INSERTAR1");
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(2).ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(id);
+                        STN.Clear();
+                        Atributos(root.ChildNodes.ElementAt(5));
+                        for(int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+                        return nuevo;
+
+                    }
                     break;
                 #endregion
                 case 9:
@@ -1629,6 +1644,26 @@ namespace AnalizadorCQL.Analizadores
                         //ListaIDSObjeto(root.ChildNodes.ElementAt(4));
                         STN.Clear();
                         return nuevo;
+                    }
+                    if (root.ToString() == "DDL")
+                    {
+                        
+                        if (root.ChildNodes.ElementAt(1).ToString().ToUpper().Contains("TABLE"))
+                        {
+                            NodoAbstracto nuevo = new Tabla("Tabla");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(5).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            nuevo.AutoIncrmentable2 = 2;
+                            STN.Clear();
+                            ParametrosTabla(root.ChildNodes.ElementAt(7));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            return nuevo;
+                        }
+
                     }
                     break;
                 #endregion

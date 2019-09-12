@@ -115,6 +115,9 @@ namespace AnalizadorCQL.Analizadores
             var REVOKE = ToTerm("REVOKE");
             var ON = ToTerm("ON");
             var USE = ToTerm("USE");
+            var INTO = ToTerm("INTO");
+            var VALUES = ToTerm("VALUES");
+
 
             this.RegisterOperators(8, Associativity.Left, "?");
             this.RegisterOperators(1, Associativity.Left, "+", "-");
@@ -265,7 +268,8 @@ namespace AnalizadorCQL.Analizadores
                        | create + bd + ELIF + elnot + exists + id + PYC
                        | create + tabla + id + ParA + PAR_TABLA + ParC + PYC
                        | create + tabla + ELIF + elnot + exists + id + ParA + PAR_TABLA + ParC + PYC
-                       | USE + id+PYC;
+                       | USE + id+PYC
+                       | INSERT + INTO + id + VALUES + ParA + LISTA_EXPRESION+ ParC + PYC;
             //| create + tabla + id + ParA + PAR_TABLA + ParC + PYC; ;
 
 

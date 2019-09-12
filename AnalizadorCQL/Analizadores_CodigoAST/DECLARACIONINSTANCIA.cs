@@ -29,7 +29,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 if (entorno.ExisteVariable(Objeto1) == true)
                 {
                     List<Simbolo> Lista =  entorno.ElementosUT(Objeto1);
-                    entorno.AgregarObjeto(Variable, "OBJETO_BRAY", Lista);
+                    entorno.AgregarObjeto(Variable, "OBJETO_BRAY", Lista,Objeto1);
                     System.Diagnostics.Debug.WriteLine("Elemenos");
                     for (int i = 0; i < Lista.Count; i++)
                     {
@@ -41,7 +41,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                         ){
                             //entorno.AgregarObjeto(Variable + "." + Lista[i].ObtenerId(), "OBJETO_BRAY", null);
-                            entorno.AgregarObjeto(Variable + "." + Lista[i].ObtenerId(), "OBJETO_BRAY", Lista);
+                            entorno.AgregarObjeto(Variable + "." + Lista[i].ObtenerId(), "OBJETO_BRAY", Lista,Objeto1);
                         }
                     }
                 }

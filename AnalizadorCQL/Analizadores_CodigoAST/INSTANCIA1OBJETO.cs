@@ -32,7 +32,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 if(entorno.ExisteVariable(Variable.Replace(" (id)",""))==true)
                 {
                     if(entorno.ExisteVariable(this.Hijos[2].Nombre.Replace(" (id2)", ""))== false){
-                        entorno.AgregarObjeto(this.Hijos[2].Nombre.Replace(" (id2)", ""), Variable.Replace(" (id)", ""), null);
+                        entorno.AgregarObjeto(this.Hijos[2].Nombre.Replace(" (id2)", ""), Variable.Replace(" (id)", ""), null,Objeto);
 
                     }
                     else
@@ -55,7 +55,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     {
                         entorno.EliminarVariable(Variable);
                         List<Simbolo> Lista = entorno.ElementosUT(Objeto);
-                        entorno.AgregarObjeto(Variable, "OBJETO_BRAY", Lista);
+                        entorno.AgregarObjeto(Variable, "OBJETO_BRAY", Lista,Objeto);
                      
                     }
                     else{

@@ -197,6 +197,7 @@
     <Compile Include="Analizadores_CodigoAST\DeclararAsignacionLista.cs" />
     <Compile Include="Analizadores_CodigoAST\DeclararLista.cs" />
     <Compile Include="Analizadores_CodigoAST\DOWHILE.cs" />
+    <Compile Include="Analizadores_CodigoAST\DROP_TABLE.cs" />
     <Compile Include="Analizadores_CodigoAST\Elementos.cs" />
     <Compile Include="Analizadores_CodigoAST\ELFOR.cs" />
     <Compile Include="Analizadores_CodigoAST\ELIF.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Analizadores_CodigoAST\FUNCIONES_PROPIAS.cs" />
     <Compile Include="Analizadores_CodigoAST\Incremento.cs" />
     <Compile Include="Analizadores_CodigoAST\DECOBJETO.cs" />
+    <Compile Include="Analizadores_CodigoAST\INSERSCION_SIMPLE.cs" />
     <Compile Include="Analizadores_CodigoAST\INSTANCIA1OBJETO.cs" />
     <Compile Include="Analizadores_CodigoAST\LISTAS.cs" />
     <Compile Include="Analizadores_CodigoAST\LOG.cs" />

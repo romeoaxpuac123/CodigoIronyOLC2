@@ -57,13 +57,13 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         }
 
-        public Boolean AgregarObjeto(String id, String valor, List<Simbolo> ElementosUT)
+        public Boolean AgregarObjeto(String id, String valor, List<Simbolo> ElementosUT,String tipo)
         {
             if (!Elementos.ContainsKey(id))
             {
-                Simbolo sim = new Simbolo(id, valor, ElementosUT) ;
+                Simbolo sim = new Simbolo(id, valor, ElementosUT,tipo) ;
                 Elementos.Add(id, sim);
-                System.Diagnostics.Debug.WriteLine("SE agregó objeto -> " + id);
+                System.Diagnostics.Debug.WriteLine("SE agregó objetoAVici -> " + id);
                 return true;
             }
             else
@@ -926,9 +926,157 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
         }
+        public void MostrarUTablas(String tabla, String BD)
+        {
+            String id = "BRAY-TAB";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if(p.Nombre().ToUpper() == tabla.ToUpper() && p.NombreBDP().ToUpper() == BD.ToUpper())
+                    {
+                        System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                        String LLaves = "";
+                        for (int i = 0; i < p.lalista().Count; i++)
+                        {
+                            LLaves = LLaves + p.lalista()[i] + ",";
+                        }
+                        String LosCampos = "";
+                        System.Diagnostics.Debug.WriteLine("Llaves->" + LLaves);
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            LosCampos = LosCampos + p.ListaElementos()[i].ObtenerId() + " " + p.ListaElementos()[i].ObtenerTipo() + "  |  ";
+                        }
+                        System.Diagnostics.Debug.WriteLine(LosCampos);
+                    }
+                   
+
+                }
+            }
+        }
+
+        public List<Simbolo> TablaBD(String Nombre, String BD)
+        {
+            String id = "BRAY-TAB";
+            Boolean Mismos = false;
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if ((p.Nombre().ToUpper() == Nombre.ToUpper()) && (p.NombreBDP().ToUpper() == BD.ToUpper()))
+                    {
+                        return p.ListaElementos();
+                    }
+
+                }
+            }
+            return null;
+        }
+
+        public List<String> LLaves(String Nombre, String BD)
+        {
+            String id = "BRAY-TAB";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if ((p.Nombre().ToUpper() == Nombre.ToUpper()) && (p.NombreBDP().ToUpper() == BD.ToUpper()))
+                    {
+                        return p.lalista();
+                    }
+
+                }
+            }
+            return null;
+        }
         #endregion
 
+        #region Campos
+        public int CantidadDeCAMPOS()
+        {
+            String id = "BRAY-CAM";
+            int a = 0;
 
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    a++;
+                }
+            }
+
+            return a;
+        }
+        public Boolean AgregarCampo(String id, String NombreTabla, String BD, List<Simbolo> Simblosx)
+        {
+            if (!Elementos.ContainsKey(id))
+            {
+                Simbolo sim = new Simbolo(id, NombreTabla, BD, Simblosx);
+                Elementos.Add(id, sim);
+                System.Diagnostics.Debug.WriteLine("se agrego campo a -> " + NombreTabla + " A BD->" + BD);
+                return true;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("la tabla ya existe -> " + NombreTabla + " en bd->" + BD);
+                return false;
+            }
+        }
+        public void MostrarCampos(String tabla, String BD)
+        {
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    String Cadena = "";
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if(p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for(int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                        }
+                    }
+                    System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+        }
+
+        public Boolean ValorPrimaryKey(String tabla, String BD, String Campo, String Valor)
+        {
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            if(p.ListaElementos()[i].ObtenerId().ToUpper() == Campo.ToUpper())
+                            {
+                                if (p.ListaElementos()[i].ObtenerValor().ToUpper() == Valor.ToUpper())
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                    
+
+                }
+            }
+            return false;
+        }
+        #endregion
 
 
         public String ElementosObjetos(String Objeto)

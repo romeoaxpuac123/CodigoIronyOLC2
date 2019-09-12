@@ -120,6 +120,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
                 if (toles > 1)
                 {
+                   
                     return "#ERROR parametros repetidos";
                 }
             }
@@ -141,6 +142,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
                 else
                 {
+                    if (this.AutoIncrmentable2 == 2)
+                        return "#ERROR con if parametros repetidos";
                     return "#ERROR tabla ya EXISTENTE";
                 }
             }

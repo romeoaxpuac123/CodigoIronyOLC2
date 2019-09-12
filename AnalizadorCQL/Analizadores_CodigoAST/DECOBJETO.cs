@@ -30,7 +30,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             {
                 if (entorno.ExisteVariable(Variable) == false)
                 {
-                    entorno.AgregarObjeto(Variable, "OBJETO_BRAY", null);
+                    entorno.AgregarObjeto(Variable, "OBJETO_BRAY", null,Objeto);
                 }
                 else
                 {
