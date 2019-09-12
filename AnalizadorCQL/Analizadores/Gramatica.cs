@@ -206,7 +206,7 @@ namespace AnalizadorCQL.Analizadores
 
             ELCALL.Rule = LISTA_EXPRESION + igual + CALL + id + ParA + LISTA_EXPRESION + ParC + PYC;
 
-
+            #region PROCEDIMIENTOS Y FUNCIONES
             PROCEDIMIENTOS.Rule = Procedure + id + ParA + ParC + coma + ParA + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
                 | Procedure + id + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + coma + ParA + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
                 | Procedure + id + ParA + ParC + coma + ParA + LISTA_PARAMETROS_FUNCIONES+ ParC + llaveAbierta + SENTENCIAS + llaverCerrada
@@ -232,7 +232,9 @@ namespace AnalizadorCQL.Analizadores
             TIPOS_VARIABLES2.Rule = LISTA | SET | id;
                         
             EL_BREAK.Rule = ELBREAK + PYC;
+            #endregion
 
+            #region IF Y CICLOS
             EL_IF.Rule = ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada
                          | ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada + SINO
                          | ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada + ELELSE + llaveAbierta + SENTENCIAS + llaverCerrada;
@@ -251,9 +253,9 @@ namespace AnalizadorCQL.Analizadores
                                        | id2 + menos + igual + E + PYC
                                        | id2 + por + igual + E + PYC
                                        | id2 + div + igual + E + PYC;
-                                                  
 
 
+            #endregion
 
             INC_DEC.Rule = id2 + mas + mas
                          | id2 + menos + menos;
@@ -269,7 +271,9 @@ namespace AnalizadorCQL.Analizadores
                        | create + tabla + id + ParA + PAR_TABLA + ParC + PYC
                        | create + tabla + ELIF + elnot + exists + id + ParA + PAR_TABLA + ParC + PYC
                        | USE + id+PYC
-                       | INSERT + INTO + id + VALUES + ParA + LISTA_EXPRESION+ ParC + PYC;
+                       | INSERT + INTO + id + VALUES + ParA + LISTA_EXPRESION+ ParC + PYC
+                       | ALTERAR + tabla + id + add1 + PAR_TABLA + PYC
+                       | ALTERAR + tabla + id + drope + LISTA_IDS1 + PYC;
             //| create + tabla + id + ParA + PAR_TABLA + ParC + PYC; ;
 
 
@@ -396,6 +400,8 @@ namespace AnalizadorCQL.Analizadores
                                   | REVOKE + id + ON + id + PYC;
 
             #endregion
+
+
 
             LISTA_EXPRESION.Rule = E  
                                 | E + coma + LISTA_EXPRESION;

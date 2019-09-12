@@ -27,7 +27,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
         {
             return this.UseTabla;
         }
-
+        #region  METODOS PARA UT
         public void AgregarObjeto(Object objetodeclarado)
         {
             Objetos.Add(objetodeclarado);
@@ -116,6 +116,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
             return Listaxx;
         }
+        #endregion UT
 
         public Boolean ExisteVariable(String id)
         {
@@ -358,7 +359,6 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         }
         #endregion
-
 
         #region USUARIOS
         public int CantidadDeUsuarios()
@@ -959,7 +959,6 @@ namespace AnalizadorCQL.Analizadores_Codigo
         public List<Simbolo> TablaBD(String Nombre, String BD)
         {
             String id = "BRAY-TAB";
-            Boolean Mismos = false;
             foreach (DictionaryEntry datos in Elementos)
             {
                 if (datos.Key.ToString().Contains(id))
@@ -974,7 +973,51 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
             return null;
         }
+        public void AlterAddTablaBD(String Nombre, String BD, List<Simbolo> lista)
+        {
+            String id = "BRAY-TAB";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if ((p.Nombre().ToUpper() == Nombre.ToUpper()) && (p.NombreBDP().ToUpper() == BD.ToUpper()))
+                    {
+                        
+                        for(int i = 0; i < lista.Count; i++)
+                        {
+                            p.ListaElementos().Add(lista[i]);
+                        }
+                    }
 
+                }
+            }
+            
+        }
+        public void AlterDropTablaBD(String Nombre, String BD, String Atributo)
+        {
+            String id = "BRAY-TAB";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if ((p.Nombre().ToUpper() == Nombre.ToUpper()) && (p.NombreBDP().ToUpper() == BD.ToUpper()))
+                    {
+                        for(int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            if (p.ListaElementos()[i].ObtenerId() == Atributo)
+                            {
+                                p.ListaElementos().Remove(p.ListaElementos()[i]);
+                            }
+                        }
+                       
+                    }
+
+                }
+            }
+
+        }
         public List<String> LLaves(String Nombre, String BD)
         {
             String id = "BRAY-TAB";
@@ -1043,6 +1086,55 @@ namespace AnalizadorCQL.Analizadores_Codigo
                         }
                     }
                     System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+        }
+
+        public void AlterADDCampos(String tabla, String BD, List<Simbolo> lista)
+        {
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < lista.Count; i++)
+                        {
+                            p.ListaElementos().Add(lista[i]);           
+                        }
+                    }
+                    
+
+                }
+            }
+        }
+
+        public void AlterDROPCampos(String tabla, String BD, String Campo)
+        {
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            if(p.ListaElementos()[i].ObtenerId() == Campo)
+                            {
+                                p.ListaElementos().Remove(p.ListaElementos()[i]);
+                            }
+                        }
+                    }
+
 
                 }
             }

@@ -1276,17 +1276,46 @@ namespace AnalizadorCQL.Analizadores
                             return nuevo;
                         }
                     }
-                   
-                    if (root.ChildNodes.ElementAt(3).FindToken().ToString().ToUpper().Contains("DROP") && root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("ALTER"))
+
+                    else if (root.ToString() == "DDL")
                     {
+
+                        if (root.ChildNodes.ElementAt(3).FindToken().ToString().ToUpper().Contains("DROP") && root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("ALTER"))
+                        {
                             System.Diagnostics.Debug.WriteLine("CODIGO PARA ALTER TABLE DROP");
-                        
-                    }
-                    else if (root.ChildNodes.ElementAt(3).FindToken().ToString().ToUpper().Contains("ADD") && root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("ALTER"))
-                    {
+                            NodoAbstracto nuevo = new ALTER_TABLE_DROP("ELIMINAR");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            nuevo.AutoIncrmentable2 = 2;
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(4));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            return nuevo;
+                        }
+                        else if (root.ChildNodes.ElementAt(3).FindToken().ToString().ToUpper().Contains("ADD") && root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("ALTER"))
+                        {
                             System.Diagnostics.Debug.WriteLine("CODIGO PARA ALTER TABLE ADD");
-                       
+                            NodoAbstracto nuevo = new ALTER_TABLE_ADD("INSERTAR");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            nuevo.AutoIncrmentable2 = 2;
+                            STN.Clear();
+                            ParametrosTabla(root.ChildNodes.ElementAt(4));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            return nuevo;
+
+                        }
+
                     }
+                    
                     
                     break;
                 #endregion
@@ -1645,7 +1674,7 @@ namespace AnalizadorCQL.Analizadores
                         STN.Clear();
                         return nuevo;
                     }
-                    if (root.ToString() == "DDL")
+                   else if (root.ToString() == "DDL")
                     {
                         
                         if (root.ChildNodes.ElementAt(1).ToString().ToUpper().Contains("TABLE"))
