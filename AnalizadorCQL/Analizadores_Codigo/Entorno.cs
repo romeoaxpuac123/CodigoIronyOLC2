@@ -1140,6 +1140,57 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
         }
 
+        public int Counter(String tabla, String BD)
+        {
+            int Total = 0;
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        Total = Total +1;
+                       
+                    }               
+
+                }
+            }
+
+            return Total;
+        }
+
+        public Boolean LlaveRepetida(String tabla, String BD, String Campo, String Valor)
+        {
+            
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for(int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            if (p.ListaElementos()[i].ObtenerId()== Campo)
+                            {
+                                if (p.ListaElementos()[i].ObtenerValor() == Valor)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+            }
+            return false;
+        }
         public Boolean ValorPrimaryKey(String tabla, String BD, String Campo, String Valor)
         {
             String id = "BRAY-CAM";

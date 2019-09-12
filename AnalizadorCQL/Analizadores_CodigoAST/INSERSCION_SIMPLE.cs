@@ -69,7 +69,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     System.Diagnostics.Debug.WriteLine("Ejecucion INSERTAR1 parametro " + i + " ValorNuevo->" + this.ListaID1[i] + " TipoNuevo->"+ TipoRetornox +    " Tipo->" + Campos[i].ObtenerTipo() + " Nombre->" + Campos[i].ObtenerId());
                     if (Llaves.Contains(Campos[i].ObtenerId()) == true)
                     {
-                        string Valor = this.ListaID1[i].Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "").Replace(" (cadena)", "").Replace(" (id2)", "");
+                        String Valor = this.ListaID1[i].Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "").Replace(" (cadena)", "").Replace(" (id2)", "");
                         if(entorno.ValorPrimaryKey(Tabla,BD, Campos[i].ObtenerId(),Valor) == true)
                         {
                             return "#ERROR Llave primaria Duplicada";

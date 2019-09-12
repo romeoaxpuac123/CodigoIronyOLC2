@@ -1748,6 +1748,37 @@ namespace AnalizadorCQL.Analizadores
                         }
                        
                     }
+                    else if (root.ToString() == "DDL")
+                    {
+
+                            System.Diagnostics.Debug.WriteLine("CODIGO PARA insertadardatos TABLE DROP");
+                            NodoAbstracto nuevo = new INSERCION_ESPECIAL("INSERTAR");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(4));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                       
+                            nuevo.Hijos.Add(Tabla);
+                            nuevo.AutoIncrmentable2 = 2;
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Atributos(root.ChildNodes.ElementAt(8));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            return nuevo;
+
+                        
+
+                    }
+
                     break;
                 #endregion
                 case 12:                    

@@ -273,7 +273,8 @@ namespace AnalizadorCQL.Analizadores
                        | USE + id+PYC
                        | INSERT + INTO + id + VALUES + ParA + LISTA_EXPRESION+ ParC + PYC
                        | ALTERAR + tabla + id + add1 + PAR_TABLA + PYC
-                       | ALTERAR + tabla + id + drope + LISTA_IDS1 + PYC;
+                       | ALTERAR + tabla + id + drope + LISTA_IDS1 + PYC
+                       | INSERT + INTO + id + ParA + LISTA_IDS1 + ParC + VALUES + ParA + LISTA_EXPRESION + ParC + PYC;
             //| create + tabla + id + ParA + PAR_TABLA + ParC + PYC; ;
 
 
