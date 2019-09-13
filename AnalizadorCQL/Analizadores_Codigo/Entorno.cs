@@ -955,7 +955,35 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
         }
+        public void MostrarUTablas2(String tabla, String BD)
+        {
+            String id = "BRAY-TAB";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if (p.Nombre().ToUpper() == tabla.ToUpper() && p.NombreBDP().ToUpper() == BD.ToUpper())
+                    {
+                        System.Diagnostics.Debug.WriteLine("\n\nSELECION\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                        String LLaves = "";
+                        for (int i = 0; i < p.lalista().Count; i++)
+                        {
+                            LLaves = LLaves + p.lalista()[i] + ",";
+                        }
+                        String LosCampos = "";
+                        System.Diagnostics.Debug.WriteLine("Llaves->" + LLaves);
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            LosCampos = LosCampos + p.ListaElementos()[i].ObtenerId() + " " + p.ListaElementos()[i].ObtenerTipo() + "  |  ";
+                        }
+                        System.Diagnostics.Debug.WriteLine(LosCampos);
+                    }
 
+
+                }
+            }
+        }
         public List<Simbolo> TablaBD(String Nombre, String BD)
         {
             String id = "BRAY-TAB";
@@ -1090,7 +1118,28 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
         }
+        public void MostrarCampos2(String tabla, String BD)
+        {
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    String Cadena = "";
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                        }
+                    }
+                    System.Diagnostics.Debug.WriteLine(Cadena);
 
+                }
+            }
+        }
         public void AlterADDCampos(String tabla, String BD, List<Simbolo> lista)
         {
             String id = "BRAY-CAM";
@@ -1296,7 +1345,32 @@ namespace AnalizadorCQL.Analizadores_Codigo
             return Campos;
         }
 
-        
+        public void MostrarCamposExactos(String tabla, String BD, List<String> Campos)
+        {
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    String Cadena = "";
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
+                            {
+                                Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                            }
+                            
+                        }
+                    }
+                    System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+        }
         #endregion
 
 

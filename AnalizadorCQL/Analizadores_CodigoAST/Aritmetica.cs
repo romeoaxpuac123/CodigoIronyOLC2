@@ -37,7 +37,10 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String Tipo1 = this.Hijos[0].TipoDato;
             String Tipo2 = this.Hijos[2].TipoDato;
 
-            
+            System.Diagnostics.Debug.WriteLine("Ejecucion Aritmetica el tipo1->"+Tipo1);
+            //System.Diagnostics.Debug.WriteLine("TIPO asjdflkads->" + this.Hijos[1].NombreVariable);
+            System.Diagnostics.Debug.WriteLine("Ejecucion Aritmetica el tipo1->" + Tipo2);
+            //System.Diagnostics.Debug.WriteLine("TIPO asjdflkads->" + this.Hijos[2].NombreVariable);
 
             if (this.Hijos[1].Nombre == "]"){
                 System.Diagnostics.Debug.WriteLine("ES CASTEOOOOOOOOOOOOOOOO");
@@ -225,15 +228,24 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 return "#ERROR5";
             }
           
+            if(Tipo1 == "id")
+            {
+                val1 = entorno.ObtenerValor(this.Hijos[0].NombreVariable);
+            }
+            if (Tipo2 == "id")
+            {
+                val2 = entorno.ObtenerValor(this.Hijos[2].NombreVariable);
+            }
 
-            if (Tipo1 == "id2" || Tipo1 == "id")
+            if (Tipo1 == "id2" || Tipo1 == "id" )
             {
                 
                 System.Diagnostics.Debug.WriteLine("TIPO 1 ID" + this.Hijos[0].NombreVariable);
                 System.Diagnostics.Debug.WriteLine(entorno.ObtenerTipo(this.Hijos[0].NombreVariable).ToUpper());
-                if (entorno.ObtenerTipo(this.Hijos[0].NombreVariable).ToUpper().Contains("INT") == true)
+                if ((entorno.ObtenerTipo(this.Hijos[0].NombreVariable).ToUpper().Contains("INT") == true)
+                    || (entorno.ObtenerTipo(this.Hijos[0].NombreVariable).ToUpper().Contains("COUNT") == true))
                 {
-                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
+                   
 
                    Tipo1 = "entero";
                 }
@@ -269,7 +281,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
 
             }
-            if (Tipo2 == "id2" || Tipo2 == "id")
+           // System.Diagnostics.Debug.WriteLine("TIPO 1 IDx" + Tipo1 +"->" + val1);
+            if (Tipo2 == "id2" || Tipo2 == "id" )
             {
                 System.Diagnostics.Debug.WriteLine("TIPO 2 ID" + this.Hijos[2].NombreVariable);
                 if (entorno.ObtenerTipo(this.Hijos[2].NombreVariable).ToUpper().Contains("INT") == true)
@@ -310,36 +323,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
             }
 
-            //Console.WriteLine(val1 + "AA");
-            //Console.WriteLine(val2 + "bb");
-            //Console.WriteLine(this.Hijos[1].Nombre + "CC");
-
-            // System.Diagnostics.Debug.WriteLine("va a entrar");
-            /*
-             if (this.Hijos[0].AutoIncrmentable == 1 )
-             {
-
-                 System.Diagnostics.Debug.WriteLine("**********************");
-                 float a = float.Parse(entorno.ObtenerValor(this.Hijos[0].Hijos[0].NombreVariable.ToString()));
-                 a = a + 1;
-                 System.Diagnostics.Debug.WriteLine("si entro: " + this.Hijos[0].Hijos[0].NombreVariable.ToString() + "-" + a.ToString());
-                 entorno.AsignarValor(this.Hijos[0].Hijos[0].NombreVariable.ToString(), a.ToString());
-                 //this.Hijos[0].AutoIncrmentable = 0;
-                 val1 = (float.Parse(val1) - 1).ToString();
-             }
-             /*
-             if (this.Hijos[1].AutoIncrmentable == 1)
-             {
-
-                 System.Diagnostics.Debug.WriteLine("**********************");
-                 float a = float.Parse(entorno.ObtenerValor(this.Hijos[1].Hijos[0].NombreVariable.ToString()));
-                 a = a + 1;
-                 System.Diagnostics.Debug.WriteLine("si entro: " + this.Hijos[1].Hijos[0].NombreVariable.ToString() + "-" + a.ToString());
-                 entorno.AsignarValor(this.Hijos[1].Hijos[0].NombreVariable.ToString(), a.ToString());
-                 this.Hijos[1].AutoIncrmentable = 0;
-                 val1 = (float.Parse(val1) - 1).ToString();
-             }
-             */
+            //System.Diagnostics.Debug.WriteLine("TIPO 2 IDx" + Tipo2 + "->" + val2);
             if (val1.ToUpper().Contains("#ERROR") || val2.ToUpper().Contains("#ERROR"))
             {
                 return "#Error";
@@ -353,6 +337,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             {
                 int valor1 = Int32.Parse(val1.Replace(" (numero)", ""));
                 int valor2 = Int32.Parse(val2.Replace(" (numero)", ""));
+               //System.Diagnostics.Debug.WriteLine("Entro num num" + Tipo1+".>"+Tipo2);
                 switch (this.Hijos[1].Nombre)
                 {
                     case "+":
@@ -404,6 +389,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         return totalb.ToString();
                     case "==":
                         totalb = valor1 == valor2;
+                        System.Diagnostics.Debug.WriteLine("#Bayron:" + totalb);
                         return totalb.ToString();
                     case "!=":
                         totalb = valor1 != valor2;
@@ -699,6 +685,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         return "#Error";
                     case "==":
                         totalb = valor1 == valor2;
+                        System.Diagnostics.Debug.WriteLine("#Bayron:" + totalb);
                         return totalb.ToString();
                     case "!=":
                         totalb = valor1 != valor2;

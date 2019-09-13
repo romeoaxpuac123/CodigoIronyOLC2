@@ -119,6 +119,8 @@ namespace AnalizadorCQL.Analizadores
             var VALUES = ToTerm("VALUES");
             var UPDATE = ToTerm("UPDATE");
             var WHERE = ToTerm("WHERE");
+            var SELECT = ToTerm("SELECT");
+            var FROM = ToTerm("FROM");
 
 
             this.RegisterOperators(8, Associativity.Left, "?");
@@ -279,7 +281,8 @@ namespace AnalizadorCQL.Analizadores
                        | ALTERAR + tabla + id + drope + LISTA_IDS1 + PYC
                        | INSERT + INTO + id + ParA + LISTA_IDS1 + ParC + VALUES + ParA + LISTA_EXPRESION + ParC + PYC
                        | UPDATE + id + SET + LISTA_IGUALES + PYC
-                       | UPDATE + id + SET + LISTA_IGUALES + WHERE + E + PYC;
+                       | UPDATE + id + SET + LISTA_IGUALES + WHERE + E + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + PYC; 
 
             LISTA_IGUALES.Rule = id + igual + E + coma + LISTA_IGUALES
                        | id + igual + E;
@@ -287,7 +290,8 @@ namespace AnalizadorCQL.Analizadores
 
 
             LISTA_IDS1.Rule = id
-                      | id + coma + LISTA_IDS1;
+                      | id + coma + LISTA_IDS1
+                      | por;
 
             PAR_TABLA.Rule = id + id
                             | id + id + coma + PAR_TABLA 

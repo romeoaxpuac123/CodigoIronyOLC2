@@ -74,6 +74,7 @@ namespace AnalizadorCQL.Analizadores
                         NodoAbstracto nuevox = new Nodo("id");
                         NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString());
                         nuevox.Hijos.Add(nuevovalor);
+                        nuevox.TipoDato = "id";
                         RESULT1 = nuevox;
                         //Raiz = nuevox;
                         return RESULT1;
@@ -253,6 +254,8 @@ namespace AnalizadorCQL.Analizadores
                             NodoAbstracto nuevox = new Nodo("id");
                             NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString());
                             nuevox.Hijos.Add(nuevovalor);
+                            nuevox.TipoDato = "id";
+                            nuevox.NombreVariable = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "");
                             RESULT1 = nuevox;
                             //Raiz = nuevox;
                             return RESULT1;
@@ -1255,17 +1258,38 @@ namespace AnalizadorCQL.Analizadores
                     }
                       else if (root.ToString() == "DDL")
                         {
-                            NodoAbstracto nuevo = new UPDATE("ACTUALIZAR");
-                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                        System.Diagnostics.Debug.WriteLine("CAso5 ---------------------------> " + root.ChildNodes.ElementAt(0).ToString().ToUpper());
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT")==true)
+                        { System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
+                            NodoAbstracto nuevo = new SELECT_SIMPLE("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
                             nuevo.Hijos.Add(Tabla);
                             STN.Clear();
-                            Parametros_Update (root.ChildNodes.ElementAt(3));
+                            Atributos(root.ChildNodes.ElementAt(1));
                             for (int i = 0; i < STN.Count; i++)
                             {
                                 nuevo.ListaID1.Add(STN[i]);
                             }
                             STN.Clear();
                             return nuevo;
+
+                        }
+                        else
+                        {
+                            NodoAbstracto nuevo = new UPDATE("ACTUALIZAR");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Parametros_Update(root.ChildNodes.ElementAt(3));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            return nuevo;
+
+                        }
+                            
                         }
 
                     break;

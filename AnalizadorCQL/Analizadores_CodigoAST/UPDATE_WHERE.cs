@@ -41,7 +41,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     if(Campos[i].RetornarPosicionObjeto().Contains((j+1).ToString()) == true)
                     {
                         //System.Diagnostics.Debug.WriteLine("Ejecucion INSERTAR1 bd->" + Campos[i].RetornarPosicionObjeto() + "->" + i);
-                        Prueba.Agregar("@" + Campos[i].ObtenerId(), Campos[i].ObtenerTipo(), Campos[i].ObtenerValor());
+                        Prueba.Agregar(Campos[i].ObtenerId(), Campos[i].ObtenerTipo(), Campos[i].ObtenerValor());
                         IdTabla = Campos[i].RetornarPosicionObjeto();
                     }
                     //Prueba.Agregar("@" + Campos[i].ObtenerId(), Campos[i].ObtenerTipo(), Campos[i].ObtenerValor());
