@@ -1253,6 +1253,21 @@ namespace AnalizadorCQL.Analizadores
                         return nuevo;
 
                     }
+                      else if (root.ToString() == "DDL")
+                        {
+                            NodoAbstracto nuevo = new UPDATE("ACTUALIZAR");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Parametros_Update (root.ChildNodes.ElementAt(3));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            return nuevo;
+                        }
+
                     break;
 
                 #endregion
@@ -1313,6 +1328,7 @@ namespace AnalizadorCQL.Analizadores
                             return nuevo;
 
                         }
+                      
 
                     }
                     
@@ -1416,6 +1432,21 @@ namespace AnalizadorCQL.Analizadores
                                 nuevo.ListaID1.Add(STN[i]);
                             }
                             STN.Clear();
+                            return nuevo;
+                        }
+                        else if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("UPDATE"))
+                        {
+                            NodoAbstracto nuevo = new UPDATE_WHERE("ACTUALIZAR2");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Parametros_Update(root.ChildNodes.ElementAt(3));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
                             return nuevo;
                         }
 
@@ -1983,8 +2014,34 @@ namespace AnalizadorCQL.Analizadores
             }
             //return Cadena;
         }
-        #endregion
-        public void Analizar(NodoAbstracto raiz)
+
+        public void Parametros_Update(ParseTreeNode root)
+        {
+            switch (root.ChildNodes.Count)
+            {
+                case 3:
+                    String Parametro2 = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "");
+                    String Tipo2 = root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", "");
+                    //System.Diagnostics.Debug.WriteLine("dos hijo Par->" + Parametro2 + " Tipo->" + Tipo2);
+                    //Cadena = Cadena + Parametro2 + ",";
+                    STN.Add(Parametro2 + "=" + Tipo2);
+                    //Lista1(root.ChildNodes.ElementAt(2));
+                    break;
+
+                case 5:
+                    String Parametro3 = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "");
+                    String Tipo3 = root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", "");
+                    //System.Diagnostics.Debug.WriteLine("dos hijo Par->" + Parametro2 + " Tipo->" + Tipo2);
+                    //Cadena = Cadena + Parametro2 + ",";
+                    STN.Add(Parametro3 + "=" + Tipo3);
+                    Parametros_Update(root.ChildNodes.ElementAt(4));
+
+                    break;
+            }
+        }
+
+                    #endregion
+                    public void Analizar(NodoAbstracto raiz)
         {
             try
             {

@@ -1219,6 +1219,84 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
             return false;
         }
+        
+        public void ActualizarCampos(String tabla, String BD, String Campo, String Valor)
+        {
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            if (p.ListaElementos()[i].ObtenerId() == Campo)
+                            {
+                                p.ListaElementos()[i].DarleUnValor(Valor);
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+        public void ActualizarCampos2(String id2,String tabla, String BD, String Campo, String Valor)
+        {
+            //String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString() == id2)
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            if (p.ListaElementos()[i].ObtenerId() == Campo)
+                            {
+                                p.ListaElementos()[i].DarleUnValor(Valor);
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+        public List<Simbolo> TodosLosCampos(String tabla, String BD)
+        {
+            List<Simbolo> Campos = new List<Simbolo>();
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for(int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            Simbolo X = new Simbolo(p.ListaElementos()[i].ObtenerId(), p.ListaElementos()[i].ObtenerValor(), p.ListaElementos()[i].ObtenerTipo(), p.ObtenerId());
+                            Campos.Add(X);
+                        }
+                        
+                    }
+
+                }
+            }
+
+            return Campos;
+        }
+
+        
         #endregion
 
 

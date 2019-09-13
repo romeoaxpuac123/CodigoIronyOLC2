@@ -222,6 +222,8 @@
     <Compile Include="Analizadores_CodigoAST\RETORNO.cs" />
     <Compile Include="Analizadores_CodigoAST\Tabla.cs" />
     <Compile Include="Analizadores_CodigoAST\TRY_CATCH.cs" />
+    <Compile Include="Analizadores_CodigoAST\UPDATE.cs" />
+    <Compile Include="Analizadores_CodigoAST\UPDATE_WHERE.cs" />
     <Compile Include="Analizadores_CodigoAST\USE.cs" />
     <Compile Include="Analizadores_CodigoAST\USER_TYPE.cs" />
     <Compile Include="Analizadores_CodigoAST\USUARIOS.cs" />

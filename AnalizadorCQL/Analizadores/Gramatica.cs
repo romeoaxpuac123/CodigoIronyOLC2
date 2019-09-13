@@ -117,6 +117,8 @@ namespace AnalizadorCQL.Analizadores
             var USE = ToTerm("USE");
             var INTO = ToTerm("INTO");
             var VALUES = ToTerm("VALUES");
+            var UPDATE = ToTerm("UPDATE");
+            var WHERE = ToTerm("WHERE");
 
 
             this.RegisterOperators(8, Associativity.Left, "?");
@@ -124,8 +126,8 @@ namespace AnalizadorCQL.Analizadores
             this.RegisterOperators(2, Associativity.Left, "*", "/", "%");            
             this.RegisterOperators(3, Associativity.Left, "**");
             this.RegisterOperators(4, Associativity.Left, ">", "<", ">=", "<=");
-            this.RegisterOperators(5, Associativity.Left, "!=", "==");
-            this.RegisterOperators(6, Associativity.Left, "&&", "||", "^");
+            this.RegisterOperators(6, Associativity.Left, "!=", "==");
+            this.RegisterOperators(5, Associativity.Left, "&&", "||", "^");
             this.RegisterOperators(7, Associativity.Left, "!");
             #endregion
 
@@ -174,6 +176,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal LISTA_EXPRESIONobjetos = new NonTerminal("LISTA_EXPRESIONobjetos");
             NonTerminal PARAMETROSPK = new NonTerminal("PARAMETROSPK");
             NonTerminal LISTA_IDS1 = new NonTerminal("LISTA_IDS1");
+            NonTerminal LISTA_IGUALES = new NonTerminal("LISTA_IGUALES");
 
             //DCL 
             NonTerminal CREARUSUARIO = new NonTerminal("CREARUSUARIO");
@@ -274,7 +277,12 @@ namespace AnalizadorCQL.Analizadores
                        | INSERT + INTO + id + VALUES + ParA + LISTA_EXPRESION+ ParC + PYC
                        | ALTERAR + tabla + id + add1 + PAR_TABLA + PYC
                        | ALTERAR + tabla + id + drope + LISTA_IDS1 + PYC
-                       | INSERT + INTO + id + ParA + LISTA_IDS1 + ParC + VALUES + ParA + LISTA_EXPRESION + ParC + PYC;
+                       | INSERT + INTO + id + ParA + LISTA_IDS1 + ParC + VALUES + ParA + LISTA_EXPRESION + ParC + PYC
+                       | UPDATE + id + SET + LISTA_IGUALES + PYC
+                       | UPDATE + id + SET + LISTA_IGUALES + WHERE + E + PYC;
+
+            LISTA_IGUALES.Rule = id + igual + E + coma + LISTA_IGUALES
+                       | id + igual + E;
             //| create + tabla + id + ParA + PAR_TABLA + ParC + PYC; ;
 
 

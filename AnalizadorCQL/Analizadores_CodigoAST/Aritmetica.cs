@@ -226,7 +226,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             }
           
 
-            if (Tipo1 == "id2")
+            if (Tipo1 == "id2" || Tipo1 == "id")
             {
                 
                 System.Diagnostics.Debug.WriteLine("TIPO 1 ID" + this.Hijos[0].NombreVariable);
@@ -269,7 +269,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
 
             }
-            if (Tipo2 == "id2")
+            if (Tipo2 == "id2" || Tipo2 == "id")
             {
                 System.Diagnostics.Debug.WriteLine("TIPO 2 ID" + this.Hijos[2].NombreVariable);
                 if (entorno.ObtenerTipo(this.Hijos[2].NombreVariable).ToUpper().Contains("INT") == true)
