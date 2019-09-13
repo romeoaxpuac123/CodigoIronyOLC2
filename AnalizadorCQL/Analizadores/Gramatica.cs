@@ -127,9 +127,9 @@ namespace AnalizadorCQL.Analizadores
             this.RegisterOperators(1, Associativity.Left, "+", "-");
             this.RegisterOperators(2, Associativity.Left, "*", "/", "%");            
             this.RegisterOperators(3, Associativity.Left, "**");
-            this.RegisterOperators(4, Associativity.Left, ">", "<", ">=", "<=");
+            this.RegisterOperators(5, Associativity.Left, ">", "<", ">=", "<=");
             this.RegisterOperators(6, Associativity.Left, "!=", "==");
-            this.RegisterOperators(5, Associativity.Left, "&&", "||", "^");
+            this.RegisterOperators(4, Associativity.Left, "&&", "||", "^");
             this.RegisterOperators(7, Associativity.Left, "!");
             #endregion
 
@@ -282,7 +282,8 @@ namespace AnalizadorCQL.Analizadores
                        | INSERT + INTO + id + ParA + LISTA_IDS1 + ParC + VALUES + ParA + LISTA_EXPRESION + ParC + PYC
                        | UPDATE + id + SET + LISTA_IGUALES + PYC
                        | UPDATE + id + SET + LISTA_IGUALES + WHERE + E + PYC
-                       | SELECT + LISTA_IDS1 + FROM + id + PYC; 
+                       | SELECT + LISTA_IDS1 + FROM + id + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + PYC; 
 
             LISTA_IGUALES.Rule = id + igual + E + coma + LISTA_IGUALES
                        | id + igual + E;
