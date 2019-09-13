@@ -285,7 +285,8 @@ namespace AnalizadorCQL.Analizadores
                        | UPDATE + id + SET + LISTA_IGUALES + WHERE + E + PYC
                        | SELECT + LISTA_IDS1 + FROM + id + PYC
                        | SELECT + LISTA_IDS1 + FROM + id + LIMIT + E + PYC
-                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + PYC; 
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + LIMIT + E + PYC; 
 
             LISTA_IGUALES.Rule = id + igual + E + coma + LISTA_IGUALES
                        | id + igual + E;

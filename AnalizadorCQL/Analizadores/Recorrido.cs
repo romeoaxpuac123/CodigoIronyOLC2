@@ -1720,8 +1720,28 @@ namespace AnalizadorCQL.Analizadores
                         System.Diagnostics.Debug.WriteLine("_______f___________________________________________");
                         return nuevo;
                     }
+                    if (root.ToString() == "DDL")
+                    {
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true)
+                        {
+                            //System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
+                            NodoAbstracto nuevo = new SELECT_WHERE_LIMITE("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(7)));
+                            return nuevo;
 
-                    break;
+                        }
+                    }
+                        break;
                 #endregion
                 case 10:
                     #region HIJOS 10
