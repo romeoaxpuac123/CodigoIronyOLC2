@@ -220,6 +220,7 @@
     <Compile Include="Analizadores_CodigoAST\PERMISOS.cs" />
     <Compile Include="Analizadores_CodigoAST\PROCEDIMIENTOS.cs" />
     <Compile Include="Analizadores_CodigoAST\RETORNO.cs" />
+    <Compile Include="Analizadores_CodigoAST\SELECT_LIMIT.cs" />
     <Compile Include="Analizadores_CodigoAST\SELECT_SIMPLE.cs" />
     <Compile Include="Analizadores_CodigoAST\SELECT_WHERE.cs" />
     <Compile Include="Analizadores_CodigoAST\Tabla.cs" />

@@ -1473,6 +1473,24 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
                             return nuevo;
                         }
+                        else if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true
+                            && root.ChildNodes.ElementAt(4).ToString().ToUpper().Contains("LIMIT") == true)
+                        {
+                            //System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
+                            NodoAbstracto nuevo = new SELECT_LIMIT("SLEEC-LIMIT");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
+                            return nuevo;
+
+                        }
                         else if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true)
                         {
                             //System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());

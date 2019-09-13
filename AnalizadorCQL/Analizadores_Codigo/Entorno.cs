@@ -1140,6 +1140,35 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
         }
+        public void MostrarCampos2Limite(String tabla, String BD,int limite)
+        {
+            String id = "BRAY-CAM";
+            int ellimite = 0;
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    String Cadena = "";
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                        }
+                    }
+                    System.Diagnostics.Debug.WriteLine(Cadena);
+                    ellimite++;
+
+                }
+                if (ellimite == limite)
+                {
+                    break;
+                }
+            }
+        }
+
         public String MostrarCampos33(String tabla, String BD,String id)
         {
             String Cadena = "";
@@ -1394,6 +1423,41 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
         }
+        public void MostrarCamposExactosLimite(String tabla, String BD, List<String> Campos, int limite)
+        {
+            String id = "BRAY-CAM";
+            int ellimite = 0;
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    String Cadena = "";
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
+                            {
+                                Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                            }
+                            
+
+                        }
+                    }
+                    System.Diagnostics.Debug.WriteLine(Cadena);
+                    ellimite++;
+                }
+               
+                if (ellimite == limite)
+                {
+                    break;
+                }
+            }
+        }
+
+
         public String MostrarCamposExactos3(String tabla, String BD, List<String> Campos, String id)
         {
             String Cadena = "";

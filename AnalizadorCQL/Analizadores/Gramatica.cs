@@ -121,6 +121,7 @@ namespace AnalizadorCQL.Analizadores
             var WHERE = ToTerm("WHERE");
             var SELECT = ToTerm("SELECT");
             var FROM = ToTerm("FROM");
+            var LIMIT = ToTerm("LIMIT");
 
 
             this.RegisterOperators(8, Associativity.Left, "?");
@@ -283,6 +284,7 @@ namespace AnalizadorCQL.Analizadores
                        | UPDATE + id + SET + LISTA_IGUALES + PYC
                        | UPDATE + id + SET + LISTA_IGUALES + WHERE + E + PYC
                        | SELECT + LISTA_IDS1 + FROM + id + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + LIMIT + E + PYC
                        | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + PYC; 
 
             LISTA_IGUALES.Rule = id + igual + E + coma + LISTA_IGUALES
