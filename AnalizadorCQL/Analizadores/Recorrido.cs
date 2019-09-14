@@ -1645,17 +1645,42 @@ namespace AnalizadorCQL.Analizadores
                     }
                     else if (root.ToString().ToUpper().Contains("DDL"))
                     {
-                        NodoAbstracto nuevo = new INSERSCION_SIMPLE("INSERTAR1");
-                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(2).ToString().Replace(" (id)", ""));
-                        nuevo.Hijos.Add(id);
-                        STN.Clear();
-                        Atributos(root.ChildNodes.ElementAt(5));
-                        for(int i = 0; i < STN.Count; i++)
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT"))
                         {
-                            nuevo.ListaID1.Add(STN[i]);
+                            NodoAbstracto nuevo = new SELECT_ORDER_BY("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(6));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            return nuevo;
                         }
-                        STN.Clear();
-                        return nuevo;
+                        else
+                        {
+                            NodoAbstracto nuevo = new INSERSCION_SIMPLE("INSERTAR1");
+                            NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(2).ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(id);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(5));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            return nuevo;
+                        }
+                      
 
                     }
                     break;
@@ -2184,6 +2209,30 @@ namespace AnalizadorCQL.Analizadores
                     break;
             }
             return STN;
+        }
+        
+        public void Parametros_Order_By(ParseTreeNode root)
+        {
+            switch (root.ChildNodes.Count)
+            {
+                case 1:
+                    STN.Add(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "") + "," + "ASC");
+                     break;
+                case 2:
+                      STN.Add(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "") + "," + root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Keyword)", ""));
+
+                    break;
+                case 3:
+
+                    STN.Add(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "") + "," +"ASC");
+                    Parametros_Order_By(root.ChildNodes.ElementAt(2));
+                    break;
+                case 4:
+
+                     STN.Add(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "") + "," + root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Keyword)", ""));
+                    Parametros_Order_By(root.ChildNodes.ElementAt(3));
+                    break;
+            }
         }
 
         public void AtributosFuncionesUsuario(ParseTreeNode root)

@@ -122,6 +122,10 @@ namespace AnalizadorCQL.Analizadores
             var SELECT = ToTerm("SELECT");
             var FROM = ToTerm("FROM");
             var LIMIT = ToTerm("LIMIT");
+            var ORDER = ToTerm("ORDER");
+            var BY = ToTerm("BY");
+            var ASC = ToTerm("ASC");
+            var DESC = ToTerm("DESC");
 
 
             this.RegisterOperators(8, Associativity.Left, "?");
@@ -179,6 +183,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal LISTA_EXPRESIONobjetos = new NonTerminal("LISTA_EXPRESIONobjetos");
             NonTerminal PARAMETROSPK = new NonTerminal("PARAMETROSPK");
             NonTerminal LISTA_IDS1 = new NonTerminal("LISTA_IDS1");
+            NonTerminal LISTA_IDS1X = new NonTerminal("LISTA_IDS1X");
             NonTerminal LISTA_IGUALES = new NonTerminal("LISTA_IGUALES");
 
             //DCL 
@@ -286,13 +291,19 @@ namespace AnalizadorCQL.Analizadores
                        | SELECT + LISTA_IDS1 + FROM + id + PYC
                        | SELECT + LISTA_IDS1 + FROM + id + LIMIT + E + PYC
                        | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + PYC
-                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + LIMIT + E + PYC; 
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + LIMIT + E + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + PYC; 
 
             LISTA_IGUALES.Rule = id + igual + E + coma + LISTA_IGUALES
                        | id + igual + E;
             //| create + tabla + id + ParA + PAR_TABLA + ParC + PYC; ;
 
-
+            LISTA_IDS1X.Rule = id
+                               | id + coma + LISTA_IDS1X
+                               | id + ASC
+                               | id + ASC + coma + LISTA_IDS1X
+                               | id + DESC
+                               | id + DESC + coma + LISTA_IDS1X;
             LISTA_IDS1.Rule = id
                       | id + coma + LISTA_IDS1
                       | por;

@@ -221,6 +221,7 @@
     <Compile Include="Analizadores_CodigoAST\PROCEDIMIENTOS.cs" />
     <Compile Include="Analizadores_CodigoAST\RETORNO.cs" />
     <Compile Include="Analizadores_CodigoAST\SELECT_LIMIT.cs" />
+    <Compile Include="Analizadores_CodigoAST\SELECT_ORDER_BY.cs" />
     <Compile Include="Analizadores_CodigoAST\SELECT_SIMPLE.cs" />
     <Compile Include="Analizadores_CodigoAST\SELECT_WHERE.cs" />
     <Compile Include="Analizadores_CodigoAST\SELECT_WHERE_LIMITE.cs" />

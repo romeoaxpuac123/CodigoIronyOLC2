@@ -13,7 +13,10 @@ namespace AnalizadorCQL.Analizadores_Codigo
         public List<Object> Objetos = new List<Object>();
         public Hashtable Elementos;
         public String UseTabla = "NULITO";
-
+        Dictionary<String, Simbolo> DiccionarioDeTablas = new Dictionary<String, Simbolo>();
+        Dictionary<String, Simbolo> DiccionarioDeTablas2 = new Dictionary<String, Simbolo>();
+        Dictionary<String, Simbolo> DiccionarioDeTablas3 = new Dictionary<String, Simbolo>();
+        //Dictionary<String, String> DiccionarioParametros = new Dictionary<String, String>();
         public Entorno()
         {
             Elementos = new Hashtable();
@@ -35,7 +38,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         public void MostrarObjetos()
         {
-            for(int i = 0; i< Objetos.Count; i++)
+            for (int i = 0; i < Objetos.Count; i++)
             {
                 System.Diagnostics.Debug.WriteLine("EL OBJETO -> " + Objetos[i].ToString());
             }
@@ -44,7 +47,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
         {
             if (!Elementos.ContainsKey(id))
             {
-                Simbolo sim = new Simbolo(id, valor, tipo ,Objeto);
+                Simbolo sim = new Simbolo(id, valor, tipo, Objeto);
                 Elementos.Add(id, sim);
                 System.Diagnostics.Debug.WriteLine("La variables Del objeto se agregó -> " + id);
                 return true;
@@ -57,11 +60,11 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         }
 
-        public Boolean AgregarObjeto(String id, String valor, List<Simbolo> ElementosUT,String tipo)
+        public Boolean AgregarObjeto(String id, String valor, List<Simbolo> ElementosUT, String tipo)
         {
             if (!Elementos.ContainsKey(id))
             {
-                Simbolo sim = new Simbolo(id, valor, ElementosUT,tipo) ;
+                Simbolo sim = new Simbolo(id, valor, ElementosUT, tipo);
                 Elementos.Add(id, sim);
                 System.Diagnostics.Debug.WriteLine("SE agregó objetoAVici -> " + id);
                 return true;
@@ -76,14 +79,14 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         public void MostrarObjetosx()
         {
-           
+
             foreach (DictionaryEntry datos in Elementos)
             {
-                
-                    Simbolo p = (Simbolo)datos.Value;
-                if (p.ObtenerValor() == "OBJETO_BRAY" )
+
+                Simbolo p = (Simbolo)datos.Value;
+                if (p.ObtenerValor() == "OBJETO_BRAY")
                 {
-                    if(p.ListaElementos() == null)
+                    if (p.ListaElementos() == null)
                     {
                         System.Diagnostics.Debug.WriteLine(p.ObtenerId() + "<--->" + p.ObtenerTipo());
                         System.Diagnostics.Debug.WriteLine("INICIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
@@ -97,14 +100,14 @@ namespace AnalizadorCQL.Analizadores_Codigo
                             System.Diagnostics.Debug.WriteLine(p.ListaElementos()[i].ObtenerId() + "--" + p.ListaElementos()[i].ObtenerTipo() + "--" + p.ListaElementos()[i].ObtenerValor());
                         }
                     }
-                   
+
                 }
             }
         }
 
-        public List<Simbolo> ElementosUT (String id)
+        public List<Simbolo> ElementosUT(String id)
         {
-            
+
             List<Simbolo> Listaxx = new List<Simbolo>();
             foreach (DictionaryEntry datos in Elementos)
             {
@@ -120,14 +123,14 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         public Boolean ExisteVariable(String id)
         {
-            if (Elementos.ContainsKey(id) ==true)
+            if (Elementos.ContainsKey(id) == true)
             {
-                
+
                 return true;
             }
             else
             {
-                
+
                 return false;
             }
         }
@@ -247,7 +250,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 if (datos.Key.ToString().Contains(id))
                 {
                     Simbolo p = (Simbolo)datos.Value;
-                    System.Diagnostics.Debug.WriteLine("NombreFuncion -> " + datos.Key.ToString() + " funcion " + p.NombreFuncionGuardada() + " #Par " + p.lalista().Count  + " #retu " + p.lalista2().Count );
+                    System.Diagnostics.Debug.WriteLine("NombreFuncion -> " + datos.Key.ToString() + " funcion " + p.NombreFuncionGuardada() + " #Par " + p.lalista().Count + " #retu " + p.lalista2().Count);
                 }
             }
         }
@@ -373,7 +376,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     a++;
                 }
             }
-            
+
             return a;
         }
 
@@ -402,11 +405,11 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 if (datos.Key.ToString().Contains(id))
                 {
                     Simbolo p = (Simbolo)datos.Value;
-                    if(p.Nombre().ToUpper() == Nombre.ToUpper())
+                    if (p.Nombre().ToUpper() == Nombre.ToUpper())
                     {
                         Mismos = true;
                     }
-                  
+
                 }
             }
 
@@ -421,7 +424,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 if (datos.Key.ToString().Contains(id))
                 {
                     Simbolo p = (Simbolo)datos.Value;
-                    System.Diagnostics.Debug.WriteLine("USUARIOS->" + p.Nombre()  + " Password:->" + p.Pass());
+                    System.Diagnostics.Debug.WriteLine("USUARIOS->" + p.Nombre() + " Password:->" + p.Pass());
 
                 }
             }
@@ -512,20 +515,20 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
         }
 
-        
+
         public int CantidadDeFunciones()
         {
             String id = "BRAY-FUNC";
             int a = 0;
-           
-                foreach (DictionaryEntry datos in Elementos)
-                {
+
+            foreach (DictionaryEntry datos in Elementos)
+            {
                 if (datos.Key.ToString().Contains(id))
-                    {
-                        a++;
-                    }
+                {
+                    a++;
                 }
-            
+            }
+
 
             return a;
         }
@@ -538,12 +541,12 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 if (datos.Key.ToString().Contains(id))
                 {
                     Simbolo p = (Simbolo)datos.Value;
-                    System.Diagnostics.Debug.WriteLine("NombreFuncion -> " + datos.Key.ToString() + " funcion "+ p.NombreFuncionGuardada() + " #Par " + p.lalista().Count);
+                    System.Diagnostics.Debug.WriteLine("NombreFuncion -> " + datos.Key.ToString() + " funcion " + p.NombreFuncionGuardada() + " #Par " + p.lalista().Count);
                 }
             }
         }
 
-        public void NuevasFunciones (Entorno x)
+        public void NuevasFunciones(Entorno x)
         {
             String id = "BRAY-FUNC";
             foreach (DictionaryEntry datos in Elementos)
@@ -552,7 +555,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 {
                     Simbolo p = (Simbolo)datos.Value;
                     //System.Diagnostics.Debug.WriteLine("NombreFuncion -> " + datos.Key.ToString() + " funcion " + p.NombreFuncionGuardada() + " #Par " + p.lalista().Count);
-                    Boolean y = x.AgregarFuncion(datos.Key.ToString(), p.NombreFuncionGuardada(), p.ObtenerTipo(),p.lalista(),p.Sentencias());
+                    Boolean y = x.AgregarFuncion(datos.Key.ToString(), p.NombreFuncionGuardada(), p.ObtenerTipo(), p.lalista(), p.Sentencias());
                 }
             }
         }
@@ -567,7 +570,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     Simbolo p = (Simbolo)datos.Value;
                     if (p.NombreFuncionGuardada().ToUpper().Contains(NombreFuncion.ToUpper()) == true)
                     {
-                        if(p.lalista().Count == 0)
+                        if (p.lalista().Count == 0)
                         {
                             return p.Sentencias();
                         }
@@ -580,7 +583,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
         public Boolean MismosParametros(String Nombre, List<String> Listax)
         {
             String id = "BRAY-FUNC";
-          
+
             foreach (DictionaryEntry datos in Elementos)
             {
                 if (datos.Key.ToString().Contains(id))
@@ -588,19 +591,19 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     Simbolo p = (Simbolo)datos.Value;
                     if (p.NombreFuncionGuardada().ToString().ToUpper() == Nombre.ToUpper())
                     {
-                       if(p.lalista().Count == Listax.Count)
+                        if (p.lalista().Count == Listax.Count)
                         {
-                            for(int i = 0; i < Listax.Count; i++)
+                            for (int i = 0; i < Listax.Count; i++)
                             {
                                 string[] separadas;
                                 separadas = Listax[i].Split('*');
-                                if(p.lalista()[i].ToUpper().Contains(separadas[0].ToUpper()) == true)
+                                if (p.lalista()[i].ToUpper().Contains(separadas[0].ToUpper()) == true)
                                 {
                                     return true;
                                 }
                                 else
                                 {
-                                    for(int j = 0; j < p.lalista().Count; j++)
+                                    for (int j = 0; j < p.lalista().Count; j++)
                                     {
                                         if (p.lalista()[j].ToUpper().Contains(separadas[1].ToUpper()) == true)
                                         {
@@ -609,7 +612,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                                     }
                                 }
                             }
-                            
+
                         }
                     }
                 }
@@ -633,10 +636,10 @@ namespace AnalizadorCQL.Analizadores_Codigo
                         if (p.lalista().Count == Listax.Count)
                         {
 
-                            for(int i =0; i<Listax.Count; i++)
+                            for (int i = 0; i < Listax.Count; i++)
                             {
                                 System.Diagnostics.Debug.WriteLine(p.lalista()[i] + "JJ" + Listax[i]);
-                                if(p.lalista()[i].ToUpper().Contains(Listax[i].ToUpper()) == true)
+                                if (p.lalista()[i].ToUpper().Contains(Listax[i].ToUpper()) == true)
                                 {
                                     Mismos = true;
                                 }
@@ -689,7 +692,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
             return Listaxx;
-            
+
         }
 
         public NodoAbstracto ElNodoParametros(String Nombre, List<String> Listax)
@@ -737,7 +740,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 if (datos.Key.ToString().Contains(id))
                 {
                     Simbolo p = (Simbolo)datos.Value;
-                    if(p.NombreFuncionGuardada().ToString().ToUpper() == Nombre.ToUpper())
+                    if (p.NombreFuncionGuardada().ToString().ToUpper() == Nombre.ToUpper())
                     {
                         return true;
                     }
@@ -747,7 +750,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
         }
         public Boolean ExisteListaConLaMismaCantidadDeParametros(String Nombre, int elementos)
         {
-            
+
             String id = "BRAY-FUNC";
             foreach (DictionaryEntry datos in Elementos)
             {
@@ -806,7 +809,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 if (datos.Key.ToString().Contains(id))
                 {
                     Simbolo p = (Simbolo)datos.Value;
-                    if ( (p.NombreBDP().ToUpper() == Nombre.ToUpper()) && (p.UsuarioBDP().ToUpper() == BD.ToUpper() ))
+                    if ((p.NombreBDP().ToUpper() == Nombre.ToUpper()) && (p.UsuarioBDP().ToUpper() == BD.ToUpper()))
                     {
                         Mismos = true;
                     }
@@ -840,7 +843,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     Simbolo p = (Simbolo)datos.Value;
                     if ((p.NombreBDP().ToUpper() == Nombre.ToUpper()) && (p.UsuarioBDP().ToUpper() == BD.ToUpper()))
                     {
-                        return  p.ObtenerId();
+                        return p.ObtenerId();
                     }
 
                 }
@@ -871,9 +874,9 @@ namespace AnalizadorCQL.Analizadores_Codigo
         {
             if (!Elementos.ContainsKey(id))
             {
-                Simbolo sim = new Simbolo(id, NombreTabla,BD,Simblosx,ListaPK);
+                Simbolo sim = new Simbolo(id, NombreTabla, BD, Simblosx, ListaPK);
                 Elementos.Add(id, sim);
-                System.Diagnostics.Debug.WriteLine("EL USUARIO  se tabla -> " + NombreTabla + " A BD->"+BD);
+                System.Diagnostics.Debug.WriteLine("EL USUARIO  se tabla -> " + NombreTabla + " A BD->" + BD);
                 return true;
             }
             else
@@ -891,7 +894,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 if (datos.Key.ToString().Contains(id))
                 {
                     Simbolo p = (Simbolo)datos.Value;
-                    if ( (p.Nombre().ToUpper() == Nombre.ToUpper()) && ( p.NombreBDP().ToUpper() == BD.ToUpper()))
+                    if ((p.Nombre().ToUpper() == Nombre.ToUpper()) && (p.NombreBDP().ToUpper() == BD.ToUpper()))
                     {
                         Mismos = true;
                     }
@@ -911,13 +914,13 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     Simbolo p = (Simbolo)datos.Value;
                     System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                     String LLaves = "";
-                    for(int i = 0; i < p.lalista().Count; i++)
+                    for (int i = 0; i < p.lalista().Count; i++)
                     {
                         LLaves = LLaves + p.lalista()[i] + ",";
                     }
                     String LosCampos = "";
                     System.Diagnostics.Debug.WriteLine("Llaves->" + LLaves);
-                    for(int i = 0; i < p.ListaElementos().Count; i++)
+                    for (int i = 0; i < p.ListaElementos().Count; i++)
                     {
                         LosCampos = LosCampos + p.ListaElementos()[i].ObtenerId() + " " + p.ListaElementos()[i].ObtenerTipo() + "  |  ";
                     }
@@ -934,7 +937,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 if (datos.Key.ToString().Contains(id))
                 {
                     Simbolo p = (Simbolo)datos.Value;
-                    if(p.Nombre().ToUpper() == tabla.ToUpper() && p.NombreBDP().ToUpper() == BD.ToUpper())
+                    if (p.Nombre().ToUpper() == tabla.ToUpper() && p.NombreBDP().ToUpper() == BD.ToUpper())
                     {
                         System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                         String LLaves = "";
@@ -950,7 +953,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                         }
                         System.Diagnostics.Debug.WriteLine(LosCampos);
                     }
-                   
+
 
                 }
             }
@@ -1011,8 +1014,8 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     Simbolo p = (Simbolo)datos.Value;
                     if ((p.Nombre().ToUpper() == Nombre.ToUpper()) && (p.NombreBDP().ToUpper() == BD.ToUpper()))
                     {
-                        
-                        for(int i = 0; i < lista.Count; i++)
+
+                        for (int i = 0; i < lista.Count; i++)
                         {
                             p.ListaElementos().Add(lista[i]);
                         }
@@ -1020,7 +1023,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
                 }
             }
-            
+
         }
         public void AlterDropTablaBD(String Nombre, String BD, String Atributo)
         {
@@ -1032,14 +1035,14 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     Simbolo p = (Simbolo)datos.Value;
                     if ((p.Nombre().ToUpper() == Nombre.ToUpper()) && (p.NombreBDP().ToUpper() == BD.ToUpper()))
                     {
-                        for(int i = 0; i < p.ListaElementos().Count; i++)
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
                         {
                             if (p.ListaElementos()[i].ObtenerId() == Atributo)
                             {
                                 p.ListaElementos().Remove(p.ListaElementos()[i]);
                             }
                         }
-                       
+
                     }
 
                 }
@@ -1106,9 +1109,9 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     String Cadena = "";
                     Simbolo p = (Simbolo)datos.Value;
                     //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
-                    if(p.Nombre() == tabla && p.NombreBDP() == BD)
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
                     {
-                        for(int i = 0; i < p.ListaElementos().Count; i++)
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
                         {
                             Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
                         }
@@ -1140,7 +1143,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
         }
-        public void MostrarCampos2Limite(String tabla, String BD,int limite)
+        public void MostrarCampos2Limite(String tabla, String BD, int limite)
         {
             String id = "BRAY-CAM";
             int ellimite = 0;
@@ -1169,14 +1172,14 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
         }
 
-        public String MostrarCampos33(String tabla, String BD,String id)
+        public String MostrarCampos33(String tabla, String BD, String id)
         {
             String Cadena = "";
             foreach (DictionaryEntry datos in Elementos)
             {
                 if (datos.Key.ToString() == id)
                 {
-                    
+
                     Simbolo p = (Simbolo)datos.Value;
                     //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                     if (p.Nombre() == tabla && p.NombreBDP() == BD)
@@ -1199,17 +1202,17 @@ namespace AnalizadorCQL.Analizadores_Codigo
             {
                 if (datos.Key.ToString().Contains(id))
                 {
-                    
+
                     Simbolo p = (Simbolo)datos.Value;
                     //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                     if (p.Nombre() == tabla && p.NombreBDP() == BD)
                     {
                         for (int i = 0; i < lista.Count; i++)
                         {
-                            p.ListaElementos().Add(lista[i]);           
+                            p.ListaElementos().Add(lista[i]);
                         }
                     }
-                    
+
 
                 }
             }
@@ -1229,7 +1232,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     {
                         for (int i = 0; i < p.ListaElementos().Count; i++)
                         {
-                            if(p.ListaElementos()[i].ObtenerId() == Campo)
+                            if (p.ListaElementos()[i].ObtenerId() == Campo)
                             {
                                 p.ListaElementos().Remove(p.ListaElementos()[i]);
                             }
@@ -1253,9 +1256,9 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                     if (p.Nombre() == tabla && p.NombreBDP() == BD)
                     {
-                        Total = Total +1;
-                       
-                    }               
+                        Total = Total + 1;
+
+                    }
 
                 }
             }
@@ -1265,7 +1268,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         public Boolean LlaveRepetida(String tabla, String BD, String Campo, String Valor)
         {
-            
+
             String id = "BRAY-CAM";
             foreach (DictionaryEntry datos in Elementos)
             {
@@ -1275,9 +1278,9 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                     if (p.Nombre() == tabla && p.NombreBDP() == BD)
                     {
-                        for(int i = 0; i < p.ListaElementos().Count; i++)
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
                         {
-                            if (p.ListaElementos()[i].ObtenerId()== Campo)
+                            if (p.ListaElementos()[i].ObtenerId() == Campo)
                             {
                                 if (p.ListaElementos()[i].ObtenerValor() == Valor)
                                 {
@@ -1305,7 +1308,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     {
                         for (int i = 0; i < p.ListaElementos().Count; i++)
                         {
-                            if(p.ListaElementos()[i].ObtenerId().ToUpper() == Campo.ToUpper())
+                            if (p.ListaElementos()[i].ObtenerId().ToUpper() == Campo.ToUpper())
                             {
                                 if (p.ListaElementos()[i].ObtenerValor().ToUpper() == Valor.ToUpper())
                                 {
@@ -1314,13 +1317,13 @@ namespace AnalizadorCQL.Analizadores_Codigo
                             }
                         }
                     }
-                    
+
 
                 }
             }
             return false;
         }
-        
+
         public void ActualizarCampos(String tabla, String BD, String Campo, String Valor)
         {
             String id = "BRAY-CAM";
@@ -1346,7 +1349,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
         }
 
-        public void ActualizarCampos2(String id2,String tabla, String BD, String Campo, String Valor)
+        public void ActualizarCampos2(String id2, String tabla, String BD, String Campo, String Valor)
         {
             //String id = "BRAY-CAM";
             foreach (DictionaryEntry datos in Elementos)
@@ -1370,7 +1373,6 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
         }
-
         public List<Simbolo> TodosLosCampos(String tabla, String BD)
         {
             List<Simbolo> Campos = new List<Simbolo>();
@@ -1383,12 +1385,12 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                     if (p.Nombre() == tabla && p.NombreBDP() == BD)
                     {
-                        for(int i = 0; i < p.ListaElementos().Count; i++)
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
                         {
                             Simbolo X = new Simbolo(p.ListaElementos()[i].ObtenerId(), p.ListaElementos()[i].ObtenerValor(), p.ListaElementos()[i].ObtenerTipo(), p.ObtenerId());
                             Campos.Add(X);
                         }
-                        
+
                     }
 
                 }
@@ -1396,7 +1398,6 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
             return Campos;
         }
-
         public void MostrarCamposExactos(String tabla, String BD, List<String> Campos)
         {
             String id = "BRAY-CAM";
@@ -1415,7 +1416,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                             {
                                 Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
                             }
-                            
+
                         }
                     }
                     System.Diagnostics.Debug.WriteLine(Cadena);
@@ -1442,22 +1443,20 @@ namespace AnalizadorCQL.Analizadores_Codigo
                             {
                                 Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
                             }
-                            
+
 
                         }
                     }
                     System.Diagnostics.Debug.WriteLine(Cadena);
                     ellimite++;
                 }
-               
+
                 if (ellimite == limite)
                 {
                     break;
                 }
             }
         }
-
-
         public String MostrarCamposExactos3(String tabla, String BD, List<String> Campos, String id)
         {
             String Cadena = "";
@@ -1466,7 +1465,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
             {
                 if (datos.Key.ToString() == id)
                 {
-                    
+
                     Simbolo p = (Simbolo)datos.Value;
                     //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                     if (p.Nombre() == tabla && p.NombreBDP() == BD)
@@ -1486,10 +1485,159 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
             return Cadena;
         }
+        public void AgregarADiccionario(String tabla, String BD)
+        {
+            DiccionarioDeTablas.Clear();
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        DiccionarioDeTablas.Add(datos.Key.ToString(), p);
+                    }
 
+
+                }
+            }
+        }
+        public void MostrarDiccionario()
+        {
+            System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO->\n\n");
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas)
+            {
+                String Cadena = "";
+                for (int i = 0; i < kvp.Value.ListaElementos().Count; i++)
+                {
+                    Cadena = Cadena + kvp.Value.ListaElementos()[i].ObtenerValor() + "             |  ";
+                }
+                System.Diagnostics.Debug.WriteLine(Cadena);
+            }
+        }
+        public Dictionary<String, String> OrdenarrDiccionario(String Campo)
+        {
+            Dictionary<String, String> DiccionarioParametros = new Dictionary<String, String>();
+            // System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO->\n\n");
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas)
+            {
+                //System.Diagnostics.Debug.WriteLine(kvp.Key + "->" + kvp.Value.ObtenerId());
+                for (int i = 0; i < kvp.Value.ListaElementos().Count; i++)
+                {
+                    if (kvp.Value.ListaElementos()[i].ObtenerId() == Campo)
+                    {
+                        DiccionarioParametros.Add(kvp.Key, kvp.Value.ListaElementos()[i].ObtenerValor());
+                    }
+                }
+
+            }
+            return DiccionarioParametros;
+        }
+        public void MostrarDiccionario2x()
+        {
+            System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO->\n\n");
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas2)
+            {
+                String Cadena = "";
+                for (int i = 0; i < kvp.Value.ListaElementos().Count; i++)
+                {
+                    Cadena = Cadena + kvp.Value.ListaElementos()[i].ObtenerValor() + "             |  ";
+                }
+                System.Diagnostics.Debug.WriteLine(Cadena);
+                DiccionarioDeTablas3.Add(kvp.Key, kvp.Value);
+            }
+        }
+
+    
+        public void LimpiarDic()
+        {
+            DiccionarioDeTablas.Clear();
+        }
+        public void OrdenarDiccionarioFinal(String Llave)
+        {
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas)
+            {
+                System.Diagnostics.Debug.WriteLine("romeoit"+kvp.Key);
+                
+                if(kvp.Key == Llave)
+                {
+                    //System.Diagnostics.Debug.WriteLine("si entoro");
+  
+                      DiccionarioDeTablas2.Add(kvp.Key, kvp.Value);
+                }
+            }
+           
+        }
+        public void LImpiar2()
+        {
+            DiccionarioDeTablas2.Clear();
+        }
+        
+        public Hashtable TablaInicial(String tabla, String BD)
+        {
+            Hashtable CampoYSuID = new Hashtable();
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    String Cadena = "";
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        CampoYSuID.Add(datos.Key, p);
+                    }
+                    System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+            return CampoYSuID;
+        }
+        public void MostrarDiccionario2()
+        {
+            System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO-Tabla->\n\n");
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas3)
+            {
+                String Cadena = "";
+                for (int i = 0; i < kvp.Value.ListaElementos().Count; i++)
+                {
+                    Cadena = Cadena + kvp.Value.ListaElementos()[i].ObtenerValor() + "             |  ";
+                }
+                System.Diagnostics.Debug.WriteLine(Cadena);
+            }
+        }
+        public void MostrarDiccionario2(List<String> Lista)
+        {
+            //System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO-Tabla->\n\n");
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas3)
+            {
+                String Cadena = "";
+                for (int i = 0; i < kvp.Value.ListaElementos().Count; i++)
+                {
+                    for(int x = 0; x < Lista.Count; x++)
+                    {
+                        //System.Diagnostics.Debug.WriteLine("MINI"+Lista[x]);
+                        if (kvp.Value.ListaElementos()[i].ObtenerId() == Lista[x].Replace(" (id)", ""))
+                        {
+                            Cadena = Cadena + kvp.Value.ListaElementos()[i].ObtenerValor() + "             |  ";
+                        }
+                    }
+                    
+                }
+                System.Diagnostics.Debug.WriteLine(Cadena);
+            }
+        }
+        public void Devolver2()
+        {
+            DiccionarioDeTablas3.Clear();
+        }
+        
         #endregion
 
-
+        #region otros que no me acuerdo para que isrven
         public String ElementosObjetos(String Objeto)
         { String supercadena = "INICIO"; 
                 foreach (DictionaryEntry datos in Elementos)
@@ -1955,6 +2103,6 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
 
         }
-
+        #endregion
     }
 }
