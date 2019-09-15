@@ -1195,6 +1195,31 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
             return Cadena;
         }
+        public String MostrarCampos33Diccionario(String tabla, String BD, String id)
+        {
+            String Cadena = "";
+            foreach (KeyValuePair<String, Simbolo> datos in DiccionarioDeTablas3)
+            {
+                if (datos.Key.ToString() == id)
+                {
+
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                        }
+                    }
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+            return Cadena;
+        }
+
+
         public void AlterADDCampos(String tabla, String BD, List<Simbolo> lista)
         {
             String id = "BRAY-CAM";
@@ -1485,6 +1510,35 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
             return Cadena;
         }
+        public String MostrarCamposExactos3Diccionario(String tabla, String BD, List<String> Campos, String id)
+        {
+            String Cadena = "";
+            //String id = "BRAY-CAM";
+            foreach (KeyValuePair < String, Simbolo > datos in DiccionarioDeTablas3)
+            {
+                if (datos.Key.ToString() == id)
+                {
+
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
+                            {
+                                Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                            }
+
+                        }
+                    }
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+            return Cadena;
+        }
+
         public void AgregarADiccionario(String tabla, String BD)
         {
             DiccionarioDeTablas.Clear();

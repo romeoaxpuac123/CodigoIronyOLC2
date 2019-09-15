@@ -1827,9 +1827,11 @@ namespace AnalizadorCQL.Analizadores
                             STN.Clear();
                             return nuevo;
                         }
-                        else if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT"))
+                        else if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true &&
+                            root.ChildNodes.ElementAt(6).ToString().ToUpper().Contains("ORDER"))
                         {
-                            NodoAbstracto nuevo = new SELECT_ORDER_BY_LIMIT("SIMPLE");
+                            //System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
+                            NodoAbstracto nuevo = new SELECT_WHERE_ORDER_BY("SIMPLE");
                             NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
                             nuevo.Hijos.Add(Tabla);
                             STN.Clear();
@@ -1846,7 +1848,31 @@ namespace AnalizadorCQL.Analizadores
                                 nuevo.ListaR1.Add(STN[i]);
                             }
                             STN.Clear();
-                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(8));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(9)));
+                            return nuevo;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT"))
+                        {
+                            NodoAbstracto nuevo = new SELECT_ORDER_BY_LIMIT("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                          
                             return nuevo;
                         }
 
@@ -2000,9 +2026,41 @@ namespace AnalizadorCQL.Analizadores
                         return nuevo;
 
                     }
+                    else if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true &&
+                       root.ChildNodes.ElementAt(6).ToString().ToUpper().Contains("ORDER"))
+                    {
+                        //System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
+                        NodoAbstracto nuevo = new SELECT_WHERE_ORDER_BY_LIMIT("SIMPLE");
+                        NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(Tabla);
+                        STN.Clear();
+                        Atributos(root.ChildNodes.ElementAt(1));
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+                        nuevo.ListaR1 = new List<String>();
+                        Parametros_Order_By(root.ChildNodes.ElementAt(6));
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaR1.Add(STN[i]);
+                        }
+                        STN.Clear();
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
+                        nuevo.ListaR1 = new List<String>();
+                        Parametros_Order_By(root.ChildNodes.ElementAt(8));
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaR1.Add(STN[i]);
+                        }
+                        STN.Clear();
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(10)));
+                        return nuevo;
+
+                    }
 
 
-                   
                     break;
                 #endregion
                 default:

@@ -293,7 +293,9 @@ namespace AnalizadorCQL.Analizadores
                        | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + PYC
                        | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + LIMIT + E + PYC
                        | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + PYC
-                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + PYC; 
+                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E +PYC;  
 
             LISTA_IGUALES.Rule = id + igual + E + coma + LISTA_IGUALES
                        | id + igual + E;

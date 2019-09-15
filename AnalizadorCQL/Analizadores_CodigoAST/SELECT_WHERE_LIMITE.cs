@@ -92,9 +92,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
 
             }
-            String Ellimite = this.Hijos[2].Ejecutar(entorno);
+            String Ellimite = this.Hijos[2].Ejecutar(entorno).Replace(" (id)", "").Replace(" (id2)", "").Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "");
 
-            if(Int32.Parse(Ellimite)> Resultado.Count)
+            if (Int32.Parse(Ellimite)> Resultado.Count)
             {
                 return "#ERROR el limite es mayor que la cantidad de campos";
             }
