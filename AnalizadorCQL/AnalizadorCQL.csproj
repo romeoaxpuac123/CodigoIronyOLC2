@@ -193,6 +193,10 @@
     <Compile Include="Analizadores_CodigoAST\BD.cs" />
     <Compile Include="Analizadores_CodigoAST\BREAK.cs" />
     <Compile Include="Analizadores_CodigoAST\CALL.cs" />
+    <Compile Include="Analizadores_CodigoAST\COUNT_SELECT.cs" />
+    <Compile Include="Analizadores_CodigoAST\COUNT_SELECT_LIMIT.cs" />
+    <Compile Include="Analizadores_CodigoAST\COUNT_SELECT_WHERE.cs" />
+    <Compile Include="Analizadores_CodigoAST\COUNT_SELECT_WHERE_LIMIT.cs" />
     <Compile Include="Analizadores_CodigoAST\DECLARACIONINSTANCIA.cs" />
     <Compile Include="Analizadores_CodigoAST\DeclararAsignacion.cs" />
     <Compile Include="Analizadores_CodigoAST\Declarar.cs" />

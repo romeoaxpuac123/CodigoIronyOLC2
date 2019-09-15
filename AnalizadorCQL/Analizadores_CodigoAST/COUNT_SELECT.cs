@@ -6,37 +6,32 @@ using AnalizadorCQL.Analizadores_Codigo;
 
 namespace AnalizadorCQL.Analizadores_CodigoAST
 {
-    public class SELECT_LIMIT : NodoAbstracto
+    public class COUNT_SELECT : NodoAbstracto
     {
-        public SELECT_LIMIT(String Nombre) : base(Nombre)
+        public COUNT_SELECT(String Nombre) : base(Nombre)
         {
         }
 
         public override void Ejecutar()
         {
-            System.Diagnostics.Debug.WriteLine("Ejecucion SELECT-LIMIT");
+            System.Diagnostics.Debug.WriteLine("Ejecucion count-select");
         }
 
         public override string Ejecutar(Entorno entorno)
         {
-            System.Diagnostics.Debug.WriteLine("Ejecucion SELECT-LIMIT");
+            System.Diagnostics.Debug.WriteLine("Ejecucion count-select");
             String Tabla = this.Hijos[0].Nombre;
             String BD = entorno.Tabla();
-            System.Diagnostics.Debug.WriteLine("Ejecucion SELECT-LIMIT tabla->" + Tabla);
-            System.Diagnostics.Debug.WriteLine("Ejecucion SELECT-LIMIT bd->" + BD);
-            String ElLimite = this.Hijos[1].Ejecutar(entorno).Replace(" (numero)", "");
-            System.Diagnostics.Debug.WriteLine("Ejecucion SELECT-LIMIT limite->" + ElLimite);
-            if (Int32.Parse(ElLimite) < 0)
-            {
-                return "#ERROR el parametro de limite invalido";
-            }
+            System.Diagnostics.Debug.WriteLine("Ejecucion SELECT1 tabla->" + Tabla);
+            System.Diagnostics.Debug.WriteLine("Ejecucion SELECT1 bd->" + BD);
+            System.Diagnostics.Debug.WriteLine("Ejecucion CAMPOS INCIO");
             List<Simbolo> Campos = new List<Simbolo>();
             Campos = entorno.TablaBD(Tabla, BD);
             if (this.ListaID1.Count == 1 && this.ListaID1[0] == "* (Key symbol)")
             {
-                entorno.MostrarUTablas2(Tabla, BD);
-                entorno.MostrarCampos2Limite(Tabla, BD, Int32.Parse(ElLimite));
-                return "SELECT SIMPLE";
+                //entorno.MostrarUTablas2(Tabla, BD);
+                entorno.MostrarCampos2Numero(Tabla, BD);
+                return entorno.MostrarCampos2Numero(Tabla, BD).ToString();
             }
             List<String> CamposAMostrar = new List<String>();
             for (int i = 0; i < this.ListaID1.Count; i++)
@@ -58,14 +53,19 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
             }
             System.Diagnostics.Debug.WriteLine("Ejecucion CAMPOS FIN");
-            String LineaDeCampos = "\n\nSELECION-limite\n\nTabla->" + Tabla + " BD:->" + BD + "\n";
+            String LineaDeCampos = "\n\nSELECION\n\nTabla->" + Tabla + " BD:->" + BD + "\n";
             for (int i = 0; i < CamposAMostrar.Count; i++)
             {
                 LineaDeCampos = LineaDeCampos + CamposAMostrar[i] + "         |";
             }
             System.Diagnostics.Debug.WriteLine(LineaDeCampos);
-            entorno.MostrarCamposExactosLimite(Tabla, BD, CamposAMostrar,Int32.Parse(ElLimite));
-            return "SELECT-LIMIT";
+            entorno.MostrarCamposExactos(Tabla, BD, CamposAMostrar);
+
+
+            //this.TipoDato = "entero";
+
+
+            return entorno.MostrarCamposExactosNumero(Tabla, BD, CamposAMostrar).ToString();
         }
     }
 }

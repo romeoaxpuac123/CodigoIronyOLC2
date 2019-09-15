@@ -6,19 +6,19 @@ using AnalizadorCQL.Analizadores_Codigo;
 
 namespace AnalizadorCQL.Analizadores_CodigoAST
 {
-    public class SELECT_LIMIT : NodoAbstracto
+    public class COUNT_SELECT_LIMIT : NodoAbstracto
     {
-        public SELECT_LIMIT(String Nombre) : base(Nombre)
+        public COUNT_SELECT_LIMIT(String Nombre) : base(Nombre)
         {
         }
-
         public override void Ejecutar()
         {
-            System.Diagnostics.Debug.WriteLine("Ejecucion SELECT-LIMIT");
+            System.Diagnostics.Debug.WriteLine("Ejecucion COUNT-SELECT-LIMIT");
         }
 
         public override string Ejecutar(Entorno entorno)
         {
+            System.Diagnostics.Debug.WriteLine("Ejecucion COUNT-SELECT-LIMIT");
             System.Diagnostics.Debug.WriteLine("Ejecucion SELECT-LIMIT");
             String Tabla = this.Hijos[0].Nombre;
             String BD = entorno.Tabla();
@@ -34,9 +34,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             Campos = entorno.TablaBD(Tabla, BD);
             if (this.ListaID1.Count == 1 && this.ListaID1[0] == "* (Key symbol)")
             {
-                entorno.MostrarUTablas2(Tabla, BD);
-                entorno.MostrarCampos2Limite(Tabla, BD, Int32.Parse(ElLimite));
-                return "SELECT SIMPLE";
+                //entorno.MostrarUTablas2(Tabla, BD);
+                return entorno.MostrarCampos2LimiteNumero(Tabla, BD, Int32.Parse(ElLimite)).ToString();
+                //return "8";
             }
             List<String> CamposAMostrar = new List<String>();
             for (int i = 0; i < this.ListaID1.Count; i++)
@@ -64,8 +64,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 LineaDeCampos = LineaDeCampos + CamposAMostrar[i] + "         |";
             }
             System.Diagnostics.Debug.WriteLine(LineaDeCampos);
-            entorno.MostrarCamposExactosLimite(Tabla, BD, CamposAMostrar,Int32.Parse(ElLimite));
-            return "SELECT-LIMIT";
+            return entorno.MostrarCamposExactosLimiteNumero(Tabla, BD, CamposAMostrar, Int32.Parse(ElLimite)).ToString();
+            //return "#ERROR DATO INCORRECTO EN COUNT";
         }
     }
 }

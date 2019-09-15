@@ -1692,7 +1692,7 @@ namespace AnalizadorCQL.Analizadores
                     {
                         NodoAbstracto nuevo = new DOWHILE("DOWHILE");
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
-                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));                        
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
                         return nuevo;
                     }
                     else if (root.ToString().Contains("SINO"))
@@ -1717,7 +1717,7 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.TipoDato = "SET";
                         }
                         return nuevo;
-                           
+
                     }
                     else if (root.ToString().ToUpper().Contains("USER_TYPE2"))
                     {
@@ -1733,11 +1733,11 @@ namespace AnalizadorCQL.Analizadores
                         STN.Clear();
                         System.Diagnostics.Debug.WriteLine("______x____________________________________________");
 
-                      
+
                         System.Diagnostics.Debug.WriteLine("sdaf");
                         AtributosUT(root.ChildNodes.ElementAt(4));
                         System.Diagnostics.Debug.WriteLine("sdaf");
-                       for (int i = 0; i < STN.Count; i++)
+                        for (int i = 0; i < STN.Count; i++)
                         {
                             nuevo.ListaID1.Add(STN[i]);
                         }
@@ -1745,7 +1745,27 @@ namespace AnalizadorCQL.Analizadores
                         System.Diagnostics.Debug.WriteLine("_______f___________________________________________");
                         return nuevo;
                     }
-                    if (root.ToString() == "DDL")
+                    else if (root.ToString() == "E")
+                    {
+                       
+                        if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("COUNT")))
+                        {
+                            NodoAbstracto nuevo = new COUNT_SELECT("EXP");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(4));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.TipoDato = "entero";
+                            return nuevo;
+                        }
+                    }
+
+                        if (root.ToString() == "DDL")
                     {
                         if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true)
                         {
@@ -1961,7 +1981,44 @@ namespace AnalizadorCQL.Analizadores
                         
 
                     }
+                    else if (root.ToString() == "E")
+                    {
 
+                        if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("COUNT"))
+                            && ((root.ChildNodes.ElementAt(7).ToString().ToUpper().Contains("LIMIT"))) )
+                        {
+                            NodoAbstracto nuevo = new COUNT_SELECT_LIMIT("EXP");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(4));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
+                            nuevo.TipoDato = "entero";
+                            return nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("COUNT"))
+                           && ((root.ChildNodes.ElementAt(7).ToString().ToUpper().Contains("WHERE"))))
+                        {
+                            NodoAbstracto nuevo = new COUNT_SELECT_WHERE("EXP");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(4));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
+                            nuevo.TipoDato = "entero";
+                            return nuevo;
+                        }
+                    }
                     break;
                 #endregion
                 case 12:                    
@@ -2063,6 +2120,31 @@ namespace AnalizadorCQL.Analizadores
 
                     break;
                 #endregion
+                case 13:
+                    if (root.ToString() == "E")
+                    {
+
+                        if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("COUNT"))
+                            )
+                        {
+                            NodoAbstracto nuevo = new COUNT_SELECT_WHERE_LIMIT("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(4));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(10)));
+                            nuevo.TipoDato = "entero";
+                            return nuevo;
+                        }
+                    }
+                        break;
+
                 default:
                 break;
                  
@@ -2225,7 +2307,7 @@ namespace AnalizadorCQL.Analizadores
         }
 
                     #endregion
-                    public void Analizar(NodoAbstracto raiz)
+        public void Analizar(NodoAbstracto raiz)
         {
             try
             {

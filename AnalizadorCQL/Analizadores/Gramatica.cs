@@ -126,7 +126,11 @@ namespace AnalizadorCQL.Analizadores
             var BY = ToTerm("BY");
             var ASC = ToTerm("ASC");
             var DESC = ToTerm("DESC");
-
+            var COUNT = ToTerm("COUNT");
+            var MIN = ToTerm("MIN");
+            var MAX = ToTerm("MAX");
+            var SUM = ToTerm("SUM");
+            var AVG = ToTerm("AVG");
 
             this.RegisterOperators(8, Associativity.Left, "?");
             this.RegisterOperators(1, Associativity.Left, "+", "-");
@@ -484,9 +488,25 @@ namespace AnalizadorCQL.Analizadores
                     | E + CorcheteCA + E
                     | CorcheteAA + TIPOS_VARIABLES
                     | HOY + ParA + ParC
-                    | AHORA + ParA + ParC;
+                    | AHORA + ParA + ParC
+                    | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id+ mayor + ParC
+                    | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id +  LIMIT + E + mayor+ParC
+                    | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id + WHERE + E + mayor + ParC
+                    | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id + WHERE + E + LIMIT + E + mayor + ParC; 
 
-           
+
+            /*
+                       | SELECT + LISTA_IDS1 + FROM + id + PYC *
+                       | SELECT + LISTA_IDS1 + FROM + id + LIMIT + E + PYC *
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + PYC*
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + LIMIT + E + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E +PYC; 
+             
+             */
+
 
             #endregion
 

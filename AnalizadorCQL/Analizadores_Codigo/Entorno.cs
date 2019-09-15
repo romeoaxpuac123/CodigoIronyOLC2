@@ -1143,6 +1143,33 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
         }
+        public int MostrarCampos2Numero(String tabla, String BD)
+        {
+            int Numero = 0;
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    String Cadena = "";
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                        }
+                    }
+                    Numero++;
+                    System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+            return Numero;
+        }
+
+
         public void MostrarCampos2Limite(String tabla, String BD, int limite)
         {
             String id = "BRAY-CAM";
@@ -1170,6 +1197,38 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     break;
                 }
             }
+        }
+
+        public int MostrarCampos2LimiteNumero(String tabla, String BD, int limite)
+        {
+            int Numero = 0;
+            String id = "BRAY-CAM";
+            int ellimite = 0;
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    String Cadena = "";
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                        }
+                    }
+                    Numero++;
+                    System.Diagnostics.Debug.WriteLine(Cadena);
+                    ellimite++;
+
+                }
+                if (ellimite == limite)
+                {
+                    break;
+                }
+            }
+            return Numero;
         }
 
         public String MostrarCampos33(String tabla, String BD, String id)
@@ -1475,6 +1534,36 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
         }
+        public int MostrarCamposExactosNumero(String tabla, String BD, List<String> Campos)
+        {
+            int numero = 0;
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    String Cadena = "";
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
+                            {
+                                Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                            }
+
+                        }
+                    }
+                    numero++;
+                    System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+            return numero;
+        }
+
         public void MostrarCamposExactosLimite(String tabla, String BD, List<String> Campos, int limite)
         {
             String id = "BRAY-CAM";
@@ -1507,6 +1596,42 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     break;
                 }
             }
+        }
+        public int MostrarCamposExactosLimiteNumero(String tabla, String BD, List<String> Campos, int limite)
+        {
+            int Numero = 0;
+            String id = "BRAY-CAM";
+            int ellimite = 0;
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    String Cadena = "";
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
+                            {
+                                Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                            }
+
+
+                        }
+                    }
+                    Numero++;
+                    System.Diagnostics.Debug.WriteLine(Cadena);
+                    ellimite++;
+                }
+
+                if (ellimite == limite)
+                {
+                    break;
+                }
+            }
+            return Numero;
         }
         public String MostrarCamposExactos3(String tabla, String BD, List<String> Campos, String id)
         {
