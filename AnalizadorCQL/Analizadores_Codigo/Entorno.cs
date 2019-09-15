@@ -1423,6 +1423,32 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
             return Campos;
         }
+
+        public List<Simbolo> TodosLosCampos2(String tabla, String BD)
+        {
+            List<Simbolo> Campos = new List<Simbolo>();
+            String id = "BRAY-CAM";
+            foreach (KeyValuePair<String, Simbolo> datos in DiccionarioDeTablas3)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            Simbolo X = new Simbolo(p.ListaElementos()[i].ObtenerId(), p.ListaElementos()[i].ObtenerValor(), p.ListaElementos()[i].ObtenerTipo(), p.ObtenerId());
+                            Campos.Add(X);
+                        }
+
+                    }
+
+                }
+            }
+
+            return Campos;
+        }
         public void MostrarCamposExactos(String tabla, String BD, List<String> Campos)
         {
             String id = "BRAY-CAM";

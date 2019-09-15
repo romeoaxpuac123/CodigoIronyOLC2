@@ -124,11 +124,16 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                 entorno.LImpiar2();
             }
+            //System.Diagnostics.Debug.WriteLine("soy romoeit");
+            //entorno.MostrarDiccionario2();
+            
+
             #region parte where
             //List<Simbolo> Campos = new List<Simbolo>();
             List<String> CamposAMostrar = new List<String>();
-            Campos = entorno.TodosLosCampos(Tabla, BD);
+            List<Simbolo> Camposx = entorno.TodosLosCampos2(Tabla, BD);
             List<String> Resultado = new List<String>();
+            List<String> Lasllaves = new List<String>();
             int totalCampos = entorno.Counter(Tabla, BD);
             for (int j = 0; j < totalCampos; j++)
             {
@@ -136,18 +141,31 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 Entorno Prueba = new Entorno();
                 String IdTabla = "";
                 //System.Diagnostics.Debug.WriteLine("Ejecucion INSERTAR1 bd->" + Campos.Count);
-
-                for (int i = 0; i < Campos.Count; i++)
+                String VAriableCampo = Camposx[j].RetornarPosicionObjeto();
+                for (int i = 0; i < Camposx.Count; i++)
                 {
-                    if (Campos[i].RetornarPosicionObjeto().Contains((j + 1).ToString()) == true)
-                    {
-                        //System.Diagnostics.Debug.WriteLine("Ejecucion INSERTAR1 bd->" + Campos[i].RetornarPosicionObjeto() + "->" + i);
-                        Prueba.Agregar(Campos[i].ObtenerId(), Campos[i].ObtenerTipo(), Campos[i].ObtenerValor());
-                        IdTabla = Campos[i].RetornarPosicionObjeto();
-                    }
+                        //->  System.Diagnostics.Debug.WriteLine("Ejecucion INSERTAR1 bd-55555>" + Camposx[i].RetornarPosicionObjeto());
+                        if (Lasllaves.Contains(Camposx[i].RetornarPosicionObjeto()) == false)
+                        {
+                            Lasllaves.Add(Camposx[i].RetornarPosicionObjeto());
+                        }
+                    //Prueba.Agregar(Camposx[i].ObtenerId(), Camposx[i].ObtenerTipo(), Camposx[i].ObtenerValor());
+                    //IdTabla = Camposx[i].RetornarPosicionObjeto();
 
                 }
+                for (int i = 0; i < Camposx.Count; i++)
+                {
+                    //->  System.Diagnostics.Debug.WriteLine("Ejecucion INSERTAR1 bd-55555>" + Camposx[i].RetornarPosicionObjeto());
+                    if (Camposx[i].RetornarPosicionObjeto() == Lasllaves[j])
+                    {
+                        Prueba.Agregar(Camposx[i].ObtenerId(), Camposx[i].ObtenerTipo(), Camposx[i].ObtenerValor());
+                        IdTabla = Camposx[i].RetornarPosicionObjeto();
+                    }
+                    //Prueba.Agregar(Camposx[i].ObtenerId(), Camposx[i].ObtenerTipo(), Camposx[i].ObtenerValor());
+                    //IdTabla = Camposx[i].RetornarPosicionObjeto();
 
+                }
+                
                 String ValorPrueba = this.Hijos[1].Ejecutar(Prueba);
                 if (ValorPrueba.ToUpper().Contains("ERROR"))
                 {
@@ -168,9 +186,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                             String Campito = this.ListaID1[y].Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "").Replace(" (cadena)", "").Replace(" (id2)", "").Replace(" (id)", "");
                             CamposAMostrar.Add(Campito);
                             Boolean Exitencia = false;
-                            for (int x = 0; x < Campos.Count; x++)
+                            for (int x = 0; x < Camposx.Count; x++)
                             {
-                                if (Campos[x].ObtenerId() == Campito)
+                                if (Camposx[x].ObtenerId() == Campito)
                                 {
                                     Exitencia = true;
                                     CamposAMostrar.Add(Campito);
@@ -188,8 +206,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         }
                     }
                 }
+                
 
             }
+            
+
+            
             if (this.ListaID1.Count == 1 && this.ListaID1[0] == "* (Key symbol)")
             {
                 System.Diagnostics.Debug.WriteLine("SELECT-WHERE-ORDER-BY");
@@ -212,6 +234,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 System.Diagnostics.Debug.WriteLine(Resultado[i]);
             }
             #endregion
+            
+            
+            
             /*
             if (this.ListaID1.Count == 1 && this.ListaID1[0] == "* (Key symbol)")
             {
