@@ -1814,6 +1814,22 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 System.Diagnostics.Debug.WriteLine(Cadena);
             }
         }
+        public int MostrarDiccionario2NUmero()
+        {
+            int numero = 0;
+            System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO-Tabla->\n\n");
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas3)
+            {
+                String Cadena = "";
+                for (int i = 0; i < kvp.Value.ListaElementos().Count; i++)
+                {
+                    Cadena = Cadena + kvp.Value.ListaElementos()[i].ObtenerValor() + "             |  ";
+                }
+                numero++;
+                System.Diagnostics.Debug.WriteLine(Cadena);
+            }
+            return numero;
+        }
         public void MostrarDiccionario2(int limite)
         {
             int x = 0;
@@ -1853,6 +1869,30 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
                 System.Diagnostics.Debug.WriteLine(Cadena);
             }
+        }
+        public int MostrarDiccionario2Numero(List<String> Lista)
+        {
+            int numero = 0;
+            //System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO-Tabla->\n\n");
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas3)
+            {
+                String Cadena = "";
+                for (int i = 0; i < kvp.Value.ListaElementos().Count; i++)
+                {
+                    for (int x = 0; x < Lista.Count; x++)
+                    {
+                        //System.Diagnostics.Debug.WriteLine("MINI"+Lista[x]);
+                        if (kvp.Value.ListaElementos()[i].ObtenerId() == Lista[x].Replace(" (id)", ""))
+                        {
+                            Cadena = Cadena + kvp.Value.ListaElementos()[i].ObtenerValor() + "             |  ";
+                        }
+                    }
+
+                }
+                numero++;
+                System.Diagnostics.Debug.WriteLine(Cadena);
+            }
+            return numero;
         }
         public void MostrarDiccionario2(List<String> Lista,int limite)
         {

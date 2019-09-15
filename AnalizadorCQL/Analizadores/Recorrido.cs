@@ -1892,7 +1892,14 @@ namespace AnalizadorCQL.Analizadores
                                 nuevo.ListaID1.Add(STN[i]);
                             }
                             STN.Clear();
-                          
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(6));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
                             return nuevo;
                         }
 
@@ -2116,7 +2123,33 @@ namespace AnalizadorCQL.Analizadores
                         return nuevo;
 
                     }
+                    else if (root.ToString() == "E")
+                    {
 
+                        if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("COUNT"))
+                            )
+                        {
+                            NodoAbstracto nuevo = new COUNT_SELECT_ORDER_BY("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(4));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(9));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.TipoDato = "entero";
+                            return nuevo;
+                        }
+                    }
 
                     break;
                 #endregion
@@ -2144,7 +2177,112 @@ namespace AnalizadorCQL.Analizadores
                         }
                     }
                         break;
+                case 14:
+                    if (root.ToString() == "E")
+                    {
 
+                        if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("COUNT"))
+                            && (root.ChildNodes.ElementAt(9).ToString().ToUpper().Contains("ORDER"))
+                           )
+                        {
+                            NodoAbstracto nuevo = new COUNT_SELECT_WHERE_ORDER_BY("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(4));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(9));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(11));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(12)));
+                            nuevo.TipoDato = "entero";
+                            return nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("COUNT"))
+                            )
+                        {
+                            NodoAbstracto nuevo = new COUNT_SELECT_ORDER_BY_LIMIT("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(4));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(9));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(11)));
+                            nuevo.TipoDato = "entero";
+                            return nuevo;
+                        }
+                    }
+                    break;
+                case 16:
+                    if (root.ToString() == "E")
+                    {
+
+                        if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("COUNT"))
+
+                           )
+                        {
+                            if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("COUNT"))
+                             )
+                            {
+                                NodoAbstracto nuevo = new COUNT_SELECT_WHERE_ORDER_BY_LIMIT("SIMPLE");
+                                NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                                nuevo.Hijos.Add(Tabla);
+                                STN.Clear();
+                                Atributos(root.ChildNodes.ElementAt(4));
+                                for (int i = 0; i < STN.Count; i++)
+                                {
+                                    nuevo.ListaID1.Add(STN[i]);
+                                }
+                                STN.Clear();
+                                nuevo.ListaR1 = new List<String>();
+                                Parametros_Order_By(root.ChildNodes.ElementAt(9));
+                                for (int i = 0; i < STN.Count; i++)
+                                {
+                                    nuevo.ListaR1.Add(STN[i]);
+                                }
+                                STN.Clear();
+                                nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
+                                nuevo.ListaR1 = new List<String>();
+                                Parametros_Order_By(root.ChildNodes.ElementAt(11));
+                                for (int i = 0; i < STN.Count; i++)
+                                {
+                                    nuevo.ListaR1.Add(STN[i]);
+                                }
+                                STN.Clear();
+                                nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(13)));
+                                nuevo.TipoDato = "entero";
+                                return nuevo;
+                            }
+                        }
+                    }
+                    break;
                 default:
                 break;
                  

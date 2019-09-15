@@ -492,16 +492,20 @@ namespace AnalizadorCQL.Analizadores
                     | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id+ mayor + ParC
                     | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id +  LIMIT + E + mayor+ParC
                     | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id + WHERE + E + mayor + ParC
-                    | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id + WHERE + E + LIMIT + E + mayor + ParC; 
+                    | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id + WHERE + E + LIMIT + E + mayor + ParC
+                    | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + mayor + ParC
+                    | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC
+                    | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + mayor + ParC
+                    | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC;
 
 
             /*
                        | SELECT + LISTA_IDS1 + FROM + id + PYC *
                        | SELECT + LISTA_IDS1 + FROM + id + LIMIT + E + PYC *
                        | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + PYC*
-                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + LIMIT + E + PYC
-                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + PYC
-                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + LIMIT + E + PYC *
+                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + PYC*
+                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + PYC *
                        | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + PYC
                        | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E +PYC; 
              
