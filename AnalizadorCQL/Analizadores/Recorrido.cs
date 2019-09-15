@@ -1827,6 +1827,28 @@ namespace AnalizadorCQL.Analizadores
                             STN.Clear();
                             return nuevo;
                         }
+                        else if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT"))
+                        {
+                            NodoAbstracto nuevo = new SELECT_ORDER_BY_LIMIT("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(6));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
+                            return nuevo;
+                        }
 
                     }
                     break;
