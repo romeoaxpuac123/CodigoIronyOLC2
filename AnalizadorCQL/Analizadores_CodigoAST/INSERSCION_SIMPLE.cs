@@ -79,6 +79,33 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     if (TipoRetornox.ToUpper() == Campos[i].ObtenerTipo().ToUpper().Replace("LIST","").Replace("SET","").Replace("<","").Replace(">",""))
                     {
                         string Valor = this.ListaID1[i].Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "").Replace(" (cadena)", "").Replace(" (id2)","");
+                        if (Campos[i].ObtenerTipo() == "int")
+                        {
+                            if (Valor.Length == 1)
+                            {
+                                Valor = "000000" + Valor;
+                            }
+                            if (Valor.Length == 2)
+                            {
+                                Valor = "00000" + Valor;
+                            }
+                            if (Valor.Length == 3)
+                            {
+                                Valor = "0000" + Valor;
+                            }
+                            if (Valor.Length == 4)
+                            {
+                                Valor = "000" + Valor;
+                            }
+                            if (Valor.Length == 5)
+                            {
+                                Valor = "00" + Valor;
+                            }
+                            if (Valor.Length == 6)
+                            {
+                                Valor = "0" + Valor;
+                            }
+                        }
                         Simbolo Campito = new Simbolo(Campos[i].ObtenerId(),Valor, Campos[i].ObtenerTipo());
                         Campos2.Add(Campito);
                     }

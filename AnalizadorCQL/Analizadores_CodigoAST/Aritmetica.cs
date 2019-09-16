@@ -283,7 +283,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
 
             }
-           // System.Diagnostics.Debug.WriteLine("TIPO 1 IDx" + Tipo1 +"->" + val1);
+            
             if (Tipo2 == "id2" || Tipo2 == "id" )
             {
                 System.Diagnostics.Debug.WriteLine("TIPO 2 ID" + this.Hijos[2].NombreVariable);
@@ -346,7 +346,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 return (valor1).ToString();
             }
 
-            //System.Diagnostics.Debug.WriteLine("TIPO 2 IDx" + Tipo2 + "->" + val2);
+            //System.Diagnostics.Debug.WriteLine("TIPO 2 IDRx" + Tipo2 + "->" + val2);
+            val1 = val1.Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "");
+            val2 = val2.Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "");
+            System.Diagnostics.Debug.WriteLine("TIPO 1 IDRx" + Tipo1 + "->" + val1);
+            System.Diagnostics.Debug.WriteLine("TIPO 2 IDRx" + Tipo2 + "->" + val2);
+
             if (val1.ToUpper().Contains("#ERROR") || val2.ToUpper().Contains("#ERROR"))
             {
                 return "#Error";

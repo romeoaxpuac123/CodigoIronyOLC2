@@ -90,6 +90,33 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     }
                 }
                 System.Diagnostics.Debug.WriteLine("Valor a isnertar Campo->" + LosCampos[h].ObtenerId() + " Tipo->" + LosCampos[h].ObtenerTipo() + " Valor->" + ValorReal);
+                if (LosCampos[h].ObtenerTipo() == "int")
+                {
+                    if (ValorReal.Length == 1)
+                    {
+                        ValorReal = "000000" + ValorReal;
+                    }
+                    if (ValorReal.Length == 2)
+                    {
+                        ValorReal = "00000" + ValorReal;
+                    }
+                    if (ValorReal.Length == 3)
+                    {
+                        ValorReal = "0000" + ValorReal;
+                    }
+                    if (ValorReal.Length == 4)
+                    {
+                        ValorReal = "000" + ValorReal;
+                    }
+                    if (ValorReal.Length == 5)
+                    {
+                        ValorReal = "00" + ValorReal;
+                    }
+                    if (ValorReal.Length == 6)
+                    {
+                        ValorReal = "0" + ValorReal;
+                    }
+                }
                 Simbolo S = new Simbolo(LosCampos[h].ObtenerId(),ValorReal, LosCampos[h].ObtenerTipo());
                 LosCampos2.Add(S);
             }

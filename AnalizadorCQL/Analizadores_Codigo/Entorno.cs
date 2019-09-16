@@ -1123,25 +1123,54 @@ namespace AnalizadorCQL.Analizadores_Codigo
         }
         public void MostrarCampos2(String tabla, String BD)
         {
+            List<int> Codigos = new List<int>();
             String id = "BRAY-CAM";
             foreach (DictionaryEntry datos in Elementos)
             {
                 if (datos.Key.ToString().Contains(id))
                 {
-                    String Cadena = "";
+                    
                     Simbolo p = (Simbolo)datos.Value;
                     //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                     if (p.Nombre() == tabla && p.NombreBDP() == BD)
                     {
-                        for (int i = 0; i < p.ListaElementos().Count; i++)
-                        {
-                            Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
-                        }
+                        Codigos.Add(Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM","")));
                     }
-                    System.Diagnostics.Debug.WriteLine(Cadena);
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
 
                 }
             }
+            Codigos.Sort();
+            for (int xp = 0; xp < Codigos.Count; xp++)
+            {
+                //System.Diagnostics.Debug.WriteLine("aaaa->" + Codigos[xp]);
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (datos.Key.ToString().Contains(id))
+                    {
+                       
+                            if (Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")) == Codigos[xp])
+                            {
+                                String Cadena = "";
+                                Simbolo p = (Simbolo)datos.Value;
+                                //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                                if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                                {
+                                    for (int i = 0; i < p.ListaElementos().Count; i++)
+                                    {
+                                        Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                                    }
+                                }
+                                System.Diagnostics.Debug.WriteLine(Cadena);
+                            }
+                        
+
+
+                    }
+                }
+
+            }
+        
         }
         public int MostrarCampos2Numero(String tabla, String BD)
         {
@@ -1172,31 +1201,58 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         public void MostrarCampos2Limite(String tabla, String BD, int limite)
         {
+            List<int> Codigos = new List<int>();
             String id = "BRAY-CAM";
-            int ellimite = 0;
             foreach (DictionaryEntry datos in Elementos)
             {
                 if (datos.Key.ToString().Contains(id))
                 {
-                    String Cadena = "";
+
                     Simbolo p = (Simbolo)datos.Value;
                     //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                     if (p.Nombre() == tabla && p.NombreBDP() == BD)
                     {
-                        for (int i = 0; i < p.ListaElementos().Count; i++)
-                        {
-                            Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
-                        }
+                        Codigos.Add(Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")));
                     }
-                    System.Diagnostics.Debug.WriteLine(Cadena);
-                    ellimite++;
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
 
+                }
+            }
+            Codigos.Sort();
+            int ellimite = 0;
+            System.Diagnostics.Debug.WriteLine("SELECT LMIT---->");
+            for (int xp = 0; xp < Codigos.Count; xp++)
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (datos.Key.ToString().Contains(id))
+                    {
+                        if (Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")) == Codigos[xp])
+                        {
+                            String Cadena = "";
+                            Simbolo p = (Simbolo)datos.Value;
+                            //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                            if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                            {
+                                for (int i = 0; i < p.ListaElementos().Count; i++)
+                                {
+                                    Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                                }
+                            }
+                            System.Diagnostics.Debug.WriteLine(Cadena);
+                            ellimite++;
+                        }
+                        
+
+                    }
+                   
                 }
                 if (ellimite == limite)
                 {
                     break;
                 }
             }
+           
         }
 
         public int MostrarCampos2LimiteNumero(String tabla, String BD, int limite)
@@ -1510,29 +1566,55 @@ namespace AnalizadorCQL.Analizadores_Codigo
         }
         public void MostrarCamposExactos(String tabla, String BD, List<String> Campos)
         {
+            List<int> Codigos = new List<int>();
             String id = "BRAY-CAM";
+
             foreach (DictionaryEntry datos in Elementos)
             {
                 if (datos.Key.ToString().Contains(id))
                 {
-                    String Cadena = "";
+
                     Simbolo p = (Simbolo)datos.Value;
                     //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                     if (p.Nombre() == tabla && p.NombreBDP() == BD)
                     {
-                        for (int i = 0; i < p.ListaElementos().Count; i++)
-                        {
-                            if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
-                            {
-                                Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
-                            }
-
-                        }
+                        Codigos.Add(Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")));
                     }
-                    System.Diagnostics.Debug.WriteLine(Cadena);
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
 
                 }
             }
+            Codigos.Sort();
+            for (int xp = 0; xp < Codigos.Count; xp++)
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (datos.Key.ToString().Contains(id))
+                    {
+                        if (Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")) == Codigos[xp])
+                        {
+                            String Cadena = "";
+                            Simbolo p = (Simbolo)datos.Value;
+                            //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                            if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                            {
+                                for (int i = 0; i < p.ListaElementos().Count; i++)
+                                {
+                                    if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
+                                    {
+                                        Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                                    }
+
+                                }
+                            }
+                            System.Diagnostics.Debug.WriteLine(Cadena);
+                        }
+                            
+
+                    }
+                }
+            }
+       
         }
         public int MostrarCamposExactosNumero(String tabla, String BD, List<String> Campos)
         {
@@ -1566,36 +1648,64 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         public void MostrarCamposExactosLimite(String tabla, String BD, List<String> Campos, int limite)
         {
+            List<int> Codigos = new List<int>();
             String id = "BRAY-CAM";
-            int ellimite = 0;
+
             foreach (DictionaryEntry datos in Elementos)
             {
                 if (datos.Key.ToString().Contains(id))
                 {
-                    String Cadena = "";
+
                     Simbolo p = (Simbolo)datos.Value;
                     //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                     if (p.Nombre() == tabla && p.NombreBDP() == BD)
                     {
-                        for (int i = 0; i < p.ListaElementos().Count; i++)
-                        {
-                            if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
-                            {
-                                Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
-                            }
+                        Codigos.Add(Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")));
+                    }
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
 
+                }
+            }
+            Codigos.Sort();
+            int ellimite = 0;
+            for (int xp = 0; xp < Codigos.Count; xp++)
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (datos.Key.ToString().Contains(id))
+                    {
+                        if (Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")) == Codigos[xp])
+                        {
+                            String Cadena = "";
+                            Simbolo p = (Simbolo)datos.Value;
+                            //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                            if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                            {
+                                for (int i = 0; i < p.ListaElementos().Count; i++)
+                                {
+                                    if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
+                                    {
+                                        Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                                    }
+
+
+                                }
+                            }
+                            System.Diagnostics.Debug.WriteLine(Cadena);
+                            ellimite++;
 
                         }
+                      
                     }
-                    System.Diagnostics.Debug.WriteLine(Cadena);
-                    ellimite++;
-                }
 
+                    
+                }
                 if (ellimite == limite)
                 {
                     break;
                 }
             }
+           
         }
         public int MostrarCamposExactosLimiteNumero(String tabla, String BD, List<String> Campos, int limite)
         {
@@ -1890,6 +2000,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 System.Diagnostics.Debug.WriteLine(Cadena);
             }
         }
+        
         public int MostrarDiccionario2NUmero()
         {
             int numero = 0;
@@ -2140,7 +2251,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
             {
                 Simbolo sim = new Simbolo(id, valor, tipo);
                 Elementos.Add(id, sim);
-                System.Diagnostics.Debug.WriteLine("La variables se agregó -> " + id);
+              //  System.Diagnostics.Debug.WriteLine("La variables se agregó -> " + id);
                 return true;
             }
             else

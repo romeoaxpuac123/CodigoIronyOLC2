@@ -41,7 +41,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                 for (int i = 0; i < Campos.Count; i++)
                 {
-                    if (Campos[i].RetornarPosicionObjeto().Contains((j + 1).ToString()) == true)
+                    if(Campos[i].RetornarPosicionObjeto().Replace("BRAY-CAM", "") == (j + 1).ToString())
                     {
                         //System.Diagnostics.Debug.WriteLine("Ejecucion INSERTAR1 bd->" + Campos[i].RetornarPosicionObjeto() + "->" + i);
                         Prueba.Agregar(Campos[i].ObtenerId(), Campos[i].ObtenerTipo(), Campos[i].ObtenerValor());

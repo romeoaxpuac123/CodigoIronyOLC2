@@ -92,15 +92,18 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 separadas = this.ListaR1[i].Split(',');
                 OrdenarrDiccionario = entorno.OrdenarrDiccionario(separadas[0]);
                 
-                ArrayList aKeys = new ArrayList(OrdenarrDiccionario.Values);
+                ArrayList aKeys = new ArrayList((OrdenarrDiccionario.Values));
                 aKeys.Sort();
                 if (separadas[1].ToUpper().Contains("DESC"))
                 {
                     aKeys.Reverse();
                 }
-                
-                
-                
+                for (int j = 0; j < OrdenarrDiccionario.Count; j++)
+                {
+
+                }
+
+
                 for (int j = 0; j < OrdenarrDiccionario.Count; j++)
                 {
                     //System.Diagnostics.Debug.WriteLine("Ejecucion select-ORDER_BYE HASH ->" + aKeys[j]);
