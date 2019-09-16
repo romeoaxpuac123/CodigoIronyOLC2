@@ -223,6 +223,8 @@
     <Compile Include="Analizadores_CodigoAST\INSTANCIA1OBJETO.cs" />
     <Compile Include="Analizadores_CodigoAST\LISTAS.cs" />
     <Compile Include="Analizadores_CodigoAST\LOG.cs" />
+    <Compile Include="Analizadores_CodigoAST\MIN_SELECT.cs" />
+    <Compile Include="Analizadores_CodigoAST\MIN_SELECT_LIMIT.cs" />
     <Compile Include="Analizadores_CodigoAST\Nodo.cs" />
     <Compile Include="Analizadores_CodigoAST\NodoAbstracto.cs" />
     <Compile Include="Analizadores_CodigoAST\PERMISOS.cs" />

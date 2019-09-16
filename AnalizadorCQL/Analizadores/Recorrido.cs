@@ -11,8 +11,10 @@ namespace AnalizadorCQL.Analizadores
         public NodoAbstracto Raiz;
         List<String> primes = new List<String>();
         List<String> FuncionesXD = new List<String>();
+        
         public NodoAbstracto Recorrido1(ParseTreeNode root)
         {
+            System.Diagnostics.Debug.WriteLine(root.ChildNodes.Count);
             Gramatica g = new Gramatica();
             switch (root.ChildNodes.Count)
             {
@@ -102,11 +104,9 @@ namespace AnalizadorCQL.Analizadores
                         Raiz = nuevo1;
 
                     }
-                    else if (root.ToString() == "SENTENCIA")
+                    if (root.ToString() == "SENTENCIA")
                     {
                         //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
-
-                       // if (root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString() != "DEFINICION_GENERAL_CQL")
 
                            return (Recorrido1(root.ChildNodes.ElementAt(0)));
 
@@ -278,52 +278,24 @@ namespace AnalizadorCQL.Analizadores
                 case 2:                
                     #region HIJOS 2
                     System.Diagnostics.Debug.WriteLine("CAso2 -> " + root.ToString());
-                    if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("id")
-                        && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2")
-                       )
-                    {
-                        System.Diagnostics.Debug.WriteLine("CODIGO PARA CREAR UN OJBETO Estudiante @est;");
-                        NodoAbstracto nuevox = new Nodo("SENTENCIAS");
-                        NodoAbstracto nuevo1 = new Nodo(root.ChildNodes.ElementAt(0).ToString());
-                        NodoAbstracto nuevo2 = new Nodo(root.ChildNodes.ElementAt(1).ToString());
-                        nuevox.Hijos.Add(nuevo1);
-                        nuevox.Hijos.Add(nuevo2);
-                        return nuevox;
-
-                    }
-                    else if (root.ToString() == "SENTENCIA")
+                    if (root.ToString() == "SENTENCIA")
                     {
                         //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
+                        NodoAbstracto  nuevo = Recorrido1(root.ChildNodes.ElementAt(0));
 
-
-                        return (Recorrido1(root.ChildNodes.ElementAt(0)));
+                        //return (Recorrido1(root.ChildNodes.ElementAt(0)));
+                        return nuevo;
 
 
                     }
                     else if (root.ToString() == "SENTENCIAS")
                     {
-                        /*
-                        if (Recorrido1(root.ChildNodes.ElementAt(0)) == null){
-                            NodoAbstracto nuevox = new Nodo("SENTENCIAS");
-                            NodoAbstracto nuevo1 = new Nodo(root.ChildNodes.ElementAt(0).ToString());
-                            NodoAbstracto nuevo2 = new Nodo(root.ChildNodes.ElementAt(1).ToString());
-                            nuevox.Hijos.Add(nuevo1);
-                            nuevox.Hijos.Add(nuevo2);
-                            return nuevox;
-                        }
-                        */
+                       
                         NodoAbstracto nuevo = Recorrido1(root.ChildNodes.ElementAt(0));
-                        // esto que pexNodoAbstracto nuevo = new Nodo(root.ChildNodes.ElementAt(0).ToString());
-                        //NodoAbstracto nuevx = new Nodo(root.ChildNodes.ElementAt(0).ToString());
-                        //nuevo.Hijos.Add(nuevx);
+                       
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
                         
-                        //Recorrido1(root.ChildNodes.ElementAt(0)).Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
-                        //*eSTO FUNCIONO PARA LA PARTE DE IMPRIMIR VARIAS COSAS :d
-                        //NodoAbstracto nuevo = new Nodo("SENTENCIAS");
-                        //nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(0)));
-                        //nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(1)));
                         return nuevo;
                     }
                     else if (root.ToString() == "E")
@@ -456,7 +428,19 @@ namespace AnalizadorCQL.Analizadores
                         }
                         
                     }
+                    else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("id")
+                       && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2")
+                      )
+                    {
+                        System.Diagnostics.Debug.WriteLine("CODIGO PARA CREAR UN OJBETO Estudiante @est;");
+                        NodoAbstracto nuevox = new Nodo("SENTENCIAS");
+                        NodoAbstracto nuevo1 = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        NodoAbstracto nuevo2 = new Nodo(root.ChildNodes.ElementAt(1).ToString());
+                        nuevox.Hijos.Add(nuevo1);
+                        nuevox.Hijos.Add(nuevo2);
+                        return nuevox;
 
+                    }
                     break;
                 #endregion
                 case 3:                 
@@ -1200,11 +1184,7 @@ namespace AnalizadorCQL.Analizadores
                         }
 
                     }
-                    else if (root.ChildNodes.ElementAt(0).ToString().Contains("LOG") ||
-                        root.ChildNodes.ElementAt(0).ToString().Contains("log") ||
-                        root.ChildNodes.ElementAt(0).ToString().Contains("Log") ||
-                        root.ChildNodes.ElementAt(0).ToString().Contains("lOg") ||
-                        root.ChildNodes.ElementAt(0).ToString().Contains("loG")
+                    else if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("LOG")
                         )
                     {
                         NodoAbstracto nuevo2 = new LOG("IMPRIMIR");
@@ -1258,12 +1238,15 @@ namespace AnalizadorCQL.Analizadores
                     }
                       else if (root.ToString() == "DDL")
                         {
-                        System.Diagnostics.Debug.WriteLine("CAso5 ---------------------------> " + root.ChildNodes.ElementAt(0).ToString().ToUpper());
+                        //System.Diagnostics.Debug.WriteLine("CAso5 ---------------------------> " + root.ChildNodes.ElementAt(0).ToString().ToUpper());
                         if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT")==true)
-                        { System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
+                        {
+                            System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
                             NodoAbstracto nuevo = new SELECT_SIMPLE("SIMPLE");
                             NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                           // NodoAbstracto UNO = new Nodo(root.ChildNodes.ElementAt(1).ToString());
                             nuevo.Hijos.Add(Tabla);
+
                             STN.Clear();
                             Atributos(root.ChildNodes.ElementAt(1));
                             for (int i = 0; i < STN.Count; i++)
@@ -1643,7 +1626,7 @@ namespace AnalizadorCQL.Analizadores
 
                         return nuevo;
                     }
-                    else if (root.ToString().ToUpper().Contains("DDL"))
+                    if (root.ToString().ToUpper().Contains("DDL"))
                     {
                         if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT"))
                         {
@@ -1666,7 +1649,7 @@ namespace AnalizadorCQL.Analizadores
                             STN.Clear();
                             return nuevo;
                         }
-                        else
+                        if(root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("INSERT"))
                         {
                             NodoAbstracto nuevo = new INSERSCION_SIMPLE("INSERTAR1");
                             NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(2).ToString().Replace(" (id)", ""));
@@ -1747,7 +1730,7 @@ namespace AnalizadorCQL.Analizadores
                     }
                     else if (root.ToString() == "E")
                     {
-                       
+                        System.Diagnostics.Debug.WriteLine("CAso9SDSSSS -> " + root.ToString());
                         if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("COUNT")))
                         {
                             NodoAbstracto nuevo = new COUNT_SELECT("EXP");
@@ -1763,6 +1746,34 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.TipoDato = "entero";
                             return nuevo;
                         }
+                        else if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("MIN")))
+                        {
+                            NodoAbstracto nuevo = new MIN_SELECT("EXP");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            nuevo.ListaID1.Add(root.ChildNodes.ElementAt(4).ToString().Replace(" (id)", ""));
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            nuevo.ListaR1.Add(root.ChildNodes.ElementAt(4).ToString().Replace(" (id)", "") + ",ASC");
+                            STN.Clear();
+                            nuevo.TipoDato = "entero";
+                            return nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("MAX")))
+                        {
+                            NodoAbstracto nuevo = new MIN_SELECT("EXP");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            nuevo.ListaID1.Add(root.ChildNodes.ElementAt(4).ToString().Replace(" (id)", ""));
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            nuevo.ListaR1.Add(root.ChildNodes.ElementAt(4).ToString().Replace(" (id)", "") + ",ASC");
+                            STN.Clear();
+                            nuevo.TipoDato = "entero";
+                            nuevo.AutoIncrmentable2 = 2;
+                            return nuevo;
+                        }
+
                     }
 
                         if (root.ToString() == "DDL")
@@ -2025,6 +2036,39 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.TipoDato = "entero";
                             return nuevo;
                         }
+                         if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("MIN"))
+                            && ((root.ChildNodes.ElementAt(7).ToString().ToUpper().Contains("LIMIT"))))
+                        {
+                            NodoAbstracto nuevo = new MIN_SELECT_LIMIT("EXP");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            
+                            nuevo.ListaID1.Add(root.ChildNodes.ElementAt(4).ToString().Replace(" (id)", ""));
+                            
+                            nuevo.ListaR1 = new List<String>();
+                            nuevo.ListaR1.Add(root.ChildNodes.ElementAt(4).ToString().Replace(" (id)", "") + ",ASC");
+                            
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
+                            nuevo.TipoDato = "entero";
+                            return nuevo;
+                        }
+                        if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("MAX"))
+                            && ((root.ChildNodes.ElementAt(7).ToString().ToUpper().Contains("LIMIT"))))
+                        {
+                            NodoAbstracto nuevo = new MIN_SELECT_LIMIT("EXP");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+
+                            nuevo.ListaID1.Add(root.ChildNodes.ElementAt(4).ToString().Replace(" (id)", ""));
+
+                            nuevo.ListaR1 = new List<String>();
+                            nuevo.ListaR1.Add(root.ChildNodes.ElementAt(4).ToString().Replace(" (id)", "") + ",ASC");
+
+                            nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(8)));
+                            nuevo.AutoIncrmentable2 = 2;
+                            nuevo.TipoDato = "entero";
+                            return nuevo;
+                        }
                     }
                     break;
                 #endregion
@@ -2154,6 +2198,7 @@ namespace AnalizadorCQL.Analizadores
                     break;
                 #endregion
                 case 13:
+                    #region hijos13
                     if (root.ToString() == "E")
                     {
 
@@ -2177,7 +2222,9 @@ namespace AnalizadorCQL.Analizadores
                         }
                     }
                         break;
+                #endregion 
                 case 14:
+                   #region hijos14
                     if (root.ToString() == "E")
                     {
 
@@ -2240,7 +2287,10 @@ namespace AnalizadorCQL.Analizadores
                         }
                     }
                     break;
+                #endregion
+
                 case 16:
+                    #region hijos16
                     if (root.ToString() == "E")
                     {
 
@@ -2283,15 +2333,242 @@ namespace AnalizadorCQL.Analizadores
                         }
                     }
                     break;
-                default:
-                break;
+                #endregion
+              
                  
             }
 
             return null;
         }
+        public NodoAbstracto Recorrido12(ParseTreeNode root)
+        {
+            switch (root.ChildNodes.Count)
+            {
+                case 0:
+                    #region hijos0
+                    System.Diagnostics.Debug.WriteLine("RECORRIDO12->0" + root.ToString());
+                    #endregion
+                    break;
+                case 1:
+                    #region hijos1
+                    System.Diagnostics.Debug.WriteLine("RECORRIDO12->1" + root.ToString());
+                    if (root.ToString() == "S")
+                    {
+                        NodoAbstracto nuevo1 = new Nodo("INICIO");
+                        NodoAbstracto nuevo2 = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        nuevo1.Hijos.Add(nuevo2);
+                        for (int i = 0; i < root.ChildNodes.ElementAt(0).ChildNodes.Count; i++)
+                        {
+                            nuevo2.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(i)));
+                        }
+                        
+                        
+                        Raiz = nuevo1;
 
-        
+                    }
+
+                    if (root.ToString() == "SENTENCIA")
+                    {
+                        //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
+
+                        return (Recorrido12(root.ChildNodes.ElementAt(0)));
+
+
+                    }
+                    if (root.ToString() == "SENTENCIAS")
+                    {
+                        //Recorrido12(root.ChildNodes.ElementAt(0));
+                        //return (Recorrido12(root.ChildNodes.ElementAt(0)));
+                        NodoAbstracto nuevo = new Nodo("SENTENCIAS");
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+
+                        return nuevo;
+                    }
+                    else if (root.ToString() == "E")
+                    {
+                       if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(numero)"))
+                        {
+                            //System.Diagnostics.Debug.WriteLine("!!! -> " + root.ChildNodes.ElementAt(0).ToString());
+                            NodoAbstracto RESULT1 = null;
+                            NodoAbstracto nuevox = new Nodo("Entero");
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                            nuevox.Hijos.Add(nuevovalor);
+                            nuevox.TipoDato = "entero";
+                            RESULT1 = nuevox;
+                            return RESULT1;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(numdecimal)"))
+                        {
+                            //    Console.WriteLine("PASO POR UN NUMERO");
+                            NodoAbstracto RESULT1 = null;
+                            NodoAbstracto nuevox = new Nodo("Decimal");
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                            nuevox.Hijos.Add(nuevovalor);
+                            nuevox.TipoDato = "decimal";
+                            RESULT1 = nuevox;
+                            //Raiz = nuevox;
+                            return RESULT1;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(cadena)"))
+                        {
+                            NodoAbstracto RESULT1 = null;
+                            String valor = root.ChildNodes.ElementAt(0).ToString();
+                            valor = valor.Replace(" (cadena)", "");
+                            NodoAbstracto nuevo = new Nodo("Cadena");
+                            NodoAbstracto nuevovalor = new Nodo(valor);
+                            nuevo.Hijos.Add(nuevovalor);
+                            nuevo.TipoDato = "cadena";
+                            RESULT1 = nuevo;
+                            return RESULT1;
+                        }
+                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("FALSE")
+                            || root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("TRUE")
+                            )
+                        {
+                            //    Console.WriteLine("PASO POR UN NUMERO");
+                            NodoAbstracto RESULT1 = null;
+                            NodoAbstracto nuevox = new Nodo("Booleano");
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (Keyword)", ""));
+                            nuevox.Hijos.Add(nuevovalor);
+                            nuevox.TipoDato = "Booleano";
+                            RESULT1 = nuevox;
+                            //Raiz = nuevox;
+                            return RESULT1;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(fechas)"))
+                        {
+                            //    Console.WriteLine("PASO POR UN NUMERO");
+                            NodoAbstracto RESULT1 = null;
+                            NodoAbstracto nuevox = new Nodo("Fechas");
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                            nuevox.Hijos.Add(nuevovalor);
+                            nuevox.TipoDato = "Fechas";
+                            RESULT1 = nuevox;
+                            //Raiz = nuevox;
+                            return RESULT1;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(hora)"))
+                        {
+                            //    Console.WriteLine("PASO POR UN NUMERO");
+                            NodoAbstracto RESULT1 = null;
+                            NodoAbstracto nuevox = new Nodo("hora");
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                            nuevox.Hijos.Add(nuevovalor);
+                            nuevox.TipoDato = "hora";
+                            RESULT1 = nuevox;
+                            //Raiz = nuevox;
+                            return RESULT1;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(id2)"))
+                        {
+                            //      Console.WriteLine("PASO POR UN ID ");
+                            NodoAbstracto nuevo = new Nodo("id2");
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                            nuevo.Hijos.Add(nuevovalor);
+                            nuevo.TipoDato = "id2";
+                            nuevo.NombreVariable = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", "");
+                            return nuevo;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(id)"))
+                        {
+                            //      Console.WriteLine("PASO POR UN ID ");
+                            NodoAbstracto RESULT1 = null;
+                            NodoAbstracto nuevox = new Nodo("id");
+                            NodoAbstracto nuevovalor = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                            nuevox.Hijos.Add(nuevovalor);
+                            nuevox.TipoDato = "id";
+                            nuevox.NombreVariable = root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "");
+                            RESULT1 = nuevox;
+                            //Raiz = nuevox;
+                            return RESULT1;
+                        }
+                    }
+                   
+                    else if (root.ToString() == "DEFINCION_GENERAL_CQL")
+                    {
+                        //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
+
+                        // if(root.ChildNodes.ElementAt(0).ToString()!="CREATE_TYPE" || root.ChildNodes.ElementAt(0).ToString() != "USER_TYPE2")
+                        return (Recorrido12(root.ChildNodes.ElementAt(0)));
+
+
+                    }
+                    #endregion
+                    break;
+                case 2:
+                    #region hijos2
+                    System.Diagnostics.Debug.WriteLine("RECORRIDO12->2" + root.ToString());
+
+                    #endregion
+                    break;
+                case 5:
+                    #region hijos5
+                    System.Diagnostics.Debug.WriteLine("RECORRIDO12->5" + root.ToString());
+                    
+                    if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("LOG"))
+                    {
+                        NodoAbstracto nuevo2 = new LOG("IMPRIMIR");
+                        nuevo2.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                        return nuevo2;
+                    }
+                    #endregion
+                    break;
+                case 7:
+                    #region hijos2
+                    System.Diagnostics.Debug.WriteLine("RECORRIDO12->7" + root.ToString());
+                    if (root.ToString().Contains("CREATE_TYPE"))
+                    {
+                        ListaIDSObjetoXX(root.ChildNodes.ElementAt(4));
+
+                        NodoAbstracto nuevo = new USER_TYPE("USER_TYPE");
+                        NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString());
+                        nuevo.Hijos.Add(nuevoid);
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+
+                        //ListaIDSObjeto(root.ChildNodes.ElementAt(4));
+                        STN.Clear();
+                        return nuevo;
+                    }
+                    
+                    #endregion
+                    break;
+
+                case 10:
+                    #region hijo10
+                    if (root.ToString().Contains("CREATE_TYPE"))
+                    {
+                        ListaIDSObjetoXX(root.ChildNodes.ElementAt(7));
+                        
+                        NodoAbstracto nuevo = new USER_TYPE("USER_TYPE");
+                        NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(5).FindToken().ToString());
+                        nuevo.Hijos.Add(nuevoid);
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        nuevo.AutoIncrmentable2 = 5;
+
+                        //ListaIDSObjeto(root.ChildNodes.ElementAt(4));
+                        STN.Clear();
+                        return nuevo;
+                    }
+                    #endregion
+                    break;
+                    
+
+            }
+            return null;
+        }
+       
 
         public void Ejecutar(NodoAbstracto raiz)
         {

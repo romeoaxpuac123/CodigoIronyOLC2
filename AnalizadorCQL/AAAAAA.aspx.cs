@@ -54,7 +54,7 @@ namespace AnalizadorCQL
                 //Recorrido.Recorrido1(resul2);
                 Recorrido Re = new Recorrido();
                 //Re.RecorrerArbol(resultado);
-                Re.Recorrido1(resul2);
+                Re.Recorrido12(resul2);
                 Console.WriteLine("**********************");
                 Re.Analizar(Re.Raiz);
 
