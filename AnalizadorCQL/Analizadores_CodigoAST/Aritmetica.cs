@@ -37,6 +37,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String Tipo1 = this.Hijos[0].TipoDato;
             String Tipo2 = this.Hijos[2].TipoDato;
 
+           
+
             System.Diagnostics.Debug.WriteLine("Ejecucion Aritmetica el tipo1->"+Tipo1);
             //System.Diagnostics.Debug.WriteLine("TIPO asjdflkads->" + this.Hijos[1].NombreVariable);
             System.Diagnostics.Debug.WriteLine("Ejecucion Aritmetica el tipo1->" + Tipo2);
@@ -236,10 +238,10 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             {
                 val2 = entorno.ObtenerValor(this.Hijos[2].NombreVariable);
             }
-
+            String Var = "";
             if (Tipo1 == "id2" || Tipo1 == "id" )
             {
-                
+                Var = this.Hijos[0].NombreVariable;
                 System.Diagnostics.Debug.WriteLine("TIPO 1 ID" + this.Hijos[0].NombreVariable);
                 System.Diagnostics.Debug.WriteLine(entorno.ObtenerTipo(this.Hijos[0].NombreVariable).ToUpper());
                 if ((entorno.ObtenerTipo(this.Hijos[0].NombreVariable).ToUpper().Contains("INT") == true)
@@ -321,6 +323,27 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                     Tipo2 = "hora";
                 }
+            }
+
+            if (val2.Contains("+"))
+            {
+                int valor1 = Int32.Parse(val1.Replace(" (numero)", ""));
+                if (Tipo1 == "entero"|| (Tipo1 == "decimal"))
+                {
+                    entorno.AsignarValor(Var, (valor1 + 1).ToString());
+                    
+                }
+                return (valor1).ToString();
+            }
+            if (val2.Contains("-"))
+            {
+                int valor1 = Int32.Parse(val1.Replace(" (numero)", ""));
+                if (Tipo1 == "entero" || (Tipo1 == "decimal"))
+                {
+                    entorno.AsignarValor(Var, (valor1 - 1).ToString());
+                    //return (valor1).ToString();
+                }
+                return (valor1).ToString();
             }
 
             //System.Diagnostics.Debug.WriteLine("TIPO 2 IDx" + Tipo2 + "->" + val2);

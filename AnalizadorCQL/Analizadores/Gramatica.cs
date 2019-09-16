@@ -29,6 +29,8 @@ namespace AnalizadorCQL.Analizadores
 
             #region Terminales
             var mas = ToTerm("+");
+            var masmas = ToTerm("++");
+            var menosmenos = ToTerm("--");
             var menos = ToTerm("-");
             var por = ToTerm("*");
             var div = ToTerm("/");
@@ -132,14 +134,24 @@ namespace AnalizadorCQL.Analizadores
             var SUM = ToTerm("SUM");
             var AVG = ToTerm("AVG");
 
-            this.RegisterOperators(8, Associativity.Left, "?");
-            this.RegisterOperators(1, Associativity.Left, "+", "-");
-            this.RegisterOperators(2, Associativity.Left, "*", "/", "%");            
-            this.RegisterOperators(3, Associativity.Left, "**");
-            this.RegisterOperators(5, Associativity.Left, ">", "<", ">=", "<=");
+            //this.RegisterOperators(8, Associativity.Left, "?");
+            //this.RegisterOperators(2, Associativity.Left, "+", "-");
+            //this.RegisterOperators(1, Associativity.Left, "*", "/", "%");            
+            //this.RegisterOperators(3, Associativity.Left, "**");
+            //this.RegisterOperators(5, Associativity.Left, ">", "<", ">=", "<=");
+            //this.RegisterOperators(6, Associativity.Left, "!=", "==");
+            //this.RegisterOperators(4, Associativity.Left, "&&", "||", "^");
+            //this.RegisterOperators(7, Associativity.Left, "!");
+            this.RegisterOperators(3, Associativity.Left, "||");
+            this.RegisterOperators(4, Associativity.Left, "&&");
+            this.RegisterOperators(5, Associativity.Left,"^");
             this.RegisterOperators(6, Associativity.Left, "!=", "==");
-            this.RegisterOperators(4, Associativity.Left, "&&", "||", "^");
-            this.RegisterOperators(7, Associativity.Left, "!");
+            this.RegisterOperators(7, ">", "<", ">=", "<=");
+            this.RegisterOperators(8, Associativity.Left, "+", "-");
+            this.RegisterOperators(9, Associativity.Left, "*", "/", "%");
+            this.RegisterOperators(10, Associativity.Left, "**");
+            this.RegisterOperators(11, Associativity.Right, "!");
+
             #endregion
 
 
@@ -208,7 +220,7 @@ namespace AnalizadorCQL.Analizadores
                              | DDL
                              | IMP
                              | TRY_CATCH
-                             | INC_DEC + PYC
+                             | INC_DEC 
                              | ASIGNACION_OPERACION
                              | ELWHILE
                              | DO_WHILE
@@ -274,8 +286,8 @@ namespace AnalizadorCQL.Analizadores
 
             #endregion
 
-            INC_DEC.Rule = id2 + mas + mas
-                         | id2 + menos + menos;
+            INC_DEC.Rule = id2 + mas + mas + PYC
+                         | id2 + menos + menos + PYC;
 
             TRY_CATCH.Rule = TRY + llaveAbierta + SENTENCIAS + llaverCerrada + CATCH + ParA + ArithmeticException + id +  ParC + llaveAbierta + SENTENCIAS + llaverCerrada
                            | TRY + llaveAbierta + SENTENCIAS + llaverCerrada + CATCH + ParA + IndexOutException +   id +  ParC + llaveAbierta + SENTENCIAS + llaverCerrada; ;
@@ -468,8 +480,8 @@ namespace AnalizadorCQL.Analizadores
                     | E + OR + E
                     | E + AND + E
                     | E + XOR + E
-                    | E + mas + mas
-                    | E + menos + menos
+                    | E + masmas
+                    | E + menosmenos
                     | NOT + E
                     | menos + E
                     | numero

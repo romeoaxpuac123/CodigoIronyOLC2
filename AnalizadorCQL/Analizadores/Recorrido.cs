@@ -445,8 +445,8 @@ namespace AnalizadorCQL.Analizadores
                 #endregion
                 case 3:                 
                     #region HIJOS 3
-                    System.Diagnostics.Debug.WriteLine("CAso3 -> " + root.ToString());
-                   if (root.ToString().Contains("INC_DEC")== true)
+                   System.Diagnostics.Debug.WriteLine("CAso3 -> " + root.ToString());
+                    if (root.ToString().Contains("INC_DEC")== true)
                     {
                         System.Diagnostics.Debug.WriteLine("INC_DEC");
                         NodoAbstracto nuevo = new Incremento("INCREMENTO");
@@ -2347,6 +2347,32 @@ namespace AnalizadorCQL.Analizadores
                 case 0:
                     #region hijos0
                     System.Diagnostics.Debug.WriteLine("RECORRIDO12->0" + root.ToString());
+                    if (root.ToString().Contains("- (Key symbol)"))
+                    {
+                        //    Console.WriteLine("PASO POR UN NUMERO");
+                        NodoAbstracto RESULT1 = null;
+                        NodoAbstracto nuevox = new Nodo("Entero");
+                        NodoAbstracto nuevovalor = new Nodo("-1");
+                        nuevox.Hijos.Add(nuevovalor);
+                        nuevox.TipoDato = "entero";
+                        RESULT1 = nuevox;
+                        //Raiz = nuevox;
+                        return RESULT1;
+
+                    }
+                    else if (root.ToString().Contains("+ (Key symbol)"))
+                    {
+                        //    Console.WriteLine("PASO POR UN NUMERO");
+                        NodoAbstracto RESULT1 = null;
+                        NodoAbstracto nuevox = new Nodo("Entero");
+                        NodoAbstracto nuevovalor = new Nodo("+0");
+                        nuevox.Hijos.Add(nuevovalor);
+                        nuevox.TipoDato = "entero";
+                        RESULT1 = nuevox;
+                        //Raiz = nuevox;
+                        return RESULT1;
+
+                    }
                     #endregion
                     break;
                 case 1:
@@ -2504,7 +2530,545 @@ namespace AnalizadorCQL.Analizadores
                 case 2:
                     #region hijos2
                     System.Diagnostics.Debug.WriteLine("RECORRIDO12->2" + root.ToString());
+                    if (root.ToString() == "DEFINCION_GENERAL_CQL")
+                    {
+                        //System.Diagnostics.Debug.WriteLine("___" + root.ChildNodes.ElementAt(0).ToString());
+                        if (root.ChildNodes.ElementAt(0).ToString() == "USER_TYPE")
+                        {
+                            if (root.ChildNodes.ElementAt(0).ChildNodes.Count == 2)
+                            {
+                                System.Diagnostics.Debug.WriteLine("Nombre Objeto" + root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString());
+                                System.Diagnostics.Debug.WriteLine("Nombre Variable" + root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(1).ToString());
+                                NodoAbstracto nuevo = new DECOBJETO("INSTANCIA");
+                                NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace(" (id)", ""));
+                                NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
+                                nuevo.Hijos.Add(id);
+                                nuevo.Hijos.Add(id2);
+                                return nuevo;
+                            }
+                            else if (root.ChildNodes.ElementAt(0).ChildNodes.Count == 4)
+                            {
+                                NodoAbstracto nuevo = new INSTANCIA1OBJETO("INSTANCIA");
+                                NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(3).ToString().Replace(" (id)", ""));
+                                NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
+                                NodoAbstracto id3 = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
+                                nuevo.Hijos.Add(id);
+                                nuevo.Hijos.Add(id2);
+                                nuevo.Hijos.Add(id3);
+                                return nuevo;
+                            }
+                            else if (root.ChildNodes.ElementAt(0).ChildNodes.Count == 5)
+                            {
+                                NodoAbstracto nuevo = new DECLARACIONINSTANCIA("INSTANCIA");
+                                NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace(" (id)", ""));
+                                NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
+                                NodoAbstracto id3 = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(4).ToString().Replace(" (id)", ""));
+                                nuevo.Hijos.Add(id);
+                                nuevo.Hijos.Add(id2);
+                                nuevo.Hijos.Add(id3);
+                                return nuevo;
+                            }
+                        }
 
+                    }
+                    else if (root.ToString() == "E")
+                    {
+
+                        if (root.ChildNodes.ElementAt(1).ToString().Contains("-- (Key symbol"))
+                        {
+                            //    CODIGO PARA MENOS1;
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("-");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(1)));
+                            nuevo.AutoIncrmentable = 1;
+                            nuevo.TipoDato = "decimal";
+
+                            return nuevo;
+
+                        }
+                        if (root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("(numero)")
+                            && root.ChildNodes.ElementAt(0).ToString().Contains("- (Key symbol"))
+                        {
+                            //    CODIGO PARA MENOS1;
+                            NodoAbstracto RESULT = null;
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("*");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(1)));
+
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "entero";
+                            return RESULT;
+
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("++ (Key symbol")))
+                        {
+                            System.Diagnostics.Debug.WriteLine("CODIGO PARA ++ CREAR UN OJBETO Estudiante @est;");
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("+");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(1)));
+                            nuevo.AutoIncrmentable = 1;
+                            nuevo.TipoDato = "decimal";
+
+                            return nuevo;
+
+
+                        }
+                        else if (root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("(numdecimal)")
+                           && root.ChildNodes.ElementAt(0).ToString().Contains("- (Key symbol"))
+                        {
+                            //    CODIGO PARA MENOS1;
+                            NodoAbstracto RESULT = null;
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("*");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(1)));
+
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "decimal";
+                            return RESULT;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("(Keyword)")
+                        && root.ChildNodes.ElementAt(0).ToString().Contains("! (Key symbol"))
+                        {
+                            //    CODIGO PARA MENOS1;
+                            NodoAbstracto RESULT = null;
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("!");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(1)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(1)));
+
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(1).ToString().Contains("E")
+                       && root.ChildNodes.ElementAt(0).ToString().Contains("! (Key symbol"))
+                        {
+                            //    CODIGO PARA MENOS1;
+                            NodoAbstracto RESULT = null;
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("!");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(1)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(1)));
+
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+
+                        }
+                    }
+
+                    #endregion
+                    break;
+                case 3:
+                    #region hijos3
+                    if (root.ToString() == "E")
+                    {
+                        NodoAbstracto RESULT = null;
+                        if ((root.ChildNodes.ElementAt(0).ToString().Contains(" (id2)")) &&
+                            (root.ChildNodes.ElementAt(1).ToString().Contains("( (Key symbol)")) &&
+                            (root.ChildNodes.ElementAt(2).ToString().Contains(") (Key symbol)"))
+                            )
+                        {
+                            System.Diagnostics.Debug.WriteLine("FUNCIONES");
+                            NodoAbstracto nuevo = new FUNCIONES_PROPIAS("EXP");
+                            NodoAbstracto nuevohijo = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                            nuevo.Hijos.Add(nuevohijo);
+                            nuevo.AutoIncrmentable2 = 101;
+                            return nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(0).ToString().Contains(" (Keyword)")) &&
+                            (root.ChildNodes.ElementAt(1).ToString().Contains("( (Key symbol)")) &&
+                            (root.ChildNodes.ElementAt(2).ToString().Contains(") (Key symbol)"))
+                            )
+                        {
+                            System.Diagnostics.Debug.WriteLine("FUNCIONES");
+                            NodoAbstracto nuevo = new FUNCIONES_PROPIAS("EXP");
+                            NodoAbstracto nuevohijo = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (Keyword)", ""));
+                            nuevo.Hijos.Add(nuevohijo);
+                            nuevo.AutoIncrmentable2 = 102;
+                            return nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(0).ToString().Contains(" (id)")) &&
+                            (root.ChildNodes.ElementAt(1).ToString().Contains("( (Key symbol)")) &&
+                            (root.ChildNodes.ElementAt(2).ToString().Contains(") (Key symbol)"))
+                            )
+                        {
+                            NodoAbstracto nuevo = new FUN_RETORNO("EXP");
+                            NodoAbstracto Funcion = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", ""));
+
+                            nuevo.Hijos.Add(Funcion);
+                            String TipoRetorno = "";
+                            for (int i = 0; i < FuncionesXD.Count; i++)
+                            {
+                                string[] separadas;
+                                separadas = FuncionesXD[i].Split('*');
+                                TipoRetorno = separadas[1];
+                                if (separadas[0].ToUpper().Contains(root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Replace(" (ID)", "")))
+                                {
+                                    if (separadas[2] == "0")
+                                    {
+                                        if (TipoRetorno.ToUpper().Contains("INT"))
+                                        {
+                                            TipoRetorno = "entero";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("DOUBLE"))
+                                        {
+                                            TipoRetorno = "decimal";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("STRING"))
+                                        {
+                                            TipoRetorno = "cadena";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("BOOLEANO"))
+                                        {
+                                            TipoRetorno = "Booleano";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("DATE"))
+                                        {
+                                            TipoRetorno = "Fechas";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("TIME"))
+                                        {
+                                            TipoRetorno = "hora";
+                                        }
+                                    }
+                                }
+                            }
+
+                            nuevo.TipoDato = TipoRetorno;
+                            nuevo.AutoIncrmentable2 = 54;
+                            return nuevo;
+
+
+                        }
+
+
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("+ (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("+");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            //Raiz = nuevo;
+
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("- (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("-");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            //Raiz = nuevo;
+
+                        }
+                        else if (repeticiones(root.ChildNodes.ElementAt(1).ToString()) == 1)
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("*");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            //Raiz = nuevo;
+
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("/ (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("/");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            //Raiz = nuevo;
+                        }
+
+                        else if (repeticiones(root.ChildNodes.ElementAt(1).ToString()) == 2)
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("**");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            //Raiz = nuevo;
+
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("% (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("%");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("> (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo(">");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains(">= (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo(">=");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("< (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("<");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("<= (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("<=");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("== (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("==");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("!= (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("!=");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("|| (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("||");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("&& (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("&&");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("^ (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("^");
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            RESULT = nuevo;
+                            RESULT.TipoDato = "Booleano";
+                            return RESULT;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("? (Key symbol")))
+                        {
+
+                            NodoAbstracto nuevo = new Aritmetica("EXP");
+                            NodoAbstracto nuevooperador = new Nodo("]");
+                            NodoAbstracto tipoCasteo = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Keyword)", ""));
+                            //System.Diagnostics.Debug.WriteLine("EXPRESION DE 4);" + root.ChildNodes.ElementAt(1).FindToken().ToString());
+                            nuevo.Hijos.Add(tipoCasteo);
+                            nuevo.Hijos.Add(nuevooperador);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            nuevo.TipoDato = "CAST";
+                            return nuevo;
+                            //Raiz = nuevo;
+                        }
+                        else if ((root.ChildNodes.ElementAt(1).ToString().Contains("E")))
+                        {
+
+
+                            return Recorrido12(root.ChildNodes.ElementAt(1));
+                            //Raiz = nuevo;
+                        }
+
+                        if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "decimal"
+                            && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "decimal")
+                        {
+                            RESULT.TipoDato = "decimal";
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "id2")
+                        {
+                            RESULT.TipoDato = Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato;
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "id2")
+                        {
+                            RESULT.TipoDato = Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato;
+                        }
+
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "entero"
+                            && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "entero")
+                        {
+                            RESULT.TipoDato = "entero";
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "entero"
+                           && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "decimal")
+                        {
+                            RESULT.TipoDato = "decimal";
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "decimal"
+                           && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "entero")
+                        {
+                            RESULT.TipoDato = "decimal";
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "cadena"
+                          && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "cadena")
+                        {
+                            RESULT.TipoDato = "cadena";
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "entero"
+                          && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "cadena")
+                        {
+                            RESULT.TipoDato = "cadena";
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "cadena"
+                         && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "entero")
+                        {
+                            RESULT.TipoDato = "cadena";
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "cadena"
+                         && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "decimal")
+                        {
+                            RESULT.TipoDato = "cadena";
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "decimal"
+                         && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "cadena")
+                        {
+                            RESULT.TipoDato = "cadena";
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "cadena"
+                         && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "Booleano")
+                        {
+                            RESULT.TipoDato = "cadena";
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "Booleano"
+                        && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "cadena")
+                        {
+                            RESULT.TipoDato = "cadena";
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "Fechas"
+                        && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "Fechas")
+                        {
+                            RESULT.TipoDato = "Fechas";
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "hora"
+                        && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "hora")
+                        {
+                            RESULT.TipoDato = "hora";
+                        }
+                        else if (Recorrido12(root.ChildNodes.ElementAt(0)).TipoDato == "Booleano"
+                        && Recorrido12(root.ChildNodes.ElementAt(2)).TipoDato == "Booleano")
+                        {
+                            RESULT.TipoDato = "Booleano";
+                        }
+                        else
+                        {
+                            RESULT.TipoDato = "cadena";
+                        }
+
+                        return RESULT;
+                    }
+
+                    #endregion
+                    break;
+                case 4:
+                    #region hijos4
+                    System.Diagnostics.Debug.WriteLine("RECORRIDO12->4" + root.ToString());
+                    if (root.ToString().Contains("INC_DEC") == true)
+                    {
+                        System.Diagnostics.Debug.WriteLine("INC_DEC");
+                        NodoAbstracto nuevo = new Incremento("INCREMENTO");
+                        Nodo nuevoid = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                        Nodo nuevoid2 = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Key symbol)", ""));
+                        nuevo.Hijos.Add(nuevoid);
+                        nuevo.Hijos.Add(nuevoid2);
+                        return nuevo;
+
+                    }
                     #endregion
                     break;
                 case 5:
@@ -2516,6 +3080,40 @@ namespace AnalizadorCQL.Analizadores
                         NodoAbstracto nuevo2 = new LOG("IMPRIMIR");
                         nuevo2.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
                         return nuevo2;
+                    }
+                    if (root.ToString().ToUpper().Contains("ASIGNACION"))
+                    {
+                        System.Diagnostics.Debug.WriteLine("Codigo para Asignacion de una variable tipo @var1 = Exprsion");
+
+                        if (root.ChildNodes.ElementAt(1).ToString().Contains("LISTA_IDS2"))
+                        {
+                            ListaID2(root.ChildNodes.ElementAt(1));
+                            String tipo = root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace("(Keyword)", "");
+                            NodoAbstracto nuevo = new DeclararAsignacionLista("DECLARAR_Lista");
+                            NodoAbstracto nuevotipo = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace("(Keyword)", ""));
+                            NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id2)", ""));
+                            nuevo.Hijos.Add(nuevotipo);
+                            nuevo.Hijos.Add(nuevoid);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(3)));
+                            for (int i = 0; i < primes.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(primes[i]);
+                            }
+
+                            primes.Clear();
+                            return nuevo;
+                        }
+                        else
+                        {
+                            NodoAbstracto nuevo = new DeclararAsignacion("DECLARARASIGNAR");
+                            NodoAbstracto nuevotipo = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace("(Keyword)", ""));
+                            NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id2)", ""));
+                            nuevo.Hijos.Add(nuevotipo);
+                            nuevo.Hijos.Add(nuevoid);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(3)));
+                            return nuevo;
+                        }
+
                     }
                     #endregion
                     break;
@@ -2541,7 +3139,67 @@ namespace AnalizadorCQL.Analizadores
                     
                     #endregion
                     break;
+                case 8:
+                    #region hijo8
+                    if (root.ToString().ToUpper().Contains("USER_TYPE2"))
+                    {
+                        NodoAbstracto nuevo = new ASIGNACIONOBJETOS("INSTANCIA");
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(6).ToString().Replace(" (id2)", ""));
+                        NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id)", ""));
+                        NodoAbstracto id3 = new Nodo(root.ChildNodes.ElementAt(6).ToString().Replace(" (id2)", ""));
+                        nuevo.Hijos.Add(id);
+                        nuevo.Hijos.Add(id2);
+                        nuevo.Hijos.Add(id3);
+                        nuevo.AutoIncrmentable2 = 181890;
 
+                        STN.Clear();
+                        System.Diagnostics.Debug.WriteLine("__________________________________________________");
+
+
+
+                        AtributosUT(root.ChildNodes.ElementAt(3));
+
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+
+                        System.Diagnostics.Debug.WriteLine("__________________________________________________");
+                        return nuevo;
+                    }
+                    #endregion
+                    break;
+                case 9:
+                    #region hijos9
+                    if (root.ToString().ToUpper().Contains("USER_TYPE2"))
+                    {
+                        NodoAbstracto nuevo = new ASIGNACIONOBJETOS("INSTANCIA");
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
+                        NodoAbstracto id2 = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
+                        NodoAbstracto id3 = new Nodo(root.ChildNodes.ElementAt(7).ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(id);
+                        nuevo.Hijos.Add(id2);
+                        nuevo.Hijos.Add(id3);
+                        nuevo.AutoIncrmentable2 = 9999;
+
+                        STN.Clear();
+                        System.Diagnostics.Debug.WriteLine("______x____________________________________________");
+
+
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        AtributosUT(root.ChildNodes.ElementAt(4));
+                        System.Diagnostics.Debug.WriteLine("sdaf");
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+                        System.Diagnostics.Debug.WriteLine("_______f___________________________________________");
+                        return nuevo;
+                    }
+                    #endregion
+                    break;
                 case 10:
                     #region hijo10
                     if (root.ToString().Contains("CREATE_TYPE"))
