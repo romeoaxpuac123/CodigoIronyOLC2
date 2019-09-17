@@ -230,14 +230,26 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             {
                 LineaDeCampos = LineaDeCampos + this.ListaID1[i].Replace(" (id)", "") + "         |";
             }
-           // System.Diagnostics.Debug.WriteLine(LineaDeCampos);
+            List<String> ListaX = new List<String>();
+           System.Diagnostics.Debug.WriteLine(LineaDeCampos);
             for (int i = 0; i < Resultado.Count; i++)
             {
                 if (Int32.Parse(Ellimite) == i)
                 {
                     break;
                 }
-               // System.Diagnostics.Debug.WriteLine(Resultado[i]);
+                System.Diagnostics.Debug.WriteLine(Resultado[i]);
+                ListaX.Add(Resultado[i].Replace("             | ",""));
+            }
+            ListaX.Sort();
+            if(this.AutoIncrmentable2 == 1)
+            {
+                return ListaX[0];
+            }
+            if (this.AutoIncrmentable2 == 2)
+            {
+                ListaX.Reverse();
+                return ListaX[0];
             }
             #endregion
             return Ellimite.ToString();

@@ -227,12 +227,24 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String LineaDeCampos = "\nSELECT-WHERE-ORDER-BY\n\nTabla->" + Tabla + " BD:->" + BD + "\n";
             for (int i = 0; i < this.ListaID1.Count; i++)
             {
-                //LineaDeCampos = LineaDeCampos + this.ListaID1[i].Replace(" (id)", "") + "         |";
+                LineaDeCampos = LineaDeCampos + this.ListaID1[i].Replace(" (id)", "") + "         |";
             }
             System.Diagnostics.Debug.WriteLine(LineaDeCampos);
+            List<String> Resultadox = new List<String>();
             for (int i = 0; i < Resultado.Count; i++)
             {
-                //System.Diagnostics.Debug.WriteLine(Resultado[i]);
+                System.Diagnostics.Debug.WriteLine(Resultado[i]);
+                Resultadox.Add(Resultado[i]);
+            }
+            Resultadox.Sort();
+            if(this.AutoIncrmentable2 == 1)
+            {
+                return Resultadox[0];
+            }
+            if(this.AutoIncrmentable2 == 2)
+            {
+                Resultadox.Reverse();
+                return Resultadox[0];
             }
             return Resultado.Count.ToString();
             #endregion

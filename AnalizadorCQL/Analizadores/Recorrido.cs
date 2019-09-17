@@ -3999,6 +3999,67 @@ namespace AnalizadorCQL.Analizadores
                             return nuevo;
                         }
 
+                        if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("MIN"))
+                          && (root.ChildNodes.ElementAt(9).ToString().ToUpper().Contains("ORDER"))
+                         )
+                        {
+                            NodoAbstracto nuevo = new COUNT_SELECT_WHERE_ORDER_BY("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            nuevo.ListaID1.Add(root.ChildNodes.ElementAt(4).ToString().Replace(" (id)", ""));
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(9));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(8)));
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(11));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(12)));
+                            nuevo.TipoDato = "entero";
+                            nuevo.AutoIncrmentable2 = 1;
+                            return nuevo;
+                        }
+
+                        if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("MAX"))
+                          && (root.ChildNodes.ElementAt(9).ToString().ToUpper().Contains("ORDER"))
+                         )
+                        {
+                            NodoAbstracto nuevo = new COUNT_SELECT_WHERE_ORDER_BY("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(4));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.ListaID1.Add(root.ChildNodes.ElementAt(4).ToString().Replace(" (id)", ""));
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(8)));
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(11));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(12)));
+                            nuevo.TipoDato = "entero";
+                            nuevo.AutoIncrmentable2 = 2;
+                            return nuevo;
+                        }
+
                         else if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("MIN"))
                        )
                         {
@@ -4071,6 +4132,69 @@ namespace AnalizadorCQL.Analizadores
                                 nuevo.TipoDato = "entero";
                                 return nuevo;
                             
+                        }
+
+                        if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("MIN")))
+                        {
+
+                            NodoAbstracto nuevo = new COUNT_SELECT_WHERE_ORDER_BY_LIMIT("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            STN.Clear();
+                            nuevo.ListaID1.Add(root.ChildNodes.ElementAt(4).ToString().Replace(" (id)", ""));
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(9));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(8)));
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(11));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(13)));
+                            nuevo.TipoDato = "entero";
+                            nuevo.AutoIncrmentable2 = 1;
+                            return nuevo;
+
+                        }
+                        if ((root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("MAX")))
+                        {
+
+                            NodoAbstracto nuevo = new COUNT_SELECT_WHERE_ORDER_BY_LIMIT("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            STN.Clear();
+                            nuevo.ListaID1.Add(root.ChildNodes.ElementAt(4).ToString().Replace(" (id)", ""));
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(9));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(8)));
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(11));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(13)));
+                            nuevo.TipoDato = "entero";
+                            nuevo.AutoIncrmentable2 = 2;
+                            return nuevo;
+
                         }
                     }
 
