@@ -6,28 +6,29 @@ using AnalizadorCQL.Analizadores_Codigo;
 
 namespace AnalizadorCQL.Analizadores_CodigoAST
 {
-    public class COUNT_SELECT_WHERE:NodoAbstracto
+    public class MIN_SELEC_WHERE_LIMIT : NodoAbstracto
     {
-        public COUNT_SELECT_WHERE(String Nombre) : base(Nombre)
+        public MIN_SELEC_WHERE_LIMIT(String Nombre) : base(Nombre)
         {
+            
         }
 
         public override void Ejecutar()
         {
-            System.Diagnostics.Debug.WriteLine("Ejecucion COUNT-select-where");
+            System.Diagnostics.Debug.WriteLine("Ejecucion MIN select-where-LIMIT");
         }
 
         public override string Ejecutar(Entorno entorno)
         {
-            System.Diagnostics.Debug.WriteLine("Ejecucion COUNT-select-where");
             String Tabla = this.Hijos[0].Nombre;
             String BD = entorno.Tabla();
-            System.Diagnostics.Debug.WriteLine("Ejecucion select-where tabla->" + Tabla);
-            System.Diagnostics.Debug.WriteLine("Ejecucion select-where bd->" + BD);
+            System.Diagnostics.Debug.WriteLine("Ejecucion select-wherelimit tabla->" + Tabla);
+            System.Diagnostics.Debug.WriteLine("Ejecucion select-wherelimit bd->" + BD);
             List<Simbolo> Campos = new List<Simbolo>();
             List<String> CamposAMostrar = new List<String>();
             Campos = entorno.TodosLosCampos(Tabla, BD);
             List<String> Resultado = new List<String>();
+            List<String> Resultado2 = new List<String>();
             int totalCampos = entorno.Counter(Tabla, BD);
 
             for (int j = 0; j < totalCampos; j++)
@@ -90,28 +91,49 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
 
             }
-          
+            String Ellimite = this.Hijos[2].Ejecutar(entorno).Replace(" (id)", "").Replace(" (id2)", "").Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "");
+
+            if (Int32.Parse(Ellimite) > Resultado.Count)
+            {
+                return "#ERROR el limite es mayor que la cantidad de campos";
+            }
             if (this.ListaID1.Count == 1 && this.ListaID1[0] == "* (Key symbol)")
             {
                 entorno.MostrarUTablas2(Tabla, BD);
                 for (int i = 0; i < Resultado.Count; i++)
                 {
+                    if (Int32.Parse(Ellimite) == i)
+                    {
+                        break;
+                    }
                     //System.Diagnostics.Debug.WriteLine(Resultado[i]);
                 }
-                return Resultado.Count.ToString();
+                return "#ERROR * MIN-SELEC-WHERE-LIMIT";
 
             }
-            String LineaDeCampos = "\n\nSELECION\n\nTabla->" + Tabla + " BD:->" + BD + "\n";
+            String LineaDeCampos = "\n\nSELECION-where-limit\n\nTabla->" + Tabla + " BD:->" + BD + "\n";
             for (int i = 0; i < this.ListaID1.Count; i++)
             {
-                LineaDeCampos = LineaDeCampos + this.ListaID1[i].Replace(" (id)", "") + "         |";
+              // LineaDeCampos = LineaDeCampos + this.ListaID1[i].Replace(" (id)", "") + "         |";
             }
-            System.Diagnostics.Debug.WriteLine(LineaDeCampos);
+            //System.Diagnostics.Debug.WriteLine(LineaDeCampos);
             for (int i = 0; i < Resultado.Count; i++)
             {
-                System.Diagnostics.Debug.WriteLine(Resultado[i]);
+                if (Int32.Parse(Ellimite) == i)
+                {
+                    break;
+                }
+                Resultado2.Add(Resultado[i]);
+                //System.Diagnostics.Debug.WriteLine(Resultado[i]);
             }
-            return Resultado.Count.ToString();
+            Resultado2.Sort();
+            if(this.AutoIncrmentable2 == 2)
+            {
+                Resultado2.Reverse();
+                return Resultado[0];
+            }
+
+            return Resultado2[0];
         }
     }
 }

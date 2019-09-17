@@ -6,20 +6,20 @@ using AnalizadorCQL.Analizadores_Codigo;
 
 namespace AnalizadorCQL.Analizadores_CodigoAST
 {
-    public class COUNT_SELECT_WHERE:NodoAbstracto
+    public class MIN_SELECT_WHERE : NodoAbstracto
     {
-        public COUNT_SELECT_WHERE(String Nombre) : base(Nombre)
+        public MIN_SELECT_WHERE(String Nombre) : base(Nombre)
         {
         }
 
         public override void Ejecutar()
         {
-            System.Diagnostics.Debug.WriteLine("Ejecucion COUNT-select-where");
+            System.Diagnostics.Debug.WriteLine("Ejecucion MIN-select-where");
         }
 
         public override string Ejecutar(Entorno entorno)
         {
-            System.Diagnostics.Debug.WriteLine("Ejecucion COUNT-select-where");
+            System.Diagnostics.Debug.WriteLine("Ejecucion MIN-select-where");
             String Tabla = this.Hijos[0].Nombre;
             String BD = entorno.Tabla();
             System.Diagnostics.Debug.WriteLine("Ejecucion select-where tabla->" + Tabla);
@@ -29,13 +29,13 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             Campos = entorno.TodosLosCampos(Tabla, BD);
             List<String> Resultado = new List<String>();
             int totalCampos = entorno.Counter(Tabla, BD);
-
+            Resultado.Clear();
             for (int j = 0; j < totalCampos; j++)
             {
                 System.Diagnostics.Debug.WriteLine("Ejecucion INSERTAR1 bd->" + j);
                 Entorno Prueba = new Entorno();
                 String IdTabla = "";
-                //System.Diagnostics.Debug.WriteLine("Ejecucion INSERTAR1 bd->" + Campos.Count);
+                System.Diagnostics.Debug.WriteLine("Ejecucion INSERTAR1 bd->" + Campos.Count);
 
                 for (int i = 0; i < Campos.Count; i++)
                 {
@@ -49,6 +49,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
 
                 String ValorPrueba = this.Hijos[1].Ejecutar(Prueba);
+                System.Diagnostics.Debug.WriteLine(ValorPrueba + "->Romeo");
+
                 if (ValorPrueba.ToUpper().Contains("ERROR"))
                 {
                     return "#ERROR  EL CAMPO DE COMPARACION ES INCORRECTO;";
@@ -58,11 +60,12 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     System.Diagnostics.Debug.WriteLine("Aca inicia---->");
                     if (this.ListaID1.Count == 1 && this.ListaID1[0] == "* (Key symbol)")
                     {
-                        Resultado.Add(entorno.MostrarCampos33(Tabla, BD, IdTabla));
-
+                        //Resultado.Add(entorno.MostrarCampos33(Tabla, BD, IdTabla));
+                        return "#ERROR * en funcion MIN/MAX";
                     }
                     else
                     {
+
                         for (int y = 0; y < this.ListaID1.Count; y++)
                         {
                             String Campito = this.ListaID1[y].Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "").Replace(" (cadena)", "").Replace(" (id2)", "").Replace(" (id)", "");
@@ -90,18 +93,14 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
 
             }
-          
+            String LineaDeCampos2 = "\n\nSELECION-WHERE\n\nTabla->" + Tabla + " BD:->" + BD + "\n";
+            System.Diagnostics.Debug.WriteLine(LineaDeCampos2);
             if (this.ListaID1.Count == 1 && this.ListaID1[0] == "* (Key symbol)")
             {
-                entorno.MostrarUTablas2(Tabla, BD);
-                for (int i = 0; i < Resultado.Count; i++)
-                {
-                    //System.Diagnostics.Debug.WriteLine(Resultado[i]);
-                }
-                return Resultado.Count.ToString();
+                return "#ERORR EN MIN7MAS-SELECT-WHERE";
 
             }
-            String LineaDeCampos = "\n\nSELECION\n\nTabla->" + Tabla + " BD:->" + BD + "\n";
+            String LineaDeCampos = "\n\nSELECION-WHERE\n\nTabla->" + Tabla + " BD:->" + BD + "\n";
             for (int i = 0; i < this.ListaID1.Count; i++)
             {
                 LineaDeCampos = LineaDeCampos + this.ListaID1[i].Replace(" (id)", "") + "         |";
@@ -111,7 +110,52 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             {
                 System.Diagnostics.Debug.WriteLine(Resultado[i]);
             }
-            return Resultado.Count.ToString();
+            
+            
+            String TipoCampo = "";
+            for(int i = 0; i< Campos.Count; i++)
+            {
+                if (Campos[i].ObtenerId() == this.ListaID1[0])
+                {
+                    TipoCampo = Campos[i].ObtenerTipo();
+                    break;
+                }
+            }
+            
+            if (TipoCampo.ToUpper() == "INT")
+            {
+                List<int> ListaN = new List<int>();
+                for(int i = 0; i < Resultado.Count; i++)
+                {
+                    //ListaN.Add(Int32.Parse(Resultado[i]));
+                }
+                Resultado.Sort();
+                if(this.AutoIncrmentable2 == 2)
+                {
+                    Resultado.Reverse();
+                }
+                this.TipoDato = "entero";
+                return Resultado[0].ToString();
+            }
+            
+            if (TipoCampo.ToUpper() == "DATE")
+            {
+                List<DateTime> ListaN = new List<DateTime>();
+                for (int i = 0; i < Resultado.Count; i++)
+                {
+                    ListaN.Add(DateTime.Parse(Resultado[i]));
+                }
+                ListaN.Sort();
+                if (this.AutoIncrmentable2 == 2)
+                {
+                    ListaN.Reverse();
+                }
+                this.TipoDato = "entero";
+                return "'"+ListaN[0].ToString()+"'";
+            }
+            
+
+            return "666";
         }
     }
 }

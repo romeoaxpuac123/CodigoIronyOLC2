@@ -225,6 +225,10 @@
     <Compile Include="Analizadores_CodigoAST\LOG.cs" />
     <Compile Include="Analizadores_CodigoAST\MIN_SELECT.cs" />
     <Compile Include="Analizadores_CodigoAST\MIN_SELECT_LIMIT.cs" />
+    <Compile Include="Analizadores_CodigoAST\MIN_SELECT_ORDER_BY.cs" />
+    <Compile Include="Analizadores_CodigoAST\MIN_SELECT_ORDER_BY_LIMIT.cs" />
+    <Compile Include="Analizadores_CodigoAST\MIN_SELECT_WHERE.cs" />
+    <Compile Include="Analizadores_CodigoAST\MIN_SELEC_WHERE_LIMIT.cs" />
     <Compile Include="Analizadores_CodigoAST\Nodo.cs" />
     <Compile Include="Analizadores_CodigoAST\NodoAbstracto.cs" />
     <Compile Include="Analizadores_CodigoAST\PERMISOS.cs" />

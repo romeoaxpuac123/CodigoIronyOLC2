@@ -1745,73 +1745,129 @@ namespace AnalizadorCQL.Analizadores_Codigo
         }
         public List<int> MostrarCamposExactosLimiteINT(String tabla, String BD, List<String> Campos, int limite)
         {
-            List<int> Parametros = new List<int>();
-            int Numero = 0;
+            List<int> Codigos = new List<int>();
             String id = "BRAY-CAM";
-            int ellimite = 0;
+
             foreach (DictionaryEntry datos in Elementos)
             {
                 if (datos.Key.ToString().Contains(id))
                 {
-                    String Cadena = "";
+
                     Simbolo p = (Simbolo)datos.Value;
                     //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                     if (p.Nombre() == tabla && p.NombreBDP() == BD)
                     {
-                        for (int i = 0; i < p.ListaElementos().Count; i++)
-                        {
-                            if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
-                            {
-                                Parametros.Add(Int32.Parse(p.ListaElementos()[i].ObtenerValor()));
-                                Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
-                            }
-
-
-                        }
+                        Codigos.Add(Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")));
                     }
-                    Numero++;
-                    System.Diagnostics.Debug.WriteLine(Cadena);
-                    ellimite++;
-                }
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
 
+                }
+            }
+            Codigos.Sort();
+
+            List<int> Parametros = new List<int>();
+            int Numero = 0;
+            int ellimite = 0;
+            for (int xp = 0; xp < Codigos.Count; xp++)
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (datos.Key.ToString().Contains(id))
+                    {
+                        if (Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")) == Codigos[xp])
+                        {
+
+                            String Cadena = "";
+                            Simbolo p = (Simbolo)datos.Value;
+                            //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                            if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                            {
+                                for (int i = 0; i < p.ListaElementos().Count; i++)
+                                {
+                                    if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
+                                    {
+                                        Parametros.Add(Int32.Parse(p.ListaElementos()[i].ObtenerValor()));
+                                        Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                                    }
+
+
+                                }
+                            }
+                            Numero++;
+                            System.Diagnostics.Debug.WriteLine(Cadena);
+                            ellimite++;
+                        }
+                           
+                    }
+
+                   
+                }
                 if (ellimite == limite)
                 {
                     break;
                 }
             }
+         
             return Parametros;
         }
         public List<DateTime> MostrarCamposExactosLimiteDATE(String tabla, String BD, List<String> Campos, int limite)
         {
-            List<DateTime> Parametros = new List<DateTime>();
-            int Numero = 0;
+            List<int> Codigos = new List<int>();
             String id = "BRAY-CAM";
-            int ellimite = 0;
+
             foreach (DictionaryEntry datos in Elementos)
             {
                 if (datos.Key.ToString().Contains(id))
                 {
-                    String Cadena = "";
+
                     Simbolo p = (Simbolo)datos.Value;
                     //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
                     if (p.Nombre() == tabla && p.NombreBDP() == BD)
                     {
-                        for (int i = 0; i < p.ListaElementos().Count; i++)
-                        {
-                            if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
-                            {
-                                Parametros.Add(DateTime.Parse(p.ListaElementos()[i].ObtenerValor()));
-                                Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
-                            }
-
-
-                        }
+                        Codigos.Add(Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")));
                     }
-                    Numero++;
-                    System.Diagnostics.Debug.WriteLine(Cadena);
-                    ellimite++;
-                }
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
 
+                }
+            }
+            Codigos.Sort();
+            List<DateTime> Parametros = new List<DateTime>();
+            int Numero = 0;
+            int ellimite = 0;
+            for (int xp = 0; xp < Codigos.Count; xp++)
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (datos.Key.ToString().Contains(id))
+                    {
+                        if (Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")) == Codigos[xp])
+                        {
+
+                            String Cadena = "";
+                            Simbolo p = (Simbolo)datos.Value;
+                            //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                            if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                            {
+                                for (int i = 0; i < p.ListaElementos().Count; i++)
+                                {
+                                    if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
+                                    {
+                                        Parametros.Add(DateTime.Parse(p.ListaElementos()[i].ObtenerValor()));
+                                        Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                                    }
+
+
+                                }
+                            }
+                            Numero++;
+                            System.Diagnostics.Debug.WriteLine(Cadena);
+                            ellimite++;
+                        }
+
+                    }
+
+
+                }
                 if (ellimite == limite)
                 {
                     break;
@@ -1836,7 +1892,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
                         {
                             if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
                             {
-                                Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                                Cadena = Cadena + p.ListaElementos()[i].ObtenerValor();
                             }
 
                         }
@@ -2057,6 +2113,31 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 System.Diagnostics.Debug.WriteLine(Cadena);
             }
         }
+        public List<String> MostrarDiccionario2x(List<String> Lista)
+        {
+            List<String> Lista1 = new List<String>();
+            //System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO-Tabla->\n\n");
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas3)
+            {
+                String Cadena = "";
+                for (int i = 0; i < kvp.Value.ListaElementos().Count; i++)
+                {
+                    for (int x = 0; x < Lista.Count; x++)
+                    {
+                        //System.Diagnostics.Debug.WriteLine("MINI"+Lista[x]);
+                        if (kvp.Value.ListaElementos()[i].ObtenerId() == Lista[x].Replace(" (id)", ""))
+                        {
+                            Cadena = Cadena + kvp.Value.ListaElementos()[i].ObtenerValor() + "             |  ";
+                            Lista1.Add(kvp.Value.ListaElementos()[i].ObtenerValor());
+                        }
+                    }
+
+                }
+               // System.Diagnostics.Debug.WriteLine(Cadena);
+            }
+            return Lista1;
+        }
+
         public List<int> MostrarDiccionario2Int(List<String> Lista)
         {
             List<int> Lista1 = new List<int>();
@@ -2156,6 +2237,38 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
         }
+        public List<String> MostrarDiccionario2P(List<String> Lista, int limite)
+        {
+            List<String> Lista1 = new List<String>();
+            int y = 0;
+            //System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO-Tabla->\n\n");
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas3)
+            {
+                String Cadena = "";
+                for (int i = 0; i < kvp.Value.ListaElementos().Count; i++)
+                {
+                    for (int x = 0; x < Lista.Count; x++)
+                    {
+                        //System.Diagnostics.Debug.WriteLine("MINI"+Lista[x]);
+                        if (kvp.Value.ListaElementos()[i].ObtenerId() == Lista[x].Replace(" (id)", ""))
+                        {
+                            Cadena = Cadena + kvp.Value.ListaElementos()[i].ObtenerValor() + "             |  ";
+                            Lista1.Add(kvp.Value.ListaElementos()[i].ObtenerValor());
+                        }
+                    }
+
+                }
+                System.Diagnostics.Debug.WriteLine(Cadena);
+                y++;
+                if (y == limite)
+                {
+                    break;
+                }
+            }
+            return Lista1;
+        }
+
+
         public void Devolver2()
         {
             DiccionarioDeTablas3.Clear();
