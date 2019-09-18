@@ -132,7 +132,24 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 Resultado2.Reverse();
                 return Resultado[0];
             }
-
+            if (this.AutoIncrmentable2 == 3)
+            {
+                int total = 0;
+                for(int i = 0; i< Resultado2.Count; i++)
+                {
+                    total = total + Int32.Parse(Resultado2[i]);
+                }
+                return total.ToString();
+            }
+            if (this.AutoIncrmentable2 == 4)
+            {
+                int total = 0;
+                for (int i = 0; i < Resultado2.Count; i++)
+                {
+                    total = total + Int32.Parse(Resultado2[i]);
+                }
+                return (total/Resultado2.Count).ToString();
+            }
             return Resultado2[0];
         }
     }

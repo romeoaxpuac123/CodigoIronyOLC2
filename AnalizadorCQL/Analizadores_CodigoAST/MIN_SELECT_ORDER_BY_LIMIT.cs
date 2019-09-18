@@ -153,7 +153,27 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 lISTA1.Reverse();
                 return lISTA1[0];
             }
-            return lISTA1[0];
+            if (this.AutoIncrmentable2 == 3)
+            {
+                int total = 0;
+                for (int i = 0; i < lISTA1.Count; i++)
+                {
+                    total = total + Int32.Parse(lISTA1[i]);
+                }
+
+                return total.ToString();
+            }
+            if (this.AutoIncrmentable2 == 4)
+            {
+                int total = 0;
+                for (int i = 0; i < lISTA1.Count; i++)
+                {
+                    total = total + Int32.Parse(lISTA1[i]);
+                }
+
+                return (total / lISTA1.Count).ToString();
+            }
+                return lISTA1[0];
             //return "SELECT_ORDER_BY_LIMIT";
         }
     }

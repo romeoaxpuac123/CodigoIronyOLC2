@@ -234,7 +234,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             for (int i = 0; i < Resultado.Count; i++)
             {
                 System.Diagnostics.Debug.WriteLine(Resultado[i]);
-                Resultadox.Add(Resultado[i]);
+                Resultadox.Add(Resultado[i].Replace("             | ",""));
             }
             Resultadox.Sort();
             if(this.AutoIncrmentable2 == 1)
@@ -245,6 +245,24 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             {
                 Resultadox.Reverse();
                 return Resultadox[0];
+            }
+            if (this.AutoIncrmentable2 == 3)
+            {
+                int total = 0;
+                for (int i = 0; i < Resultadox.Count; i++)
+                {
+                    total = total + Int32.Parse(Resultadox[i]);
+                }
+                return total.ToString();
+            }
+            if (this.AutoIncrmentable2 == 4)
+            {
+                int total = 0;
+                for (int i = 0; i < Resultadox.Count; i++)
+                {
+                    total = total + Int32.Parse(Resultadox[i]);
+                }
+                return (total / Resultadox.Count).ToString();
             }
             return Resultado.Count.ToString();
             #endregion

@@ -251,6 +251,24 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 ListaX.Reverse();
                 return ListaX[0];
             }
+            if (this.AutoIncrmentable2 == 3)
+            {
+                int total = 0;
+                for (int i = 0; i < ListaX.Count; i++)
+                {
+                    total = total + Int32.Parse(ListaX[i]);
+                }
+                return total.ToString();
+            }
+            if (this.AutoIncrmentable2 == 4)
+            {
+                int total = 0;
+                for (int i = 0; i < ListaX.Count; i++)
+                {
+                    total = total + Int32.Parse(ListaX[i]);
+                }
+                return (total / ListaX.Count).ToString();
+            }
             #endregion
             return Ellimite.ToString();
         }

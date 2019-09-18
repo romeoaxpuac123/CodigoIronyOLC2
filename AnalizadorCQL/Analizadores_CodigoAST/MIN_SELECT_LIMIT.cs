@@ -94,9 +94,23 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     Lista1 = entorno.MostrarCamposExactosLimiteINT(Tabla, BD, CamposAMostrar, Int32.Parse(ElLimite.ToString()));
                   // this.TipoDato = "entero";
                     Lista1.Sort();
+                    int total = 0;
                     if (this.AutoIncrmentable2 == 2)
                     {
                         Lista1.Reverse();
+                    }
+                    for(int i = 0; i <Lista1.Count; i++)
+                    {
+                        total = total + Lista1[i];
+                    }
+                    if (this.AutoIncrmentable2 == 3)
+                    {
+                        return total.ToString();
+                    }
+                    if(this.AutoIncrmentable2 == 4)
+                    {
+                        return (total / Lista1.Count).ToString();
+
                     }
                     return Lista1[0].ToString();
                 }

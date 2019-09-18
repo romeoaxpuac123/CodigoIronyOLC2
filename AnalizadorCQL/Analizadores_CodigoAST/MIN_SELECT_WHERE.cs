@@ -127,12 +127,30 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 List<int> ListaN = new List<int>();
                 for(int i = 0; i < Resultado.Count; i++)
                 {
-                    //ListaN.Add(Int32.Parse(Resultado[i]));
+                    ListaN.Add(Int32.Parse(Resultado[i]));
                 }
                 Resultado.Sort();
                 if(this.AutoIncrmentable2 == 2)
                 {
                     Resultado.Reverse();
+                }
+                if (this.AutoIncrmentable2 == 3)
+                {
+                    int total = 0;
+                    for(int i = 0; i < ListaN.Count; i++)
+                    {
+                        total = total + ListaN[i];
+                    }
+                    return total.ToString();
+                }
+                if (this.AutoIncrmentable2 == 4)
+                {
+                    int total = 0;
+                    for (int i = 0; i < ListaN.Count; i++)
+                    {
+                        total = total + ListaN[i];
+                    }
+                    return (total/ListaN.Count).ToString();
                 }
                 this.TipoDato = "entero";
                 return Resultado[0].ToString();
@@ -155,7 +173,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             }
             
 
-            return "666";
+            return "#ERROR EN MIN SELEC WHERE";
         }
     }
 }

@@ -511,33 +511,49 @@ namespace AnalizadorCQL.Analizadores
                     | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC
                     | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + mayor + ParC
                     | COUNT + ParA + menor + SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC
-                    | MIN + ParA + menor + SELECT + id + FROM + id + mayor + ParC
-                    | MAX + ParA + menor + SELECT + id + FROM + id + mayor + ParC
-                    | MIN + ParA + menor + SELECT + id + FROM + id + LIMIT + E + mayor + ParC
-                    | MAX + ParA + menor + SELECT + id + FROM + id + LIMIT + E + mayor + ParC
-                    | MIN + ParA + menor + SELECT + id + FROM + id + WHERE + E + mayor + ParC
-                    | MAX + ParA + menor + SELECT + id + FROM + id + WHERE + E + mayor + ParC
-                    | MIN + ParA + menor + SELECT + id + FROM + id + WHERE + E + LIMIT + E + mayor + ParC
-                    | MAX + ParA + menor + SELECT + id + FROM + id + WHERE + E + LIMIT + E + mayor + ParC
-                    | MIN + ParA + menor + SELECT + id + FROM + id + ORDER + BY + LISTA_IDS1X + mayor + ParC
-                    | MAX + ParA + menor + SELECT + id + FROM + id + ORDER + BY + LISTA_IDS1X + mayor + ParC
-                    | MIN + ParA + menor + SELECT + id + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC
-                    | MAX + ParA + menor + SELECT + id + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC
-                    | MIN + ParA + menor + SELECT + id + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + mayor + ParC
-                    | MAX + ParA + menor + SELECT + id + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + mayor + ParC
-                    | MIN + ParA + menor + SELECT + id + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC
-                    | MAX + ParA + menor + SELECT + id + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC;
+                    | MIN + ParA + menor + SELECT + id + FROM + id + mayor + ParC //avg y suma
+                    | MAX + ParA + menor + SELECT + id + FROM + id + mayor + ParC //avg y suma
+                    | MIN + ParA + menor + SELECT + id + FROM + id + LIMIT + E + mayor + ParC //avg Y SUMA
+                    | MAX + ParA + menor + SELECT + id + FROM + id + LIMIT + E + mayor + ParC //avg Y SUMA
+                    | MIN + ParA + menor + SELECT + id + FROM + id + WHERE + E + mayor + ParC //AVG Y  SUMA
+                    | MAX + ParA + menor + SELECT + id + FROM + id + WHERE + E + mayor + ParC //AVG Y SUMA
+                    | MIN + ParA + menor + SELECT + id + FROM + id + WHERE + E + LIMIT + E + mayor + ParC //AVG Y SUMA
+                    | MAX + ParA + menor + SELECT + id + FROM + id + WHERE + E + LIMIT + E + mayor + ParC //AVG Y SUMA
+                    | MIN + ParA + menor + SELECT + id + FROM + id + ORDER + BY + LISTA_IDS1X + mayor + ParC //avg y suma
+                    | MAX + ParA + menor + SELECT + id + FROM + id + ORDER + BY + LISTA_IDS1X + mayor + ParC //avg y suma
+                    | MIN + ParA + menor + SELECT + id + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC// SUM Y AVG
+                    | MAX + ParA + menor + SELECT + id + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC // SUM Y AVG
+                    | MIN + ParA + menor + SELECT + id + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + mayor + ParC //SUM Y AVG
+                    | MAX + ParA + menor + SELECT + id + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + mayor + ParC //SUM Y AVG
+                    | MIN + ParA + menor + SELECT + id + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC //SUM Y AVG
+                    | MAX + ParA + menor + SELECT + id + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC //SUM Y AVG
+                    | AVG + ParA + menor + SELECT + id + FROM + id + mayor + ParC
+                    | SUM + ParA + menor + SELECT + id + FROM + id + mayor + ParC
+                    | AVG + ParA + menor + SELECT + id + FROM + id + LIMIT + E + mayor + ParC
+                    | SUM + ParA + menor + SELECT + id + FROM + id + LIMIT + E + mayor + ParC
+                    | SUM + ParA + menor + SELECT + id + FROM + id + WHERE + E + mayor + ParC
+                    | AVG + ParA + menor + SELECT + id + FROM + id + WHERE + E + mayor + ParC
+                    | SUM + ParA + menor + SELECT + id + FROM + id + WHERE + E + LIMIT + E + mayor + ParC
+                    | AVG + ParA + menor + SELECT + id + FROM + id + WHERE + E + LIMIT + E + mayor + ParC
+                    | SUM + ParA + menor + SELECT + id + FROM + id + ORDER + BY + LISTA_IDS1X + mayor + ParC
+                    | AVG + ParA + menor + SELECT + id + FROM + id + ORDER + BY + LISTA_IDS1X + mayor + ParC
+                    | SUM + ParA + menor + SELECT + id + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC
+                    | AVG + ParA + menor + SELECT + id + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC
+                    | SUM + ParA + menor + SELECT + id + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + mayor + ParC 
+                    | AVG + ParA + menor + SELECT + id + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + mayor + ParC
+                    | SUM + ParA + menor + SELECT + id + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC 
+                    | AVG + ParA + menor + SELECT + id + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E + mayor + ParC;
 
 
             /*
                        | SELECT + LISTA_IDS1 + FROM + id + PYC ***
-                       | SELECT + LISTA_IDS1 + FROM + id + LIMIT + E + PYC **
-                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + PYC**
-                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + LIMIT + E + PYC **
-                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + PYC**
-                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + PYC **
-                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + PYC *
-                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E +PYC*; 
+                       | SELECT + LISTA_IDS1 + FROM + id + LIMIT + E + PYC ***
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + PYC***
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + LIMIT + E + PYC ***
+                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + PYC***
+                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + PYC ***
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + PYC ***
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E +PYC***; 
              
              */
 

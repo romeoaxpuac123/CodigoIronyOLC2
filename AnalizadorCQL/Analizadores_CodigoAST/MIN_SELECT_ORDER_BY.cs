@@ -151,6 +151,26 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 Listax.Reverse();
                 return Listax[0];
             }
+            if (this.AutoIncrmentable2 == 3)
+            {
+                int total = 0;
+                for(int i = 0; i < Listax.Count; i++)
+                {
+                    total = total +  Int32.Parse(Listax[i]);
+                }
+
+                return total.ToString() ;
+            }
+            if (this.AutoIncrmentable2 == 4)
+            {
+                int total = 0;
+                for (int i = 0; i < Listax.Count; i++)
+                {
+                    total = total + Int32.Parse(Listax[i]);
+                }
+
+                return (total/Listax.Count).ToString();
+            }
             return Listax[0];
             //entorno.MostrarDiccionario2();
 

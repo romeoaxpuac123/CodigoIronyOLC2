@@ -174,6 +174,20 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     {
                         Lista1.Reverse();
                     }
+                    int Total = 0;
+                    for(int i = 0; i < Lista1.Count; i++)
+                    {
+                        Total = Total + Lista1[i];
+                    }
+                    if(this.AutoIncrmentable2 == 3)
+                    {
+                        return Total.ToString();
+                    }
+                    if (this.AutoIncrmentable2 == 4)
+                    {
+                        return (Total/Lista1.Count).ToString();
+                    }
+
                     return Lista1[0].ToString();
                 }
                 else
@@ -185,6 +199,14 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     if (this.AutoIncrmentable2 == 2)
                     {
                         Lista1.Reverse();
+                    }
+                    if (this.AutoIncrmentable2 == 3)
+                    {
+                        return "#ERROR NO SE PUEDEN SUMAR LOS CAMPOS";
+                    }
+                    if (this.AutoIncrmentable2 == 4)
+                    {
+                        return "#ERROR NO SE PUEDEN  PROMEDIAR LOS CAMPOS";
                     }
                     return "'"+Lista1[0].ToString() + "'";
                 }
