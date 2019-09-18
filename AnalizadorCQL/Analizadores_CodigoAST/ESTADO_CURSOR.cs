@@ -29,7 +29,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 if (Tipo.ToUpper().Contains("OPEN") == true)
                 {
                     entorno.AsignarValorCursor(Cursor, "1");
-
+                    //System.Diagnostics.Debug.WriteLine("Ejecucion estado-CURSOR ACION->" + entorno.Selector(Cursor).ToString());
+                    entorno.ElCursor(Cursor);
+                    entorno.Selector(Cursor).Ejecutar(entorno);
                     //Aca quemamos los datos
                     // creamos los clases para los selects *
                     // guardamos los resultados en una archivo de la forma atributo1*tipo, atributo1*tipo\n

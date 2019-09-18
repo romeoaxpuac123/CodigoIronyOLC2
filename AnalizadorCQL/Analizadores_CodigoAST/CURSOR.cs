@@ -27,6 +27,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             System.Diagnostics.Debug.WriteLine("Ejecucion CURSOR Nombre->" + Cursor);
             String id = "BRAY-CURSOR" + (entorno.CantidadDeCursores()+1).ToString();
             System.Diagnostics.Debug.WriteLine("Ejecucion CURSOR id->" + id);
+            //System.Diagnostics.Debug.WriteLine("Ejecucion CURSOR SELECTOR->" + SELECCION.ToString());
             if (entorno.ExisteCursor(Cursor) == false)
             {
                 entorno.Agregarcursor(id, Cursor, "0", SELECCION);

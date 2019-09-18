@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
         public List<Object> Objetos = new List<Object>();
         public Hashtable Elementos;
         public String UseTabla = "NULITO";
+        public String UseCursor = "NULITO";
         Dictionary<String, Simbolo> DiccionarioDeTablas = new Dictionary<String, Simbolo>();
         Dictionary<String, Simbolo> DiccionarioDeTablas2 = new Dictionary<String, Simbolo>();
         Dictionary<String, Simbolo> DiccionarioDeTablas3 = new Dictionary<String, Simbolo>();
@@ -121,6 +123,14 @@ namespace AnalizadorCQL.Analizadores_Codigo
         }
         #endregion UT
 
+        public void ElCursor(String Cursor)
+        {
+            this.UseCursor = Cursor;
+        }
+        public String CursorEnUso()
+        {
+            return this.UseCursor;
+        }
         public Boolean ExisteVariable(String id)
         {
             if (Elementos.ContainsKey(id) == true)
@@ -1151,7 +1161,25 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             
         }
+        public NodoAbstracto Selector(String Cursor)
+        {
+            String id = "BRAY-CURSOR";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    System.Diagnostics.Debug.WriteLine("cURSOR->" + p.NombreCursor() + "Estado->" + p.ObtenerValor());
+                    if (p.NombreCursor() == Cursor)
+                    {
+                        return p.Selector_Cursor();
+                    }
 
+
+                }
+            }
+            return null;
+        }
         #endregion
         #region Campos
         public int CantidadDeCAMPOS()
@@ -1257,6 +1285,84 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
         
         }
+
+        public void MostrarCampos2Archivo(String tabla, String BD, String Cursor)
+        {
+            
+   
+               List<int> Codigos = new List<int>();
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        Codigos.Add(Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")));
+                    }
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+            Codigos.Sort();
+            
+            String texto = "";
+            
+            for (int xp = 0; xp < Codigos.Count; xp++)
+            {
+                //System.Diagnostics.Debug.WriteLine("aaaa->" + Codigos[xp]);
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (datos.Key.ToString().Contains(id))
+                    {
+
+                        if (Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")) == Codigos[xp])
+                        {
+                            String Cadena = "";
+                            Simbolo p = (Simbolo)datos.Value;
+                            //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                            if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                            {
+                                for (int i = 0; i < p.ListaElementos().Count; i++)
+                                {
+                                    Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                                    texto = texto + p.ListaElementos()[i].ObtenerValor()+"*"+p.ListaElementos()[i].ObtenerTipo()+",";
+                                }
+                            }
+                            
+                            texto = texto + "\n";
+                            //System.Diagnostics.Debug.WriteLine(Cadena);
+                        }
+
+
+
+                    }
+                }
+
+            }
+            String rutaCompleta = @"C:\Users\Bayyron\Desktop\RoshiEIrack\"+Cursor+".txt";
+
+            if (File.Exists(rutaCompleta))
+            {
+                File.Delete(rutaCompleta);
+            }
+
+
+            // System.Diagnostics.Debug.WriteLine(texto);
+            // System.Diagnostics.Debug.WriteLine(rutaCompleta);
+
+            using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+            {
+                mylogs.WriteLine(texto);
+                mylogs.Close();
+            }
+            
+        }
+
+
         public int MostrarCampos2Numero(String tabla, String BD)
         {
             int Numero = 0;
@@ -1339,6 +1445,76 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
            
         }
+        public void MostrarCampos2LimiteArchivo(String tabla, String BD, int limite,String Cursor)
+        {
+            List<int> Codigos = new List<int>();
+            String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        Codigos.Add(Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")));
+                    }
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+            Codigos.Sort();
+            String texto = "";
+            int ellimite = 0;
+            System.Diagnostics.Debug.WriteLine("SELECT LMIT---->");
+            for (int xp = 0; xp < Codigos.Count; xp++)
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (datos.Key.ToString().Contains(id))
+                    {
+                        if (Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")) == Codigos[xp])
+                        {
+                            String Cadena = "";
+                            Simbolo p = (Simbolo)datos.Value;
+                            //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                            if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                            {
+                                for (int i = 0; i < p.ListaElementos().Count; i++)
+                                {
+                                    Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                                    texto = texto + p.ListaElementos()[i].ObtenerValor() + "*" + p.ListaElementos()[i].ObtenerTipo() + ",";
+                                }
+                            }
+                           //System.Diagnostics.Debug.WriteLine(Cadena);
+                            texto = texto + "\n";
+                            ellimite++;
+                        }
+
+
+                    }
+
+                }
+                if (ellimite == limite)
+                {
+                    break;
+                }
+            }
+            String rutaCompleta = @"C:\Users\Bayyron\Desktop\RoshiEIrack\" + Cursor + ".txt";
+            //System.Diagnostics.Debug.WriteLine(texto);
+            //System.Diagnostics.Debug.WriteLine(rutaCompleta);
+            if (File.Exists(rutaCompleta))
+            {
+                File.Delete(rutaCompleta);
+            }
+
+            using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+            {
+                mylogs.WriteLine(texto);
+                mylogs.Close();
+            }
+        }
 
         public int MostrarCampos2LimiteNumero(String tabla, String BD, int limite)
         {
@@ -1395,6 +1571,32 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
             return Cadena;
         }
+
+        public String MostrarCampos33Archivos(String tabla, String BD, String id, String Cursor)
+        {
+            String Cadena = "";
+            String texto = "";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString() == id)
+                {
+
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                            texto = texto + p.ListaElementos()[i].ObtenerValor() + "*" + p.ListaElementos()[i].ObtenerTipo() + ",";
+                        }
+                    }
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+            return texto;
+        }
         public String MostrarCampos33Diccionario(String tabla, String BD, String id)
         {
             String Cadena = "";
@@ -1419,6 +1621,31 @@ namespace AnalizadorCQL.Analizadores_Codigo
             return Cadena;
         }
 
+        public String MostrarCampos33DiccionarioArchivo(String tabla, String BD, String id)
+        {
+            String Cadena = "";
+            String texto = "";
+            foreach (KeyValuePair<String, Simbolo> datos in DiccionarioDeTablas3)
+            {
+                if (datos.Key.ToString() == id)
+                {
+
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                            texto = texto + p.ListaElementos()[i].ObtenerValor() + "*" + p.ListaElementos()[i].ObtenerTipo() + ",";
+                        }
+                    }
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+            return texto;
+        }
 
         public void AlterADDCampos(String tabla, String BD, List<Simbolo> lista)
         {
@@ -1701,6 +1928,75 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
        
         }
+        public void MostrarCamposExactosArchivo(String tabla, String BD, List<String> Campos,String Cursor)
+        {
+            List<int> Codigos = new List<int>();
+            String id = "BRAY-CAM";
+
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        Codigos.Add(Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")));
+                    }
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+            Codigos.Sort();
+            String texto = "";
+            for (int xp = 0; xp < Codigos.Count; xp++)
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (datos.Key.ToString().Contains(id))
+                    {
+                        if (Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")) == Codigos[xp])
+                        {
+                            String Cadena = "";
+                            Simbolo p = (Simbolo)datos.Value;
+                            //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                            if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                            {
+                                for (int i = 0; i < p.ListaElementos().Count; i++)
+                                {
+                                    if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
+                                    {
+                                        Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                                        texto = texto + p.ListaElementos()[i].ObtenerValor() + "*" + p.ListaElementos()[i].ObtenerTipo() + ",";
+                                    }
+
+                                }
+                            }
+                            //System.Diagnostics.Debug.WriteLine(Cadena);
+                            texto = texto + "\n";
+                        }
+
+
+                    }
+                }
+            }
+            String rutaCompleta = @"C:\Users\Bayyron\Desktop\RoshiEIrack\" + Cursor + ".txt";
+            //System.Diagnostics.Debug.WriteLine(texto);
+            //System.Diagnostics.Debug.WriteLine(rutaCompleta);
+            if (File.Exists(rutaCompleta)) {
+                File.Delete(rutaCompleta);
+            }
+                
+            using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+            {
+                mylogs.WriteLine(texto);
+                mylogs.Close();
+            }
+
+        }
+
+
         public int MostrarCamposExactosNumero(String tabla, String BD, List<String> Campos)
         {
             int numero = 0;
@@ -1792,6 +2088,83 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
            
         }
+        public void MostrarCamposExactosLimiteArchivo(String tabla, String BD, List<String> Campos, int limite, String Cursor)
+        {
+            List<int> Codigos = new List<int>();
+            String id = "BRAY-CAM";
+            String texto = "";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        Codigos.Add(Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")));
+                    }
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+            Codigos.Sort();
+            int ellimite = 0;
+            for (int xp = 0; xp < Codigos.Count; xp++)
+            {
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (datos.Key.ToString().Contains(id))
+                    {
+                        if (Int32.Parse(datos.Key.ToString().Replace("BRAY-CAM", "")) == Codigos[xp])
+                        {
+                            String Cadena = "";
+                            Simbolo p = (Simbolo)datos.Value;
+                            //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                            if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                            {
+                                for (int i = 0; i < p.ListaElementos().Count; i++)
+                                {
+                                    if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
+                                    {
+                                        Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                                        texto = texto + p.ListaElementos()[i].ObtenerValor() + "*" + p.ListaElementos()[i].ObtenerTipo() + ",";
+                                    }
+
+
+                                }
+                            }
+                            //System.Diagnostics.Debug.WriteLine(Cadena);
+                            texto = texto + "\n";
+                            ellimite++;
+
+                        }
+
+                    }
+
+
+                }
+                if (ellimite == limite)
+                {
+                    break;
+                }
+            }
+            String rutaCompleta = @"C:\Users\Bayyron\Desktop\RoshiEIrack\" + Cursor + ".txt";
+            //System.Diagnostics.Debug.WriteLine(texto);
+            //System.Diagnostics.Debug.WriteLine(rutaCompleta);
+            if (File.Exists(rutaCompleta))
+            {
+                File.Delete(rutaCompleta);
+            }
+
+            using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+            {
+                mylogs.WriteLine(texto);
+                mylogs.Close();
+            }
+
+        }
+
         public int MostrarCamposExactosLimiteNumero(String tabla, String BD, List<String> Campos, int limite)
         {
             int Numero = 0;
@@ -1988,6 +2361,38 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
             return Cadena;
         }
+        public String MostrarCamposExactos3Archivo(String tabla, String BD, List<String> Campos, String id)
+        {
+            String Cadena = "";
+            String texto = "";
+            //String id = "BRAY-CAM";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString() == id)
+                {
+
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
+                            {
+                                Cadena = Cadena + p.ListaElementos()[i].ObtenerValor();
+                                texto = texto + p.ListaElementos()[i].ObtenerValor() + "*" + p.ListaElementos()[i].ObtenerTipo() + ",";
+                            }
+
+                        }
+                    }
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+            return texto;
+        }
+
+
         public String MostrarCamposExactos3Diccionario(String tabla, String BD, List<String> Campos, String id)
         {
             String Cadena = "";
@@ -2016,7 +2421,36 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
             return Cadena;
         }
+        public String MostrarCamposExactos3DiccionarioArchivo(String tabla, String BD, List<String> Campos, String id)
+        {
+            String Cadena = "";
+            String texto = "";
+            //String id = "BRAY-CAM";
+            foreach (KeyValuePair<String, Simbolo> datos in DiccionarioDeTablas3)
+            {
+                if (datos.Key.ToString() == id)
+                {
 
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("\n\n\n\nTabla->" + p.Nombre() + " BD:->" + p.NombreBDP());
+                    if (p.Nombre() == tabla && p.NombreBDP() == BD)
+                    {
+                        for (int i = 0; i < p.ListaElementos().Count; i++)
+                        {
+                            if (Campos.Contains(p.ListaElementos()[i].ObtenerId()) == true)
+                            {
+                                Cadena = Cadena + p.ListaElementos()[i].ObtenerValor() + "             |  ";
+                                texto = texto + p.ListaElementos()[i].ObtenerValor() + "*" + p.ListaElementos()[i].ObtenerTipo() + ",";
+                            }
+
+                        }
+                    }
+                    //System.Diagnostics.Debug.WriteLine(Cadena);
+
+                }
+            }
+            return texto;
+        }
         public void AgregarADiccionario(String tabla, String BD)
         {
             DiccionarioDeTablas.Clear();
@@ -2141,7 +2575,35 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 System.Diagnostics.Debug.WriteLine(Cadena);
             }
         }
-        
+        public void MostrarDiccionario2Archivo(String Cursor)
+        {
+            String texto = "";
+            System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO-Tabla->\n\n");
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas3)
+            {
+                String Cadena = "";
+                for (int i = 0; i < kvp.Value.ListaElementos().Count; i++)
+                {
+                    Cadena = Cadena + kvp.Value.ListaElementos()[i].ObtenerValor() + "             |  ";
+                    texto = texto + kvp.Value.ListaElementos()[i].ObtenerValor() + "*" + kvp.Value.ListaElementos()[i].ObtenerTipo() + ",";
+                }
+                //System.Diagnostics.Debug.WriteLine(Cadena);
+                texto = texto + "\n";
+            }
+            String rutaCompleta = @"C:\Users\Bayyron\Desktop\RoshiEIrack\" + Cursor + ".txt";
+            //System.Diagnostics.Debug.WriteLine(texto);
+            //System.Diagnostics.Debug.WriteLine(rutaCompleta);
+            if (File.Exists(rutaCompleta))
+            {
+                File.Delete(rutaCompleta);
+            }
+
+            using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+            {
+                mylogs.WriteLine(texto);
+                mylogs.Close();
+            }
+        }
         public int MostrarDiccionario2NUmero()
         {
             int numero = 0;
@@ -2177,6 +2639,42 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
         }
+        public void MostrarDiccionario2Archivo(int limite, String Cursor)
+        {
+            String texto = "";
+            int x = 0;
+            System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO-Tabla->\n\n");
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas3)
+            {
+                String Cadena = "";
+                for (int i = 0; i < kvp.Value.ListaElementos().Count; i++)
+                {
+                    Cadena = Cadena + kvp.Value.ListaElementos()[i].ObtenerValor() + "             |  ";
+                    texto = texto + kvp.Value.ListaElementos()[i].ObtenerValor() + "*" + kvp.Value.ListaElementos()[i].ObtenerTipo() + ",";
+                }
+                System.Diagnostics.Debug.WriteLine(Cadena);
+                texto = texto + "\n";
+                x++;
+                if (x == limite)
+                {
+                    break;
+                }
+            }
+            String rutaCompleta = @"C:\Users\Bayyron\Desktop\RoshiEIrack\" + Cursor + ".txt";
+            //System.Diagnostics.Debug.WriteLine(texto);
+            //System.Diagnostics.Debug.WriteLine(rutaCompleta);
+            if (File.Exists(rutaCompleta))
+            {
+                File.Delete(rutaCompleta);
+            }
+
+            using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+            {
+                mylogs.WriteLine(texto);
+                mylogs.Close();
+            }
+        }
+
         public void MostrarDiccionario2(List<String> Lista)
         {
             //System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO-Tabla->\n\n");
@@ -2196,6 +2694,44 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     
                 }
                 System.Diagnostics.Debug.WriteLine(Cadena);
+            }
+        }
+        public void MostrarDiccionario2Archivo(List<String> Lista,String Cursor)
+        {
+            String texto = "";
+            //System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO-Tabla->\n\n");
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas3)
+            {
+                String Cadena = "";
+                for (int i = 0; i < kvp.Value.ListaElementos().Count; i++)
+                {
+                    for (int x = 0; x < Lista.Count; x++)
+                    {
+                        //System.Diagnostics.Debug.WriteLine("MINI"+Lista[x]);
+                        if (kvp.Value.ListaElementos()[i].ObtenerId() == Lista[x].Replace(" (id)", ""))
+                        {
+                            texto = texto + kvp.Value.ListaElementos()[i].ObtenerValor() + "*" + kvp.Value.ListaElementos()[i].ObtenerTipo() + ",";
+                        }
+                        //System.Diagnostics.Debug.WriteLine(Cadena);
+                        
+                    }
+
+                }
+               // System.Diagnostics.Debug.WriteLine(Cadena);
+                texto = texto + "\n";
+            }
+            String rutaCompleta = @"C:\Users\Bayyron\Desktop\RoshiEIrack\" + Cursor + ".txt";
+            //System.Diagnostics.Debug.WriteLine(texto);
+            //System.Diagnostics.Debug.WriteLine(rutaCompleta);
+            if (File.Exists(rutaCompleta))
+            {
+                File.Delete(rutaCompleta);
+            }
+
+            using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+            {
+                mylogs.WriteLine(texto);
+                mylogs.Close();
             }
         }
         public List<String> MostrarDiccionario2x(List<String> Lista)
@@ -2322,6 +2858,50 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 }
             }
         }
+        public void MostrarDiccionario2Archivo(List<String> Lista, int limite,String cursor)
+        {
+            int y = 0;
+            String texto = "";
+            //System.Diagnostics.Debug.WriteLine("\n\n\n\nDICCIONARIO-Tabla->\n\n");
+            foreach (KeyValuePair<String, Simbolo> kvp in DiccionarioDeTablas3)
+            {
+                String Cadena = "";
+                for (int i = 0; i < kvp.Value.ListaElementos().Count; i++)
+                {
+                    for (int x = 0; x < Lista.Count; x++)
+                    {
+                        //System.Diagnostics.Debug.WriteLine("MINI"+Lista[x]);
+                        if (kvp.Value.ListaElementos()[i].ObtenerId() == Lista[x].Replace(" (id)", ""))
+                        {
+                            Cadena = Cadena + kvp.Value.ListaElementos()[i].ObtenerValor() + "             |  ";
+                            texto = texto + kvp.Value.ListaElementos()[i].ObtenerValor() + "*" + kvp.Value.ListaElementos()[i].ObtenerTipo() + ",";
+                        }
+                    }
+
+                }
+                System.Diagnostics.Debug.WriteLine(Cadena);
+                texto = texto + "\n";
+                y++;
+                if (y == limite)
+                {
+                    break;
+                }
+            }
+            String rutaCompleta = @"C:\Users\Bayyron\Desktop\RoshiEIrack\" + cursor + ".txt";
+            //System.Diagnostics.Debug.WriteLine(texto);
+            //System.Diagnostics.Debug.WriteLine(rutaCompleta);
+            if (File.Exists(rutaCompleta))
+            {
+                File.Delete(rutaCompleta);
+            }
+
+            using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+            {
+                mylogs.WriteLine(texto);
+                mylogs.Close();
+            }
+        }
+
         public List<String> MostrarDiccionario2P(List<String> Lista, int limite)
         {
             List<String> Lista1 = new List<String>();

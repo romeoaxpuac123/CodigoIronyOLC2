@@ -1202,7 +1202,7 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(3)));
                         return nuevo;
                     }
-     
+
                     else if (root.ToString().ToUpper().Contains("FUNCIONES_PROPIAS"))
                     {
                         NodoAbstracto nuevo = new FUNCIONESCOLEECTIONS("FUNCIONES");
@@ -1218,11 +1218,11 @@ namespace AnalizadorCQL.Analizadores
                         return nuevo;
                     }
 
-                    else if( root.ToString() == "PERMISOSUSUARIO")
+                    else if (root.ToString() == "PERMISOSUSUARIO")
                     {
                         NodoAbstracto nuevo = new PERMISOS("PERMISOS");
                         NodoAbstracto USUARIO = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
-                        NodoAbstracto BD= new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                        NodoAbstracto BD = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
                         nuevo.Hijos.Add(USUARIO);
                         nuevo.Hijos.Add(BD);
                         if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("GRANT"))
@@ -1236,15 +1236,15 @@ namespace AnalizadorCQL.Analizadores
                         return nuevo;
 
                     }
-                      else if (root.ToString() == "DDL")
-                        {
+                    else if (root.ToString() == "DDL")
+                    {
                         //System.Diagnostics.Debug.WriteLine("CAso5 ---------------------------> " + root.ChildNodes.ElementAt(0).ToString().ToUpper());
-                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT")==true)
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true)
                         {
                             System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
                             NodoAbstracto nuevo = new SELECT_SIMPLE("SIMPLE");
                             NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
-                           // NodoAbstracto UNO = new Nodo(root.ChildNodes.ElementAt(1).ToString());
+                            // NodoAbstracto UNO = new Nodo(root.ChildNodes.ElementAt(1).ToString());
                             nuevo.Hijos.Add(Tabla);
 
                             STN.Clear();
@@ -1272,10 +1272,31 @@ namespace AnalizadorCQL.Analizadores
                             return nuevo;
 
                         }
-                            
-                        }
 
-                    break;
+                    }
+                    else if (root.ToString() == "DDL2")
+                    {
+                        //System.Diagnostics.Debug.WriteLine("CAso5 ---------------------------> " + root.ChildNodes.ElementAt(0).ToString().ToUpper());
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true)
+                        {
+                            System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
+                            NodoAbstracto nuevo = new CURSOR_SELECT("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            // NodoAbstracto UNO = new Nodo(root.ChildNodes.ElementAt(1).ToString());
+                            nuevo.Hijos.Add(Tabla);
+
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            return nuevo;
+
+                        }
+                    }
+                        break;
 
                 #endregion
                 case 6:                    
@@ -3179,6 +3200,7 @@ namespace AnalizadorCQL.Analizadores
                             }
 
                         }
+                       
                         else
                         {
                             NodoAbstracto nuevo = new DeclararAsignacion("DECLARARASIGNAR");
@@ -3247,7 +3269,28 @@ namespace AnalizadorCQL.Analizadores
                         }
 
                     }
-                    
+                    else if (root.ToString() == "DDL2")
+                    {
+                        //System.Diagnostics.Debug.WriteLine("CAso5 ---------------------------> " + root.ChildNodes.ElementAt(0).ToString().ToUpper());
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true)
+                        {
+                            System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
+                            NodoAbstracto nuevo = new CURSOR_SELECT("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            // NodoAbstracto UNO = new Nodo(root.ChildNodes.ElementAt(1).ToString());
+                            nuevo.Hijos.Add(Tabla);
+
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            return nuevo;
+
+                        }
+                    }
                     #endregion
                     break;
                 case 6:
@@ -3401,6 +3444,47 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(password);
                         return nuevo;
                     }
+                    else if(root.ToString() == "DDL2")
+                    {
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true
+                            && root.ChildNodes.ElementAt(4).ToString().ToUpper().Contains("LIMIT") == true)
+                        {
+                            //System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
+                            NodoAbstracto nuevo = new CURSOR_SELECT_LIMIT("SLEEC-LIMIT");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5)));
+                            return nuevo;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true
+                         && root.ChildNodes.ElementAt(4).ToString().ToUpper().Contains("WHERE") == true
+                        )
+                        {
+                            //System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
+                            NodoAbstracto nuevo = new CURSOR_SELECT_WHERE("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5)));
+                            return nuevo;
+
+                        }
+                    }
+                    
                     #endregion
                     break;
                 case 8:
@@ -3432,7 +3516,7 @@ namespace AnalizadorCQL.Analizadores
                         System.Diagnostics.Debug.WriteLine("__________________________________________________");
                         return nuevo;
                     }
-                    else if (root.ToString().ToUpper().Contains("DDL"))
+                    else if (root.ToString().ToUpper() == ("DDL"))
                     {
                         if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT"))
                         {
@@ -3472,9 +3556,32 @@ namespace AnalizadorCQL.Analizadores
 
 
                     }
-
-                    #endregion
-                    break;
+                    else if (root.ToString().ToUpper() == ("DDL2"))
+                    {
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT"))
+                        {
+                            NodoAbstracto nuevo = new CURSOR_SELECT_ORDER_BY("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(6));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            return nuevo;
+                        }
+                    }
+                        #endregion
+                        break;
                 case 9:
                     #region hijos9
                     if (root.ToString().ToUpper().Contains("USER_TYPE2"))
@@ -3599,6 +3706,28 @@ namespace AnalizadorCQL.Analizadores
                         }
 
                     }
+                    else if (root.ToString() == "DDL2")
+                    {
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true)
+                        {
+                            //System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
+                            NodoAbstracto nuevo = new CURSOR_SELECT_WHERE_LIMIT("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5)));
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(7)));
+                            return nuevo;
+
+                        }
+                    }
+
                     #endregion
                     break;
                 case 10:
@@ -3694,6 +3823,64 @@ namespace AnalizadorCQL.Analizadores
                             return nuevo;
                         }
 
+                    }
+                    else if(root.ToString() == "DDL2")
+                    {
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true &&
+                            root.ChildNodes.ElementAt(6).ToString().ToUpper().Contains("ORDER"))
+                        {
+                            //System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
+                            NodoAbstracto nuevo = new CURSOR_SELECT_WHERE_ORDER_BY("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(6));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5)));
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(8));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(9)));
+                            return nuevo;
+
+                        }
+                        else if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT"))
+                        {
+                            NodoAbstracto nuevo = new CURSOR_SELECT_ORDER_BY_LIMIT("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(6));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(8)));
+                            return nuevo;
+                        }
                     }
 
                     #endregion
@@ -3912,7 +4099,43 @@ namespace AnalizadorCQL.Analizadores
                     break;
                 case 12:
                     #region hijos12
-                    if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true &&
+                    if(root.ToString() == "DDL2")
+                    {
+                        if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true &&
+                                              root.ChildNodes.ElementAt(6).ToString().ToUpper().Contains("ORDER"))
+                        {
+                            //System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());
+                            NodoAbstracto nuevo = new CURSOR_SELECT_WHERE_ORDER_BY_LIMIT("SIMPLE");
+                            NodoAbstracto Tabla = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(Tabla);
+                            STN.Clear();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(6));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5)));
+                            nuevo.ListaR1 = new List<String>();
+                            Parametros_Order_By(root.ChildNodes.ElementAt(8));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(10)));
+                            return nuevo;
+
+                        }
+                    }
+                    else if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("SELECT") == true &&
                        root.ChildNodes.ElementAt(6).ToString().ToUpper().Contains("ORDER"))
                     {
                         //System.Diagnostics.Debug.WriteLine("CAso5 -> " + root.ToString());

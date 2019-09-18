@@ -202,6 +202,14 @@
     <Compile Include="Analizadores_CodigoAST\COUNT_SELECT_WHERE_LIMIT.cs" />
     <Compile Include="Analizadores_CodigoAST\COUNT_SELECT_WHERE_ORDER_BY_LIMIT.cs" />
     <Compile Include="Analizadores_CodigoAST\CURSOR.cs" />
+    <Compile Include="Analizadores_CodigoAST\CURSOR_SELECT.cs" />
+    <Compile Include="Analizadores_CodigoAST\CURSOR_SELECT_LIMIT.cs" />
+    <Compile Include="Analizadores_CodigoAST\CURSOR_SELECT_ORDER_BY.cs" />
+    <Compile Include="Analizadores_CodigoAST\CURSOR_SELECT_ORDER_BY_LIMIT.cs" />
+    <Compile Include="Analizadores_CodigoAST\CURSOR_SELECT_WHERE.cs" />
+    <Compile Include="Analizadores_CodigoAST\CURSOR_SELECT_WHERE_LIMIT.cs" />
+    <Compile Include="Analizadores_CodigoAST\CURSOR_SELECT_WHERE_ORDER_BY.cs" />
+    <Compile Include="Analizadores_CodigoAST\CURSOR_SELECT_WHERE_ORDER_BY_LIMIT.cs" />
     <Compile Include="Analizadores_CodigoAST\DECLARACIONINSTANCIA.cs" />
     <Compile Include="Analizadores_CodigoAST\DeclararAsignacion.cs" />
     <Compile Include="Analizadores_CodigoAST\Declarar.cs" />
