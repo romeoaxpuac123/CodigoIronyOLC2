@@ -1180,6 +1180,24 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
             return null;
         }
+        public String EstadoCursor(String Cursor)
+        {
+            String id = "BRAY-CURSOR";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if(p.NombreCursor() == Cursor)
+                    {
+                        return p.ObtenerValor();
+                    }
+
+
+                }
+            }
+            return "0";
+        }
         #endregion
         #region Campos
         public int CantidadDeCAMPOS()

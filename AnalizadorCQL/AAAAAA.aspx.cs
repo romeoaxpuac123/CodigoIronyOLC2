@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,20 @@ namespace AnalizadorCQL
 
         protected void Button1_Click1(object sender, EventArgs e)
         {
+
+            String rutaCompleta = @"C:\Users\Bayyron\Desktop\Salida.txt";
+            //System.Diagnostics.Debug.WriteLine(texto);
+            //System.Diagnostics.Debug.WriteLine(rutaCompleta);
+            if (File.Exists(rutaCompleta))
+            {
+                File.Delete(rutaCompleta);
+
+            }
+            using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+            {
+               // mylogs.WriteLine("SALIDA>>" + val.Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "") + "\n");
+                mylogs.Close();
+            }
             string text = System.IO.File.ReadAllText(@"C:\Users\Bayyron\Desktop\entrada.txt");
 
          
@@ -43,6 +58,8 @@ namespace AnalizadorCQL
             text = text.Replace("(TIME)", "¿Time?");
             text = text.Replace("(DATE)", "¿Date?");
             //  text = text.ToUpper();
+
+           
 
             Boolean resultado = Analizadores.Sintactico.Analizar(text);
             ParseTreeNode resul2 = Analizadores.Sintactico.Analizar2(text);

@@ -3882,7 +3882,26 @@ namespace AnalizadorCQL.Analizadores
                             return nuevo;
                         }
                     }
+                    else if(root.ToString() == "LLAMADA_A_CURSOR")
+                    {
+                        NodoAbstracto nuevo = new LLAMADA_CURSOR("LLAMADA");
+                        NodoAbstracto cursor = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString());
+                        STN.Clear();
+                        AtributosFunciones(root.ChildNodes.ElementAt(3));
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+                        nuevo.Hijos.Add(cursor);
+                        
+                        for(int x = 0; x< root.ChildNodes.ElementAt(8).ChildNodes.Count; x++)
+                        {
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(8).ChildNodes.ElementAt(x)));
+                        }
+                        return nuevo;
 
+                    }
                     #endregion
                     break;
                 case 11:

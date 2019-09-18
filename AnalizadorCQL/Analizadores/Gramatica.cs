@@ -137,6 +137,8 @@ namespace AnalizadorCQL.Analizadores
             var IS = ToTerm("IS");
             var OPEN = ToTerm("OPEN");
             var CLOSE = ToTerm("CLOSE");
+            var EACH = ToTerm("EACH");
+            var IN = ToTerm("IN");
             //this.RegisterOperators(8, Associativity.Left, "?");
             //this.RegisterOperators(2, Associativity.Left, "+", "-");
             //this.RegisterOperators(1, Associativity.Left, "*", "/", "%");            
@@ -207,7 +209,7 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal CREAR_CURSOR = new NonTerminal("CREAR_CURSOR");
             NonTerminal DDL2 = new NonTerminal("DDL2");
             NonTerminal ESTADO_CURSOR = new NonTerminal("ESTADO_CURSOR");
-
+            NonTerminal LLAMADA_A_CURSOR = new NonTerminal("LLAMADA_A_CURSOR");
             //DCL 
             NonTerminal CREARUSUARIO = new NonTerminal("CREARUSUARIO");
             NonTerminal PERMISOSUSUARIO = new NonTerminal("PERMISOSUSUARIO");
@@ -239,7 +241,10 @@ namespace AnalizadorCQL.Analizadores
                              | PROCEDIMIENTOS
                              | ELCALL
                              | CREAR_CURSOR
-                             | ESTADO_CURSOR;
+                             | ESTADO_CURSOR
+                             | LLAMADA_A_CURSOR;
+
+            LLAMADA_A_CURSOR.Rule = FOR + EACH + ParA + LISTA_PARAMETROS_FUNCIONES + ParC + IN + id2 + llaveAbierta + SENTENCIAS+ llaverCerrada;
 
             ESTADO_CURSOR.Rule = OPEN + id2 + PYC
                                 | CLOSE + id2 + PYC;
