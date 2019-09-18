@@ -1068,6 +1068,91 @@ namespace AnalizadorCQL.Analizadores_Codigo
         }
         #endregion
 
+
+        #region CURSORES
+        public int CantidadDeCursores()
+        {
+            String id = "BRAY-CURSOR";
+            int a = 0;
+
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    a++;
+                }
+            }
+
+            return a;
+        }
+        public Boolean ExisteCursor(String Nombre)
+        {
+            String id = "BRAY-CURSOR";
+            Boolean Mismos = false;
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    if ((p.NombreCursor().ToUpper() == Nombre.ToUpper()))
+                    {
+                        Mismos = true;
+                    }
+
+                }
+            }
+
+            return Mismos;
+        }
+        public Boolean Agregarcursor(String id, String NombreCursor, String Estado, NodoAbstracto nuevo)
+        {
+            if (!Elementos.ContainsKey(id))
+            {
+                Simbolo sim = new Simbolo(id, NombreCursor, Estado,  nuevo);
+                Elementos.Add(id, sim);
+                System.Diagnostics.Debug.WriteLine("La variables Del objeto se agregó -> " + id);
+                return true;
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("La variables ya existe -> " + id);
+                return false;
+            }
+        }
+        public void MostrarcURSORES()
+        {
+            String id = "BRAY-CURSOR";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id))
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    System.Diagnostics.Debug.WriteLine("cURSOR->" + p.NombreCursor()+ "Estado->" + p.ObtenerValor());
+                   
+
+                }
+            }
+        }
+        public void AsignarValorCursor(String Cursor, String valor)
+        {
+            String id = "BRAY-CURSOR";
+           
+                foreach (DictionaryEntry datos in Elementos)
+                {
+                    if (datos.Key.ToString().Contains(id))
+                    {
+                        Simbolo p = (Simbolo)datos.Value;
+                        if(p.NombreCursor() == Cursor)
+                        {
+                            p.AsignarValor(valor);
+                        }
+                       
+                    }
+                }
+            
+        }
+
+        #endregion
         #region Campos
         public int CantidadDeCAMPOS()
         {

@@ -2387,8 +2387,8 @@ namespace AnalizadorCQL.Analizadores
                         {
                             nuevo2.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(i)));
                         }
-                        
-                        
+
+
                         Raiz = nuevo1;
 
                     }
@@ -2412,7 +2412,7 @@ namespace AnalizadorCQL.Analizadores
                     }
                     else if (root.ToString() == "E")
                     {
-                       if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(numero)"))
+                        if (root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("(numero)"))
                         {
                             //System.Diagnostics.Debug.WriteLine("!!! -> " + root.ChildNodes.ElementAt(0).ToString());
                             NodoAbstracto RESULT1 = null;
@@ -2515,7 +2515,7 @@ namespace AnalizadorCQL.Analizadores
                             return RESULT1;
                         }
                     }
-                   
+
                     else if (root.ToString() == "DEFINCION_GENERAL_CQL")
                     {
                         //Console.WriteLine("PASO POR LA EXPRESION S (RAIZ)");
@@ -3059,6 +3059,17 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(bd);
                         return nuevo;
                     }
+                    else if (root.ToString().ToUpper().Contains("ESTADO_CURSOR"))
+                    {
+                        NodoAbstracto nuevo = new ESTADO_CURSOR("ESTADO");
+                        NodoAbstracto TIPO = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        NodoAbstracto CURSOR = new Nodo(root.ChildNodes.ElementAt(1).ToString());
+                        nuevo.Hijos.Add(TIPO);
+                        nuevo.Hijos.Add(CURSOR);
+                        return nuevo;
+
+                    }
+                    
                     #endregion
                     break;
                 case 4:
@@ -3086,12 +3097,22 @@ namespace AnalizadorCQL.Analizadores
                         }
 
                     }
+                    else if (root.ToString() == "CREAR_CURSOR")
+                    {
+                        NodoAbstracto nuevo = new CURSOR("CURSOR");
+                        NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(id);
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(3)));
+                        return nuevo;
+
+                    }
+
                     #endregion
                     break;
                 case 5:
                     #region hijos5
                     System.Diagnostics.Debug.WriteLine("RECORRIDO12->5" + root.ToString());
-                    
+
                     if (root.ChildNodes.ElementAt(0).ToString().ToUpper().Contains("LOG"))
                     {
                         NodoAbstracto nuevo2 = new LOG("IMPRIMIR");
@@ -3226,7 +3247,7 @@ namespace AnalizadorCQL.Analizadores
                         }
 
                     }
-
+                    
                     #endregion
                     break;
                 case 6:

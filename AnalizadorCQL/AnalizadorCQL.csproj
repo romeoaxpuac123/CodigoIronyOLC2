@@ -201,6 +201,7 @@
     <Compile Include="Analizadores_CodigoAST\COUNT_SELECT_WHERE.cs" />
     <Compile Include="Analizadores_CodigoAST\COUNT_SELECT_WHERE_LIMIT.cs" />
     <Compile Include="Analizadores_CodigoAST\COUNT_SELECT_WHERE_ORDER_BY_LIMIT.cs" />
+    <Compile Include="Analizadores_CodigoAST\CURSOR.cs" />
     <Compile Include="Analizadores_CodigoAST\DECLARACIONINSTANCIA.cs" />
     <Compile Include="Analizadores_CodigoAST\DeclararAsignacion.cs" />
     <Compile Include="Analizadores_CodigoAST\Declarar.cs" />
@@ -212,6 +213,7 @@
     <Compile Include="Analizadores_CodigoAST\ELFOR.cs" />
     <Compile Include="Analizadores_CodigoAST\ELIF.cs" />
     <Compile Include="Analizadores_CodigoAST\ELSEIF.cs" />
+    <Compile Include="Analizadores_CodigoAST\ESTADO_CURSOR.cs" />
     <Compile Include="Analizadores_CodigoAST\FUN-RETORNO.cs" />
     <Compile Include="Analizadores_CodigoAST\FUNCIONES.cs" />
     <Compile Include="Analizadores_CodigoAST\FUNCIONESCOLEECTIONS.cs" />

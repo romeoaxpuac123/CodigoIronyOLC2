@@ -133,7 +133,10 @@ namespace AnalizadorCQL.Analizadores
             var MAX = ToTerm("MAX");
             var SUM = ToTerm("SUM");
             var AVG = ToTerm("AVG");
-
+            var CURSOR = ToTerm("CURSOR");
+            var IS = ToTerm("IS");
+            var OPEN = ToTerm("OPEN");
+            var CLOSE = ToTerm("CLOSE");
             //this.RegisterOperators(8, Associativity.Left, "?");
             //this.RegisterOperators(2, Associativity.Left, "+", "-");
             //this.RegisterOperators(1, Associativity.Left, "*", "/", "%");            
@@ -201,6 +204,9 @@ namespace AnalizadorCQL.Analizadores
             NonTerminal LISTA_IDS1 = new NonTerminal("LISTA_IDS1");
             NonTerminal LISTA_IDS1X = new NonTerminal("LISTA_IDS1X");
             NonTerminal LISTA_IGUALES = new NonTerminal("LISTA_IGUALES");
+            NonTerminal CREAR_CURSOR = new NonTerminal("CREAR_CURSOR");
+            NonTerminal DDL2 = new NonTerminal("DDL2");
+            NonTerminal ESTADO_CURSOR = new NonTerminal("ESTADO_CURSOR");
 
             //DCL 
             NonTerminal CREARUSUARIO = new NonTerminal("CREARUSUARIO");
@@ -214,13 +220,13 @@ namespace AnalizadorCQL.Analizadores
             SENTENCIAS.Rule = MakePlusRule(SENTENCIAS, SENTENCIA);
 
             //SENTENCIAS.Rule = SENTENCIAS + SENTENCIA
-              //                  | SENTENCIA;
+            //                  | SENTENCIA;
 
             SENTENCIA.Rule = DEFINCION_GENERAL_CQL
                              | DDL
                              | IMP
                              | TRY_CATCH
-                             | INC_DEC 
+                             | INC_DEC
                              | ASIGNACION_OPERACION
                              | ELWHILE
                              | DO_WHILE
@@ -231,8 +237,22 @@ namespace AnalizadorCQL.Analizadores
                              | FUNCIONES_CREADAS
                              | ELRETORNO
                              | PROCEDIMIENTOS
-                             | ELCALL;
+                             | ELCALL
+                             | CREAR_CURSOR
+                             | ESTADO_CURSOR;
 
+            ESTADO_CURSOR.Rule = OPEN + id2 + PYC
+                                | CLOSE + id2 + PYC;
+            CREAR_CURSOR.Rule = CURSOR + id2 + IS + DDL2 ;
+
+            DDL2.Rule =  SELECT + LISTA_IDS1 + FROM + id + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + LIMIT + E + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + LIMIT + E + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + ORDER + BY + LISTA_IDS1X + LIMIT + E + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + PYC
+                       | SELECT + LISTA_IDS1 + FROM + id + WHERE + E + ORDER + BY + LISTA_IDS1X + LIMIT + E + PYC;
             ELCALL.Rule = LISTA_EXPRESION + igual + CALL + id + ParA + LISTA_EXPRESION + ParC + PYC;
 
             #region PROCEDIMIENTOS Y FUNCIONES

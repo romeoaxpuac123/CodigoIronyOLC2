@@ -106,6 +106,27 @@ namespace AnalizadorCQL.Analizadores_Codigo
             this.Lista = Listax;
             this.nuevo = nodo;
         }
+        public Simbolo(String id, String NombrecURSOR, String valors,NodoAbstracto nodo)
+        {
+            this.Id = id;
+            this.NombreFuncion = NombrecURSOR;
+            this.nuevo = nodo;
+            this.Valor = valors;
+        }
+        public String IDCursor()
+        {
+            return this.Id;
+        }
+        public String NombreCursor()
+        {
+            return this.NombreFuncion;
+        }
+        public NodoAbstracto Selector_Cursor()
+        {
+            return this.nuevo;
+        }
+
+
         public Simbolo(String id, String NombreFuncion, String Tipo, List<String> Listax, List<String> Listaxy, NodoAbstracto nodo)
         {
             this.Id = id;
