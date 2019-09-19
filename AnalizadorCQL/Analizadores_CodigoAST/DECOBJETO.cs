@@ -34,34 +34,16 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
                 else
                 {
-                    return "#ERROR6 ? Exception: ObjectAlreadyExists: instancia con identificador ya existente. .";
+                    return "#ERROR6 ? Exception: ObjectAlreadyExists: "+ Variable+" instancia con identificador ya existente. .";
                 }
 
             }
             else
             {
-                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre no existente.";
+                return "#ERROR6 ? Exception: TypeAlreadyExists: User Type "+Objeto +" con un nombre no existente.";
             }
 
-            /*
-            Boolean ObjetoA = entorno.Agregar(Objeto, "Objeto", "Objeto");
-            if  (ObjetoA == true)
-            {
-
-                System.Diagnostics.Debug.WriteLine("#Error objeto no existen -> " + Objeto);
-                return "#ERROR8 NO EXISTE OBJETO";
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine("#VAMOS A DECLARAR -> " + Variable);
-                Boolean valorsito = entorno.Agregar(Variable, Objeto, "1");
-                if(valorsito == false)
-                {
-                    System.Diagnostics.Debug.WriteLine("#ERROR7 DECLARACION DE OBJETO YA REALIZADA" + Variable);
-                    return "#ERROR7 DECLARACION DE OBJETO YA REALIZADA";
-                }
-            }
-            */
+         
             return "DECOBJETO";
         }
     }

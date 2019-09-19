@@ -31,7 +31,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 System.Diagnostics.Debug.WriteLine("SALIDA>>" +val.Replace(" (numero)","").Replace(" (hora)","").Replace(" (numdecimal)","").Replace(" (fechas)","") + "\n");
                 using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
                 {
-                    mylogs.WriteLine("SALIDA>>" + val.Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "") + "\n");
+                    mylogs.WriteLine(">>" + val.Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", ""));
                     mylogs.Close();
                 }
 

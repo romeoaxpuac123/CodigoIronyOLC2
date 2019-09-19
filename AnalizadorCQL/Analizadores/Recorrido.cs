@@ -3,6 +3,7 @@ using AnalizadorCQL.Analizadores_CodigoAST;
 using Irony.Parsing;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 namespace AnalizadorCQL.Analizadores
 {
@@ -3127,7 +3128,22 @@ namespace AnalizadorCQL.Analizadores
                         return nuevo;
 
                     }
-
+                    else if (root.ToString() == "ASIGNACION")
+                    {
+                        if (root.ChildNodes.ElementAt(2).ToString().Contains("E")
+                        && root.ChildNodes.ElementAt(0).FindToken().ToString().Contains("id2") &&
+                        root.ChildNodes.ElementAt(1).ToString().Contains("Key symbol")
+                       )
+                        {
+                            System.Diagnostics.Debug.WriteLine("CODIGO PARA DECALRAR UNA VARIABLE @hola = 0;");
+                            NodoAbstracto nuevo = new Asignar("ASIGNAR");
+                            NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                            nuevo.Hijos.Add(nuevoid);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            return nuevo;
+                                                       
+                        }
+                    }
                     #endregion
                     break;
                 case 5:
@@ -4785,6 +4801,7 @@ namespace AnalizadorCQL.Analizadores
 
         public void Ejecutar(NodoAbstracto raiz)
         {
+            String rutaCompleta = @"C:\Users\Bayyron\Desktop\Salida.txt";
             //System.Diagnostics.Debug.WriteLine("ejecutar");
             Entorno entorno = new Entorno();
             Boolean elbreak = false;
@@ -4798,6 +4815,32 @@ namespace AnalizadorCQL.Analizadores
                 {
                     //System.Diagnostics.Debug.WriteLine("ERROR SEMANTICO");
                     System.Diagnostics.Debug.WriteLine("--------------" + valor1 + "-----------");
+                    if(valor1.Contains("#ERROR6 ? Exception:"))
+                    {
+                        using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                        {
+                            mylogs.WriteLine(">>" + valor1.Replace("#ERROR6 ? ",""));
+                            mylogs.Close();
+                        }
+                    }
+                    if (valor1.Contains("#Error2 al momento de asignar valor a"))
+                    {
+                        using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                        {
+                            mylogs.WriteLine(">>" + "#ERROR" + valor1.Replace("#Erro2", ""));
+                            mylogs.Close();
+                        }
+                        break;
+                    }
+                    if (valor1.Contains("#Error3"))
+                    {
+                        using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                        {
+                            mylogs.WriteLine(">>" + valor1.Replace("#Error3", ""));
+                            mylogs.Close();
+                        }
+                        break;
+                    }
                     //elbreak = true;
                     // break;
                     //return "#Error";

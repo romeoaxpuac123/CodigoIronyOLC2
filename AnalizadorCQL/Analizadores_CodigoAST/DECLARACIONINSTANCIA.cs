@@ -34,14 +34,18 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     for (int i = 0; i < Lista.Count; i++)
                     {
                         System.Diagnostics.Debug.WriteLine("Elemenos" + Lista[i].ObtenerId() + "-" + Lista[i].ObtenerTipo());
-                       if( (Lista[i].ObtenerTipo().ToUpper() != ("STRING") )&& (Lista[i].ObtenerTipo().ToUpper() != ("DOUBLE")) 
-                            && (Lista[i].ObtenerTipo().ToUpper() != ("TIME")) && (Lista[i].ObtenerTipo().ToUpper() != ("INT"))
-                            && (Lista[i].ObtenerTipo().ToUpper() != ("DATE")) && (Lista[i].ObtenerTipo().ToUpper() != ("LIST"))
-                            && (Lista[i].ObtenerTipo().ToUpper() != ("SET"))
+                       if( (Lista[i].ObtenerTipo().ToUpper() == ("STRING") )|| (Lista[i].ObtenerTipo().ToUpper() == ("DOUBLE")) 
+                            || (Lista[i].ObtenerTipo().ToUpper() == ("TIME")) || (Lista[i].ObtenerTipo().ToUpper() == ("INT"))
+                            ||(Lista[i].ObtenerTipo().ToUpper() == ("DATE"))
 
                         ){
                             //entorno.AgregarObjeto(Variable + "." + Lista[i].ObtenerId(), "OBJETO_BRAY", null);
-                            entorno.AgregarObjeto(Variable + "." + Lista[i].ObtenerId(), "OBJETO_BRAY", Lista,Objeto1);
+                            entorno.Agregar(Variable + "." + Lista[i].ObtenerId(), Lista[i].ObtenerTipo(), "nulo");
+                        }
+                        if ((Lista[i].ObtenerTipo().ToUpper() != ("LIST"))
+                            && (Lista[i].ObtenerTipo().ToUpper() != ("SET")))
+                        {
+
                         }
                     }
                 }

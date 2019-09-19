@@ -93,7 +93,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         }
 
                         if(this.AutoIncrmentable2 != 5)
-                        return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre/parametro ya existente.";
+                        return "#ERROR6 ? Exception: TypeAlreadyExists: User Type ("+ NombreObjeto +") con un parametro ya existente.";
                         else
                         {
                             return "#ERROR6 con Exist if";
@@ -111,7 +111,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 {
                     // System.Diagnostics.Debug.WriteLine("OBJETO EXISTENTE");
                     if (this.AutoIncrmentable2 != 5)
-                        return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre ya existente.";
+                        return "#ERROR6 ? Exception: TypeAlreadyExists: User Type" + NombreObjeto + " con un nombre ya existente.";
                     else
                     {
                         return "#ERROR6 con Exist if";
@@ -125,7 +125,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             {
                 // System.Diagnostics.Debug.WriteLine("OBJETO EXISTENTE");
                 if (this.AutoIncrmentable2 != 5)
-                    return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre ya existente.";
+                    return "#ERROR6 ? Exception: TypeAlreadyExists: User Type " + NombreObjeto + " con un nombre ya existente.";
                 else
                 {
                     return "#ERROR6 con Exist if";

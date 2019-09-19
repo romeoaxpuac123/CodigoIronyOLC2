@@ -221,9 +221,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 Variable1 = entorno.ObtenerValor(this.Hijos[1].Hijos[0].Nombre);
                 TipoDato1 = entorno.ObtenerTipo(this.Hijos[1].Hijos[0].Nombre);
             }
-            System.Diagnostics.Debug.WriteLine("variable1:" + Variable1 + "-");
-            System.Diagnostics.Debug.WriteLine("variable1:" + TipoDato1 + "-");
-            System.Diagnostics.Debug.WriteLine("variable1:" + var + "-");
+
+           
+            System.Diagnostics.Debug.WriteLine("variable1x:" + Variable1 + "-");
+            System.Diagnostics.Debug.WriteLine("variable1x:" + TipoDato1 + "-");
+            System.Diagnostics.Debug.WriteLine("variable1x:" + var + "-");
 
             if ((entorno.ObtenerTipo(var).ToString().ToUpper().Contains("INT")) &&
                 ( TipoDato1.ToUpper().Contains("INT") || TipoDato1.ToUpper().Contains("DOUBLE"))
@@ -239,8 +241,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     System.Diagnostics.Debug.WriteLine("asignacion decremento");
                     entorno.AsignarValor(var, (Int64.Parse(Variable1) + 1).ToString());
                 }
-               
-               // return sali;
+
+                // return sali;
             }
 
             Boolean DecimalEntero = true;
@@ -363,7 +365,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         else {
 
                             System.Diagnostics.Debug.WriteLine("DIFERENTE TIPO");
-                            return "#Error3";
+                            return "#Error3" + "#ERROR: Asignaccion incorrect con variable " + var;
                         }
                         
                     }
@@ -375,7 +377,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 else
                 {
                     System.Diagnostics.Debug.WriteLine("#Error3 asiganacion incorrecta");
-                    return "#Error3";
+                    return "#Error3" + "#ERROR: Asignaccion incorrect con variable " + var;
                 }
 
 

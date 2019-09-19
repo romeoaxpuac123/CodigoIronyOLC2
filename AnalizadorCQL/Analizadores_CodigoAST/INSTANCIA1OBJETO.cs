@@ -32,18 +32,18 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 if(entorno.ExisteVariable(Variable.Replace(" (id)",""))==true)
                 {
                     if(entorno.ExisteVariable(this.Hijos[2].Nombre.Replace(" (id2)", ""))== false){
-                        entorno.AgregarObjeto(this.Hijos[2].Nombre.Replace(" (id2)", ""), Variable.Replace(" (id)", ""), null,Objeto);
+                        entorno.AgregarObjeto(this.Hijos[2].Nombre.Replace(" (id2)", ""), "1", null,Objeto);
 
                     }
                     else
-                    {
-                        return "#ERROR6 ? Exception: TypeAlreadyExists: User Type con un nombre ya existente.";
+                    {           
+                        return "#Error3 " + this.Hijos[2].Nombre.Replace(" (id2)", "") + " YA FUE CREADO";
                     }
                     
                 }
                 else
                 {
-                    return "#ERROR6 ? Exception: NullPointerException: Objeto no existente o apunta a null.";
+                    return "#ERROR6 ? Exception: NullPointerException: User Type " + Variable + "no existente o apunta a null.";
                 }
 
             }
@@ -53,18 +53,48 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 {
                     if (entorno.ExisteVariable(Variable) == true)
                     {
-                        entorno.EliminarVariable(Variable);
+                        //entorno.EliminarVariable(Variable);
                         List<Simbolo> Lista = entorno.ElementosUT(Objeto);
-                        entorno.AgregarObjeto(Variable, "OBJETO_BRAY", Lista,Objeto);
+                        String valorsitox = entorno.ObtenerValor(Variable);
+                        if (valorsitox == "1")
+                        {
+                            entorno.AsignarValor(Variable, "2");
+                            List<Simbolo> Listax = entorno.ElementosUT(Objeto);
+                           // entorno.AgregarObjeto(Variable, "OBJETO_BRAY", Lista, Variable);
+                            System.Diagnostics.Debug.WriteLine("Elemenos");
+                            for (int i = 0; i < Listax.Count; i++)
+                            {
+                                System.Diagnostics.Debug.WriteLine("Elemenos" + Listax[i].ObtenerId() + "-" + Listax[i].ObtenerTipo());
+                                if ((Lista[i].ObtenerTipo().ToUpper() == ("STRING")) || (Listax[i].ObtenerTipo().ToUpper() == ("DOUBLE"))
+                                     || (Listax[i].ObtenerTipo().ToUpper() == ("TIME")) || (Listax[i].ObtenerTipo().ToUpper() == ("INT"))
+                                     || (Listax[i].ObtenerTipo().ToUpper() == ("DATE"))
+
+                                 )
+                                {
+                                    //entorno.AgregarObjeto(Variable + "." + Lista[i].ObtenerId(), "OBJETO_BRAY", null);
+                                    entorno.Agregar(Variable + "." + Lista[i].ObtenerId(), Listax[i].ObtenerTipo(), "nulo");
+                                }
+                                if ((Listax[i].ObtenerTipo().ToUpper() != ("LIST"))
+                                    && (Listax[i].ObtenerTipo().ToUpper() != ("SET")))
+                                {
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            return "#ERROR2 objeto ya instanciado";
+                        }
+                            //entorno.AgregarObjeto(Variable, "1", Lista,Objeto);
                      
                     }
                     else{
-                        return "#ERROR6 ? Exception: NullPointerException: Objeto no existente o apunta a null.";
+                        return "#ERROR6 ? Exception: NullPointerException: User Type " + Variable +" no existente o apunta a null.";
                     }
                 }
                 else
                 {
-                    return "#ERROR6 ? Exception: NullPointerException: Objeto no existente o apunta a null.";
+                    return "#ERROR6 ? Exception: NullPointerException: User Type " + Variable + "no existente o apunta a null.";
                 }
             }
             
@@ -77,7 +107,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 return "#ERROR8 NO EXISTE OBJETO";
             }
             else
-            {
+            {*/
+            /*
                 System.Diagnostics.Debug.WriteLine("#VAMOS A INSTANCIAR -> " + Variable);
                 String valorsito = entorno.ObtenerValor(Variable);
                 if(valorsito == "1")
@@ -96,15 +127,37 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     }
                     //objeto no instanciado
                     entorno.AsignarValor(Variable, "2");
-                }
+                    List<Simbolo> Lista = entorno.ElementosUT(Variable);
+                    entorno.AgregarObjeto(Variable, "OBJETO_BRAY", Lista, Variable);
+                    System.Diagnostics.Debug.WriteLine("Elemenos");
+                    for (int i = 0; i < Lista.Count; i++)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Elemenos" + Lista[i].ObtenerId() + "-" + Lista[i].ObtenerTipo());
+                        if ((Lista[i].ObtenerTipo().ToUpper() == ("STRING")) || (Lista[i].ObtenerTipo().ToUpper() == ("DOUBLE"))
+                             || (Lista[i].ObtenerTipo().ToUpper() == ("TIME")) || (Lista[i].ObtenerTipo().ToUpper() == ("INT"))
+                             || (Lista[i].ObtenerTipo().ToUpper() == ("DATE"))
+
+                         )
+                        {
+                            //entorno.AgregarObjeto(Variable + "." + Lista[i].ObtenerId(), "OBJETO_BRAY", null);
+                            entorno.Agregar(Variable + "." + Lista[i].ObtenerId(), Lista[i].ObtenerTipo(), "nulo");
+                        }
+                        if ((Lista[i].ObtenerTipo().ToUpper() != ("LIST"))
+                            && (Lista[i].ObtenerTipo().ToUpper() != ("SET")))
+                        {
+
+                        }
+                    }
+
+                 }
                 else
                 {
                     //objeto ya instanciado
                     return "#ERROR objeto ya instanciado";
                 }
-                
-            }
-            */
+                */
+            
+            
             return "INSTANCIA";
         }
     }

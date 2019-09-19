@@ -3047,7 +3047,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
             {
                 Simbolo sim = new Simbolo(id, valor, tipo);
                 Elementos.Add(id, sim);
-              //  System.Diagnostics.Debug.WriteLine("La variables se agregó -> " + id);
+                System.Diagnostics.Debug.WriteLine("La variables se agregó -> " + id + ">"+ tipo);
                 return true;
             }
             else
@@ -3351,7 +3351,7 @@ namespace AnalizadorCQL.Analizadores_Codigo
             }
             else
             {
-                return "#Error2";
+                return "#Error2 La siguiente variable no Existe: " + id;
             }
         }
         public String ObtenerPosicion(String id, String numero)
