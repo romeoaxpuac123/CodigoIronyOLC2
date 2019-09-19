@@ -220,6 +220,7 @@ namespace AnalizadorCQL.Analizadores
             #region Gramatica
             S.Rule = SENTENCIAS;
             SENTENCIAS.Rule = MakePlusRule(SENTENCIAS, SENTENCIA);
+            //E.Rule = MakePlusRule(IMP, E + mas + E);
 
             //SENTENCIAS.Rule = SENTENCIAS + SENTENCIA
             //                  | SENTENCIA;

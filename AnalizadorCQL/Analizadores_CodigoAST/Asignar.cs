@@ -373,6 +373,14 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                    
                 }
                
+                else if(Variable1.ToUpper().Contains("TRUE")|| Variable1.ToUpper().Contains("FALSE"))
+                {
+                    if (entorno.ObtenerTipo(var).ToUpper().Contains("BOOL") == true)
+                    {
+                        entorno.AsignarValor(var, Variable1);
+                        return "ASIGNAR";
+                    }
+                }
 
                 else
                 {

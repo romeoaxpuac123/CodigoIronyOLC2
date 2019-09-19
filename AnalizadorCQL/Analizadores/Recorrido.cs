@@ -3141,8 +3141,37 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.Hijos.Add(nuevoid);
                             nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
                             return nuevo;
-                                                       
+
                         }
+                    }
+                    else if (root.ToString() == "E")
+                    {
+                        if ((root.ChildNodes.ElementAt(0).ToString().Contains(" (id2)")) &&
+                          (root.ChildNodes.ElementAt(1).ToString().Contains("( (Key symbol)")) &&
+                          (root.ChildNodes.ElementAt(3).ToString().Contains(") (Key symbol)"))
+                          )
+                        {
+                            System.Diagnostics.Debug.WriteLine("FUNCIONES");
+                            NodoAbstracto nuevo = new FUNCIONES_PROPIAS("EXP");
+                            NodoAbstracto nuevohijo = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                            nuevo.Hijos.Add(nuevohijo);
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            nuevo.AutoIncrmentable2 = 103;
+
+
+                            return nuevo;
+                        }
+                    }
+                    else if (root.ToString().ToUpper().Contains("FUNCIONES_PROPIAS"))
+                    {
+                        NodoAbstracto nuevo = new FUNCIONESCOLEECTIONS("FUNCIONES");
+
+                        NodoAbstracto tipoCasteo = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                        NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
+                        //System.Diagnostics.Debug.WriteLine("EXPRESION DE 4);" + root.ChildNodes.ElementAt(1).FindToken().ToString());
+                        nuevo.Hijos.Add(tipoCasteo);
+                        nuevo.AutoIncrmentable2 = 90;
+                        return nuevo;
                     }
                     #endregion
                     break;
@@ -3307,6 +3336,21 @@ namespace AnalizadorCQL.Analizadores
 
                         }
                     }
+                    else if (root.ToString().ToUpper().Contains("FUNCIONES_PROPIAS"))
+                    {
+                        NodoAbstracto nuevo = new FUNCIONESCOLEECTIONS("FUNCIONES");
+                        NodoAbstracto nuevooperador = new Nodo(".");
+                        NodoAbstracto tipoCasteo = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                        NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
+
+                        //System.Diagnostics.Debug.WriteLine("EXPRESION DE 4);" + root.ChildNodes.ElementAt(1).FindToken().ToString());
+                        nuevo.Hijos.Add(tipoCasteo);
+                        nuevo.Hijos.Add(nuevooperador);
+                        nuevo.Hijos.Add(nuevoid);
+                        nuevo.TipoDato = "funk";
+                        return nuevo;
+                    }
+
                     #endregion
                     break;
                 case 6:
@@ -3500,7 +3544,19 @@ namespace AnalizadorCQL.Analizadores
 
                         }
                     }
-                    
+                    else if (root.ToString().ToUpper().Contains("FUNCIONES_PROPIAS"))
+                    {
+                        NodoAbstracto nuevo = new FUNCIONESCOLEECTIONS("FUNCIONES");
+                        NodoAbstracto tipoCasteo = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                        NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
+                        NodoAbstracto nuevoid2 = new Nodo(root.ChildNodes.ElementAt(4).FindToken().ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(tipoCasteo);
+                        nuevo.Hijos.Add(nuevoid);
+                        nuevo.Hijos.Add(nuevoid2);
+                        nuevo.AutoIncrmentable2 = 9099;
+                        nuevo.TipoDato = "funk";
+                        return nuevo;
+                    }
                     #endregion
                     break;
                 case 8:
@@ -3743,7 +3799,21 @@ namespace AnalizadorCQL.Analizadores
 
                         }
                     }
+                    else if (root.ToString().Contains("LALISTA"))
+                    {
+                        NodoAbstracto nuevo = new LISTAS("LISTA");
+                        NodoAbstracto NombreLista = new Nodo(root.ChildNodes.ElementAt(1).ToString());
+                        NodoAbstracto TipoLista = new Nodo(root.ChildNodes.ElementAt(6).FindToken().ToString());
+                        nuevo.Hijos.Add(NombreLista);
+                        nuevo.Hijos.Add(TipoLista);
+                        nuevo.AutoIncrmentable2 = 88;
+                        if (root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Contains("SET"))
+                        {
+                            nuevo.TipoDato = "SET";
+                        }
+                        return nuevo;
 
+                    }
                     #endregion
                     break;
                 case 10:
@@ -4823,7 +4893,7 @@ namespace AnalizadorCQL.Analizadores
                             mylogs.Close();
                         }
                     }
-                    if (valor1.Contains("#Error2 al momento de asignar valor a"))
+                    else if (valor1.Contains("#Error2 al momento de asignar valor a"))
                     {
                         using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
                         {
@@ -4832,11 +4902,20 @@ namespace AnalizadorCQL.Analizadores
                         }
                         break;
                     }
-                    if (valor1.Contains("#Error3"))
+                    else if (valor1.Contains("#Error3"))
                     {
                         using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
                         {
                             mylogs.WriteLine(">>" + valor1.Replace("#Error3", ""));
+                            mylogs.Close();
+                        }
+                        break;
+                    }
+                    else if (valor1.Contains("#ERRORfc"))
+                    {
+                        using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                        {
+                            mylogs.WriteLine(">>" + valor1.Replace("#ERRORfc", "ERROR"));
                             mylogs.Close();
                         }
                         break;

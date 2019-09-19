@@ -24,6 +24,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String Objeto1 = this.Hijos[0].Nombre.ToString();
             String Variable = this.Hijos[1].Nombre.ToString();
             String Objeto2 = this.Hijos[2].Nombre.ToString();
+            if (entorno.ExisteVariable(Variable) == true)
+            {
+                return "#ERROR6 ? Exception: ObjectAlreadyExists: instancia con identificador ya existente";
+            }
+
             if (Objeto1.ToUpper() == Objeto2.ToUpper())
             {
                 if (entorno.ExisteVariable(Objeto1) == true)
@@ -36,16 +41,23 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         System.Diagnostics.Debug.WriteLine("Elemenos" + Lista[i].ObtenerId() + "-" + Lista[i].ObtenerTipo());
                        if( (Lista[i].ObtenerTipo().ToUpper() == ("STRING") )|| (Lista[i].ObtenerTipo().ToUpper() == ("DOUBLE")) 
                             || (Lista[i].ObtenerTipo().ToUpper() == ("TIME")) || (Lista[i].ObtenerTipo().ToUpper() == ("INT"))
-                            ||(Lista[i].ObtenerTipo().ToUpper() == ("DATE"))
+                            ||(Lista[i].ObtenerTipo().ToUpper() == ("DATE")) || (Lista[i].ObtenerTipo().ToUpper() == ("BOOLEAN"))
 
                         ){
                             //entorno.AgregarObjeto(Variable + "." + Lista[i].ObtenerId(), "OBJETO_BRAY", null);
                             entorno.Agregar(Variable + "." + Lista[i].ObtenerId(), Lista[i].ObtenerTipo(), "nulo");
                         }
-                        if ((Lista[i].ObtenerTipo().ToUpper() != ("LIST"))
-                            && (Lista[i].ObtenerTipo().ToUpper() != ("SET")))
+                        if ((Lista[i].ObtenerTipo().ToUpper() == ("LIST"))
+                                    || (Lista[i].ObtenerTipo().ToUpper() == ("SET")))
                         {
-
+                            if (Lista[i].ObtenerTipo().ToUpper() == ("LIST"))
+                            {
+                                entorno.Agregar(Variable + "." + Lista[i].ObtenerId(), "STRING", "LISTA");
+                            }
+                            else
+                            {
+                                entorno.Agregar(Variable + "." + Lista[i].ObtenerId(), "STRING", "SET");
+                            }
                         }
                     }
                 }

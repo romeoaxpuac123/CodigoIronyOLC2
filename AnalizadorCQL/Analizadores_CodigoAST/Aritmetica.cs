@@ -283,10 +283,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
 
             }
-            
+            Boolean EsDate = false;
             if (Tipo2 == "id2" || Tipo2 == "id" )
             {
                 System.Diagnostics.Debug.WriteLine("TIPO 2 ID" + this.Hijos[2].NombreVariable);
+                System.Diagnostics.Debug.WriteLine("TIPO 2 ID" + entorno.ObtenerTipo(this.Hijos[2].NombreVariable).ToUpper());
                 if (entorno.ObtenerTipo(this.Hijos[2].NombreVariable).ToUpper().Contains("INT") == true)
                 {
                     //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
@@ -313,40 +314,42 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
                 else if (entorno.ObtenerTipo(this.Hijos[2].NombreVariable).ToUpper().Contains("DATE") == true)
                 {
-                    //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
-
+                    System.Diagnostics.Debug.WriteLine("TIPO 1 IDx romeo");
+                    EsDate = true;
                     Tipo2 = "Fechas";
                 }
                 else if (entorno.ObtenerTipo(this.Hijos[2].NombreVariable).ToUpper().Contains("TIME") == true)
                 {
                     //System.Diagnostics.Debug.WriteLine("TIPO 1 IDx");
-
+                    EsDate = true;
                     Tipo2 = "hora";
                 }
             }
-
-            if (val2.Contains("+"))
-            {
-                int valor1 = Int32.Parse(val1.Replace(" (numero)", ""));
-                if (Tipo1 == "entero"|| (Tipo1 == "decimal"))
+            if (EsDate == false) {
+                if (val2.Contains("+"))
                 {
-                    entorno.AsignarValor(Var, (valor1 + 1).ToString());
-                    
-                }
-                return (valor1).ToString();
-            }
-            if (val2.Contains("-"))
-            {
-                int valor1 = Int32.Parse(val1.Replace(" (numero)", ""));
-                if (Tipo1 == "entero" || (Tipo1 == "decimal"))
-                {
-                    entorno.AsignarValor(Var, (valor1 - 1).ToString());
-                    //return (valor1).ToString();
-                }
-                return (valor1).ToString();
-            }
+                    int valor1 = Int32.Parse(val1.Replace(" (numero)", ""));
+                    if (Tipo1 == "entero" || (Tipo1 == "decimal"))
+                    {
+                        entorno.AsignarValor(Var, (valor1 + 1).ToString());
 
-            //System.Diagnostics.Debug.WriteLine("TIPO 2 IDRx" + Tipo2 + "->" + val2);
+                    }
+                    return (valor1).ToString();
+                }
+                if (val2.Contains("-"))
+                {
+                    int valor1 = Int32.Parse(val1.Replace(" (numero)", ""));
+                    if (Tipo1 == "entero" || (Tipo1 == "decimal"))
+                    {
+                        entorno.AsignarValor(Var, (valor1 - 1).ToString());
+                        //return (valor1).ToString();
+                    }
+                    return (valor1).ToString();
+                }
+            }
+            
+            
+            System.Diagnostics.Debug.WriteLine("TIPO 2 IDRx" + Tipo2 + "->" + val2);
             val1 = val1.Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "");
             val2 = val2.Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "");
             System.Diagnostics.Debug.WriteLine("TIPO 1 IDRx" + Tipo1 + "->" + val1);
@@ -1153,8 +1156,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 switch (this.Hijos[1].Nombre)
                 {
                     case "+":
+                        System.Diagnostics.Debug.WriteLine("concatenacion1");
                         totalC = valor1 + valor2;
-                        System.Diagnostics.Debug.WriteLine("concatenacion");
+                        System.Diagnostics.Debug.WriteLine("concatenacion2");
                         break;
                     case "-":
                         System.Diagnostics.Debug.WriteLine("#Error: Se está realizando operaciones raras con strings \n");

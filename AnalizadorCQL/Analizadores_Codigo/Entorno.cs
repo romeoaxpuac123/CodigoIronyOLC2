@@ -3304,7 +3304,8 @@ namespace AnalizadorCQL.Analizadores_Codigo
                             if (i == pos)
                             {
                                 //p.lalista().Remove(valor);
-                                return p.lalista()[i];
+                               return p.lalista()[i].Replace("-",":").ToString();
+                               // return "ho-la";
                             }
                         }
 

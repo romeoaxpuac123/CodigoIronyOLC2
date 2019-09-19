@@ -37,7 +37,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
                 else
                 {
-                    Existencia = entorno.Agregar(NombreLista.Replace(" (id2)", ""), TipoLista.Replace(" (Keyword)",""), "SETBRAY");
+                    Existencia = entorno.Agregar(NombreLista.Replace(" (id2)", ""), TipoLista.Replace(" (Keyword)",""), "LISTBRAY");
 
                 }
                  if (Existencia == false)

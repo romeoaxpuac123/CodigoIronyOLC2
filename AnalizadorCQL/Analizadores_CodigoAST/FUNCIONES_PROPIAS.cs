@@ -163,8 +163,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     this.Nombre = "cadena";
                     this.TipoDato = "cadena";
                     
-                    //System.Diagnostics.Debug.WriteLine("PUTO" + entorno.PosicionLista2(Variable, 1));
+                    System.Diagnostics.Debug.WriteLine("PUTO" + entorno.PosicionLista2(Variable, 0));
                     int posicion = Int32.Parse(this.Hijos[1].Hijos[0].Nombre.Replace(" (numero)", ""));
+                    System.Diagnostics.Debug.WriteLine("PUTO" + posicion);
                     return entorno.PosicionLista2(Variable, posicion);
                      
 

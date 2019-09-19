@@ -67,17 +67,24 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 System.Diagnostics.Debug.WriteLine("Elemenos" + Listax[i].ObtenerId() + "-" + Listax[i].ObtenerTipo());
                                 if ((Lista[i].ObtenerTipo().ToUpper() == ("STRING")) || (Listax[i].ObtenerTipo().ToUpper() == ("DOUBLE"))
                                      || (Listax[i].ObtenerTipo().ToUpper() == ("TIME")) || (Listax[i].ObtenerTipo().ToUpper() == ("INT"))
-                                     || (Listax[i].ObtenerTipo().ToUpper() == ("DATE"))
+                                     || (Listax[i].ObtenerTipo().ToUpper() == ("DATE")) || (Listax[i].ObtenerTipo().ToUpper() == ("BOOLEAN"))
 
                                  )
                                 {
                                     //entorno.AgregarObjeto(Variable + "." + Lista[i].ObtenerId(), "OBJETO_BRAY", null);
                                     entorno.Agregar(Variable + "." + Lista[i].ObtenerId(), Listax[i].ObtenerTipo(), "nulo");
                                 }
-                                if ((Listax[i].ObtenerTipo().ToUpper() != ("LIST"))
-                                    && (Listax[i].ObtenerTipo().ToUpper() != ("SET")))
+                                if ((Listax[i].ObtenerTipo().ToUpper() == ("LIST"))
+                                    || (Listax[i].ObtenerTipo().ToUpper() == ("SET")))
                                 {
-
+                                    if (Listax[i].ObtenerTipo().ToUpper() == ("LIST"))
+                                    {
+                                        entorno.Agregar(Variable + "." + Lista[i].ObtenerId(), "STRING", "LISTA");
+                                    }
+                                    else
+                                    {
+                                        entorno.Agregar(Variable + "." + Lista[i].ObtenerId(), "STRING", "SET");
+                                    }
                                 }
                             }
                         }
