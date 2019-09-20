@@ -39,7 +39,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 System.Diagnostics.Debug.WriteLine("la variable esxd:" + ListaID1x[i]);
                 String tipo = this.Hijos[0].Nombre;
                 String id = ListaID1x[i];
-                String sali = entorno.ObtenerValor(this.Hijos[1].Nombre);
+                String sali = entorno.ObtenerValor(ListaID1x[i]);
                 System.Diagnostics.Debug.WriteLine("tipo de variable" + this.Hijos[0].Nombre);
                 System.Diagnostics.Debug.WriteLine("VAR" + ListaID1x[i]);
                 System.Diagnostics.Debug.WriteLine("tipo de la expresion" + this.Hijos[2].Nombre);
@@ -100,7 +100,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 {
                     ElBool = false;
                 }
-                if ("#Error2".Equals(sali) == true)
+                if (sali.ToUpper().Contains("#ERROR2") == true)
                 {
                     if (this.Hijos[0].Nombre.ToUpper().Contains("INT") == true
                         && (this.Hijos[2].Nombre == "Entero" || this.Hijos[2].Nombre == "Decimal" || this.Hijos[2].Nombre == "EXP")
@@ -176,13 +176,13 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     else
                     {
                         System.Diagnostics.Debug.WriteLine("#Error3 asiganacion incorrecta");
-                        retorno = "#Error3";
+                        retorno = "#ERROR3 asiganacion incorrecta" + id;
                     }
                 }
                 else
                 {
                     System.Diagnostics.Debug.WriteLine("#Error4 la variable YA EXISTE");
-                    retorno = "#Error4";
+                    retorno = "#ERROR4" + " la variable YA EXISTE" + id;
                 }
             }
             if (this.Hijos[2].Nombre.Contains("INCREMENTO"))

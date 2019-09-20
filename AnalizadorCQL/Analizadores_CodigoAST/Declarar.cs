@@ -21,7 +21,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         {
             System.Diagnostics.Debug.WriteLine("Se está Ejecutnado declaraR");
             String sali = entorno.ObtenerValor(this.Hijos[1].Nombre);
-            if ("#Error2".Equals(sali))
+            if (sali.ToUpper().Contains("#ERROR")==true)
             {
                //System.Diagnostics.Debug.WriteLine("VAMOS A VER EL TIPO: " + Hijos[0].Nombre.ToUpper());
                //salida.Text = "#Error: No se ha encontrado la variables -> " + this.Hijos[0].Nombre + "\n";
@@ -46,7 +46,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             else
             {
                 System.Diagnostics.Debug.WriteLine("la variable YA EXISTE");
-                return "#Error4";
+                return "#ERROR4 "+ "variable YA EXISTE " + this.Hijos[1].Nombre;
             }
             sali = entorno.ObtenerValor(this.Hijos[1].Nombre);
             return sali;

@@ -2691,14 +2691,27 @@ namespace AnalizadorCQL.Analizadores
 
                         }
                     }
+                    else if (root.ToString() == "USER_TYPE2")
+                    {
+                  
+                                NodoAbstracto nuevo = new ERROR("USER_TYPE");
+                             
+                                return nuevo;
+                          
+                     
 
+                    }
                     #endregion
                     break;
                 case 3:
                     #region hijos3
                     if (root.ToString() == "E")
                     {
+
+
                         NodoAbstracto RESULT = null;
+
+
                         if ((root.ChildNodes.ElementAt(0).ToString().Contains(" (id2)")) &&
                             (root.ChildNodes.ElementAt(1).ToString().Contains("( (Key symbol)")) &&
                             (root.ChildNodes.ElementAt(2).ToString().Contains(") (Key symbol)"))
@@ -3091,7 +3104,48 @@ namespace AnalizadorCQL.Analizadores
                         return nuevo;
 
                     }
-                    
+                    else if (root.ToString() == "ASIGNACION")
+                    {
+                        if (root.ChildNodes.ElementAt(0).ToString().Contains("TIPOS_VARIABLES")
+                        && root.ChildNodes.ElementAt(1).FindToken().ToString().Contains("id2") &&
+                        root.ChildNodes.ElementAt(2).ToString().Contains("; (Key symbol)")
+                        )
+                        {
+                            System.Diagnostics.Debug.WriteLine("CODIGO PARA DECALRAR UNA VARIABLE INT @VAR1;");
+                            if (root.ChildNodes.ElementAt(1).ToString().Contains("LISTA_IDS2"))
+                            {
+                                //System.Diagnostics.Debug.WriteLine("PUTO");
+
+                                ListaID2(root.ChildNodes.ElementAt(1));
+                                String tipo = root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace("(Keyword)", "");
+                                NodoAbstracto nuevo = new DeclararLista("DECLARAR_Lista");
+                                NodoAbstracto nuevotipo = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace("(Keyword)", ""));
+                                NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id2)", ""));
+                                nuevo.Hijos.Add(nuevotipo);
+                                nuevo.Hijos.Add(nuevoid);
+                                for (int i = 0; i < primes.Count; i++)
+                                {
+                                    nuevo.ListaID1.Add(primes[i]);
+                                }
+
+                                primes.Clear();
+                                return nuevo;
+
+
+                            }
+                            else
+                            {
+                                NodoAbstracto nuevo = new Declarar("DECLARAR");
+                                NodoAbstracto nuevotipo = new Nodo(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0).ToString().Replace("(Keyword)", ""));
+                                NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id2)", ""));
+                                nuevo.Hijos.Add(nuevotipo);
+                                nuevo.Hijos.Add(nuevoid);
+                                return nuevo;
+                            }
+
+
+                        }
+                    }
                     #endregion
                     break;
                 case 4:
@@ -3341,8 +3395,8 @@ namespace AnalizadorCQL.Analizadores
                         NodoAbstracto nuevo = new FUNCIONESCOLEECTIONS("FUNCIONES");
                         NodoAbstracto nuevooperador = new Nodo(".");
                         NodoAbstracto tipoCasteo = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
-                        NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
-
+                        // NodoAbstracto nuevoid = new Nodo(root.ChildNodes.ElementAt(2).FindToken().ToString().Replace(" (id)", ""));
+                        NodoAbstracto nuevoid = Recorrido12(root.ChildNodes.ElementAt(2));
                         //System.Diagnostics.Debug.WriteLine("EXPRESION DE 4);" + root.ChildNodes.ElementAt(1).FindToken().ToString());
                         nuevo.Hijos.Add(tipoCasteo);
                         nuevo.Hijos.Add(nuevooperador);
@@ -4902,11 +4956,20 @@ namespace AnalizadorCQL.Analizadores
                         }
                         break;
                     }
-                    else if (valor1.Contains("#Error3"))
+                    else if (valor1.ToUpper().Contains("#ERROR3"))
                     {
                         using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
                         {
                             mylogs.WriteLine(">>" + valor1.Replace("#Error3", ""));
+                            mylogs.Close();
+                        }
+                        break;
+                    }
+                    else if (valor1.ToUpper().Contains("#ERROR4"))
+                    {
+                        using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                        {
+                            mylogs.WriteLine(">>" + valor1.Replace("#ERROR4", ""));
                             mylogs.Close();
                         }
                         break;
@@ -4916,6 +4979,15 @@ namespace AnalizadorCQL.Analizadores
                         using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
                         {
                             mylogs.WriteLine(">>" + valor1.Replace("#ERRORfc", "ERROR"));
+                            mylogs.Close();
+                        }
+                        break;
+                    }
+                    else if (valor1.Contains("#ERROR-BRAY"))
+                    {
+                        using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                        {
+                            mylogs.WriteLine(">>" + "ERROR EN EL SISTEMA COMANDO MAL INGRESADO");
                             mylogs.Close();
                         }
                         break;
@@ -5395,11 +5467,12 @@ namespace AnalizadorCQL.Analizadores
 
                     break;
                 case 3:
-                    String Var2 = root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", "");
+                     ListaID2(root.ChildNodes.ElementAt(0));
+                    String Var2 = root.ChildNodes.ElementAt(2).ToString().Replace(" (id2)", "");
                     System.Diagnostics.Debug.WriteLine("tres hijos" + Var2);
                     Lista.Add(Var2);
                     primes.Add(Var2);
-                    ListaID2(root.ChildNodes.ElementAt(0));
+                   
                     //Lista.Add(root.ChildNodes.ElementAt(2).ToString().Replace(" (id2)", ""));
                     //System.Diagnostics.Debug.WriteLine("se agrego" + root.ChildNodes.ElementAt(0).ToString().Replace(" (id2)", ""));
 

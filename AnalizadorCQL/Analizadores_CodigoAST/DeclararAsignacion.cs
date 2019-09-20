@@ -48,7 +48,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             {
                 ElBool = false;
             }
-            if ("#Error2".Equals(sali) == true)
+            if (sali.ToUpper().Contains("#ERROR") == true)
             {
                 if (this.Hijos[0].Nombre.ToUpper().Contains("INT") == true
                     && (this.Hijos[2].Nombre == "Entero" || this.Hijos[2].Nombre == "Decimal" || this.Hijos[2].Nombre == "EXP")
@@ -155,13 +155,13 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 {
 
                     System.Diagnostics.Debug.WriteLine("#Error3 asiganacion incorrecta");
-                    return "#Error3";
+                    return "#ERROR3 ASIGNACION INCORRECTA EN VARIABLE: " + var;
                 }
             }
             else
             {
                 System.Diagnostics.Debug.WriteLine("#Error4 la variable YA EXISTE");
-                return "#Error4";
+                return "#ERROR4 LA VARIABLE YA EXISTE" + var ;
             }
 
                 //entorno.Agregar(id, tipo, valor);

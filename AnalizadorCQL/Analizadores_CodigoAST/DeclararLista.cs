@@ -22,11 +22,19 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             System.Diagnostics.Debug.WriteLine("Se está Ejecutnado declarar listA");
             List<String> ListaID1x = new List<String>();
             ListaID1x = this.ListaID1;
+
             for (int i = 0; i < ListaID1x.Count; i++)
+            {
+                if (entorno.ExisteVariable(ListaID1x[i]))
+                {
+                    retorno = "#Error4" + "la variable YA EXISTE " + ListaID1x[i];
+                }
+            }
+                for (int i = 0; i < ListaID1x.Count; i++)
             {
                 System.Diagnostics.Debug.WriteLine("la variable es:" + ListaID1x[i]);
                 String sali = entorno.ObtenerValor(ListaID1x[i]);
-                if ("#Error2".Equals(sali))
+                if (sali.ToUpper().Contains("#ERROR2"))
                 {
                     //System.Diagnostics.Debug.WriteLine("VAMOS A VER EL TIPO: " + Hijos[0].Nombre.ToUpper());
                     //salida.Text = "#Error: No se ha encontrado la variables -> " + this.Hijos[0].Nombre + "\n";
@@ -51,7 +59,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 else
                 {
                     System.Diagnostics.Debug.WriteLine("la variable YA EXISTE");
-                    retorno = "#Error4";
+                    retorno = "#Error4" + "la variable YA EXISTE " + NombreVariable;
                 }
                 sali = entorno.ObtenerValor(this.Hijos[1].Nombre);
                 retorno = sali;
