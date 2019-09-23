@@ -79,6 +79,9 @@ namespace AnalizadorCQL.Analizadores_Codigo
 
         }
 
+        
+
+
         public void MostrarObjetosx()
         {
 
@@ -3425,6 +3428,39 @@ namespace AnalizadorCQL.Analizadores_Codigo
                 return "#Error";
             }
 
+        }
+        #endregion
+
+
+        #region AGREGAR VARIABLES A ENTORNO
+        public void NuevasVariables(Entorno x)
+        {
+            String id = "BRAY-FUNC";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id)==false)
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("NombreFuncion -> " + datos.Key.ToString() + " funcion " + p.NombreFuncionGuardada() + " #Par " + p.lalista().Count);
+                    //Boolean y = x.AgregarFuncion(datos.Key.ToString(), p.NombreFuncionGuardada(), p.ObtenerTipo(), p.lalista(), p.Sentencias());
+                    x.Agregar(p.ObtenerId(), p.ObtenerTipo(), p.ObtenerValor());
+                }
+            }
+        }
+        public void AsignarNuevosValores(Entorno x)
+        {
+            String id = "BRAY-FUNC";
+            foreach (DictionaryEntry datos in Elementos)
+            {
+                if (datos.Key.ToString().Contains(id) == false)
+                {
+                    Simbolo p = (Simbolo)datos.Value;
+                    //System.Diagnostics.Debug.WriteLine("NombreFuncion -> " + datos.Key.ToString() + " funcion " + p.NombreFuncionGuardada() + " #Par " + p.lalista().Count);
+                    //Boolean y = x.AgregarFuncion(datos.Key.ToString(), p.NombreFuncionGuardada(), p.ObtenerTipo(), p.lalista(), p.Sentencias());
+                    //x.Agregar(p.ObtenerId(), p.ObtenerTipo(), p.ObtenerValor());
+                    x.AsignarValor(p.ObtenerId(), p.ObtenerValor());
+                }
+            }
         }
         #endregion
     }

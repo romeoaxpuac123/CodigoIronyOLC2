@@ -300,7 +300,7 @@ namespace AnalizadorCQL.Analizadores
                              | ELELSE + ELIF + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada + ELELSE + llaveAbierta + SENTENCIAS + llaverCerrada;
 
 
-            EL_FOR.Rule = FOR + ParA + ASIGNACION + E+ PYC + INC_DEC+ ParC + llaveAbierta + SENTENCIAS +  llaverCerrada;
+            EL_FOR.Rule = FOR + ParA + ASIGNACION + E + PYC +  E  + ParC + llaveAbierta  + SENTENCIAS + llaverCerrada;
             ELWHILE.Rule = WHILE + ParA + E + ParC + llaveAbierta + SENTENCIAS + llaverCerrada;
             DO_WHILE.Rule = ELDO + llaveAbierta + SENTENCIAS + llaverCerrada + WHILE + ParA + E + ParC + PYC;
 

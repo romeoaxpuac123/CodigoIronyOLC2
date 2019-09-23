@@ -215,18 +215,24 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String Variable1 = this.Hijos[1].Ejecutar(entorno).Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "").Replace(".",",");
             String TipoDato1 = "";
             String var = this.Hijos[0].Nombre;
-
+            Boolean x = false;
             if (this.Hijos[1].Hijos[0].Nombre.Contains("@"))
             {
                 Variable1 = entorno.ObtenerValor(this.Hijos[1].Hijos[0].Nombre);
                 TipoDato1 = entorno.ObtenerTipo(this.Hijos[1].Hijos[0].Nombre);
+            }
+            else if (var.Contains("@") == true){
+                //Variable1 = entorno.ObtenerValor(var);
+                TipoDato1 = entorno.ObtenerTipo(var).Replace(" ","");
+                x = true;
+                
             }
 
            
             System.Diagnostics.Debug.WriteLine("variable1x:" + Variable1 + "-");
             System.Diagnostics.Debug.WriteLine("variable1x:" + TipoDato1 + "-");
             System.Diagnostics.Debug.WriteLine("variable1x:" + var + "-");
-
+            //System.Diagnostics.Debug.WriteLine("SOY ROMOE AXPUAC");
             if ((entorno.ObtenerTipo(var).ToString().ToUpper().Contains("INT")) &&
                 ( TipoDato1.ToUpper().Contains("INT") || TipoDato1.ToUpper().Contains("DOUBLE"))
                 )
@@ -244,11 +250,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                 // return sali;
             }
-
+        
             Boolean DecimalEntero = true;
             Boolean ElBool = true;
             
-                if (this.Hijos[1].TipoDato =="entero" || this.Hijos[1].TipoDato == "decimal" )
+                if (this.Hijos[1].TipoDato =="entero" || this.Hijos[1].TipoDato == "decimal" || TipoDato1.ToUpper().Contains("INT") || TipoDato1.ToUpper().Contains("DOUBLE"))
                 {
                     DecimalEntero = false;
                 }
@@ -257,15 +263,17 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     ElBool = false;
                 }
 
-            
+            System.Diagnostics.Debug.WriteLine("SOY ROMOE AXPUAC" + var + "->" +DecimalEntero);
 
-            if ("#Error2".Equals(sali)== false)
+            if (sali.ToUpper().Contains("#ERROR")== false)
             {
+                
                 if (entorno.ObtenerTipo(this.Hijos[0].Nombre).ToUpper().Contains("INT")
                     &&(this.Hijos[1].Nombre.ToString() == "Entero" || this.Hijos[1].Nombre.ToString() == "Decimal"|| this.Hijos[1].Nombre == "EXP") 
                     && DecimalEntero == false                   
                     ) 
                 {
+                    
                     //ASIGANACION DE UNA VARIABLE DE TIPO ENTERO
                     System.Diagnostics.Debug.WriteLine("la variable es entera" + Variable1);
                     if (Variable1.Contains(","))

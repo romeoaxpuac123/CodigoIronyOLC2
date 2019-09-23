@@ -24,8 +24,49 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             System.Diagnostics.Debug.WriteLine("Se esta ejecutnado FRO");
             String VariableContador = this.Hijos[0].Hijos[1].Nombre;
             System.Diagnostics.Debug.WriteLine("Se esta ejecutnado FRO" + VariableContador);
+            Entorno Nuevo = new Entorno();
+            entorno.NuevasVariables(Nuevo);
+            this.Hijos[0].Ejecutar(Nuevo);
+            while (this.Hijos[1].Ejecutar(Nuevo).ToString().ToUpper().Contains("TRUE") == true)
+            {   
+                System.Diagnostics.Debug.WriteLine("dentro del while**************+++");
+                Entorno Nuevo2 = new Entorno();
+                Nuevo.NuevasVariables(Nuevo2);
+                String valor1 = "";
+                for (int ix = 3; ix < this.Hijos.Count; ix++)
+                {
+                    valor1 = this.Hijos[ix].Ejecutar(Nuevo2);
+                    System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if " + valor1);
+                    if (valor1.Contains("BREAK") == true)
+                    {
+                        return "BREAK";
+                        //return "#Error";
+                    }
+                    if (valor1.Contains("RETORNO:") == true)
+                    {
+
+                        return valor1;
+                    }
+                    if (valor1.ToUpper().Contains("#ERROR") == true)
+                    {
+
+                        return valor1;
+
+                    }
+                }
+                Nuevo2.AsignarNuevosValores(Nuevo);
+
+
+                this.Hijos[2].Ejecutar(Nuevo);
+            }
+            Nuevo.AsignarNuevosValores(entorno);
+            System.Diagnostics.Debug.WriteLine("III");
+            
+            /*
             this.Hijos[0].Ejecutar(entorno);
             String valor1 = "";
+
+
             while (this.Hijos[1].Ejecutar(entorno).ToString().ToUpper().Contains("TRUE") == true)
             {
                 System.Diagnostics.Debug.WriteLine("dentro del while**************+++");
@@ -54,12 +95,13 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                 }
                 this.Hijos[2].Ejecutar(entorno);
-                
+
 
             }
             System.Diagnostics.Debug.WriteLine("III");
          entorno.EliminarVariable(VariableContador);
             System.Diagnostics.Debug.WriteLine("III");
+            */
             return "FOR";
         }
     }

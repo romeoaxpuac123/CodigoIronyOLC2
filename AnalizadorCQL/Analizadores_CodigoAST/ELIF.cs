@@ -25,34 +25,33 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             System.Diagnostics.Debug.WriteLine("Se esta ejecutnado IF");
             String ValorExpresion = this.Hijos[0].Ejecutar(entorno);
             String valor1 = "";
-            if (ValorExpresion.ToUpper().Contains("TRUE"))
+            Entorno NuevoEntorno = new Entorno();
+            entorno.NuevasVariables(NuevoEntorno);
+            //entorno.NuevasFunciones(NuevoEntorno);
+            
+            for (int ix = 1; ix < this.Hijos.Count; ix++)
             {
-                System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                foreach (NodoAbstracto sentencia in this.Hijos[1].Hijos)
+                valor1= this.Hijos[ix].Ejecutar(NuevoEntorno);
+                System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if " + valor1);
+                if (valor1.Contains("BREAK") == true)
                 {
-                    System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                    valor1 = sentencia.Ejecutar(entorno);
-                    if (valor1.Contains("#Error") == true)
-                    {
-                        System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                        break;
-                        //return "#Error";
-                    }
-                    if (valor1.Contains("BREAK") == true)
-                    {
-                        return "BREAK";
-                        //return "#Error";
-                    }
-                    if (valor1.Contains("RETORNO:") == true)
-                    {
-
-                        return valor1;
-                    }
-
+                    return "BREAK";
+                    //return "#Error";
                 }
-                //ValorExpresion = this.Hijos[0].Ejecutar(entorno);
-            }
+                if (valor1.Contains("RETORNO:") == true)
+                {
 
+                    return valor1;
+                }
+                if (valor1.ToUpper().Contains("#ERROR") == true)
+                {
+                   
+                        return valor1;
+                   
+                }
+            }
+            NuevoEntorno.AsignarNuevosValores(entorno);
+     
             return "IF";
         }
     }

@@ -3611,6 +3611,17 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.TipoDato = "funk";
                         return nuevo;
                     }
+                    else if (root.ToString().Contains("EL_IF"))
+                    {
+                        NodoAbstracto nuevo = new ELIF("IF");
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                        //nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5)));
+                        for (int x = 0; x < root.ChildNodes.ElementAt(5).ChildNodes.Count; x++)
+                        {
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5).ChildNodes.ElementAt(x)));
+                        }
+                        return nuevo;
+                    }
                     #endregion
                     break;
                 case 8:
@@ -4042,6 +4053,21 @@ namespace AnalizadorCQL.Analizadores
                         return nuevo;
 
                     }
+                    else if (root.ToString().Contains("EL_FOR"))
+                    {
+                        NodoAbstracto nuevo = new ELFOR("FOR");
+
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(3)));
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5)));
+                        for (int x = 0; x < root.ChildNodes.ElementAt(8).ChildNodes.Count; x++)
+                        {
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(8).ChildNodes.ElementAt(x)));
+                        }
+                        return nuevo;
+                    }
+
+
                     #endregion
                     break;
                 case 11:
@@ -4939,7 +4965,15 @@ namespace AnalizadorCQL.Analizadores
                 {
                     //System.Diagnostics.Debug.WriteLine("ERROR SEMANTICO");
                     System.Diagnostics.Debug.WriteLine("--------------" + valor1 + "-----------");
-                    if(valor1.Contains("#ERROR6 ? Exception:"))
+                    if(valor1 == "#Error")
+                    {
+                        using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                        {
+                            mylogs.WriteLine(">>" + "ArithmeticExceptionexpresión: que viola las reglas definidas sobre las operaciones aritméticas. ");
+                            mylogs.Close();
+                        }
+                    }
+                    else if (valor1.Contains("#ERROR6 ? Exception:"))
                     {
                         using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
                         {
