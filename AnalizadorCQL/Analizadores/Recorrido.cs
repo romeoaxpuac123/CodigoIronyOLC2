@@ -442,6 +442,7 @@ namespace AnalizadorCQL.Analizadores
                         return nuevox;
 
                     }
+
                     break;
                 #endregion
                 case 3:                 
@@ -2547,6 +2548,17 @@ namespace AnalizadorCQL.Analizadores
 
 
                     }
+                    else if (root.ToString() == "LISTA_EXPRESION")
+                    {
+                        NodoAbstracto nuevo = Recorrido12(root.ChildNodes.ElementAt(0));
+                        // esto que pexNodoAbstracto nuevo = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        //NodoAbstracto nuevx = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        //nuevo.Hijos.Add(nuevx);
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                        //nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                        return nuevo;
+                    }
+
                     #endregion
                     break;
                 case 2:
@@ -2700,6 +2712,12 @@ namespace AnalizadorCQL.Analizadores
                           
                      
 
+                    }
+
+                    else if (root.ToString() == "ELBREAK")
+                    {
+                        NodoAbstracto nuevo = new BREAK("BREAK");
+                        return nuevo;
                     }
                     #endregion
                     break;
@@ -3146,6 +3164,28 @@ namespace AnalizadorCQL.Analizadores
 
                         }
                     }
+                    else if (root.ToString().Contains("INC_DEC") == true)
+                    {
+                        System.Diagnostics.Debug.WriteLine("INC_DEC");
+                        NodoAbstracto nuevo = new Incremento("INCREMENTO");
+                        Nodo nuevoid = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id2)", ""));
+                        Nodo nuevoid2 = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (Key symbol)", ""));
+                        nuevo.Hijos.Add(nuevoid);
+                        nuevo.Hijos.Add(nuevoid2);
+                        return nuevo;
+
+                    }
+                    else if (root.ToString() == "LISTA_EXPRESION")
+                    {
+                        NodoAbstracto nuevo = Recorrido12(root.ChildNodes.ElementAt(0));
+                        // esto que pexNodoAbstracto nuevo = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        //NodoAbstracto nuevx = new Nodo(root.ChildNodes.ElementAt(0).ToString());
+                        //nuevo.Hijos.Add(nuevx);
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(0)));
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                        return nuevo;
+                    }
+
                     #endregion
                     break;
                 case 4:
@@ -3213,6 +3253,100 @@ namespace AnalizadorCQL.Analizadores
                             nuevo.AutoIncrmentable2 = 103;
 
 
+                            return nuevo;
+                        }
+
+                        else if ((root.ChildNodes.ElementAt(0).ToString().Contains(" (id)")) &&
+                          (root.ChildNodes.ElementAt(1).ToString().Contains("( (Key symbol)")) &&
+                          (root.ChildNodes.ElementAt(3).ToString().Contains(") (Key symbol)"))
+                          )
+                        {
+                            System.Diagnostics.Debug.WriteLine("FUNCIONES usuario----------");
+                            NodoAbstracto nuevo = new FUN_RETORNO("EXP");
+                            NodoAbstracto nuevohijo = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", ""));
+                            nuevo.Hijos.Add(nuevohijo);
+                            AtributosFuncionesUsuario(root.ChildNodes.ElementAt(2));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                          
+                            //NodoAbstracto Parametro1 =  Recorrido1(root.ChildNodes.ElementAt(2));
+                            /*
+                            nuevo.Hijos.Add(nuevohijo);
+                            nuevo.Parametros = new List<NodoAbstracto>();
+                            AtributosFuncionesUsuario(root.ChildNodes.ElementAt(2));
+                            LalistaPTN.Clear();
+                            contador = 0;
+                            nuevo.Parametros.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                            AtributosDeNodosExpresiones(root);
+                            for (int i = 0; i < LalistaPTN.Count; i++)
+                            {
+                                nuevo.Parametros.Add(LalistaPTN[i]);
+                            }
+
+                            LalistaPTN.Clear();
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaID1.Add(STN[i]);
+                            }
+                            */
+                            String TipoRetorno = "";
+                            String TipoRetornox = "";
+                            for (int i = 0; i < FuncionesXD.Count; i++)
+                            {
+                                string[] separadas;
+                                separadas = FuncionesXD[i].Split('*');
+                                TipoRetorno = separadas[1];
+                                if (separadas[0].ToUpper().Contains(root.ChildNodes.ElementAt(0).FindToken().ToString().ToUpper().Replace(" (ID)", "")))
+                                {
+                                    if (separadas[2].ToString() == STN.Count.ToString())
+                                    {
+                                        if (TipoRetorno.ToUpper().Contains("INT"))
+                                        {
+                                            TipoRetornox = "entero";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("DOUBLE"))
+                                        {
+                                            TipoRetornox = "decimal";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("STRING"))
+                                        {
+                                            TipoRetornox = "cadena";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("BOOLEANO"))
+                                        {
+                                            TipoRetornox = "Booleano";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("DATE"))
+                                        {
+                                            TipoRetornox = "Fechas";
+                                        }
+                                        else if (TipoRetorno.ToUpper().Contains("TIME"))
+                                        {
+                                            TipoRetornox = "hora";
+                                        }
+                                    }
+                                }
+                            }
+
+                            nuevo.TipoDato = TipoRetornox;
+                            //nuevo.TipoDato = "entero";
+                            STN.Clear();
+
+
+                            nuevo.Parametros = new List<NodoAbstracto>();
+                            LalistaPTN.Clear();
+                            AtributosDeNodosExpresiones(root);
+                            for (int i = 0; i < LalistaPTN.Count; i++)
+                            {
+                                nuevo.Parametros.Add(LalistaPTN[i]);
+                            }
+
+                            LalistaPTN.Clear();
+
+                            //nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(2)));
+                            nuevo.AutoIncrmentable2 = 345;
                             return nuevo;
                         }
                     }
@@ -3622,6 +3756,19 @@ namespace AnalizadorCQL.Analizadores
                         }
                         return nuevo;
                     }
+                    else if (root.ToString().Contains("ELWHILE"))
+                    {
+                        NodoAbstracto nuevo = new While("WHILE");
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                        //nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(5)));
+                        for (int x = 0; x < root.ChildNodes.ElementAt(5).ChildNodes.Count; x++)
+                        {
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5).ChildNodes.ElementAt(x)));
+                        }
+                        return nuevo;
+                        //return nuevo;
+                    }
+
                     #endregion
                     break;
                 case 8:
@@ -3717,8 +3864,61 @@ namespace AnalizadorCQL.Analizadores
                             return nuevo;
                         }
                     }
-                        #endregion
-                        break;
+                    else if (root.ToString().Contains("EL_IF"))
+                    {
+                        NodoAbstracto nuevo = new ELSEIF("IF");
+                        NodoAbstracto IFSITO = new Nodo("XTRA");
+                        NodoAbstracto Extras = new Nodo("XTRA");
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                        //nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5)));
+                        for (int x = 0; x < root.ChildNodes.ElementAt(5).ChildNodes.Count; x++)
+                        {
+                            IFSITO.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5).ChildNodes.ElementAt(x)));
+                        }
+                        nuevo.Hijos.Add(IFSITO);
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(7)));
+                        nuevo.AutoIncrmentable2 = 2;
+                        return nuevo;
+                    }
+                    else if (root.ToString().Contains("SINO"))
+                    {
+                        NodoAbstracto nuevo = new SINO("SINO");
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(3)));
+                        NodoAbstracto IFSITO = new Nodo("XTRA");
+                        //nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
+                        for (int x = 0; x < root.ChildNodes.ElementAt(6).ChildNodes.Count; x++)
+                        {
+                            IFSITO.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(6).ChildNodes.ElementAt(x)));
+                        }
+                        nuevo.Hijos.Add(IFSITO);
+                        nuevo.AutoIncrmentable2 = 1;
+                        return nuevo;
+                    }
+                    else if (root.ToString() == "FUNCIONES_CREADAS")
+                    {
+
+                        System.Diagnostics.Debug.WriteLine("FUNCIONES_cREADAS");
+                        NodoAbstracto nuevo = new FUNCIONES("FUN_CREADAS");
+                        NodoAbstracto tipofuncion = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (Keyword)", ""));
+                        NodoAbstracto NombreFuncion = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                        // NodoAbstracto ListaDeSentenias = new Nodo(root.ChildNodes.ElementAt(6));
+                        nuevo.Hijos.Add(tipofuncion);
+                        nuevo.Hijos.Add(NombreFuncion);
+                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
+                        AtributosFunciones(root.ChildNodes.ElementAt(3));
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+
+                        nuevo.AutoIncrmentable2 = 68;
+                        FuncionesXD.Add(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", "") + "*" + root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "") + "*" + STN.Count);
+                        STN.Clear();
+                        return nuevo;
+
+                    }
+                    #endregion
+                    break;
                 case 9:
                     #region hijos9
                     if (root.ToString().ToUpper().Contains("USER_TYPE2"))
@@ -3878,6 +4078,31 @@ namespace AnalizadorCQL.Analizadores
                         }
                         return nuevo;
 
+                    }
+                    else if (root.ToString().Contains("DO_WHILE"))
+                    {
+                        NodoAbstracto nuevo = new DOWHILE("DOWHILE");
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(6)));
+                        for (int x = 0; x < root.ChildNodes.ElementAt(2).ChildNodes.Count; x++)
+                        {
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2).ChildNodes.ElementAt(x)));
+                        }
+                        return nuevo;
+                    }
+                    else if (root.ToString().Contains("SINO"))
+                    {
+                        NodoAbstracto nuevo = new SINO("SINO");
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(3)));
+                        NodoAbstracto IFSITO = new Nodo("XTRA");
+                        //nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
+                        for (int x = 0; x < root.ChildNodes.ElementAt(6).ChildNodes.Count; x++)
+                        {
+                            IFSITO.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(6).ChildNodes.ElementAt(x)));
+                        }
+                        nuevo.Hijos.Add(IFSITO);
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(8)));
+                        nuevo.AutoIncrmentable2 = 2;
+                        return nuevo;
                     }
                     #endregion
                     break;
@@ -4280,6 +4505,28 @@ namespace AnalizadorCQL.Analizadores
                         }
 
                     }
+                    else if (root.ToString().Contains("EL_IF"))
+                    {
+                        NodoAbstracto nuevo = new ELSEIF("ELSEIF");
+                        NodoAbstracto IFSITO = new Nodo("XTRA");
+                        NodoAbstracto Extras = new Nodo("XTRA");
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
+                        //nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5)));
+                        for (int x = 0; x < root.ChildNodes.ElementAt(5).ChildNodes.Count; x++)
+                        {
+                            IFSITO.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5).ChildNodes.ElementAt(x)));
+                        }
+                        nuevo.Hijos.Add(IFSITO);
+                        //nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(9)));
+                        for (int x = 0; x < root.ChildNodes.ElementAt(9).ChildNodes.Count; x++)
+                        {
+                            Extras.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(9).ChildNodes.ElementAt(x)));
+                        }
+                        nuevo.Hijos.Add(Extras);
+                        nuevo.AutoIncrmentable2 = 1;
+                        return nuevo;
+                    }
+
                     #endregion
                     break;
                 case 12:
@@ -4435,6 +4682,28 @@ namespace AnalizadorCQL.Analizadores
                             return nuevo;
                         }
                     }
+                    else if (root.ToString().Contains("SINO"))
+                    {
+                        NodoAbstracto nuevo = new SINO("SINO");
+                        nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(3)));
+                        NodoAbstracto IFSITO = new Nodo("XTRA");
+                        NodoAbstracto ELIFSITO = new Nodo("XTRA");
+                        //nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
+                        for (int x = 0; x < root.ChildNodes.ElementAt(6).ChildNodes.Count; x++)
+                        {
+                            IFSITO.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(6).ChildNodes.ElementAt(x)));
+                        }
+                        nuevo.Hijos.Add(IFSITO);
+                        // nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(10)));
+                        for (int x = 0; x < root.ChildNodes.ElementAt(10).ChildNodes.Count; x++)
+                        {
+                            ELIFSITO.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(10).ChildNodes.ElementAt(x)));
+                        }
+                        nuevo.Hijos.Add(ELIFSITO);
+                        nuevo.AutoIncrmentable2 = 3;
+                        return nuevo;
+                    }
+
                     #endregion
                     break;
                 case 13:                    
@@ -5040,7 +5309,16 @@ namespace AnalizadorCQL.Analizadores
                     break;
                 }
                 if (elbreak)
+                {
+                    System.Diagnostics.Debug.WriteLine("ERROR acá no puede usar el break");
+                    using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                    {
+                        mylogs.WriteLine(">>" + "ERROR USO INCORRECTO DEL BREAK");
+                        mylogs.Close();
+                    }
                     break;
+                }
+                    
 
 
             }
@@ -5293,12 +5571,18 @@ namespace AnalizadorCQL.Analizadores
                     //                    Atributos(root.ChildNodes.ElementAt(0));                    
                     // NodoAbstracto Var2 = Recorrido1(root.ChildNodes.ElementAt(0));
                
-                    NodoAbstracto Var2 = Recorrido1(root);
+                    NodoAbstracto Var2 = Recorrido12(root);
                   
                     LalistaPTN.Add(Var2);
                     AtributosDeNodosExpresiones((root.ChildNodes.ElementAt(2)));
 
 
+                    break;
+
+                case 1:
+                    NodoAbstracto Var2x = Recorrido12(root);
+
+                    LalistaPTN.Add(Var2x);
                     break;
             }
         }

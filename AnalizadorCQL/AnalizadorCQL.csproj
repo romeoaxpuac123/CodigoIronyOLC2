@@ -254,6 +254,7 @@
     <Compile Include="Analizadores_CodigoAST\SELECT_WHERE_LIMITE.cs" />
     <Compile Include="Analizadores_CodigoAST\SELECT_WHERE_ORDER_BY.cs" />
     <Compile Include="Analizadores_CodigoAST\SELECT_WHERE_ORDER_BY_LIMIT.cs" />
+    <Compile Include="Analizadores_CodigoAST\SINO.cs" />
     <Compile Include="Analizadores_CodigoAST\Tabla.cs" />
     <Compile Include="Analizadores_CodigoAST\TRY_CATCH.cs" />
     <Compile Include="Analizadores_CodigoAST\UPDATE.cs" />

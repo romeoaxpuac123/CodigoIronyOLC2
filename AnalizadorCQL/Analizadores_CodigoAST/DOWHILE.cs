@@ -21,7 +21,51 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         public override string Ejecutar(Entorno entorno)
         {
             System.Diagnostics.Debug.WriteLine("Se esta ejecutnado DO-while");
+            String valor1 = "";
+            Entorno NuevoEntorno = new Entorno();
+            entorno.NuevasVariables(NuevoEntorno);
+            String ValorExpresion = this.Hijos[0].Ejecutar(NuevoEntorno); Boolean elbrak = false;
+            System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL WHILEXD" + ValorExpresion);
+            do
+            {
+                System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL WHILEXD");
 
+                for (int ix = 1; ix < this.Hijos.Count; ix++)
+                {
+                    valor1 = this.Hijos[ix].Ejecutar(NuevoEntorno);
+                    System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if " + valor1);
+                    if (valor1.Contains("BREAK") == true)
+                    {
+                        //return "BREAK";
+                        elbrak = true;
+                        break;
+                        //break;
+                        //return "#Error";
+                    }
+                    if (valor1.Contains("RETORNO:") == true)
+                    {
+
+                        return valor1;
+                    }
+                    if (valor1.ToUpper().Contains("#ERROR") == true)
+                    {
+
+                        return valor1;
+
+                    }
+                }
+                ValorExpresion = this.Hijos[0].Ejecutar(NuevoEntorno);
+                if (elbrak == true)
+                {
+                    break;
+                }
+            } while (ValorExpresion.ToUpper().Contains("TRUE"));
+            NuevoEntorno.AsignarNuevosValores(entorno);
+
+
+
+
+            /*
             String ValorExpresion = this.Hijos[0].Ejecutar(entorno);
             String valor1 = "";
             Entorno entorno1 = new Entorno();
@@ -54,8 +98,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
                 ValorExpresion = this.Hijos[0].Ejecutar(entorno);
             } while (ValorExpresion.ToUpper().Contains("TRUE")) ;
-
-                return "dO-WHILE";
+            */
+            return "dO-WHILE";
         }
     }
 }

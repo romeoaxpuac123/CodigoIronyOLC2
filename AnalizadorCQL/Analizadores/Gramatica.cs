@@ -312,8 +312,8 @@ namespace AnalizadorCQL.Analizadores
 
             #endregion
 
-            INC_DEC.Rule = id2 + mas + mas + PYC
-                         | id2 + menos + menos + PYC;
+            INC_DEC.Rule = id2  + masmas + PYC
+                           | id2 +menosmenos + PYC;
 
             TRY_CATCH.Rule = TRY + llaveAbierta + SENTENCIAS + llaverCerrada + CATCH + ParA + ArithmeticException + id +  ParC + llaveAbierta + SENTENCIAS + llaverCerrada
                            | TRY + llaveAbierta + SENTENCIAS + llaverCerrada + CATCH + ParA + IndexOutException +   id +  ParC + llaveAbierta + SENTENCIAS + llaverCerrada; ;
@@ -456,7 +456,7 @@ namespace AnalizadorCQL.Analizadores
             USER_TYPE2.Rule = id + id2 + igual + llaveAbierta + LISTA_EXPRESIONobjetos + llaverCerrada + ELAS + id + PYC
                              | id2 + igual + llaveAbierta + LISTA_EXPRESIONobjetos + llaverCerrada + ELAS + id + PYC;
             //  | id + id2 + igual + llaveAbierta + LISTA_EXPRESION + llaverCerrada;
-            USER_TYPE2.ErrorRule = SyntaxError + ";";
+            //USER_TYPE2.ErrorRule = SyntaxError + ";";
             
             LISTA_EXPRESIONobjetos.Rule = E
                                     | E + coma + LISTA_EXPRESIONobjetos

@@ -21,47 +21,48 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         public override string Ejecutar(Entorno entorno)
         {
             System.Diagnostics.Debug.WriteLine("Se esta ejecutnado while");
-            String ValorExpresion = this.Hijos[0].Ejecutar(entorno);
+            //String ValorExpresion = this.Hijos[0].Ejecutar(entorno);
             String valor1 = "";
-            Boolean elbreak = false;
-            Entorno entorno1 = new Entorno();
+            Entorno NuevoEntorno = new Entorno();
+            entorno.NuevasVariables(NuevoEntorno);
+            String ValorExpresion = this.Hijos[0].Ejecutar(NuevoEntorno);
+            System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL WHILEXD" + ValorExpresion);
+            Boolean elbrak = false;
             while (ValorExpresion.ToUpper().Contains("TRUE"))
-            {
+            {   
                 System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL WHILEXD");
-                foreach (NodoAbstracto sentencia in this.Hijos[1].Hijos)
+
+                for (int ix = 1; ix < this.Hijos.Count; ix++)
                 {
-                    System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL WHILE");
-                    valor1 = sentencia.Ejecutar(entorno);
-                    if (valor1.Contains("#Error") == true )
+                    valor1 = this.Hijos[ix].Ejecutar(NuevoEntorno);
+                    System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if " + valor1);
+                    if (valor1.Contains("BREAK") == true)
                     {
-                        System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL WHILE");
-                        elbreak = true;
-                        //break;
-                        return "#Error";
+                        elbrak = true;
+                        break;
+                        //return "#Error";
                     }
                     if (valor1.Contains("RETORNO:") == true)
                     {
 
                         return valor1;
                     }
-                    if (valor1.Contains("BREAK") == true)
+                    if (valor1.ToUpper().Contains("#ERROR") == true)
                     {
-                        // return "BREAK";
-                        //return "#Error";
-                        elbreak = true;
-                        break;
-                    }
-                    if (elbreak)
-                        break;
 
+                        return valor1;
+
+                    }
                 }
-                if (elbreak)
+                ValorExpresion = this.Hijos[0].Ejecutar(NuevoEntorno);
+                if (elbrak == true)
+                {
                     break;
-                ValorExpresion = this.Hijos[0].Ejecutar(entorno);
-                if (elbreak)
-                    break;
+                }
             }
-            return "WHILE";
+            NuevoEntorno.AsignarNuevosValores(entorno);
+ 
+             return "WHILE";
         }
     }
 }

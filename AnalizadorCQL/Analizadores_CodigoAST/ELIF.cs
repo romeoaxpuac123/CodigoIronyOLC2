@@ -23,34 +23,40 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
         public override string Ejecutar(Entorno entorno)
         {
             System.Diagnostics.Debug.WriteLine("Se esta ejecutnado IF");
-            String ValorExpresion = this.Hijos[0].Ejecutar(entorno);
+            
             String valor1 = "";
             Entorno NuevoEntorno = new Entorno();
             entorno.NuevasVariables(NuevoEntorno);
             //entorno.NuevasFunciones(NuevoEntorno);
-            
-            for (int ix = 1; ix < this.Hijos.Count; ix++)
+            String ValorExpresion = this.Hijos[0].Ejecutar(NuevoEntorno);
+            if (ValorExpresion.ToUpper().Contains("TRUE") == true)
             {
-                valor1= this.Hijos[ix].Ejecutar(NuevoEntorno);
-                System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if " + valor1);
-                if (valor1.Contains("BREAK") == true)
+                for (int ix = 1; ix < this.Hijos.Count; ix++)
                 {
-                    return "BREAK";
-                    //return "#Error";
-                }
-                if (valor1.Contains("RETORNO:") == true)
-                {
+                    valor1 = this.Hijos[ix].Ejecutar(NuevoEntorno);
+                    System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if " + valor1);
+                    if (valor1.Contains("BREAK") == true)
+                    {
+                        return "BREAK";
+                        //return "#Error";
+                    }
+                    if (valor1.Contains("RETORNO:") == true)
+                    {
 
-                    return valor1;
-                }
-                if (valor1.ToUpper().Contains("#ERROR") == true)
-                {
-                   
                         return valor1;
-                   
+                    }
+                    if (valor1.ToUpper().Contains("#ERROR") == true)
+                    {
+
+                        return valor1;
+
+                    }
                 }
+                NuevoEntorno.AsignarNuevosValores(entorno);
+
             }
-            NuevoEntorno.AsignarNuevosValores(entorno);
+
+            
      
             return "IF";
         }
