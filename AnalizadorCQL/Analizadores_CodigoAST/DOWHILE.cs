@@ -24,6 +24,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String valor1 = "";
             Entorno NuevoEntorno = new Entorno();
             entorno.NuevasVariables(NuevoEntorno);
+            entorno.NuevasFunciones(NuevoEntorno);
             String ValorExpresion = this.Hijos[0].Ejecutar(NuevoEntorno); Boolean elbrak = false;
             System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL WHILEXD" + ValorExpresion);
             do

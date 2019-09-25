@@ -115,29 +115,19 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         System.Diagnostics.Debug.WriteLine("ROMEOLOG" + Listaxx .Count);
                         String valor1 = "";
                         String Retorno = "";
-                        foreach (NodoAbstracto sentencia in Nodo.Hijos)
-
+                        entorno.NuevasFunciones(Xx);
+                        entorno.NuevasVariables(Xx);
+                        //foreach (NodoAbstracto sentencia in Nodo.Hijos)
+                        for (int pu = 0; pu < Nodo.Hijos.Count;pu++)
                         {
-                            System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                            if (sentencia.Nombre.ToString().Contains("RETORNO"))
-                            {
-                                String Valor2 = sentencia.Ejecutar(entorno);
-                                System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if" + Valor2);
-                                if (Valor2.ToUpper().Contains("#ERROR") != true)
-                                {
-
-                                    Retorno = Valor2;
-                                    break;
-                                }
-                            }
                             ///Espacio para Agregar variables
-                            entorno.NuevasFunciones(Xx);
+                            
 
-                            valor1 = sentencia.Ejecutar(Xx);
+                            valor1 = Nodo.Hijos[pu].Ejecutar(Xx);
                             if (valor1.Contains("#Error") == true)
                             {
                                 System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                return "#ERROR EN FUNCION";
+                                return valor1;
                                 //return "#Error";
                             }
                             if (valor1.Contains("RETORNO:") == true)
@@ -159,7 +149,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                         if (separadasX.Length != this.ListaID1.Count)
                         {
                             System.Diagnostics.Debug.WriteLine("#ERROR EN PROC RETORNOS NO COINCIDEN EN CATIDAD");
-                            return "#ERROR EN PROC RETORNOS NO COINCIDEN EN CATIDAD";
+                            return "#ERROR EN PROC123 "+ NombreProcedimiento +"RETORNOS NO COINCIDEN EN CATIDAD";
                         }
                         else
                         {
@@ -172,7 +162,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 String eltipo = entorno.ObtenerTipo(this.ListaID1[i]);
                                 if (eltipo.ToUpper().Contains(separadasXy[1].ToUpper()) == false)
                                 {
-                                  return "#ERROR EN PROC RETORNOS NO COINCIDEN EN tipo";
+                                  return "#ERROR EN PROC123 RETORNOS NO COINCIDEN EN tipo";
                                 }
 
                             }
@@ -200,7 +190,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
                 else
                 {
-                    return "#ERROR la cantidad de parametros del proc no coinciden";
+                    return "#ERROR111 NumberReturnsException: " + NombreProcedimiento + " la cantidad de variables de retorno no coincide con la cantidad de retornos ";
                 }
 
 
@@ -209,7 +199,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             }
             else
             {
-                return "#ERROR PROCEDIMIENTO NO EXISTENTE";
+                return "#ERROR PROC123 "+ NombreProcedimiento+" NO EXISTENTE";
             }
             return "CALL";
         }

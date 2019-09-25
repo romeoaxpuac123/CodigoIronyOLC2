@@ -606,10 +606,16 @@ namespace AnalizadorCQL.Analizadores_Codigo
                     {
                         if (p.lalista().Count == Listax.Count)
                         {
+
+                            if (p.lalista().Count == 0 && Listax.Count==0) {
+                                return true;
+                            }
                             for (int i = 0; i < Listax.Count; i++)
                             {
                                 string[] separadas;
                                 separadas = Listax[i].Split('*');
+                                
+
                                 if (p.lalista()[i].ToUpper().Contains(separadas[0].ToUpper()) == true)
                                 {
                                     return true;

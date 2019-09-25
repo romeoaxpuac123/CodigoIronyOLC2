@@ -27,6 +27,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String valor1 = "";
             Entorno NuevoEntorno = new Entorno();
             entorno.NuevasVariables(NuevoEntorno);
+            entorno.NuevasFunciones(NuevoEntorno);
             //entorno.NuevasFunciones(NuevoEntorno);
             String ValorExpresion = this.Hijos[0].Ejecutar(NuevoEntorno);
             if (ValorExpresion.ToUpper().Contains("TRUE") == true)

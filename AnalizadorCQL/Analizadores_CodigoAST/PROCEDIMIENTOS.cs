@@ -39,6 +39,8 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             String valor1 = "";
             String Retorno = "";
             Boolean hayr = false;
+            entorno.NuevasFunciones(x);
+            entorno.NuevasVariables(x);
             for (int i = 0; i < ListaID1.Count; i++)
             {
                 string[] separadas;
@@ -72,29 +74,36 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             }
 
             this.Hijos[1].Nombre = "S";
-            foreach (NodoAbstracto sentencia in this.Hijos[1].Hijos)
+            for(int p = 0; p < this.Hijos[1].Hijos.Count;p++)
 
             {
-                System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if" + sentencia.Nombre.ToString());
+               // System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
+                 System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if frutero" + this.Hijos[1].Hijos[p].Nombre.ToString());
                 //valor1 = sentencia.Ejecutar(x);
 
-                entorno.NuevasFunciones(x);
-                valor1 = sentencia.Ejecutar(x);
-                if (valor1.Contains("RETORNO:") == true)
+                if(("RETORNO"== this.Hijos[1].Hijos[p].Nombre.ToString())||
+                    ("DECLARARASIGNAR" == this.Hijos[1].Hijos[p].Nombre.ToString())||
+                    ("DECLARAR" == this.Hijos[1].Hijos[p].Nombre.ToString())
+                    )
                 {
-                    hayr = true;
-                    Retorno = valor1;
-                    //Retorno = valor1;
+                    valor1 = this.Hijos[1].Hijos[p].Ejecutar(x);
+                    if (valor1.Contains("RETORNO:") == true)
+                    {
+                        hayr = true;
+                        Retorno = valor1;
+                        //Retorno = valor1;
+
+                    }
+                    if (valor1.ToUpper().Contains("#ERROR") == true)
+                    {
+                        System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if" + valor1);
+
+                        return valor1;
+                        //return "#Error";
+                    }
 
                 }
-                if (valor1.ToUpper().Contains("#ERROR") == true)
-                {
-                    System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if" + valor1);
-
-                    return "#ERROR EN pro";
-                    //return "#Error";
-                }
+                
 
             }
             System.Diagnostics.Debug.WriteLine("FIN ACCIONES" + Retorno);
@@ -106,7 +115,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             if(separadasX.Length != this.ListaR1.Count)
             {
                 System.Diagnostics.Debug.WriteLine("#ERROR EN PROC RETORNOS NO COINCIDEN EN CATIDAD");
-                return "#ERROR EN PROC RETORNOS NO COINCIDEN EN CATIDAD";
+                return "#ERROR EN PROC123 RETORNOS NO COINCIDEN EN CATIDAD";
             }
             else
             {
@@ -117,7 +126,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     separadasXy = separadasX[i].Split(',');
                     System.Diagnostics.Debug.WriteLine("#" + separadasXy[1]);
                     if (this.ListaR1[i].ToUpper().Contains(separadasXy[1].ToUpper())==false){
-                        return "#ERROR EN PROC RETORNOS NO COINCIDEN EN tipo";
+                        return "#ERROR EN PROC123 RETORNOS NO COINCIDEN EN tipo";
                     }
 
                 }
@@ -144,7 +153,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
                 if (contador > 1)
                 {
-                    return "#ERROR EN returnos DE PROCE";
+                    return "#ERROR111 NumberReturnsException: "+ NombreProcedimiento+" la cantidad de variables de retorno no coincide con la cantidad de retornos ";
                 }
 
             }
@@ -159,7 +168,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                 if (entorno.MismosParametrosEnProc(NombreProcedimiento,this.ListaID1) == true)
                                 {
                                     System.Diagnostics.Debug.WriteLine("PROCEDIMIENTO EXISTENTE");
-                                    return "#ERROR EN PARAMETROS DE PROCE";
+                                    return "#ERROR111 ProcedureAlreadyExists: procedure"+ NombreProcedimiento +" ya existente";
                                 }
                                 else
                                 {

@@ -41,7 +41,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             System.Diagnostics.Debug.WriteLine("Ejecucion Aritmetica el tipo1->"+Tipo1);
             //System.Diagnostics.Debug.WriteLine("TIPO asjdflkads->" + this.Hijos[1].NombreVariable);
-            System.Diagnostics.Debug.WriteLine("Ejecucion Aritmetica el tipo1->" + Tipo2);
+            System.Diagnostics.Debug.WriteLine("Ejecucion Aritmetica el tipo2->" + Tipo2);
             //System.Diagnostics.Debug.WriteLine("TIPO asjdflkads->" + this.Hijos[2].NombreVariable);
 
             if (this.Hijos[1].Nombre == "]"){
@@ -368,12 +368,14 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             {
                 int valor1 = Int32.Parse(val1.Replace(" (numero)", ""));
                 int valor2 = Int32.Parse(val2.Replace(" (numero)", ""));
+                this.TipoDato = "entero";
                //System.Diagnostics.Debug.WriteLine("Entro num num" + Tipo1+".>"+Tipo2);
                 switch (this.Hijos[1].Nombre)
                 {
                     case "+":
                         total = valor1 + valor2;
-                        Console.WriteLine("Paso por una suma" + total);
+                        
+                        System.Diagnostics.Debug.WriteLine("Paso por una suma" + total);
                          break;
                     case "-":
                         total = valor1 - valor2;
@@ -450,6 +452,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             else if (Tipo1 == "decimal" && Tipo2 == "decimal")
             {
+                this.TipoDato = "decimal";
                 float valor1 = float.Parse(val1.Replace(" (numdecimal)", "").Replace(" ", "").Replace(".", ","));
                 float valor2 = float.Parse(val2.Replace(" (numdecimal)", "").Replace(" ", "").Replace(".", ","));
                 //float uno = 3.1f ;
@@ -522,6 +525,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             ///************
             else if (Tipo1 == "decimal" && Tipo2 == "entero")
             {
+                this.TipoDato = "decimal";
                 float valor1 = float.Parse(val1.Replace(" (numdecimal)", "").Replace(" ", "").Replace(".", ","));
                 int valor2 = Int32.Parse(val2.Replace(" (numero)", ""));
                 //float uno = 3.1f ;
@@ -596,6 +600,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             else if (Tipo1 == "entero" && Tipo2 == "decimal")
             {
+                this.TipoDato = "decimal";
                 int valor1 = Int32.Parse(val1.Replace(" (numero)", ""));
                 float valor2 = float.Parse(val2.Replace(" (numdecimal)", "").Replace(" ", "").Replace(".", ","));
 
@@ -666,6 +671,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             //VAMOS A TRATAR LAS CADENAS ENTONCES "cadena"
             else if (Tipo1 == "cadena" && Tipo2 == "cadena")
             {
+                this.TipoDato = "cadena";
                 String valor1 = (val1.Replace(" (cadena)", ""));
                 String valor2 = (val2.Replace(" (cadena)", ""));
                 // System.Diagnostics.Debug.WriteLine("hola1" + valor1);
@@ -728,6 +734,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             else if (Tipo1 == "cadena" && Tipo2 == "entero")
             {
+                this.TipoDato = "cadena";
                 String valor1 = (val1.Replace(" (cadena)", ""));
                 String valor2 = (val2.Replace(" (numero)", ""));
                 // System.Diagnostics.Debug.WriteLine("hola1" + valor1);
@@ -783,6 +790,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             else if (Tipo1 == "entero" && Tipo2 == "cadena")
             {
+                this.TipoDato = "cadena";
                 String valor2 = (val2.Replace(" (cadena)", ""));
                 String valor1 = (val1.Replace(" (numero)", ""));
                 // System.Diagnostics.Debug.WriteLine("hola1" + valor1);
@@ -838,6 +846,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             else if (Tipo1 == "cadena" && Tipo2 == "decimal")
             {
+                this.TipoDato = "cadena";
                 String valor1 = (val1.Replace(" (cadena)", ""));
                 float valor2 = float.Parse(val2.Replace(" (numdecimal)", "").Replace(" ", "").Replace(".", ","));
                 // System.Diagnostics.Debug.WriteLine("hola1" + valor1);
@@ -894,6 +903,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             else if (Tipo1 == "Booleano" && Tipo2 == "Booleano")
             {
+                this.TipoDato = "Booleano";
                 String valor1 = (val1.Replace(" (cadena)", ""));
                 String valor2 = (val2.Replace(" (cadena)", ""));
 
@@ -932,6 +942,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             
             else if (Tipo1 == "decimal" && Tipo2 == "cadena")
             {
+                this.TipoDato = "cadena";
                 String valor2 = (val2.Replace(" (cadena)", ""));
                 float valor1 = float.Parse(val1.Replace(" (numdecimal)", "").Replace(" ", "").Replace(".", ","));
                 // System.Diagnostics.Debug.WriteLine("hola1" + valor1);
@@ -988,6 +999,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             else if (Tipo1 == "cadena" && Tipo2 == "Booleano")
             {
+                this.TipoDato = "cadena";
                 String valor1 = (val1.Replace(" (cadena)", ""));
                 String valor2 = (val2.Replace(" (cadena)", ""));
                 // System.Diagnostics.Debug.WriteLine("hola1" + valor1);
@@ -1030,6 +1042,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             else if (Tipo1 == "Booleano" && Tipo2 == "cadena")
             {
+                this.TipoDato = "cadena";
                 String valor1 = (val1.Replace(" (cadena)", ""));
                 String valor2 = (val2.Replace(" (cadena)", ""));
                 // System.Diagnostics.Debug.WriteLine("hola1" + valor1);
@@ -1072,6 +1085,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             else if(Tipo1 == "Fechas" && Tipo2 == "Fechas")
             {
+                this.TipoDato = "Fechas";
                 String valor1 = (val1.Replace(" (fechas)", "").Replace("'", ""));
                 String valor2 = (val2.Replace(" (fechas)", "").Replace("'", ""));
                 DateTime fecha1 = Convert.ToDateTime(valor1).Date;
@@ -1109,6 +1123,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             else if (Tipo1 == "hora" && Tipo2 == "hora")
             {
+                this.TipoDato = "hora";
                 String valor1 = (val1.Replace(" (hora)", "").Replace("'", ""));
                 String valor2 = (val2.Replace(" (hora)", "").Replace("'", ""));
                 DateTime fecha1 = Convert.ToDateTime(valor1).Date;
@@ -1146,6 +1161,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             else if (Tipo1 == "cadena" && (Tipo2 == "Fechas" || Tipo2 == "hora"))
             {
+                this.TipoDato = "cadena";
                 String valor1 = (val1.Replace(" (cadena)", ""));
                 String valor2 = (val2.Replace(" (Fechas)", "").Replace(" (hora)",""));
                 // System.Diagnostics.Debug.WriteLine("hola1" + valor1);
@@ -1208,6 +1224,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             else if (Tipo2 == "cadena" && (Tipo1 == "Fechas" || Tipo1 == "hora"))
             {
+                this.TipoDato = "cadena";
                 String valor2 = (val1.Replace(" (cadena)", ""));
                 String valor1 = (val2.Replace(" (Fechas)", "").Replace(" (hora)", ""));
                 // System.Diagnostics.Debug.WriteLine("hola1" + valor1);

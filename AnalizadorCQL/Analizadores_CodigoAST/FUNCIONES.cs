@@ -40,8 +40,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             System.Diagnostics.Debug.WriteLine("id FUNCIONE " + IdFuncion);
             System.Diagnostics.Debug.WriteLine("Existe FUNCIONE? " + ExisteFuncion);
             System.Diagnostics.Debug.WriteLine("Parametros Iguales? " + CantidadDeParametrosIguales);
-            
-            
+            System.Diagnostics.Debug.WriteLine("Mismos Parametros? " + ExistenMismoParametros);
+
+
             #region AGREGAR FUNCION
 
             if (ExisteFuncion == true)
@@ -50,7 +51,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 {
                     if (ExistenMismoParametros == true)
                     {
-                        return "#ERROR EN PARAMETROS DE FUNCION";
+                        return "#ERROR FunctionAlreadyExists: Funcion:" + NombreFuncion + " ya existente";
                     }
                     else
                     {

@@ -30,27 +30,31 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                               if (this.AutoIncrmentable2 == 54)
                               {
                                   String NombreFuncion = this.Hijos[0].Nombre;
-                                  System.Diagnostics.Debug.WriteLine("NOMBRE FUNCION: " + NombreFuncion);
+                                  System.Diagnostics.Debug.WriteLine("NOMBRE FUNCION: 54" + NombreFuncion);
                                   NodoAbstracto Acciones = entorno.NodoSinParametros(NombreFuncion);
                                   String Retorno = "";
-                                  if (Acciones == null)
+                System.Diagnostics.Debug.WriteLine("NOMBRE FUNCION: 54->" + Acciones.Hijos.Count);
+                
+                if (Acciones == null)
                                   {
-                                      return "#ERROR FUNCION NO EXISTENTE";
+                                      return "#ERROR101 FUNCION NO EXISTENTE";
                                   }
                                   else
                                   {
 
                                       String valor1 = "";
                                       Entorno x = new Entorno();
-                                      foreach (NodoAbstracto sentencia in Acciones.Hijos)
+                                    entorno.NuevasFunciones(x);
+                                    entorno.NuevasVariables(x);
+                                    for (int i = 0; i < Acciones.Hijos.Count;i++)
 
                                       {
                                           System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if");
-                                          valor1 = sentencia.Ejecutar(x);
+                                          valor1 = Acciones.Hijos[i].Ejecutar(x);
                                           if (valor1.Contains("#Error") == true)
                                           {
                                               System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
-                                              return "#ERROR EN FUNCION";
+                                              return "#ERROR101 EN FUNCION";
                                               //return "#Error";
                                           }
                                           if (valor1.Contains("RETORNO:") == true)
@@ -61,6 +65,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                                           }
 
                                       }
+                                     x.AsignarNuevosValores(entorno);
                                   }
 
                                   System.Diagnostics.Debug.WriteLine("valor retorno: "+ Retorno);
@@ -117,7 +122,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 List<String> Insulto = new List<String>();
                 ///Empiezo 
                 ///
-                //System.Diagnostics.Debug.WriteLine("NOMBRE FUNCIONx: " + this.Parametros.Count);
+                System.Diagnostics.Debug.WriteLine("NOMBRE FUNCIONx:red2 " + NombreFuncion + "->" + MismaCantidadDeParametros +"->" + this.ListaID1.Count);
                 if (MismaCantidadDeParametros == true)
                 {
                     
@@ -239,17 +244,102 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     {
                         //LA FUCNION SE ENCONTRO
                         System.Diagnostics.Debug.WriteLine(NombreFuncion + "ENCONTADA..");
+                        //LA FUCNION SE ENCONTRO
+                        System.Diagnostics.Debug.WriteLine(NombreFuncion + "ENCONTADA..");
+                        // Ahora vamos a Encontrar el tipo y nombre de los parametors junto con sus valores
+                        List<String> Listaxx = new List<String>();
+                        Listaxx = entorno.MismosParametros3(NombreFuncion, TiposParametros);
+                        Entorno Xx = new Entorno();
+
+                        //Xx = entorno;
+                        for (int i = 0; i < Listaxx.Count; i++)
+                        {
+                            string[] separadasx;
+                            separadasx = Listaxx[i].Split('*');
+                            System.Diagnostics.Debug.WriteLine("Tipo: " + separadasx[0] + " Nombre: " + separadasx[1] + " Valor: " + ValoresParametros[i]);
+                            Xx.Agregar(separadasx[1], separadasx[0], ValoresParametros[i]);
+                        }
+                        NodoAbstracto Nodo = entorno.ElNodoParametros(NombreFuncion, TiposParametros);
+
+                        String valor1 = "";
+                        String Retorno = "";
+                        entorno.NuevasFunciones(Xx);
+                        entorno.NuevasVariables(Xx);
+
+                        for(int u = 0; u < Nodo.Hijos.Count; u++)
+
+                        {
+                            System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if de funretorno");
+                            valor1 = Nodo.Hijos[u].Ejecutar(Xx);
+                            if (valor1.Contains("#Error") == true)
+                            {
+                                System.Diagnostics.Debug.WriteLine("errroESTAMOS DENTRO DEL if");
+                                return "#ERROR101 EN FUNCION";
+                                //return "#Error";
+                            }
+                            if (valor1.Contains("RETORNO:") == true)
+                            {
+                                System.Diagnostics.Debug.WriteLine("cahiasdjfiassssssssssssssssssssss");
+                                Retorno = valor1;
+                                break;
+                            }
+
+                        }
+                        System.Diagnostics.Debug.WriteLine("valor retorno: " + Retorno);
+
+                        string[] separadas;
+                        separadas = Retorno.Split(',');
+
+                        string[] separadas2;
+                        separadas2 = separadas[0].Split(':');
+
+                        string[] separadas3;
+                        separadas3 = separadas[1].Split(':');
+                        String TipoRetorno = separadas3[1];
+                        String TipoRetornox = "";
+                        if (TipoRetorno.ToUpper().Contains("INT"))
+                        {
+                            TipoRetornox = "entero";
+                        }
+                        else if (TipoRetorno.ToUpper().Contains("DOUBLE"))
+                        {
+                            TipoRetornox = "decimal";
+                        }
+                        else if (TipoRetorno.ToUpper().Contains("STRING"))
+                        {
+                            TipoRetornox = "cadena";
+                        }
+                        else if (TipoRetornox.ToUpper().Contains("BOOLEANO"))
+                        {
+                            TipoRetornox = "Booleano";
+                        }
+                        else if (TipoRetornox.ToUpper().Contains("DATE"))
+                        {
+                            TipoRetornox = "Fechas";
+                        }
+                        else if (TipoRetorno.ToUpper().Contains("TIME"))
+                        {
+                            TipoRetornox = "hora";
+
+                        }
+
+
+                        //this.Nombre == "EXP";
+                        this.TipoDato = TipoRetornox;
+                        //System.Diagnostics.Debug.WriteLine("Ejecucion funCIONES URUAIOAR------" + this.TipoDato);
+                        Xx.AsignarNuevosValores(entorno);
+                        return separadas2[1];
                     }
                     else
                     {
-                        return "#ERROR101 LA FUNCION NO SE ENCONTRO";
+                        return "#ERROR103 LA FUNCION NO SE ENCONTRO";
                     }
-                        return "10";
+                        
 
                 }
                 else
                 {
-                    return "#ERROR101 LA FUNCIÓN A UTILIZAR NO EXISTE";
+                    return "#ERROR103 LA FUNCIÓN A UTILIZAR NO EXISTE";
                 }
                 /*
                 for (int i = 0; i < this.Parametros.Count; i++)

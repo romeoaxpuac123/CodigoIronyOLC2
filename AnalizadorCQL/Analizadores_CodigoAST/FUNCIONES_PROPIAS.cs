@@ -407,7 +407,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
             }
 
-            return "#ERROR EN FUNCIONES";
+            return "#ERROR102 EN FUNCIONES";
         }
     }
 }

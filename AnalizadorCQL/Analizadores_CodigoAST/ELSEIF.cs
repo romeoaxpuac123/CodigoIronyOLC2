@@ -17,25 +17,30 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
 
         public override void Ejecutar()
         {
-            System.Diagnostics.Debug.WriteLine("Se esta ejecutnado IF ELSE");
+            System.Diagnostics.Debug.WriteLine("Se esta ejecutnado IF ELSErr");
         }
 
         public override string Ejecutar(Entorno entorno)
         {
-            System.Diagnostics.Debug.WriteLine("Se esta ejecutnado IF ELSE");
-            if(AutoIncrmentable2 == 1)
+            System.Diagnostics.Debug.WriteLine("Se esta ejecutnado IF ELSEeee" + this.AutoIncrmentable2);
+            if(this.AutoIncrmentable2 == 1)
             {
+                System.Diagnostics.Debug.WriteLine("Se esta ejecutnado IF ELSEeee true 1");
                 String valor1 = "";
                 Entorno NuevoEntorno = new Entorno();
                 entorno.NuevasVariables(NuevoEntorno);
+                entorno.NuevasFunciones(NuevoEntorno);
                 //entorno.NuevasFunciones(NuevoEntorno);
+               
                 String ValorExpresion = this.Hijos[0].Ejecutar(NuevoEntorno);
+                
                 if (ValorExpresion.ToUpper().Contains("TRUE") == true)
                 {
+                   
                     for (int ix = 0; ix < this.Hijos[1].Hijos.Count; ix++)
                     {
                         valor1 = this.Hijos[1].Hijos[ix].Ejecutar(NuevoEntorno);
-                        System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if " + valor1);
+                        System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL ify " + valor1);
                         if (valor1.Contains("BREAK") == true)
                         {
                             return "BREAK";
@@ -58,10 +63,11 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 }
                 else
                 {
+                    System.Diagnostics.Debug.WriteLine("Se esta ejecutnado IF ELSEeee false");
                     for (int ix = 0; ix < this.Hijos[2].Hijos.Count; ix++)
                     {
                         valor1 = this.Hijos[2].Hijos[ix].Ejecutar(NuevoEntorno);
-                        System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if " + valor1);
+                        System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL ifyy " + valor1);
                         if (valor1.Contains("BREAK") == true)
                         {
                             return "BREAK";
@@ -85,8 +91,9 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             }
 
 
-            if (AutoIncrmentable2 == 2)
+            if (this.AutoIncrmentable2 == 2)
             {
+                System.Diagnostics.Debug.WriteLine("Se esta ejecutnado IF ELSEeee true2");
                 String valor1 = "";
                 Entorno NuevoEntorno = new Entorno();
                 entorno.NuevasVariables(NuevoEntorno);
@@ -97,7 +104,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     for (int ix = 0; ix < this.Hijos[1].Hijos.Count; ix++)
                     {
                         valor1 = this.Hijos[1].Hijos[ix].Ejecutar(NuevoEntorno);
-                        System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if " + valor1);
+                        System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL ifx " + valor1);
                         if (valor1.Contains("BREAK") == true)
                         {
                             return "BREAK";

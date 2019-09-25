@@ -103,6 +103,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                 String valor1 = "";
                 Entorno NuevoEntorno = new Entorno();
                 entorno.NuevasVariables(NuevoEntorno);
+                entorno.NuevasFunciones(NuevoEntorno);
                 //entorno.NuevasFunciones(NuevoEntorno);
                 String ValorExpresion = this.Hijos[0].Ejecutar(NuevoEntorno);
                 if (ValorExpresion.ToUpper().Contains("TRUE") == true)
@@ -110,7 +111,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     for (int ix = 0; ix < this.Hijos[1].Hijos.Count; ix++)
                     {
                         valor1 = this.Hijos[1].Hijos[ix].Ejecutar(NuevoEntorno);
-                        System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if " + valor1);
+                        System.Diagnostics.Debug.WriteLine("ESTAMOS DENTRO DEL if " + valor1 + "romeo");
                         if (valor1.Contains("BREAK") == true)
                         {
                             return "BREAK";

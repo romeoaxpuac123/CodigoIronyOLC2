@@ -24,14 +24,16 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             System.Diagnostics.Debug.WriteLine("Se esta ejecutnado RETORNO");
             if (this.AutoIncrmentable2 == 100) {
                 String ValorRetorno = this.Hijos[0].Ejecutar(entorno);
+             
+                System.Diagnostics.Debug.WriteLine("Se esta ejecutnado RETORNO" + ValorRetorno);
                 String TipoRetorno = this.Hijos[0].Nombre;
                 System.Diagnostics.Debug.WriteLine("Tipo: ->" + TipoRetorno);
                 if (TipoRetorno.ToUpper().Contains("ID2") == true)
-            {
-                TipoRetorno = entorno.ObtenerTipo(this.Hijos[0].NombreVariable);
-            }
-            else
-            {
+                {
+                   TipoRetorno = entorno.ObtenerTipo(this.Hijos[0].NombreVariable);
+                }
+                else
+                {
                 TipoRetorno = this.Hijos[0].TipoDato;
                     if (TipoRetorno.ToUpper().Contains("ENTERO"))
                     {
@@ -96,7 +98,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     }
 
 
-
+                    //this.TipoDato = "entero";
                 System.Diagnostics.Debug.WriteLine("Valor: " + ValorRetorno);
                 System.Diagnostics.Debug.WriteLine("Tipo: " + TipoRetorno);
                 ValorRetorno = ValorRetorno.Replace(" (numero)", "").Replace(" (hora)", "").Replace(" (numdecimal)", "").Replace(" (fechas)", "");
@@ -123,7 +125,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
                     {
                         TipoRetornoX = entorno.ObtenerTipo(TipoRetorno.Replace(" (id2)",""));
                         ValorRetorno = entorno.ObtenerValor(TipoRetorno.Replace(" (id2)", ""));
-                        Todos = Todos + ValorRetorno + "," + TipoRetornoX + "?";
+                        Todos = Todos + ValorRetorno + "," + TipoRetornoX.Replace(" ","") + "?";
                     }
                     else
                     {

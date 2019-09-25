@@ -3185,7 +3185,32 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(2)));
                         return nuevo;
                     }
+                    else if (root.ToString().ToUpper().Contains("ELRETORNO"))
+                    {
 
+                        NodoAbstracto nuevo = new RETORNO("RETORNO");
+                        ///NodoAbstracto id = new Nodo(root.ChildNodes.ElementAt(1).ToString().Replace(" (id2)", ""));
+                        if (root.ChildNodes.ElementAt(1).ToString() == "E")
+                        {
+                            nuevo.AutoIncrmentable2 = 100;
+                            nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(1)));
+                        }
+                        else
+                        {
+                            nuevo.AutoIncrmentable2 = 200;
+                            STN.Clear();
+                            nuevo.ListaR1 = new List<String>();
+                            Atributos(root.ChildNodes.ElementAt(1));
+                            for (int i = 0; i < STN.Count; i++)
+                            {
+                                nuevo.ListaR1.Add(STN[i]);
+                            }
+                            STN.Clear();
+                        }
+
+
+                        return nuevo;
+                    }
                     #endregion
                     break;
                 case 4:
@@ -3768,7 +3793,28 @@ namespace AnalizadorCQL.Analizadores
                         return nuevo;
                         //return nuevo;
                     }
+                    else if (root.ToString() == "FUNCIONES_CREADAS")
+                    {
 
+                        System.Diagnostics.Debug.WriteLine("FUNCIONES_cREADAS");
+                        NodoAbstracto nuevo = new FUNCIONES("FUN_CREADAS");
+                        NodoAbstracto tipofuncion = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (Keyword)", ""));
+                        NodoAbstracto NombreFuncion = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(tipofuncion);
+                        nuevo.Hijos.Add(NombreFuncion);
+                        //nuevo.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5)));
+                        NodoAbstracto Extra = new Nodo("EXTRA");
+                        for (int x = 0; x < root.ChildNodes.ElementAt(5).ChildNodes.Count; x++)
+                        {
+                            Extra.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(5).ChildNodes.ElementAt(x)));
+                        }
+                        nuevo.Hijos.Add(Extra);
+                        nuevo.AutoIncrmentable2 = 67;
+                        FuncionesXD.Add(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", "") + "*" + root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (id)", "") + "*" + 0);
+
+                        return nuevo;
+
+                    }
                     #endregion
                     break;
                 case 8:
@@ -3901,10 +3947,14 @@ namespace AnalizadorCQL.Analizadores
                         NodoAbstracto nuevo = new FUNCIONES("FUN_CREADAS");
                         NodoAbstracto tipofuncion = new Nodo(root.ChildNodes.ElementAt(0).FindToken().ToString().Replace(" (Keyword)", ""));
                         NodoAbstracto NombreFuncion = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                        NodoAbstracto Extra= new Nodo("EXTRA");
                         // NodoAbstracto ListaDeSentenias = new Nodo(root.ChildNodes.ElementAt(6));
                         nuevo.Hijos.Add(tipofuncion);
                         nuevo.Hijos.Add(NombreFuncion);
-                        nuevo.Hijos.Add(Recorrido1(root.ChildNodes.ElementAt(6)));
+                        for (int x = 0; x < root.ChildNodes.ElementAt(6).ChildNodes.Count; x++) {
+                            Extra.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(6).ChildNodes.ElementAt(x)));
+                        }
+                        nuevo.Hijos.Add(Extra);
                         AtributosFunciones(root.ChildNodes.ElementAt(3));
                         for (int i = 0; i < STN.Count; i++)
                         {
@@ -3917,6 +3967,33 @@ namespace AnalizadorCQL.Analizadores
                         return nuevo;
 
                     }
+                    else if (root.ToString().Contains("ELCALL"))
+                    {
+                        NodoAbstracto nuevo = new CALL("EXP");
+                        NodoAbstracto proc = new Nodo(root.ChildNodes.ElementAt(3).FindToken().ToString().Replace(" (id)", ""));
+                        STN.Clear();
+                        Atributos(root.ChildNodes.ElementAt(0));
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i].Replace(" (id2)", ""));
+                        }
+                        STN.Clear();
+
+                        STN.Clear();
+                        nuevo.ListaR1 = new List<String>();
+                        Atributos(root.ChildNodes.ElementAt(5));
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaR1.Add(STN[i].Replace(" (id2)", ""));
+                        }
+                        STN.Clear();
+
+
+                        nuevo.Hijos.Add(proc);
+                        return nuevo;
+
+                    }
+
                     #endregion
                     break;
                 case 9:
@@ -4507,6 +4584,7 @@ namespace AnalizadorCQL.Analizadores
                     }
                     else if (root.ToString().Contains("EL_IF"))
                     {
+                        System.Diagnostics.Debug.WriteLine("------------------------------------------romeo entro al el if 11");
                         NodoAbstracto nuevo = new ELSEIF("ELSEIF");
                         NodoAbstracto IFSITO = new Nodo("XTRA");
                         NodoAbstracto Extras = new Nodo("XTRA");
@@ -4703,7 +4781,42 @@ namespace AnalizadorCQL.Analizadores
                         nuevo.AutoIncrmentable2 = 3;
                         return nuevo;
                     }
+                    else if (root.ToString().Contains("PROCEDIMIENTOS"))
+                    {
+                        NodoAbstracto nuevo = new PROCEDIMIENTOS("PROC");
+                        NodoAbstracto Nombre = new Nodo(root.ChildNodes.ElementAt(1).FindToken().ToString().Replace(" (id)", ""));
+                        nuevo.Hijos.Add(Nombre);
+                        NodoAbstracto Extra = new Nodo("EXTRA");
+                        for(int i = 0; i< root.ChildNodes.ElementAt(10).ChildNodes.Count; i++)
+                        {
+                            Extra.Hijos.Add(Recorrido12(root.ChildNodes.ElementAt(10).ChildNodes.ElementAt(i)));
+                        }
+                        nuevo.Hijos.Add(Extra);
+                        //nuevo.ListaID1 = new List<String>();
+                        nuevo.ListaR1 = new List<String>();
+                        STN.Clear();
+                        AtributosFunciones(root.ChildNodes.ElementAt(7));
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaR1.Add(STN[i]);
+                        }
+                        STN.Clear();
 
+                        STN.Clear();
+                        AtributosFunciones(root.ChildNodes.ElementAt(3));
+                        for (int i = 0; i < STN.Count; i++)
+                        {
+                            nuevo.ListaID1.Add(STN[i]);
+                        }
+                        STN.Clear();
+
+
+
+                        //nuevo.ListaR1 = new List<String>();
+                        nuevo.AutoIncrmentable2 = 9000;
+                        return nuevo;
+
+                    }
                     #endregion
                     break;
                 case 13:                    
@@ -5242,6 +5355,15 @@ namespace AnalizadorCQL.Analizadores
                             mylogs.Close();
                         }
                     }
+                    else if (valor1.Contains("#Error2"))
+                    {
+                        using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                        {
+                            mylogs.WriteLine(">>" + valor1.Replace("RETORNO:0,","").Replace(",int?","").Replace("#Error2","").Replace("int? ",""));
+                            mylogs.Close();
+                        }
+                        break;
+                    }
                     else if (valor1.Contains("#ERROR6 ? Exception:"))
                     {
                         using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
@@ -5291,6 +5413,51 @@ namespace AnalizadorCQL.Analizadores
                         using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
                         {
                             mylogs.WriteLine(">>" + "ERROR EN EL SISTEMA COMANDO MAL INGRESADO");
+                            mylogs.Close();
+                        }
+                        break;
+                    }
+                    else if (valor1.Contains("#ERROR101"))
+                    {
+                        using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                        {
+                            mylogs.WriteLine(">>" + "ERROR EN EL LLAMADO DE FUNCIONES");
+                            mylogs.Close();
+                        }
+                        break;
+                    }
+                    else if (valor1.Contains("#ERROR102"))
+                    {
+                        using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                        {
+                            mylogs.WriteLine(">>" + "ERROR EL LLAMADO DE FUNCIONES, NO EXISTE");
+                            mylogs.Close();
+                        }
+                        break;
+                    }
+                    else if (valor1.Contains("#ERROR103"))
+                    {
+                        using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                        {
+                            mylogs.WriteLine(">>" + "LA FUNCION NO EXISTE NO EXISTE");
+                            mylogs.Close();
+                        }
+                        break;
+                    }
+                    else if (valor1.Contains("FunctionAlreadyExists:"))
+                    {
+                        using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                        {
+                            mylogs.WriteLine(">>" + valor1.Replace("#ERROR",""));
+                            mylogs.Close();
+                        }
+                        //break;
+                    }
+                    else if (valor1.Contains("PROC123"))
+                    {
+                        using (StreamWriter mylogs = File.AppendText(rutaCompleta))         //se crea el archivo
+                        {
+                            mylogs.WriteLine(">>" + valor1.Replace("#ERROR", "").Replace(" EN PROC123 ",""));
                             mylogs.Close();
                         }
                         break;

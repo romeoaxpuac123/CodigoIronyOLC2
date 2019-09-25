@@ -26,6 +26,7 @@ namespace AnalizadorCQL.Analizadores_CodigoAST
             System.Diagnostics.Debug.WriteLine("Se esta ejecutnado FRO" + VariableContador);
             Entorno Nuevo = new Entorno();
             entorno.NuevasVariables(Nuevo);
+            entorno.NuevasFunciones(Nuevo);
             Boolean elbrak = false;
             this.Hijos[0].Ejecutar(Nuevo);
             while (this.Hijos[1].Ejecutar(Nuevo).ToString().ToUpper().Contains("TRUE") == true)
